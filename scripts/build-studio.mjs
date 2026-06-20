@@ -72,9 +72,18 @@ const html = `<!doctype html>
 </body>
 </html>`;
 
-// Assert no external resource references (offline / file:// safety).
-for (const pattern of [/<link\b/i, /<script\s+src=/i, /url\(\s*https?:/i, /@import\s+url\(\s*https?:/i]) {
-  if (pattern.test(html)) throw new Error(`Built HTML contains an external reference matching ${pattern}`);
+// Assert no external resource *loads* (offline / file:// safety). We match only
+// genuine network references (src=/href=/url()/@import pointing at http(s):// or
+// protocol-relative //), not harmless strings such as the MathML namespace URI
+// inside KaTeX or regex literals inside the bundled app code.
+const EXTERNAL = [
+  /<link\b[^>]*\bhref\s*=\s*["']?(?:https?:)?\/\//i,
+  /\bsrc\s*=\s*["']?(?:https?:)?\/\//i,
+  /url\(\s*["']?(?:https?:)?\/\//i,
+  /@import\s+(?:url\()?\s*["']?(?:https?:)?\/\//i,
+];
+for (const pattern of EXTERNAL) {
+  if (pattern.test(html)) throw new Error(`Built HTML contains an external load matching ${pattern}`);
 }
 
 const distDir = join(APP, "dist");

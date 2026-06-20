@@ -14,6 +14,8 @@ export interface Studio {
   /** The bank record backing the workspace item, if it has been saved/loaded. */
   record: BankRecord | null;
   mode: Mode;
+  /** Exact config last passed to generate(), for faithful reproduction. */
+  genConfig: { answerType: Mode; task?: string };
   /** Current bank list filter. */
   filter: BankQuery;
   /** Re-render all dynamic regions. Set by main(). */

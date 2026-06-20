@@ -39,6 +39,7 @@ export function doGenerate(studio: Studio): void {
   const { seed, task, mode, band } = readControls();
   studio.mode = mode;
   const cfg = task ? { task, answerType: mode } : { answerType: mode };
+  studio.genConfig = task ? { answerType: mode, task } : { answerType: mode };
 
   let seedUsed = seed;
   if (band !== "any") {

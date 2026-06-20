@@ -56,6 +56,9 @@ export interface BankRecord {
   band: number;
   seed: number;
   mode: Mode;
+  /** Exact config passed to generate(seed, config), so the item reproduces
+   *  identically. Distinguishes auto-task (no `task`) from explicit-task runs. */
+  genConfig: { answerType: Mode; task?: string };
   /** Internal schema revision of the record shape (set by migrations). */
   schemaRev?: number;
 }

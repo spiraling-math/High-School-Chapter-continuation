@@ -5,6 +5,7 @@ import type { Studio } from "./context.ts";
 import { makeRecord, duplicateRecord } from "../../core/bank/record.ts";
 import { validate } from "../../domains/sequences/validate.ts";
 import type { BankRecord } from "../../core/bank/types.ts";
+import { exportToolbar } from "./exports.ts";
 
 function shortHex(): string {
   const b = new Uint8Array(4);
@@ -17,7 +18,7 @@ async function save(studio: Studio): Promise<void> {
   const now = new Date().toISOString();
   const rec: BankRecord = studio.record
     ? { ...studio.record, item: studio.item, modifiedAt: now }
-    : makeRecord(studio.item, studio.validation.status, { mode: studio.mode });
+    : makeRecord(studio.item, studio.validation.status, { mode: studio.mode, genConfig: studio.genConfig });
   await studio.store.put(rec);
   studio.record = rec;
   toast("Saved to bank");
@@ -30,6 +31,7 @@ async function open(studio: Studio, id: string): Promise<void> {
   studio.record = rec;
   studio.item = rec.item;
   studio.mode = rec.mode;
+  studio.genConfig = rec.genConfig;
   studio.validation = validate(rec.item);
   announce(`Opened item ${id} from the bank.`);
   studio.rerender();
@@ -120,6 +122,8 @@ export function mountBank(studio: Studio, host: HTMLElement): void {
   frow.append(taskFilter, archFilter);
   filters.append(search, frow);
   host.append(filters);
+
+  host.append(exportToolbar(studio));
 
   const list = el("ul", { class: "list", "aria-label": "Saved items", role: "list" });
   host.append(list);

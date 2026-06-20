@@ -8,7 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test \"core/**/*.test.ts\" \"domains/**/*.test.ts\" \"apps/**/*.test.ts\"",
+    "test": "node --test \"core/**/*.test.ts\" \"domains/**/*.test.ts\" \"apps/**/*.test.ts\" \"exporters/**/*.test.ts\"",
     "test:file": "node --test",
     "typecheck": "tsc --noEmit",
     "build:studio": "node scripts/build-studio.mjs",

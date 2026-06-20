@@ -39,7 +39,7 @@ function meta(studio: Studio): HTMLElement {
     generatorId: GENERATOR_ID,
     generatorVersion: GENERATOR_VERSION,
     seed: item["seed"],
-    config: { task: p.task, answerType: studio.mode },
+    config: studio.record?.genConfig ?? studio.genConfig,
   };
   const copyBtn = el("button", { type: "button", class: "ghost", "aria-label": "Copy reproduction details" }, "Copy reproduction");
   copyBtn.addEventListener("click", async () => {

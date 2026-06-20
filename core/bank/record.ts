@@ -16,7 +16,7 @@ function nowIso(): string {
 export function makeRecord(
   item: Record<string, Json>,
   validationStatus: "pass" | "fail" | "warn" | "not-run",
-  opts: { tags?: string[]; mode: Mode } & { now?: string } = { mode: "integer" },
+  opts: { tags?: string[]; mode: Mode; genConfig?: { answerType: Mode; task?: string }; now?: string } = { mode: "integer" },
 ): BankRecord {
   const params = item["params"] as { task: string };
   const diff = item["difficulty"] as { overallBand: number };
@@ -40,6 +40,7 @@ export function makeRecord(
     band: diff.overallBand,
     seed: Number(item["seed"]),
     mode: opts.mode,
+    genConfig: opts.genConfig ?? { answerType: opts.mode },
     schemaRev: 2,
   };
 }

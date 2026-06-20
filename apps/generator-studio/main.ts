@@ -30,6 +30,7 @@ function main(): void {
     validation: null,
     record: null,
     mode: "multiple-choice",
+    genConfig: { answerType: "multiple-choice" },
     filter: { archived: false },
     rerender: () => undefined,
   };
