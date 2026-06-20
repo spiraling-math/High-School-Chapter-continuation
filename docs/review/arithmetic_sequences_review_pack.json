@@ -1,6 +1,6 @@
 {
   "generatorId": "gen.sequences.arithmetic",
-  "generatorVersion": "1.0.1",
+  "generatorVersion": "1.1.0",
   "note": "Representative items for curriculum review. None is approved or published; advancing lifecycle state beyond machine-validated is the curriculum authority's decision.",
   "combos": [
     {
@@ -114,7 +114,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "nth_term",
@@ -228,7 +228,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "nth_term",
@@ -342,7 +342,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "nth_term",
@@ -456,7 +456,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "nth_term",
@@ -533,7 +533,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "nth_term",
@@ -603,7 +603,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "nth_term",
@@ -673,7 +673,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "nth_term",
@@ -743,7 +743,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "nth_term",
@@ -864,7 +864,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "sum_n",
@@ -978,7 +978,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "sum_n",
@@ -1092,7 +1092,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "sum_n",
@@ -1206,7 +1206,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "sum_n",
@@ -1283,7 +1283,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "sum_n",
@@ -1353,7 +1353,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "sum_n",
@@ -1423,7 +1423,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "sum_n",
@@ -1493,7 +1493,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "sum_n",
@@ -1513,7 +1513,7 @@
           "task": "find_d",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -1570,7 +1570,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "find_d",
@@ -1583,7 +1583,7 @@
           "task": "find_d",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -1640,7 +1640,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "find_d",
@@ -1653,7 +1653,7 @@
           "task": "find_d",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01"
           ],
           "difficultyProfile": {
             "overallBand": 3,
@@ -1710,7 +1710,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "find_d",
@@ -1723,7 +1723,7 @@
           "task": "find_d",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -1780,7 +1780,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "find_d",
@@ -1800,7 +1800,7 @@
           "task": "find_n_for_value",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -1857,7 +1857,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "find_n_for_value",
@@ -1870,7 +1870,7 @@
           "task": "find_n_for_value",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -1927,7 +1927,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "find_n_for_value",
@@ -1940,7 +1940,7 @@
           "task": "find_n_for_value",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01"
           ],
           "difficultyProfile": {
             "overallBand": 3,
@@ -1997,7 +1997,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "find_n_for_value",
@@ -2010,7 +2010,7 @@
           "task": "find_n_for_value",
           "answerType": "integer",
           "objectiveIds": [
-            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+            "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01"
           ],
           "difficultyProfile": {
             "overallBand": 4,
@@ -2067,7 +2067,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.arithmetic",
-            "generatorVersion": "1.0.1",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "find_n_for_value",

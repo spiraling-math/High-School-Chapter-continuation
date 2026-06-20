@@ -1,7 +1,26 @@
 # Generator Specification — Arithmetic Sequences
 
-Generator: `gen.sequences.arithmetic` · Version: `1.0.1` · Status: in-development
+Generator: `gen.sequences.arithmetic` · Version: `1.1.0` · Status: **curriculum-approved**
 First vertical slice (Decision #7). Last updated: 2026-06-20.
+
+## v1.1.0 release (curriculum-approved objective structure)
+
+The curriculum authority approved (final wording) and the generator now maps each
+task to its own micro-objective:
+
+| Task | Objective | Wording |
+| --- | --- | --- |
+| `nth_term` | `SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01` | Determine the nth term … given the first term, common difference, and term position. |
+| `sum_n` | `SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01` | Determine the sum of the first n terms … |
+| `find_d` | `SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01` | Determine the common difference … given the first term and another term's value and position. |
+| `find_n_for_value` | `SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01` | Determine the position n of a specified term value … |
+
+`NTH_TERM.01` is the prerequisite for `COMMON_DIFF.01` and `TERM_INDEX.01`.
+v1.0.0 and v1.0.1 are preserved unchanged; this release supersedes them for new
+generation. Golden/parity fixtures and the review pack were regenerated.
+
+This specification is **curriculum-approved** at v1.1.0. Generated items still
+begin at `machine-validated`; individual items are never auto-published.
 
 ## v1.0.1 revision (curriculum-review corrections)
 

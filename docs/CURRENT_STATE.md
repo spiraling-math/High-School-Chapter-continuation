@@ -98,6 +98,10 @@ $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';'
 npm test                                   # node --test over core/** and domains/** (16 tests)
 ```
 
+## Generator v1.1.0 (curriculum-approved)
+
+Owner approved the objective split (final wording). Added curriculum-approved micro-objectives `SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01` (find_d) and `...TERM_INDEX.01` (find_n_for_value), prerequisite `...NTH_TERM.01`; updated NTH_TERM.01/SUM_N.01 wording; remapped the reverse tasks. Generator released as **v1.1.0** (v1.0.0 and v1.0.1 preserved unchanged). Golden/parity fixtures + review pack regenerated. The spec `docs/GENERATOR_SPEC_arithmetic_sequences.md` is **curriculum-approved at v1.1.0**. All tests pass (TS 47, Python 19, sweep 0 invalid, conformance, exports); browser-verified (objectives remapped, version 1.1.0, validation PASS, no console errors). Generated items still begin at `machine-validated`; never auto-published.
+
 ## Generator v1.0.1 (curriculum-review REVISE corrections)
 
 Applied the owner's review corrections: distractors are now distinct, formula-backed misconceptions from a canonical registry (`domains/sequences/misconceptions.ts` + `oracle/spi_oracle/misconceptions.py`) with deterministic parameter regeneration when a clean set isn't available; new `MISC.SEQ.FORGOT_FIRST_TERM`; renamed `MISC.SERIES.CONSTANT_TERMS`→`CONSTANT_LAST_TERM`; new `MISC.SERIES.CONSTANT_FIRST_TERM`. Validator v1.1.0 adds distractor semantic-agreement (recompute each distractor from its formula; value/rationale/feedback must agree) + distinct-misconception. Clarified `find_n_for_value` wording; calculator policy `calculator-not-required` (schema enum updated). Generator bumped to **v1.0.1**; golden/parity fixtures + review pack regenerated. All tests pass (TS 47, Python 19, sweep 0 invalid, conformance). The objective split for reverse tasks is **proposed** in `docs/CURRICULUM_OBJECTIVE_PROPOSAL.md` (awaiting approval; would be v1.1.0).

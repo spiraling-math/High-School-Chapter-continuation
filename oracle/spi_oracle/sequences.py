@@ -31,7 +31,7 @@ from .seeded_random import Mulberry32
 from .misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.sequences.arithmetic"
-GENERATOR_VERSION = "1.0.1"
+GENERATOR_VERSION = "1.1.0"
 
 FORWARD_TASKS = ("nth_term", "sum_n")
 REVERSE_TASKS = ("find_d", "find_n_for_value")
@@ -42,13 +42,11 @@ D_ABS_MIN, D_ABS_MAX = 1, 12
 N_MIN, N_MAX = 3, 40
 MAX_PARAM_ATTEMPTS = 64
 
-# NOTE: per the curriculum-review proposal these reverse-task objectives are
-# pending the curriculum authority's approval of dedicated micro-objectives
-# (see docs/CURRICULUM_OBJECTIVE_PROPOSAL.md). Mapping is unchanged in v1.0.1.
+# v1.1.0: dedicated micro-objectives for the reverse tasks (curriculum-approved).
 OBJECTIVE_BY_TASK = {
     "nth_term": "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
-    "find_d": "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
-    "find_n_for_value": "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
+    "find_d": "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01",
+    "find_n_for_value": "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01",
     "sum_n": "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01",
 }
 

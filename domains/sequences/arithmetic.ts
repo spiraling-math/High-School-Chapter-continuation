@@ -18,7 +18,7 @@ import { canonicalStringify, type Json } from "../../core/serialization/canonica
 import { MISCONCEPTIONS, rulesFor } from "./misconceptions.ts";
 
 export const GENERATOR_ID = "gen.sequences.arithmetic";
-export const GENERATOR_VERSION = "1.0.1";
+export const GENERATOR_VERSION = "1.1.0";
 
 export type Task = "nth_term" | "sum_n" | "find_d" | "find_n_for_value";
 export const FORWARD_TASKS: Task[] = ["nth_term", "sum_n"];
@@ -31,10 +31,11 @@ const N_MIN = 3, N_MAX = 40;
 const MAX_PARAM_ATTEMPTS = 64;
 const CALCULATOR_POLICY = "calculator-not-required";
 
+// v1.1.0: dedicated micro-objectives for the reverse tasks (curriculum-approved).
 const OBJECTIVE_BY_TASK: Record<Task, string> = {
   nth_term: "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
-  find_d: "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
-  find_n_for_value: "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
+  find_d: "SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01",
+  find_n_for_value: "SPI.IBDPAASL.SEQSER.ARITH.TERM_INDEX.01",
   sum_n: "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01",
 };
 
