@@ -1,7 +1,12 @@
 # Generator Proposal — Geometric Sequences (next family)
 
-Status: **APPROVED and IMPLEMENTED. Current release: `gen.sequences.geometric`
-v1.1.0** (v1.0.0 preserved). This document is retained as the design record.
+Status: **CURRICULUM-APPROVED (2026-06-20). Current release:
+`gen.sequences.geometric` v1.1.0** (v1.0.0 preserved). The owner approved the
+generator, the five objectives, task coverage, wording, the exact-rational answer
+model, worked-solution structures, difficulty bands, misconception and distractor
+rules, uniqueness and convergence constraints, and the exclusion of degenerate
+ratios. This document is retained as the design record. See `DECISION_LOG.md` #24
+and `APPROVED_VERSIONS.md`.
 
 **v1.1.0 curriculum-review corrections:** interactionType separated from
 answer.type (`integer`/`exact-rational`, normalized `{num,den}` canonical with an

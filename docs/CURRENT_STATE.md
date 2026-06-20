@@ -4,7 +4,9 @@ Last updated: 2026-06-20.
 
 ## Current phase
 
-Phase 3 (early) — **Generator Studio MVP complete** for the arithmetic-sequences slice. Phase 0 (audit), Phase 1 (foundation), and Phase 2 (TS port + validator + parity) are done. Node.js v24.17.0 is installed. No new generator families added (awaiting owner approval).
+**Two generator families curriculum-approved.** arithmetic v1.1.0 and **geometric v1.1.0** are curriculum-approved (see `APPROVED_VERSIONS.md`, `DECISION_LOG.md` #24). Generator Studio offers both, with the IndexedDB bank and offline exports. Node.js v24.17.0 installed.
+
+**Next phase: Foundation Readiness & Generator SDK design** (not another sequence family). The first SDK task is recorded tech debt TD-1 (`answerType` → `interactionType` / `answer.type`, back-compatible; see `TECH_DEBT.md`). Do not implement another sequence family, the sum-to-infinity MC variant, or a third generator family until directed.
 
 ## Generator Studio MVP (this session)
 
@@ -116,9 +118,11 @@ Applied the owner's review corrections: distractors are now distinct, formula-ba
 
 ## Next recommended task
 
-Two generator families are complete and curriculum-approved: arithmetic v1.1.0 and geometric v1.0.0. Awaiting the owner:
-1. **Curriculum review of the geometric review pack** `docs/review/geometric_sequences_review_pack.md` (approve/revise/reject) to advance items beyond `machine-validated`.
-2. Decide the **third generator family** (e.g. sigma notation, or arithmetic/geometric word-problem contexts) — to be proposed for approval before implementation, per the established gate.
-3. Optional hardening (any time): an MC variant of `sum_infinite` (the infinite-specific misconceptions are documented), move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv).
+Both sequence families (arithmetic v1.1.0, geometric v1.1.0) are curriculum-approved. The next phase is **Foundation Readiness & Generator SDK design** — NOT another sequence family. Recommended first steps:
+1. **Generator SDK design**: formalize the generator contract (describe/generate/solve/validate/distractors/solution/render/serialize) into a reusable SDK so new families are configuration + math, not boilerplate; carry the oracle-first → byte-for-byte parity → 10,000-seed gate into the SDK.
+2. **Resolve TD-1** (`TECH_DEBT.md`): introduce `config.interactionType` + `answer.type`, mapping the legacy `answerType` for full backward compatibility (no fixture regeneration).
+3. Foundation hardening: move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv), and a curriculum-graph integrity check (prerequisite acyclicity, objective ID coverage).
+
+Explicitly NOT now (per owner): another sequence family, the `sum_infinite` MC variant, or a third generator family.
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.
