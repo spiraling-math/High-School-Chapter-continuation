@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/misconception.schema.json",
+  "title": "SPI-Math Misconception",
+  "description": "A named, structured student misconception. Misconceptions are the source of truth for multiple-choice distractors and diagnostic feedback. Every distractor on a generated item should reference a misconception by id whenever possible, so that wrong answers are mathematically meaningful rather than arbitrary.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["misconceptionId", "domain", "description", "observableError", "reviewStatus"],
+  "properties": {
+    "misconceptionId": {
+      "type": "string",
+      "description": "Stable dotted identifier. Convention: MISC.<DOMAIN>.<SHORT_NAME> in upper snake/dotted case.",
+      "pattern": "^MISC\\.[A-Z0-9]+(\\.[A-Z0-9_]+)+$"
+    },
+    "domain": { "type": "string", "description": "Mathematical domain the misconception belongs to (e.g. 'sequences-and-series', 'fractions')." },
+    "objectiveRelationships": {
+      "type": "array",
+      "description": "Curriculum objective IDs where this misconception commonly appears.",
+      "items": { "type": "string" }
+    },
+    "title": { "type": "string", "description": "Short human-readable title (e.g. 'Off-by-one in term index')." },
+    "description": { "type": "string", "description": "Plain-English description of the misconception and why students hold it." },
+    "observableError": { "type": "string", "description": "What the error looks like in student work or in a final answer." },
+    "typicalIncorrectMethod": { "type": "string", "description": "The faulty procedure a student applies, described precisely enough that a distractor rule can implement it." },
+    "distractorRule": {
+      "type": "object",
+      "description": "Machine-usable rule for deriving a distractor value from the correct parameters. The actual computation lives in the generator; this documents the intended transformation.",
+      "additionalProperties": false,
+      "properties": {
+        "summary": { "type": "string", "description": "e.g. 'Use a1 + n*d instead of a1 + (n-1)*d'." },
+        "expression": { "type": "string", "description": "Optional symbolic form of the wrong computation." }
+      }
+    },
+    "validRange": {
+      "type": "object",
+      "description": "Where this misconception is age/course appropriate, so feedback is not shown out of context.",
+      "additionalProperties": false,
+      "properties": {
+        "levels": { "type": "array", "items": { "type": "string" } },
+        "minStage": { "type": "string" },
+        "maxStage": { "type": "string" }
+      }
+    },
+    "feedback": { "type": "string", "description": "Suitable student-facing feedback when this misconception is detected, phrased constructively." },
+    "remediationHint": { "type": "string", "description": "Optional pointer to the correct method or prerequisite skill." },
+    "relatedMisconceptions": { "type": "array", "items": { "type": "string" }, "description": "Other misconception IDs that co-occur or are confused with this one." },
+    "sourceReferences": {
+      "type": "array",
+      "description": "Source evidence (sourceId + locator) where this misconception was observed or documented.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sourceId": { "type": "string" },
+          "locator": { "type": "string", "description": "Page/section/question reference." }
+        },
+        "required": ["sourceId"]
+      }
+    },
+    "reviewStatus": {
+      "type": "string",
+      "description": "Curriculum-authority review state.",
+      "enum": ["draft", "proposed", "approved", "rejected", "retired"]
+    },
+    "version": { "type": "string", "description": "Semantic version of this misconception entry.", "default": "1.0.0" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "modifiedAt": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+      "domain": "sequences-and-series",
+      "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"],
+      "title": "Off-by-one in term index",
+      "description": "Student treats the first term as term 0, or forgets that the nth term uses (n-1) steps of the common difference.",
+      "observableError": "Answer is exactly one common difference too large (or small).",
+      "typicalIncorrectMethod": "Computes a1 + n*d instead of a1 + (n-1)*d.",
+      "distractorRule": { "summary": "Use a1 + n*d instead of a1 + (n-1)*d", "expression": "a1 + n*d" },
+      "validRange": { "levels": ["middle-school", "high-school", "ibdp-aasl"] },
+      "feedback": "Check how many steps of the common difference you take to reach the nth term: it is (n - 1), not n.",
+      "remediationHint": "List the first few terms and count the jumps from term 1 to term n.",
+      "reviewStatus": "approved",
+      "version": "1.0.0"
+    }
+  ]
+}

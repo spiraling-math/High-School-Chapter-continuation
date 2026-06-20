@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/assessment-blueprint.schema.json",
+  "title": "SPI-Math Assessment Blueprint",
+  "description": "A reusable specification for building an assessment: the structure, coverage targets, difficulty distribution, and selection rules from which concrete assessments (and randomized variants) are produced. A blueprint references objectives/generators and constraints, not specific item ids, so it can generate many equivalent variants.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["blueprintId", "version", "title", "sections"],
+  "properties": {
+    "blueprintId": { "type": "string", "pattern": "^BP-[A-Za-z0-9_-]{4,}$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "stage": { "type": "string" },
+    "course": { "type": "string" },
+    "calculatorPolicy": { "type": "string", "enum": ["no-calculator", "calculator-allowed", "calculator-required", "graphical-calculator", "mixed"] },
+    "totalMarks": { "type": "number", "minimum": 0 },
+    "timeLimitMinutes": { "type": "integer", "minimum": 0 },
+    "instructions": { "type": "string", "description": "Candidate instructions shown on the student version." },
+    "coverageTargets": {
+      "type": "object",
+      "description": "Overall coverage goals across the whole assessment, checked by the Assessment Builder / Quality Console.",
+      "additionalProperties": false,
+      "properties": {
+        "objectiveIds": { "type": "array", "items": { "type": "string" }, "description": "Objectives that must be represented." },
+        "difficultyDistribution": {
+          "type": "object",
+          "description": "Target fraction of marks per difficulty band (keys '1'..'5'). Should sum to ~1.",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "domainWeights": {
+          "type": "object",
+          "description": "Target fraction of marks per domain.",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sectionId", "title", "slots"],
+        "properties": {
+          "sectionId": { "type": "string" },
+          "title": { "type": "string" },
+          "instructions": { "type": "string" },
+          "calculatorPolicy": { "type": "string", "enum": ["no-calculator", "calculator-allowed", "calculator-required", "graphical-calculator"] },
+          "slots": {
+            "type": "array",
+            "minItems": 1,
+            "description": "Each slot is a rule for selecting/generating one question (or a group).",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["slotId", "selection"],
+              "properties": {
+                "slotId": { "type": "string" },
+                "marks": { "type": "number", "minimum": 0 },
+                "selection": {
+                  "type": "object",
+                  "description": "How to fill this slot.",
+                  "additionalProperties": false,
+                  "required": ["mode"],
+                  "properties": {
+                    "mode": { "type": "string", "enum": ["generate", "from-bank", "fixed-item"] },
+                    "objectiveIds": { "type": "array", "items": { "type": "string" } },
+                    "generatorId": { "type": "string" },
+                    "generatorVersion": { "type": "string" },
+                    "config": { "type": "object", "description": "Generation config (for mode=generate)." },
+                    "difficultyBand": { "type": "integer", "minimum": 1, "maximum": 5 },
+                    "questionType": { "$ref": "https://spi-math.academy/schemas/question-item.schema.json#/$defs/answerType" },
+                    "bankFilter": { "type": "object", "description": "Filter for mode=from-bank (tags, objective, review state, etc.)." },
+                    "itemId": { "type": "string", "description": "For mode=fixed-item." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "variantPolicy": {
+      "type": "object",
+      "description": "Controls randomized variant generation.",
+      "additionalProperties": false,
+      "properties": {
+        "variantCount": { "type": "integer", "minimum": 1 },
+        "seedStrategy": { "type": "string", "enum": ["per-variant-seed", "fixed-seed-list"], "description": "How seeds are assigned so variants are reproducible." },
+        "seeds": { "type": "array", "items": { "type": ["integer", "string"] } },
+        "equivalenceConstraints": { "type": "array", "items": { "type": "string" }, "description": "Properties variants must share (e.g. same total marks, same difficulty band per slot)." }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Which artifacts to produce.",
+      "items": { "type": "string", "enum": ["student-version", "answer-key", "worked-solutions", "mark-scheme", "metadata-csv", "standalone-html", "print-html"] }
+    },
+    "reviewStatus": { "type": "string", "enum": ["draft", "proposed", "approved", "published", "revised", "retired"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "modifiedAt": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "blueprintId": "BP-aasl-ch01-quiz",
+      "version": "1.0.0",
+      "title": "AA SL Chapter 1 — Arithmetic Sequences Quiz",
+      "stage": "ibdp-aasl",
+      "course": "IB Mathematics: Analysis and Approaches SL",
+      "calculatorPolicy": "no-calculator",
+      "totalMarks": 10,
+      "timeLimitMinutes": 20,
+      "instructions": "Answer all questions. Show your working.",
+      "coverageTargets": {
+        "objectiveIds": ["SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01", "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"],
+        "difficultyDistribution": { "1": 0.4, "2": 0.4, "3": 0.2 }
+      },
+      "sections": [
+        {
+          "sectionId": "S1",
+          "title": "Short answer",
+          "slots": [
+            { "slotId": "Q1", "marks": 2, "selection": { "mode": "generate", "generatorId": "gen.sequences.arithmetic", "generatorVersion": "1.0.0", "objectiveIds": ["SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"], "difficultyBand": 1, "questionType": "integer", "config": { "task": "nth_term" } } },
+            { "slotId": "Q2", "marks": 3, "selection": { "mode": "generate", "generatorId": "gen.sequences.arithmetic", "generatorVersion": "1.0.0", "objectiveIds": ["SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"], "difficultyBand": 2, "questionType": "integer", "config": { "task": "sum_n" } } }
+          ]
+        }
+      ],
+      "variantPolicy": { "variantCount": 4, "seedStrategy": "fixed-seed-list", "seeds": [1001, 1002, 1003, 1004], "equivalenceConstraints": ["same total marks", "same difficulty band per slot"] },
+      "outputs": ["student-version", "answer-key", "worked-solutions", "metadata-csv"],
+      "reviewStatus": "draft"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/source-record.schema.json",
+  "title": "SPI-Math Source Record",
+  "description": "Provenance and rights record for a single uploaded or derived source file. One record per file. Source records are the audit trail that links every curriculum objective and question item back to evidence. Never modify source files; this record describes them.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["sourceId", "originalPath", "filename", "fileType", "rightsStatus", "extractionStatus"],
+  "properties": {
+    "sourceId": {
+      "type": "string",
+      "description": "Stable, opaque identifier independent of filename. Format: SRC- followed by a short base32/hex token.",
+      "pattern": "^SRC-[A-Za-z0-9]{6,}$"
+    },
+    "originalPath": {
+      "type": "string",
+      "description": "Original path of the file as uploaded, including parent archive path if nested (e.g. 'Primary School.zip/Grade 4/g4-ch01.html'). Preserved verbatim."
+    },
+    "filename": { "type": "string", "description": "Leaf filename, preserved verbatim." },
+    "fileType": {
+      "type": "string",
+      "description": "File type / extension family.",
+      "enum": ["html", "pdf", "docx", "md", "txt", "json", "csv", "png", "jpg", "jpeg", "svg", "zip", "py", "other"]
+    },
+    "fileSizeBytes": { "type": "integer", "minimum": 0, "description": "Size in bytes, if known." },
+    "hash": {
+      "type": "object",
+      "description": "Content hash for duplicate and revision detection. Omitted if the environment could not compute it.",
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": { "type": "string", "enum": ["sha256", "sha1", "md5"], "default": "sha256" },
+        "value": { "type": "string", "description": "Lowercase hex digest." }
+      },
+      "required": ["algorithm", "value"]
+    },
+    "extractionStatus": {
+      "type": "string",
+      "description": "Whether content could be read/extracted.",
+      "enum": ["extracted", "partial", "ocr-uncertain", "corrupted", "password-protected", "unsupported", "empty", "not-attempted"]
+    },
+    "rightsStatus": {
+      "type": "string",
+      "description": "Copyright / usage classification. Drives whether content may be reused.",
+      "enum": ["owner-created", "academy-owned", "academy-owned-draft", "licensed", "public-domain", "reference-only", "rights-unknown"]
+    },
+    "apparentOwnerOrPublisher": {
+      "type": "string",
+      "description": "Best-effort publisher or owner (e.g. 'Oxford University Press', 'SPI-Math'). 'unknown' if not determinable."
+    },
+    "confidential": { "type": "boolean", "default": true, "description": "All uploaded curriculum/internal documents are confidential project information by default." },
+    "level": {
+      "type": "string",
+      "description": "Education level this source belongs to.",
+      "enum": ["preschool-kg", "primary", "middle-school", "high-school", "ibdp-aasl", "ibdp-aahl", "ibdp-ai", "university", "cross-level", "unknown"]
+    },
+    "course": { "type": "string", "description": "Course/programme label if applicable (e.g. 'IB Mathematics: Analysis and Approaches SL', 'Grade 4')." },
+    "subjectDomain": { "type": "string", "description": "Primary mathematical domain (e.g. 'algebra', 'calculus'). May be 'mixed'." },
+    "strand": { "type": "string", "description": "Strand within the domain, if identifiable." },
+    "chapterOrUnit": { "type": "string", "description": "Chapter / unit / module identifier within the source." },
+    "documentPurpose": {
+      "type": "string",
+      "description": "What the document is for.",
+      "enum": ["curriculum-map", "lesson", "worksheet", "assessment", "question-collection", "worked-solutions", "mark-scheme", "teacher-notes", "diagram-or-data", "reference", "internal-note", "prototype", "brand-asset", "other"]
+    },
+    "contains": {
+      "type": "object",
+      "description": "Presence flags for content types, used by the coverage report.",
+      "additionalProperties": false,
+      "properties": {
+        "questions": { "type": "boolean" },
+        "answers": { "type": "boolean" },
+        "workedSolutions": { "type": "boolean" },
+        "diagramsOrData": { "type": "boolean" }
+      }
+    },
+    "language": { "type": "string", "default": "en", "description": "Primary language. The platform is English-only; non-English sources are flagged here." },
+    "duplicationStatus": {
+      "type": "string",
+      "description": "Duplicate / revision relationship detected via hash or naming.",
+      "enum": ["unique", "duplicate", "revision-of", "superseded-by", "unknown"]
+    },
+    "duplicateOf": { "type": "string", "description": "sourceId of the canonical/original record when duplicationStatus is duplicate / revision-of / superseded-by." },
+    "ocrUsed": { "type": "boolean", "default": false, "description": "True if any text was obtained via OCR; such text must be labelled uncertain." },
+    "qualityNotes": { "type": "string", "description": "Free-text notes on quality, completeness, or issues." },
+    "reviewNotes": { "type": "string", "description": "Auditor review notes." },
+    "addedInBatch": { "type": "string", "description": "Identifier of the upload batch in which this source first appeared (for the living manifest)." },
+    "firstSeen": { "type": "string", "format": "date", "description": "Date this source first entered the manifest." }
+  },
+  "examples": [
+    {
+      "sourceId": "SRC-0a1b2c3d",
+      "originalPath": "Teacher Notes/bks_MaaSL_01uu_tn00_xxaann.pdf",
+      "filename": "bks_MaaSL_01uu_tn00_xxaann.pdf",
+      "fileType": "pdf",
+      "fileSizeBytes": 729282,
+      "hash": { "algorithm": "sha256", "value": "<digest>" },
+      "extractionStatus": "extracted",
+      "rightsStatus": "reference-only",
+      "apparentOwnerOrPublisher": "Oxford University Press",
+      "confidential": true,
+      "level": "ibdp-aasl",
+      "course": "IB Mathematics: Analysis and Approaches SL",
+      "subjectDomain": "algebra",
+      "strand": "sequences-and-series",
+      "chapterOrUnit": "Chapter 1: From patterns to generalizations",
+      "documentPurpose": "teacher-notes",
+      "contains": { "questions": true, "answers": true, "workedSolutions": true, "diagramsOrData": true },
+      "language": "en",
+      "duplicationStatus": "unique",
+      "ocrUsed": false,
+      "qualityNotes": "Complete investigation solutions and chapter test references. Reference only; do not reproduce verbatim.",
+      "firstSeen": "2026-06-19"
+    }
+  ]
+}

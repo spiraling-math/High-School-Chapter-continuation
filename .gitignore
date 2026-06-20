@@ -1,0 +1,67 @@
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+.npm/
+.pnp.*
+
+# ── Build output ─────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ── Environment / secrets (never commit) ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# ── Local databases & generated question-bank data (never commit) ────────────
+*.sqlite
+*.sqlite3
+*.db
+local-bank/
+*.localbank.json
+.indexeddb/
+
+# ── Temporary / log / cache files ────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+.cache/
+
+# ── Large read-only SOURCE materials & extracted reference collections ───────
+# (inventoried in docs/SOURCE_MANIFEST; not stored in version control)
+*.zip
+Teacher Notes/
+university_worksheet_media_check/
+spi-math-ibdp-aasl/documents/
+spi-math-ibdp-aasl/_qa/
+*.docx
+*.pdf
+*.jpg
+*.jpeg
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ── Oracle reproducible artifacts (golden vectors ARE committed; dumps are not)
+oracle/failing_seeds/
+
+# ── Local tooling config (personal; not part of the project baseline) ────────
+.claude/settings.local.json

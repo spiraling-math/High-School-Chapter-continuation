@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/question-item.schema.json",
+  "title": "SPI-Math Question Item",
+  "description": "Universal model for a single question item, whether generated or manually authored. The item separates mathematical DATA (params, canonical answer, solution structure) from PRESENTATION (prompt blocks, rendered HTML). Items must never be stored as pre-rendered text only. A generated item is reproducible from {generatorId, generatorVersion, seed, params}.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["itemId", "schemaVersion", "objectiveIds", "answer", "prompt", "provenance", "lifecycle"],
+  "properties": {
+    "itemId": { "type": "string", "description": "Stable unique id. Convention: ITEM- followed by a token.", "pattern": "^ITEM-[A-Za-z0-9_-]{6,}$" },
+    "schemaVersion": { "type": "string", "description": "Version of this schema the item conforms to.", "default": "1.0.0" },
+    "parentItemId": { "type": "string", "description": "If this item is a part of a multi-part question, the id of the parent container item." },
+    "parts": {
+      "type": "array",
+      "description": "For multi-part questions: ordered child item ids (or inline part objects). Parts may depend on earlier parts.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "partId": { "type": "string" },
+          "label": { "type": "string", "description": "e.g. '(a)', '(b)(i)'." },
+          "itemRef": { "type": "string", "description": "itemId of the child item." },
+          "dependsOn": { "type": "array", "items": { "type": "string" }, "description": "partIds this part depends on." }
+        },
+        "required": ["partId", "itemRef"]
+      }
+    },
+    "objectiveIds": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Primary curriculum objective IDs assessed." },
+    "secondaryObjectiveIds": { "type": "array", "items": { "type": "string" }, "description": "Secondary/synoptic objective IDs touched." },
+    "generatorId": { "type": "string", "description": "Generator module id, if generated. Absent for hand-authored items." },
+    "generatorVersion": { "type": "string", "description": "Semantic version of the generator that produced this item." },
+    "seed": { "type": ["integer", "string"], "description": "Seed used. Combined with generatorId+version+params, reproduces the item exactly. 32-bit unsigned integer for the mulberry32 PRNG." },
+    "params": { "type": "object", "description": "Structured mathematical parameters chosen by the generator (e.g. {a1, d, n, task}). The single source of truth for the question's mathematics." },
+    "prompt": {
+      "type": "object",
+      "description": "Presentation of the question stem, as structured blocks (not a single rendered string).",
+      "additionalProperties": false,
+      "required": ["blocks"],
+      "properties": {
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/contentBlock" }
+        },
+        "instruction": { "type": "string", "description": "Optional top-level instruction/command term (e.g. 'Find', 'Show that', 'Hence determine')." }
+      }
+    },
+    "answer": { "$ref": "#/$defs/answer" },
+    "distractors": {
+      "type": "array",
+      "description": "For selected-response items. Each distractor should map to a misconception.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value"],
+        "properties": {
+          "id": { "type": "string" },
+          "value": { "description": "The distractor value, same answerType family as the canonical answer." },
+          "display": { "type": "string", "description": "Rendered display string (e.g. KaTeX-ready)." },
+          "misconceptionId": { "type": "string", "description": "Misconception this distractor embodies. Strongly recommended; arbitrary distractors are discouraged." },
+          "rationale": { "type": "string", "description": "Why a student might choose this." }
+        }
+      }
+    },
+    "options": {
+      "type": "array",
+      "description": "For multiple-choice/select: the full ordered option set (correct + distractors) after shuffling, with the correct flag. Derived from answer + distractors; stored for reproducibility of option order.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "value", "correct"],
+        "properties": {
+          "label": { "type": "string", "description": "e.g. 'A', 'B'." },
+          "value": {},
+          "display": { "type": "string" },
+          "correct": { "type": "boolean" },
+          "misconceptionId": { "type": "string" }
+        }
+      }
+    },
+    "solution": { "$ref": "#/$defs/solution" },
+    "hints": {
+      "type": "array",
+      "description": "Ordered scaffolded hint sequence, least to most revealing.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order", "text"],
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "text": { "type": "string" },
+          "revealsAnswer": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "markScheme": {
+      "type": "object",
+      "description": "Marks and award rules.",
+      "additionalProperties": false,
+      "properties": {
+        "totalMarks": { "type": "number", "minimum": 0 },
+        "awards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["marks", "type", "for"],
+            "properties": {
+              "marks": { "type": "number" },
+              "type": { "type": "string", "enum": ["method", "accuracy", "reasoning", "communication", "follow-through"] },
+              "for": { "type": "string", "description": "What earns the mark." }
+            }
+          }
+        },
+        "acceptedEquivalentForms": { "type": "array", "items": { "type": "string" } },
+        "commonErrorDeductions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "difficulty": { "$ref": "#/$defs/difficultyProfile" },
+    "calculatorPolicy": { "type": "string", "enum": ["no-calculator", "calculator-allowed", "calculator-required", "graphical-calculator", "either"] },
+    "estimatedTimeSeconds": { "type": "integer", "minimum": 0, "description": "Estimated completion time." },
+    "media": {
+      "type": "array",
+      "description": "Diagrams, graphs, images, tables, datasets referenced by the prompt or solution. Diagrams must be generated from the same params as the question.",
+      "items": { "$ref": "#/$defs/mediaAsset" }
+    },
+    "accessibility": {
+      "type": "object",
+      "description": "Accessibility metadata. Required when the item contains notation or visuals.",
+      "additionalProperties": false,
+      "properties": {
+        "spokenMath": { "type": "string", "description": "Plain-text/spoken rendering of the prompt's mathematics." },
+        "altText": { "type": "string", "description": "Short text alternative for the primary visual." },
+        "longDescription": { "type": "string", "description": "Full accessible description of complex diagrams/graphs/data." },
+        "nonColorIndicators": { "type": "boolean", "description": "True if all status/answer-relevant info is conveyed without relying on color." }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "provenance": {
+      "type": "object",
+      "description": "Where the item came from and rights.",
+      "additionalProperties": false,
+      "required": ["origin", "rightsStatus"],
+      "properties": {
+        "origin": { "type": "string", "enum": ["generated", "hand-authored", "imported"] },
+        "rightsStatus": { "type": "string", "enum": ["owner-created", "academy-owned", "academy-owned-draft", "licensed", "public-domain", "reference-only", "rights-unknown"] },
+        "sourceReferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } },
+            "required": ["sourceId"]
+          }
+        },
+        "originalityNote": { "type": "string", "description": "Confirmation that the item is original (not a number-swap of a copyrighted source)." }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "description": "Review and publication lifecycle.",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": { "type": "string", "enum": ["draft", "generated", "machine-validated", "mathematics-reviewed", "curriculum-reviewed", "approved", "published", "revised", "retired"] },
+        "validation": { "$ref": "#/$defs/validationResult" },
+        "reviewHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "at": { "type": "string", "format": "date-time" },
+              "by": { "type": "string" },
+              "fromState": { "type": "string" },
+              "toState": { "type": "string" },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "supersedes": { "type": "string", "description": "itemId this item replaces." },
+        "supersededBy": { "type": "string" }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "modifiedAt": { "type": "string", "format": "date-time" },
+    "contentHash": { "type": "string", "description": "Optional sha256 of the canonical serialized item, for duplicate-detection and tamper-evidence." }
+  },
+
+  "$defs": {
+    "answerType": {
+      "type": "string",
+      "description": "Platform-wide answer type vocabulary. Shared by curriculum objectives, items, and answer checkers.",
+      "enum": [
+        "integer", "decimal", "fraction", "mixed-number", "exact-surd", "exact-trig",
+        "algebraic-expression", "equation", "inequality", "interval", "set",
+        "ordered-pair", "coordinate", "sequence", "permutation", "combination",
+        "vector", "matrix", "complex-number",
+        "multiple-choice", "multiple-select", "matching", "ordering", "classification",
+        "table-completion", "graph-response", "geometry-construction", "diagram-labelling",
+        "short-explanation", "extended-response", "proof", "rubric-scored"
+      ]
+    },
+    "answer": {
+      "type": "object",
+      "description": "Canonical answer plus accepted equivalents and tolerance.",
+      "additionalProperties": false,
+      "required": ["type", "canonical"],
+      "properties": {
+        "type": { "$ref": "#/$defs/answerType" },
+        "canonical": { "description": "The canonical answer value. Encoding depends on type (e.g. integer for 'integer', {num,den} for 'fraction', string for 'algebraic-expression')." },
+        "display": { "type": "string", "description": "Canonical display form (KaTeX-ready)." },
+        "equivalentForms": { "type": "array", "items": {}, "description": "Other forms accepted as fully correct (e.g. '1/2' and '0.5')." },
+        "tolerance": {
+          "type": "object",
+          "description": "For approximate numeric answers only. Exact types must not use tolerance.",
+          "additionalProperties": false,
+          "properties": {
+            "absolute": { "type": "number" },
+            "relative": { "type": "number" },
+            "decimalPlaces": { "type": "integer" },
+            "significantFigures": { "type": "integer" }
+          }
+        },
+        "units": { "type": "string", "description": "Units of the answer, if any (e.g. 'cm', 'm s^-1')." },
+        "rounding": { "type": "string", "description": "Rounding instruction shown to the student and enforced by the checker (e.g. 'to 3 significant figures')." },
+        "workingRequired": { "type": "boolean", "default": false, "description": "Whether working must be shown for full marks." }
+      }
+    },
+    "contentBlock": {
+      "type": "object",
+      "description": "A unit of prompt/solution content. Mathematical content is stored as source (e.g. LaTeX), not as rendered HTML.",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["text", "math", "math-inline", "list", "table-ref", "media-ref", "code"] },
+        "text": { "type": "string", "description": "For text/code." },
+        "latex": { "type": "string", "description": "For math/math-inline: LaTeX source (rendered with KaTeX)." },
+        "items": { "type": "array", "items": { "type": "string" }, "description": "For list." },
+        "ref": { "type": "string", "description": "For table-ref/media-ref: id of a media asset." }
+      }
+    },
+    "solution": {
+      "type": "object",
+      "description": "Structured solution supporting multiple render modes (answer only, concise, full, hints, mark scheme, alternative).",
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["number"],
+            "properties": {
+              "number": { "type": "integer", "minimum": 1 },
+              "transformation": { "type": "string", "description": "The mathematical move made (e.g. 'apply u_n = u_1 + (n-1)d')." },
+              "explanation": { "type": "string" },
+              "ruleOrTheorem": { "type": "string" },
+              "intermediateResult": { "type": "string", "description": "LaTeX or value." },
+              "units": { "type": "string" },
+              "dependsOn": { "type": "array", "items": { "type": "integer" }, "description": "Step numbers this step depends on." },
+              "marks": { "type": "number" },
+              "detailLevel": { "type": "string", "enum": ["student", "teacher", "both"], "default": "both" }
+            }
+          }
+        },
+        "alternativeMethods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "steps": { "type": "array", "items": { "type": "object" } }
+            }
+          }
+        }
+      }
+    },
+    "mediaAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "type": "string", "enum": ["svg", "canvas-spec", "graph-spec", "table", "dataset", "image"] },
+        "svg": { "type": "string", "description": "Inline SVG source for kind=svg, generated from the item params." },
+        "spec": { "type": "object", "description": "Declarative spec for graphs/canvas/tables/datasets, rendered deterministically." },
+        "toScale": { "type": "boolean", "description": "Whether the diagram is to scale; explicit not-to-scale must be labelled." },
+        "altText": { "type": "string" },
+        "longDescription": { "type": "string" },
+        "dataTableFallback": { "type": "object", "description": "Accessible table equivalent when the asset encodes data." }
+      }
+    },
+    "difficultyProfile": {
+      "type": "object",
+      "description": "Multidimensional difficulty. Axes are 0..1 normalized; overallBand 1..5 is derived, never hand-waved. See DIFFICULTY_MODEL.md.",
+      "additionalProperties": false,
+      "properties": {
+        "overallBand": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "axes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "numericalComplexity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "algebraicComplexity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "reasoningSteps": { "type": "number", "minimum": 0, "maximum": 1 },
+            "abstraction": { "type": "number", "minimum": 0, "maximum": 1 },
+            "representation": { "type": "number", "minimum": 0, "maximum": 1 },
+            "familiarity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "readingDemand": { "type": "number", "minimum": 0, "maximum": 1 },
+            "informationDensity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "irrelevantInformation": { "type": "number", "minimum": 0, "maximum": 1 },
+            "requiredConnections": { "type": "number", "minimum": 0, "maximum": 1 },
+            "exactVsApproximate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "calculatorDependence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "scaffolding": { "type": "number", "minimum": 0, "maximum": 1 },
+            "proofDemand": { "type": "number", "minimum": 0, "maximum": 1 },
+            "interpretationDemand": { "type": "number", "minimum": 0, "maximum": 1 },
+            "modellingDemand": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "validationResult": {
+      "type": "object",
+      "description": "Outcome of automated validation. An item must pass (status=pass) before entering the bank.",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "fail", "warn", "not-run"] },
+        "validatorVersion": { "type": "string" },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "result"],
+            "properties": {
+              "name": { "type": "string" },
+              "result": { "type": "string", "enum": ["pass", "fail", "warn", "skip"] },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "itemId": "ITEM-aasl-seq-arith-0001",
+      "schemaVersion": "1.0.0",
+      "objectiveIds": ["SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"],
+      "generatorId": "gen.sequences.arithmetic",
+      "generatorVersion": "1.0.0",
+      "seed": 123456789,
+      "params": { "task": "nth_term", "a1": 4, "d": 3, "n": 10 },
+      "prompt": {
+        "instruction": "Find",
+        "blocks": [
+          { "kind": "text", "text": "An arithmetic sequence has first term 4 and common difference 3." },
+          { "kind": "text", "text": "Find the 10th term of the sequence." }
+        ]
+      },
+      "answer": {
+        "type": "integer",
+        "canonical": 31,
+        "display": "31",
+        "workingRequired": false
+      },
+      "distractors": [
+        { "id": "d1", "value": 34, "display": "34", "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX", "rationale": "Used a1 + n*d." },
+        { "id": "d2", "value": 13, "display": "13", "misconceptionId": "MISC.SEQ.FORGOT_MULTIPLY", "rationale": "Used a1 + (n-1) without multiplying by d." },
+        { "id": "d3", "value": -23, "display": "-23", "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE", "rationale": "Subtracted the common difference." }
+      ],
+      "solution": {
+        "steps": [
+          { "number": 1, "transformation": "State the formula", "ruleOrTheorem": "u_n = u_1 + (n - 1)d", "explanation": "The nth term of an arithmetic sequence." },
+          { "number": 2, "transformation": "Substitute", "intermediateResult": "u_{10} = 4 + (10 - 1)\\times 3", "dependsOn": [1] },
+          { "number": 3, "transformation": "Evaluate", "intermediateResult": "u_{10} = 4 + 27 = 31", "dependsOn": [2], "marks": 1 }
+        ]
+      },
+      "difficulty": { "overallBand": 1, "axes": { "numericalComplexity": 0.15, "reasoningSteps": 0.1 } },
+      "calculatorPolicy": "either",
+      "estimatedTimeSeconds": 60,
+      "accessibility": {
+        "spokenMath": "Find the tenth term of an arithmetic sequence with first term four and common difference three.",
+        "nonColorIndicators": true
+      },
+      "provenance": {
+        "origin": "generated",
+        "rightsStatus": "academy-owned",
+        "originalityNote": "Original parameterized item; structure abstracted from curriculum, not copied."
+      },
+      "lifecycle": {
+        "state": "machine-validated",
+        "validation": { "status": "pass", "validatorVersion": "1.0.0", "checks": [ { "name": "answer-matches-independent-method", "result": "pass" } ] }
+      }
+    }
+  ]
+}

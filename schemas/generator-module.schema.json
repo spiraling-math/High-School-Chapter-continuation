@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/generator-module.schema.json",
+  "title": "SPI-Math Generator Module Descriptor",
+  "description": "The self-description (describe() output) of a versioned question generator module. This is metadata about a generator, not the generator code. It declares the contract a generator fulfils so the platform can discover, configure, validate, and version it. The generation/solve/validate logic lives in code; this descriptor must stay in sync with it and is itself versioned.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["generatorId", "generatorVersion", "title", "supportedObjectives", "supportedQuestionTypes", "parameterSpec", "operations", "rngAlgorithm"],
+  "properties": {
+    "generatorId": {
+      "type": "string",
+      "description": "Stable id. Convention: gen.<domain>.<family> (lowercase, dotted).",
+      "pattern": "^gen\\.[a-z0-9-]+(\\.[a-z0-9-]+)+$"
+    },
+    "generatorVersion": {
+      "type": "string",
+      "description": "Semantic version. A change in generation/solve/distractor/solution logic that alters output REQUIRES a new version. Never silently change a published version.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "status": { "type": "string", "enum": ["experimental", "in-development", "stable", "deprecated"], "default": "in-development" },
+    "supportedObjectives": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Curriculum objective IDs this generator can produce items for." },
+    "supportedQuestionTypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "https://spi-math.academy/schemas/question-item.schema.json#/$defs/answerType" }
+    },
+    "rngAlgorithm": {
+      "type": "string",
+      "description": "Named seeded PRNG. Must be deterministic and cross-language portable. Default mulberry32 per Decision #10.",
+      "enum": ["mulberry32"],
+      "default": "mulberry32"
+    },
+    "parameterSpec": {
+      "type": "object",
+      "description": "Declares each tunable parameter, its type, and constraints. Generation must always produce params within this spec; validate() rejects out-of-spec configs.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": { "type": "string", "enum": ["integer", "number", "boolean", "string", "enum"] },
+          "description": { "type": "string" },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "nonZero": { "type": "boolean", "default": false },
+          "enumValues": { "type": "array", "items": {} },
+          "default": {}
+        },
+        "required": ["type"]
+      }
+    },
+    "difficultyControls": {
+      "type": "array",
+      "description": "Which difficulty axes this generator exposes and how its config maps to them.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["axis"],
+        "properties": {
+          "axis": { "type": "string", "description": "Difficulty axis name (see DIFFICULTY_MODEL.md / question-item difficultyProfile.axes)." },
+          "controlledBy": { "type": "array", "items": { "type": "string" }, "description": "Parameter names that drive this axis." },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "description": "Generation configuration accepted by generate(seed, config). Includes target objective, target difficulty band, allowed tasks, ranges, and answer type. Must validate against parameterSpec.",
+      "additionalProperties": true
+    },
+    "operations": {
+      "type": "object",
+      "description": "Declares which contract operations the generator implements. All generators must implement the required set.",
+      "additionalProperties": false,
+      "required": ["describe", "generate", "solve", "validate", "generateDistractors", "generateSolution", "render", "serialize"],
+      "properties": {
+        "describe": { "type": "boolean", "const": true },
+        "generate": { "type": "boolean", "const": true },
+        "solve": { "type": "boolean", "const": true },
+        "validate": { "type": "boolean", "const": true },
+        "generateDistractors": { "type": "boolean" },
+        "generateSolution": { "type": "boolean", "const": true },
+        "render": { "type": "boolean", "const": true },
+        "serialize": { "type": "boolean", "const": true }
+      }
+    },
+    "canonicalMethod": { "type": "string", "description": "How solve() computes the canonical answer (e.g. 'closed form u_n = u1 + (n-1)d')." },
+    "independentValidationMethod": {
+      "type": "string",
+      "description": "The INDEPENDENT method validate() uses to verify the answer, which must differ from the generation/solve method (e.g. 'iterative term-by-term construction and comparison'). Required by the independent-verification principle."
+    },
+    "distractorRules": {
+      "type": "array",
+      "description": "Distractor strategies, each tied to a misconception.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["misconceptionId"],
+        "properties": {
+          "misconceptionId": { "type": "string" },
+          "rule": { "type": "string", "description": "How the wrong value is computed." }
+        }
+      }
+    },
+    "misconceptionMappings": { "type": "array", "items": { "type": "string" }, "description": "All misconception IDs this generator can surface." },
+    "renderingRequirements": { "type": "array", "items": { "type": "string" }, "description": "e.g. 'KaTeX for notation', 'SVG diagram from params'." },
+    "accessibilityRequirements": { "type": "array", "items": { "type": "string" }, "description": "e.g. 'spokenMath required', 'altText for any diagram'." },
+    "duplicateDetection": {
+      "type": "object",
+      "description": "How near-duplicate items are detected/avoided.",
+      "additionalProperties": false,
+      "properties": {
+        "keyFields": { "type": "array", "items": { "type": "string" }, "description": "Param fields forming the structural key." },
+        "maxDuplicateRate": { "type": "number", "minimum": 0, "maximum": 1, "description": "Allowed structural-duplicate fraction across a seed sweep." }
+      }
+    },
+    "testStrategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "seedSweepCount": { "type": "integer", "description": "Number of seeds tested for stability (target >= 10000 when reasonable)." },
+        "goldenSeeds": { "type": "array", "items": { "type": ["integer", "string"] }, "description": "Fixed seeds whose output is checked into version control as golden." },
+        "propertyInvariants": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sourceReferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } },
+        "required": ["sourceId"]
+      }
+    },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "summary"],
+        "properties": {
+          "version": { "type": "string" },
+          "summary": { "type": "string" },
+          "date": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "generatorId": "gen.sequences.arithmetic",
+      "generatorVersion": "1.0.0",
+      "title": "Arithmetic Sequences",
+      "description": "Generates arithmetic-sequence items: nth term, sum of first n terms, and selected reverse tasks.",
+      "status": "in-development",
+      "supportedObjectives": [
+        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
+        "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+      ],
+      "supportedQuestionTypes": ["integer", "multiple-choice"],
+      "rngAlgorithm": "mulberry32",
+      "parameterSpec": {
+        "task": { "type": "enum", "enumValues": ["nth_term", "sum_n", "find_d", "find_n_for_value"], "description": "Which sub-task." },
+        "a1": { "type": "integer", "min": -20, "max": 20, "description": "First term." },
+        "d": { "type": "integer", "min": -12, "max": 12, "nonZero": true, "description": "Common difference (nonzero)." },
+        "n": { "type": "integer", "min": 3, "max": 40, "description": "Term index / number of terms." }
+      },
+      "operations": { "describe": true, "generate": true, "solve": true, "validate": true, "generateDistractors": true, "generateSolution": true, "render": true, "serialize": true },
+      "canonicalMethod": "Closed form: u_n = a1 + (n-1)d; S_n = n/2 (2 a1 + (n-1) d).",
+      "independentValidationMethod": "Iterative construction: build terms a1, a1+d, ... up to n and compare nth term and running sum to the closed-form results.",
+      "distractorRules": [
+        { "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX", "rule": "a1 + n*d" },
+        { "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE", "rule": "a1 - (n-1)*d" },
+        { "misconceptionId": "MISC.SEQ.FORGOT_MULTIPLY", "rule": "a1 + (n-1)" }
+      ],
+      "misconceptionMappings": ["MISC.SEQ.OFFBYONE_TERMINDEX", "MISC.SEQ.SIGN_DIFFERENCE", "MISC.SEQ.FORGOT_MULTIPLY", "MISC.SERIES.FORGOT_HALF", "MISC.SERIES.CONSTANT_TERMS"],
+      "renderingRequirements": ["KaTeX for notation"],
+      "accessibilityRequirements": ["spokenMath required"],
+      "duplicateDetection": { "keyFields": ["task", "a1", "d", "n"], "maxDuplicateRate": 0.02 },
+      "testStrategy": { "seedSweepCount": 10000, "goldenSeeds": [1, 42, 123456789, 2147483647], "propertyInvariants": ["answer equals iterative result", "exactly one correct option", "no distractor equals answer"] },
+      "changelog": [ { "version": "1.0.0", "summary": "Initial arithmetic sequences generator.", "date": "2026-06-20" } ]
+    }
+  ]
+}

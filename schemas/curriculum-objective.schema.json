@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/curriculum-objective.schema.json",
+  "title": "SPI-Math Curriculum Objective",
+  "description": "A single learning objective in the SPI-Math curriculum graph. Objectives have stable identifiers independent of filenames, and form a directed graph via prerequisites and related-objective links. The objective is the anchor for traceability: every question item references one or more objective IDs.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["objectiveId", "stage", "domain", "objectiveWording", "answerTypes", "reviewStatus", "version"],
+  "properties": {
+    "objectiveId": {
+      "type": "string",
+      "description": "Stable dotted identifier, readable and extensible, independent of filenames. Convention: SPI.<COURSE_OR_LEVEL>.<DOMAIN>.<TOPIC>[.<SUBTOPIC>][.<MICROSKILL>].<NN>. Example: SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
+      "pattern": "^SPI\\.[A-Z0-9]+(\\.[A-Z0-9_]+)+\\.[0-9]{2}$"
+    },
+    "academy": { "type": "string", "default": "SPI-Math", "description": "Owning academy." },
+    "programme": { "type": "string", "description": "Programme name (e.g. 'IB Diploma Programme', 'SPI-Math Primary')." },
+    "stage": {
+      "type": "string",
+      "description": "Education stage/level.",
+      "enum": ["preschool-kg", "primary", "middle-school", "high-school", "ibdp-aasl", "ibdp-aahl", "ibdp-ai", "university", "cross-level"]
+    },
+    "course": { "type": "string", "description": "Course label (e.g. 'IB Mathematics: Analysis and Approaches SL', 'Grade 4')." },
+    "level": { "type": "string", "description": "Finer-grained level/grade within the stage if applicable (e.g. 'Year 1', 'Grade 4')." },
+    "domain": { "type": "string", "description": "Top-level mathematical domain (e.g. 'algebra', 'calculus', 'sequences-and-series')." },
+    "strand": { "type": "string", "description": "Strand within the domain." },
+    "unit": { "type": "string", "description": "Unit grouping." },
+    "topic": { "type": "string", "description": "Topic (e.g. 'arithmetic sequences')." },
+    "subtopic": { "type": "string", "description": "Subtopic (e.g. 'nth term')." },
+    "microSkill": { "type": "string", "description": "Smallest assessable skill." },
+    "objectiveWording": { "type": "string", "description": "The objective stated as a learner can-do statement, in international English." },
+    "prerequisites": {
+      "type": "array",
+      "description": "Objective IDs that should be mastered first. Forms the prerequisite edges of the curriculum graph.",
+      "items": { "type": "string" }
+    },
+    "successCriteria": { "type": "array", "items": { "type": "string" }, "description": "Observable criteria for mastery." },
+    "allowedRepresentations": {
+      "type": "array",
+      "description": "Representations a question MAY use.",
+      "items": { "type": "string", "enum": ["symbolic", "numeric", "graphical", "tabular", "diagram", "verbal-context", "set-builder", "interval", "vector", "matrix", "manipulative"] }
+    },
+    "requiredRepresentations": {
+      "type": "array",
+      "description": "Representations a question MUST use, if any.",
+      "items": { "type": "string", "enum": ["symbolic", "numeric", "graphical", "tabular", "diagram", "verbal-context", "set-builder", "interval", "vector", "matrix", "manipulative"] }
+    },
+    "vocabulary": { "type": "array", "items": { "type": "string" }, "description": "Required terminology, in agreed international English." },
+    "notation": { "type": "array", "items": { "type": "string" }, "description": "Required notation conventions (e.g. 'u_n for nth term', 'S_n for sum to n terms')." },
+    "answerTypes": {
+      "type": "array",
+      "description": "Answer types this objective can be assessed with. Must be a subset of the platform answer-type vocabulary (see question-item.schema.json answer.type).",
+      "minItems": 1,
+      "items": { "$ref": "https://spi-math.academy/schemas/question-item.schema.json#/$defs/answerType" }
+    },
+    "calculatorPolicy": {
+      "type": "string",
+      "description": "Default calculator expectation for this objective.",
+      "enum": ["no-calculator", "calculator-allowed", "calculator-required", "graphical-calculator", "either"]
+    },
+    "difficultyRange": {
+      "type": "object",
+      "description": "Overall difficulty band range this objective is normally assessed within (1 = easiest .. 5 = hardest on the platform scale).",
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "max": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "commonMisconceptions": { "type": "array", "items": { "type": "string" }, "description": "Misconception IDs frequently associated with this objective." },
+    "relatedObjectives": { "type": "array", "items": { "type": "string" }, "description": "Non-prerequisite related objective IDs (lateral links)." },
+    "crossDomainRelationships": { "type": "array", "items": { "type": "string" }, "description": "Objective IDs in other domains this connects to (synoptic links)." },
+    "sourceReferences": {
+      "type": "array",
+      "description": "Evidence for this objective. Each entry cites a source and a locator.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sourceId": { "type": "string" },
+          "locator": { "type": "string", "description": "Chapter/section/page/slide/worksheet/question reference." }
+        },
+        "required": ["sourceId"]
+      }
+    },
+    "externalAlignments": {
+      "type": "array",
+      "description": "Alignment to external frameworks (e.g. an IB syllabus topic code). Reference only; never implies reuse rights.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "framework": { "type": "string" },
+          "code": { "type": "string" },
+          "label": { "type": "string" }
+        },
+        "required": ["framework", "code"]
+      }
+    },
+    "reviewStatus": {
+      "type": "string",
+      "description": "Curriculum-authority review state for the objective definition.",
+      "enum": ["draft", "proposed", "curriculum-reviewed", "approved", "published", "revised", "retired"]
+    },
+    "version": { "type": "string", "description": "Semantic version of this objective definition." },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "modifiedAt": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "objectiveId": "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
+      "academy": "SPI-Math",
+      "programme": "IB Diploma Programme",
+      "stage": "ibdp-aasl",
+      "course": "IB Mathematics: Analysis and Approaches SL",
+      "domain": "sequences-and-series",
+      "strand": "arithmetic-sequences",
+      "topic": "arithmetic sequences",
+      "subtopic": "nth term",
+      "microSkill": "evaluate the nth term given first term and common difference",
+      "objectiveWording": "Find the nth term of an arithmetic sequence given the first term and common difference.",
+      "prerequisites": ["SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+      "successCriteria": [
+        "Correctly identifies the first term and common difference.",
+        "Applies u_n = u_1 + (n - 1)d with correct use of (n - 1).",
+        "States the term value exactly."
+      ],
+      "allowedRepresentations": ["symbolic", "numeric", "verbal-context"],
+      "vocabulary": ["arithmetic sequence", "first term", "common difference", "nth term"],
+      "notation": ["u_n for the nth term", "u_1 for the first term", "d for common difference"],
+      "answerTypes": ["integer"],
+      "calculatorPolicy": "either",
+      "difficultyRange": { "min": 1, "max": 3 },
+      "commonMisconceptions": ["MISC.SEQ.OFFBYONE_TERMINDEX", "MISC.SEQ.SIGN_DIFFERENCE", "MISC.SEQ.FORGOT_MULTIPLY"],
+      "relatedObjectives": ["SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"],
+      "sourceReferences": [
+        { "sourceId": "SRC-aasl-ch01", "locator": "Oxford ToC 1.2 Arithmetic and geometric sequences" }
+      ],
+      "externalAlignments": [
+        { "framework": "IB Mathematics AA SL", "code": "Topic 1", "label": "Number and algebra" }
+      ],
+      "reviewStatus": "approved",
+      "version": "1.0.0"
+    }
+  ]
+}
