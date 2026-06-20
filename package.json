@@ -11,12 +11,19 @@
     "test": "node --test \"core/**/*.test.ts\" \"domains/**/*.test.ts\"",
     "test:file": "node --test",
     "typecheck": "tsc --noEmit",
+    "build:studio": "node scripts/build-studio.mjs",
     "oracle:sweep": "python oracle/run_oracle.py",
     "oracle:test": "python oracle/tests/test_sequences.py"
   },
   "comment:test-runner": "Core/domain tests use Node's built-in test runner (node:test) and run offline on Node >=23 with native TypeScript type-stripping — no install required. typecheck needs `npm install` (typescript) and a network connection, once.",
   "devDependencies": {
+    "@types/katex": "0.16.8",
     "@types/node": "24.13.2",
+    "esbuild": "0.28.1",
+    "fake-indexeddb": "6.2.5",
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "katex": "0.17.0"
   }
 }

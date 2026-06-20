@@ -8,6 +8,7 @@ dist/
 build/
 out/
 *.tsbuildinfo
+apps/*/dist/
 
 # ── Python ───────────────────────────────────────────────────────────────────
 __pycache__/
