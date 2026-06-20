@@ -1,7 +1,20 @@
 # Generator Proposal — Geometric Sequences (next family)
 
-Status: **PROPOSAL — awaiting curriculum-authority approval. NOT implemented.**
-Proposed id: `gen.sequences.geometric` · Proposed first version: `1.0.0`.
+Status: **APPROVED and IMPLEMENTED as `gen.sequences.geometric` v1.0.0.**
+(Originally a proposal; the owner approved it. This document is retained as the
+design record.)
+
+**As-built scope decisions** (within the approved proposal):
+- Multiple-choice is offered for `nth_term` and `sum_n`; `find_r`,
+  `find_n_for_value`, and `sum_infinite` are **free-response** in v1.0.0. The
+  proposed sum-to-infinity distractor misconceptions are documented in the
+  library but are reserved for a future MC variant of `sum_infinite`.
+- Answers are **exact rationals** (new `core/exact-math/rational.ts`, mirroring
+  Python `Fraction`). `find_r` uses term positions k ∈ {2, 4} so the recovered
+  ratio is unique (the (k−1)th real root). Parameters are curated and
+  deterministically regenerated to keep magnitudes and denominators human-scale.
+- Verified: 10,000-seed sweep 0 invalid; byte-for-byte Python/TS parity (golden +
+  300-entry fixture); curriculum-review pack `docs/review/geometric_sequences_review_pack.md`.
 
 This document presents the proposed objectives, task coverage, difficulty model,
 misconceptions, generator contract, and review plan for the **second** generator

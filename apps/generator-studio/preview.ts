@@ -2,7 +2,6 @@
 
 import { el, clear, toast } from "./dom.ts";
 import type { Studio } from "./context.ts";
-import { GENERATOR_ID, GENERATOR_VERSION } from "../../domains/sequences/arithmetic.ts";
 import { displayItem } from "./wording.ts";
 import {
   renderQuestionTeacher, renderAnswer, renderSolution, renderValidation,
@@ -18,17 +17,34 @@ const VIEWS = [
 type ViewId = (typeof VIEWS)[number]["id"];
 let activeView: ViewId = "question";
 
+function paramSummary(params: Record<string, unknown>): string {
+  return Object.entries(params)
+    .filter(([k]) => k !== "task")
+    .map(([k, v]) => `${k}=${formatParam(v)}`)
+    .join(", ");
+}
+
+function formatParam(v: unknown): string {
+  if (v && typeof v === "object" && "num" in v && "den" in v) {
+    const r = v as { num: number; den: number };
+    return r.den === 1 ? String(r.num) : `${r.num}/${r.den}`;
+  }
+  return String(v);
+}
+
 function meta(studio: Studio): HTMLElement {
   const item = studio.item!;
-  const p = item["params"] as { task: string; a1: number; d: number; n: number };
+  const p = item["params"] as Record<string, unknown> & { task: string };
   const band = (item["difficulty"] as { overallBand: number }).overallBand;
   const lifecycle = studio.record?.lifecycleState ?? (item["lifecycle"] as { state: string }).state;
+  const genId = String(item["generatorId"]);
+  const genVer = String(item["generatorVersion"]);
 
   const dl = el("dl", { class: "meta-grid" });
   const rows: [string, string][] = [
     ["Seed", String(item["seed"])],
     ["Task", p.task],
-    ["Parameters", `a1=${p.a1}, d=${p.d}, n=${p.n}`],
+    ["Parameters", paramSummary(p)],
     ["Objective", (item["objectiveIds"] as string[])[0]!],
     ["Difficulty band", String(band)],
     ["Mode", studio.mode],
@@ -36,8 +52,8 @@ function meta(studio: Studio): HTMLElement {
   for (const [k, v] of rows) dl.append(el("dt", {}, k), el("dd", {}, v));
 
   const repro = {
-    generatorId: GENERATOR_ID,
-    generatorVersion: GENERATOR_VERSION,
+    generatorId: genId,
+    generatorVersion: genVer,
     seed: item["seed"],
     config: studio.record?.genConfig ?? studio.genConfig,
   };
@@ -49,7 +65,7 @@ function meta(studio: Studio): HTMLElement {
 
   return el("div", {},
     el("span", { class: "badge state" }, lifecycle),
-    el("span", { class: "badge" }, `${GENERATOR_ID} v${GENERATOR_VERSION}`),
+    el("span", { class: "badge" }, `${genId} v${genVer}`),
     dl,
     el("p", { class: "hint" }, "Reproducible from generator version + seed + config."),
     copyBtn,

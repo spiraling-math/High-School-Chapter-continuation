@@ -10,6 +10,7 @@
 import { el } from "./dom.ts";
 import type { Studio } from "./context.ts";
 import { IndexedDBBankStore } from "../../core/bank/indexeddb-store.ts";
+import { GENERATORS } from "./generators.ts";
 import { controlsPanel, doGenerate } from "./controls.ts";
 import { mountPreview } from "./preview.ts";
 import { mountEdit } from "./edit-panel.ts";
@@ -20,7 +21,7 @@ function main(): void {
   app.append(
     el("header", { class: "app-header" },
       el("h1", {}, "SPI-Math Generator Studio"),
-      el("span", { class: "tag" }, "arithmetic sequences · offline"),
+      el("span", { class: "tag" }, "sequences · offline"),
     ),
   );
 
@@ -30,6 +31,7 @@ function main(): void {
     validation: null,
     record: null,
     mode: "multiple-choice",
+    generatorId: GENERATORS[0]!.id,
     genConfig: { answerType: "multiple-choice" },
     filter: { archived: false },
     rerender: () => undefined,

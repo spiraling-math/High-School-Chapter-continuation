@@ -1,10 +1,9 @@
-/** Generation controls: seed, random seed, mode, task, target difficulty band. */
+/** Generation controls: generator, seed, random seed, mode, task, target band. */
 
 import { el, announce } from "./dom.ts";
 import type { Studio } from "./context.ts";
 import { setWorkspace } from "./context.ts";
-import { generate, type Task } from "../../domains/sequences/arithmetic.ts";
-import { validate } from "../../domains/sequences/validate.ts";
+import { GENERATORS, getGenerator, taskIsMc } from "./generators.ts";
 import type { Mode } from "../../core/bank/types.ts";
 
 function randomSeed(): number {
@@ -13,59 +12,72 @@ function randomSeed(): number {
   return buf[0]!;
 }
 
-function readControls(): { seed: number; task: Task | undefined; mode: Mode; band: number | "any" } {
+function readControls(): { generatorId: string; seed: number; task: string | undefined; mode: Mode; band: number | "any" } {
+  const generatorId = (document.getElementById("generator") as HTMLSelectElement).value;
   const seed = Number((document.getElementById("seed") as HTMLInputElement).value) >>> 0;
   const taskSel = (document.getElementById("task") as HTMLSelectElement).value;
   const mode = (document.getElementById("mode") as HTMLSelectElement).value as Mode;
   const bandSel = (document.getElementById("band") as HTMLSelectElement).value;
-  return {
-    seed,
-    task: taskSel === "auto" ? undefined : (taskSel as Task),
-    mode,
-    band: bandSel === "any" ? "any" : Number(bandSel),
-  };
+  return { generatorId, seed, task: taskSel === "auto" ? undefined : taskSel, mode, band: bandSel === "any" ? "any" : Number(bandSel) };
 }
 
-function findSeedForBand(base: number, cfg: { task?: Task; answerType: Mode }, band: number): number | null {
+function findSeedForBand(genId: string, base: number, cfg: { task?: string; answerType: string }, band: number): number | null {
+  const gen = getGenerator(genId);
   for (let i = 0; i < 8000; i++) {
     const s = (base + i) >>> 0;
-    const item = generate(s, cfg);
+    const item = gen.generate(s, cfg);
     if ((item["difficulty"] as { overallBand: number }).overallBand === band) return s;
   }
   return null;
 }
 
 export function doGenerate(studio: Studio): void {
-  const { seed, task, mode, band } = readControls();
-  studio.mode = mode;
-  const cfg = task ? { task, answerType: mode } : { answerType: mode };
-  studio.genConfig = task ? { answerType: mode, task } : { answerType: mode };
+  const { generatorId, seed, task, mode, band } = readControls();
+  const gen = getGenerator(generatorId);
+  studio.generatorId = generatorId;
+  // Reverse tasks have no multiple-choice variant: fall back to free-response.
+  const effectiveMode: Mode = mode === "multiple-choice" && !taskIsMc(gen, task) ? "integer" : mode;
+  const cfg = task ? { task, answerType: effectiveMode } : { answerType: effectiveMode };
+  studio.mode = effectiveMode;
+  studio.genConfig = task ? { answerType: effectiveMode, task } : { answerType: effectiveMode };
 
   let seedUsed = seed;
   if (band !== "any") {
-    const found = findSeedForBand(seed, cfg, band);
+    const found = findSeedForBand(generatorId, seed, cfg, band);
     if (found === null) { announce(`No band-${band} item found near seed ${seed} for this configuration.`); return; }
     seedUsed = found;
   }
-
   let item: Record<string, unknown>;
   try {
-    item = generate(seedUsed, cfg) as unknown as Record<string, unknown>;
+    item = gen.generate(seedUsed, cfg) as unknown as Record<string, unknown>;
   } catch (err) {
     announce(`Cannot generate: ${(err as Error).message}`);
     return;
   }
   (document.getElementById("seed") as HTMLInputElement).value = String(seedUsed);
-  const it = item as Parameters<typeof validate>[0];
-  setWorkspace(studio, it, validate(it), null);
+  const it = item as Parameters<typeof gen.validate>[0];
+  setWorkspace(studio, it, gen.validate(it), null);
+  if (effectiveMode !== mode) (document.getElementById("mode") as HTMLSelectElement).value = effectiveMode;
   studio.rerender();
-  const p = it["params"] as { task: string };
-  announce(`Generated ${p.task} item from seed ${seedUsed}.`);
+  announce(`Generated ${(it["params"] as { task: string }).task} item from seed ${seedUsed}.`);
+}
+
+function populateTasks(task: HTMLSelectElement, gen: ReturnType<typeof getGenerator>): void {
+  task.replaceChildren();
+  task.append(new Option("Auto (any supported)", "auto"));
+  for (const t of gen.tasks) task.append(new Option(t.label, t.value));
 }
 
 export function controlsPanel(studio: Studio): HTMLElement {
   const panel = el("section", { class: "panel controls", "aria-label": "Generation controls" });
   panel.append(el("h2", {}, "Generate"));
+
+  const genField = el("div", { class: "field" });
+  genField.append(el("label", { for: "generator" }, "Generator"));
+  const generator = el("select", { id: "generator" });
+  for (const g of GENERATORS) generator.append(new Option(`${g.label} (v${g.version})`, g.id));
+  generator.value = studio.generatorId;
+  genField.append(generator);
 
   const seedField = el("div", { class: "field" });
   seedField.append(el("label", { for: "seed" }, "Seed"));
@@ -74,35 +86,35 @@ export function controlsPanel(studio: Studio): HTMLElement {
   const rnd = el("button", { type: "button", class: "ghost", "aria-label": "Use a random seed and generate" }, "🎲 Random");
   rnd.addEventListener("click", () => { seedInput.value = String(randomSeed()); doGenerate(studio); });
   seedRow.append(seedInput, rnd);
-  seedField.append(seedRow, el("div", { class: "hint" }, "Same seed + mode + generator version → identical item."));
+  seedField.append(seedRow, el("div", { class: "hint" }, "Same generator + seed + config → identical item."));
 
   const modeField = el("div", { class: "field" });
   modeField.append(el("label", { for: "mode" }, "Mode"));
   const mode = el("select", { id: "mode" });
-  mode.append(new Option("Multiple choice", "multiple-choice"), new Option("Integer (free response)", "integer"));
+  mode.append(new Option("Multiple choice", "multiple-choice"), new Option("Free response", "integer"));
   modeField.append(mode);
 
   const taskField = el("div", { class: "field" });
   taskField.append(el("label", { for: "task" }, "Task"));
   const task = el("select", { id: "task" });
-  task.append(
-    new Option("Auto (any supported)", "auto"),
-    new Option("nth term", "nth_term"),
-    new Option("Sum of first n terms", "sum_n"),
-    new Option("Find common difference", "find_d"),
-    new Option("Find term index", "find_n_for_value"),
-  );
-  taskField.append(task, el("div", { class: "hint" }, "Reverse tasks are integer free-response only."));
+  taskField.append(task, el("div", { class: "hint" }, "Reverse tasks (and sum to infinity) are free-response only."));
 
   const bandField = el("div", { class: "field" });
   bandField.append(el("label", { for: "band" }, "Target difficulty band"));
   const band = el("select", { id: "band" });
-  band.append(new Option("Any", "any"), new Option("1", "1"), new Option("2", "2"), new Option("3", "3"), new Option("4", "4"));
+  band.append(new Option("Any", "any"), new Option("1", "1"), new Option("2", "2"), new Option("3", "3"), new Option("4", "4"), new Option("5", "5"));
   bandField.append(band, el("div", { class: "hint" }, "Searches seeds from the entered seed for a matching band."));
 
   const gen = el("button", { type: "button", class: "primary", id: "generate" }, "Generate");
   gen.addEventListener("click", () => doGenerate(studio));
 
-  panel.append(seedField, modeField, taskField, bandField, gen);
+  // Order: generator, seed, mode, task, band, generate.
+  panel.append(genField, seedField, modeField, taskField, bandField, gen);
+  populateTasks(task, getGenerator(studio.generatorId));
+
+  generator.addEventListener("change", () => {
+    studio.generatorId = generator.value;
+    populateTasks(task, getGenerator(generator.value));
+  });
   return panel;
 }

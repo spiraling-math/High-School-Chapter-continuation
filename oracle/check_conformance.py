@@ -24,6 +24,7 @@ SCHEMA_DIR = os.path.join(ROOT, "schemas")
 
 sys.path.insert(0, HERE)
 from spi_oracle import sequences as seq  # noqa: E402
+from spi_oracle import geometric as geo  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -139,9 +140,15 @@ def main() -> int:
     item = seq.generate(7, {"answerType": "integer"})
     ok &= validate(item, item_schema, registry, "generated item seed=7 (integer)")
 
-    # 5. The generator descriptor.
+    # 4b. Live geometric items (exact-rational answers).
+    for seed in (1, 42, 123456789):
+        ok &= validate(geo.generate(seed, {"answerType": "multiple-choice"}), item_schema, registry, f"geometric item seed={seed} (MC)")
+    ok &= validate(geo.generate(7, {"answerType": "integer"}), item_schema, registry, "geometric item seed=7 (free-response)")
+
+    # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]
     ok &= validate(seq.describe(), gen_schema, registry, "gen.sequences.arithmetic describe()")
+    ok &= validate(geo.describe(), gen_schema, registry, "gen.sequences.geometric describe()")
 
     print("\n" + ("ALL CONFORMANCE CHECKS PASSED" if ok else "CONFORMANCE FAILURES PRESENT"))
     return 0 if ok else 1

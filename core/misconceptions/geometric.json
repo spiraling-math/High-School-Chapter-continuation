@@ -1,0 +1,93 @@
+[
+  {
+    "misconceptionId": "MISC.GEO.OFFBYONE_EXPONENT",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"],
+    "title": "Off-by-one in the exponent",
+    "description": "Uses r^n instead of r^(n-1).",
+    "observableError": "Answer is one extra factor of the common ratio.",
+    "distractorRule": { "summary": "Use r^n instead of r^(n-1)", "expression": "u_1 * r^n" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "The nth term uses r raised to the power (n - 1), not n.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEO.RATIO_AS_DIFFERENCE",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"],
+    "title": "Treats the ratio like a common difference",
+    "description": "Adds (n-1) lots of r instead of multiplying by r^(n-1).",
+    "observableError": "Answer adds the ratio repeatedly instead of multiplying.",
+    "distractorRule": { "summary": "Add (n-1)*r instead of multiplying", "expression": "u_1 + (n-1)*r" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "A geometric sequence multiplies by r each step; it does not add r.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEO.FORGOT_FIRST_TERM",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"],
+    "title": "Omitted the first term",
+    "description": "Computes r^(n-1) but forgets the factor u_1.",
+    "observableError": "Answer is the ratio power without the first term.",
+    "distractorRule": { "summary": "Compute r^(n-1) without u_1", "expression": "r^(n-1)" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "Multiply r^(n - 1) by the first term u_1.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEO.SIGN_RATIO",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"],
+    "title": "Dropped the sign of a negative ratio",
+    "description": "Ignores that a negative ratio alternates the sign of the terms.",
+    "observableError": "Answer has the wrong sign for a negative common ratio.",
+    "distractorRule": { "summary": "Use |r| instead of r", "expression": "u_1 * |r|^(n-1)" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "A negative common ratio makes the terms alternate in sign; keep the sign of r.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.SERIES.GEO.FORGOT_RATIO",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"],
+    "title": "Treats the sum as n equal terms",
+    "description": "Multiplies the first term by n, ignoring the common ratio.",
+    "observableError": "Sum equals n times the first term, ignoring r.",
+    "distractorRule": { "summary": "Use n*u_1", "expression": "u_1 * n" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "The terms change by a factor of r; use S_n = u_1 (r^n - 1)/(r - 1).",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.SERIES.GEO.SUM_INVERTED_SIGN",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"],
+    "title": "Mismatched signs in the sum formula",
+    "description": "Uses (1 - r^n) over (r - 1), inverting the sign.",
+    "observableError": "Answer has the opposite sign of the correct sum.",
+    "distractorRule": { "summary": "Invert the numerator sign", "expression": "u_1 (1 - r^n)/(r - 1)" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "Keep the numerator and denominator consistent: (r^n - 1)/(r - 1) or (1 - r^n)/(1 - r).",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.SERIES.GEO.OFFBYONE_SUM",
+    "domain": "sequences-and-series",
+    "objectiveRelationships": ["SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"],
+    "title": "Off-by-one in the number of terms",
+    "description": "Sums n+1 terms instead of n.",
+    "observableError": "Answer includes one extra term.",
+    "distractorRule": { "summary": "Sum n+1 terms", "expression": "u_1 (r^(n+1) - 1)/(r - 1)" },
+    "validRange": { "levels": ["high-school", "ibdp-aasl"] },
+    "feedback": "Sum exactly n terms: the exponent in the formula is n, not n + 1.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  }
+]

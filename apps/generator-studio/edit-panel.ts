@@ -16,17 +16,26 @@ function ensureRecord(studio: Studio) {
   return studio.record;
 }
 
+function fmtParam(v: unknown): string {
+  if (v && typeof v === "object" && "num" in v && "den" in v) {
+    const r = v as { num: number; den: number };
+    return r.den === 1 ? String(r.num) : `${r.num}/${r.den}`;
+  }
+  return String(v);
+}
+
 function protectedSection(studio: Studio): HTMLElement {
   const item = studio.item!;
-  const p = item["params"] as { task: string; a1: number; d: number; n: number };
+  const p = item["params"] as Record<string, unknown> & { task: string };
   const answer = (item["answer"] as { display: string }).display;
   const sec = el("div", { class: "field" });
   sec.append(el("label", {}, "Protected mathematics (regenerate to change)"));
   const grid = el("div", { class: "row" });
-  for (const [k, v] of [["a1", p.a1], ["d", p.d], ["n", p.n]] as [string, number][]) {
+  for (const [k, v] of Object.entries(p)) {
+    if (k === "task") continue;
     const wrap = el("div", {});
     wrap.append(el("label", { for: `prot-${k}` }, k));
-    const inp = el("input", { id: `prot-${k}`, class: "protected", value: String(v), readonly: "true", "aria-readonly": "true", tabindex: "-1" });
+    const inp = el("input", { id: `prot-${k}`, class: "protected", value: fmtParam(v), readonly: "true", "aria-readonly": "true", tabindex: "-1" });
     inp.setAttribute("disabled", "true");
     wrap.append(inp);
     grid.append(wrap);

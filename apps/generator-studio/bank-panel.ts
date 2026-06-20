@@ -3,7 +3,7 @@
 import { el, clear, toast, announce } from "./dom.ts";
 import type { Studio } from "./context.ts";
 import { makeRecord, duplicateRecord } from "../../core/bank/record.ts";
-import { validate } from "../../domains/sequences/validate.ts";
+import { getGenerator } from "./generators.ts";
 import type { BankRecord } from "../../core/bank/types.ts";
 import { exportToolbar } from "./exports.ts";
 
@@ -31,8 +31,9 @@ async function open(studio: Studio, id: string): Promise<void> {
   studio.record = rec;
   studio.item = rec.item;
   studio.mode = rec.mode;
+  studio.generatorId = rec.generatorId;
   studio.genConfig = rec.genConfig;
-  studio.validation = validate(rec.item);
+  studio.validation = getGenerator(rec.generatorId).validate(rec.item);
   announce(`Opened item ${id} from the bank.`);
   studio.rerender();
 }

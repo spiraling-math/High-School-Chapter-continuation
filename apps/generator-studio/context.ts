@@ -2,9 +2,9 @@
 
 import type { Json } from "../../core/serialization/canonical.ts";
 import type { BankStore, BankRecord, BankQuery, Mode } from "../../core/bank/types.ts";
-import { validate } from "../../domains/sequences/validate.ts";
+import type { GenValidation } from "./generators.ts";
 
-export type ValidationResult = ReturnType<typeof validate>;
+export type ValidationResult = GenValidation;
 
 export interface Studio {
   store: BankStore;
@@ -14,6 +14,8 @@ export interface Studio {
   /** The bank record backing the workspace item, if it has been saved/loaded. */
   record: BankRecord | null;
   mode: Mode;
+  /** Currently selected generator module id. */
+  generatorId: string;
   /** Exact config last passed to generate(), for faithful reproduction. */
   genConfig: { answerType: Mode; task?: string };
   /** Current bank list filter. */

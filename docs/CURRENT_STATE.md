@@ -98,6 +98,10 @@ $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';'
 npm test                                   # node --test over core/** and domains/** (16 tests)
 ```
 
+## Geometric sequences generator v1.0.0 (curriculum-approved, second family)
+
+Built and released `gen.sequences.geometric` v1.0.0 after owner approval. Five curriculum-approved objectives (`SPI.IBDPAASL.SEQSER.GEO.{NTH_TERM,SUM_N,COMMON_RATIO,TERM_INDEX,SUM_INFINITE}.01`). Introduced an exact-rational type `core/exact-math/rational.ts` (mirrors Python `Fraction`) for fractional answers. Tasks: nth_term, sum_n (MC + free-response), find_r, find_n_for_value, sum_infinite (free-response). Misconception registry (oracle + TS) with semantic-agreement validation. Oracle-first then TS with **byte-for-byte parity** (golden + 300-entry fixture); 10,000-seed sweep 0 invalid; curriculum-review pack `docs/review/geometric_sequences_review_pack.md` (38 items, all 7 rules). Studio now has a **generator registry** offering both families; browser-verified (generator switch, fraction answers e.g. 16/5, MC→free-response fallback for sum_infinite, validation PASS, no console errors). All tests pass (TS 57, Python arithmetic 19 + geometric 15, both 10k sweeps 0 invalid, conformance). Generated items begin at `machine-validated`; never auto-published.
+
 ## Generator v1.1.0 (curriculum-approved)
 
 Owner approved the objective split (final wording). Added curriculum-approved micro-objectives `SPI.IBDPAASL.SEQSER.ARITH.COMMON_DIFF.01` (find_d) and `...TERM_INDEX.01` (find_n_for_value), prerequisite `...NTH_TERM.01`; updated NTH_TERM.01/SUM_N.01 wording; remapped the reverse tasks. Generator released as **v1.1.0** (v1.0.0 and v1.0.1 preserved unchanged). Golden/parity fixtures + review pack regenerated. The spec `docs/GENERATOR_SPEC_arithmetic_sequences.md` is **curriculum-approved at v1.1.0**. All tests pass (TS 47, Python 19, sweep 0 invalid, conformance, exports); browser-verified (objectives remapped, version 1.1.0, validation PASS, no console errors). Generated items still begin at `machine-validated`; never auto-published.
@@ -108,9 +112,9 @@ Applied the owner's review corrections: distractors are now distinct, formula-ba
 
 ## Next recommended task
 
-Arithmetic sequences is complete and **curriculum-approved at v1.1.0**. Awaiting the owner:
-1. **Review and approve/amend the geometric-sequences proposal** `docs/GENERATOR_SPEC_geometric_sequences_PROPOSAL.md` — objectives, task coverage (incl. exact fractional answers and optional sum-to-infinity), difficulty model, misconceptions, and generator contract.
-2. Only after that approval: implement `gen.sequences.geometric` oracle-first, then TypeScript with golden parity, then a curriculum-review pack. **Not started.**
-3. Optional hardening (any time): move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv), add an exact rational type to the TS core (needed for geometric).
+Two generator families are complete and curriculum-approved: arithmetic v1.1.0 and geometric v1.0.0. Awaiting the owner:
+1. **Curriculum review of the geometric review pack** `docs/review/geometric_sequences_review_pack.md` (approve/revise/reject) to advance items beyond `machine-validated`.
+2. Decide the **third generator family** (e.g. sigma notation, or arithmetic/geometric word-problem contexts) — to be proposed for approval before implementation, per the established gate.
+3. Optional hardening (any time): an MC variant of `sum_infinite` (the infinite-specific misconceptions are documented), move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv).
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.
