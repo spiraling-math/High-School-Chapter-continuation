@@ -9,12 +9,15 @@ Phase 1 — Foundation and First Vertical Slice. Phase 0 (source audit) is compl
 ## TypeScript production layer (this session, post Node.js install)
 
 - Project config: `package.json`, `tsconfig.json`, `vitest.config.ts`, `.gitignore`.
-- Ported to TypeScript and **tested with Node's built-in runner (offline, no `npm install`)**:
+- Ported to TypeScript and **tested with Node's built-in runner (offline, no `npm install` for tests)**:
   - `core/seeded-random/mulberry32.ts` — cross-language PRNG, asserted equal to the oracle's committed anchors.
   - `core/serialization/canonical.ts` — canonical JSON serializer matching the oracle's Python serialization.
-  - `domains/sequences/arithmetic.ts` — full generator, asserting **byte-for-byte parity** with `oracle/golden/arithmetic_sequences.golden.json`.
-- `npm test` (= `node --test` over `core/**` and `domains/**`) → **16/16 TS tests pass**, including cross-language PRNG parity and golden-vector parity.
-- Oracle updated with a portable `_round3` so difficulty floats serialize identically in Python and JS; golden vectors regenerated; Python suite still 18/18, sweep still 0 invalid.
+  - `domains/sequences/arithmetic.ts` — full generator, asserting **byte-for-byte parity** with the oracle golden vectors.
+  - `domains/sequences/validate.ts` — validator mirroring the oracle's **independent iterative verification**, with tests for valid items, corrupted-answer / out-of-domain catches, and a 4,000-item property sweep.
+- Cross-language parity widened from 4 curated seeds to a **300-entry fixture** (`oracle/golden/arithmetic_sequences.parity.json`, 150 seeds × 2 modes); TS asserts byte-for-byte equality across all of them.
+- `npm test` (= `node --test` over `core/**` and `domains/**`) → **21/21 TS tests pass**. `npm run typecheck` (tsc --noEmit) passes with `typescript` + `@types/node` (pinned, lockfile committed).
+- Oracle updated with a portable `_round3` so difficulty floats serialize identically in Python and JS; golden + parity fixtures regenerated; Python suite still 18/18, sweep still 0 invalid.
+- **Version control:** Git initialized on `main`; baseline commit + dependency commit. Source archives, reference collections, secrets, `.env`, local DBs, and `node_modules` are gitignored.
 
 > Node is installed but not on the tool host's inherited PATH; prefix Node commands with a PATH refresh: `$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')`, or call `& "C:\Program Files\nodejs\node.exe"` directly. `npm install` (for `tsc` typecheck / future deps) needs a one-time network connection.
 
@@ -89,10 +92,9 @@ npm test                                   # node --test over core/** and domain
 
 ## Next recommended task
 
-The TypeScript foundation (PRNG, canonical serializer, first generator) is proven against the oracle. Recommended next increments, in order:
-1. **Schema validation + answer-checker in TS** (`core/validation`, `core/answer-checking`) mirroring the oracle's `validate`, so generated items are gated in TypeScript too.
-2. **Renderer + Generator Studio MVP**: KaTeX rendering of `prompt`/`solution`, an IndexedDB `BankStore`, and a standalone offline-HTML export of a worksheet + answer key.
+The TypeScript foundation (PRNG, canonical serializer, generator, **validator**) is proven against the oracle across 300 parity entries. Recommended next increments, in order:
+1. **Renderer + Generator Studio MVP**: KaTeX rendering of `prompt`/`solution`, an IndexedDB `BankStore` (behind a storage abstraction), and a standalone offline-HTML export of a worksheet + answer key.
+2. **Schema validation in TS** (`core/validation`): a general JSON-schema check (Ajv) gating items against `question-item.schema.json`, complementing the domain validator.
 3. **Broaden the domain**: geometric sequences, sigma notation, arithmetic/geometric series — each oracle-first then TS, with golden parity.
-4. One-time `npm install` (online) to enable `tsc` typecheck and add Vitest for the future DOM/app layer.
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.
