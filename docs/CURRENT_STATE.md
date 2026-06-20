@@ -6,7 +6,13 @@ Last updated: 2026-06-20.
 
 **Two generator families curriculum-approved.** arithmetic v1.1.0 and **geometric v1.1.0** are curriculum-approved (see `APPROVED_VERSIONS.md`, `DECISION_LOG.md` #24). Generator Studio offers both, with the IndexedDB bank and offline exports. Node.js v24.17.0 installed.
 
-**Next phase: Foundation Readiness & Generator SDK design** (not another sequence family). The first SDK task is recorded tech debt TD-1 (`answerType` → `interactionType` / `answer.type`, back-compatible; see `TECH_DEBT.md`). Do not implement another sequence family, the sum-to-infinity MC variant, or a third generator family until directed.
+**Phase begun: Foundation Readiness & Generator SDK** (not another sequence family). Delivered this session:
+- `docs/GENERATOR_SDK_DESIGN.md` — the SDK contract, answer model, registry, stability gate, versioning/approval workflow, and "add a generator" guide.
+- `core/sdk/`: formal `GeneratorModule` contract; TD-1 `interactionType` resolver (back-compatible, tested); a reusable **stability-gate harness** run against BOTH approved generators (0 invalid, reproducible) — proving the SDK works without changing any output; a unified `sequence-registry.ts` (the Studio now re-exports it instead of duplicating).
+- `core/curriculum/graph-check.ts` — curriculum-graph integrity (no duplicate IDs, acyclic prerequisites, prereq resolution); tested over the 9 approved objectives.
+- `docs/FOUNDATION_READINESS.md` — readiness scorecard and the recommended phase order (SDK helper extraction → TD-1 → runtime schema + a11y gates → resume domain growth).
+
+Output-neutral: all golden/parity fixtures and the two approved generators are unchanged (82 TS tests incl. harness + parity, both 10k sweeps 0 invalid, app browser-verified). Do not implement another sequence family, the sum-to-infinity MC variant, or a third generator family until directed.
 
 ## Generator Studio MVP (this session)
 
