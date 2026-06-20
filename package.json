@@ -12,6 +12,7 @@
     "test:file": "node --test",
     "typecheck": "tsc --noEmit",
     "build:studio": "node scripts/build-studio.mjs",
+    "build:samples": "node scripts/build-samples.mjs",
     "oracle:sweep": "python oracle/run_oracle.py",
     "oracle:test": "python oracle/tests/test_sequences.py"
   },

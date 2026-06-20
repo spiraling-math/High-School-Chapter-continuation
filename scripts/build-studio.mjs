@@ -13,32 +13,13 @@
 
 import * as esbuild from "esbuild";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { ROOT, inlineKatexCss, katexJs as readKatexJs } from "./katex-bundle.mjs";
 
-const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const APP = join(ROOT, "apps", "generator-studio");
-const KATEX = join(ROOT, "node_modules", "katex", "dist");
-const FONTS = join(KATEX, "fonts");
-
-function inlineKatexCss() {
-  let css = readFileSync(join(KATEX, "katex.min.css"), "utf8");
-  // Replace each woff2 reference with a base64 data URI.
-  css = css.replace(/url\(fonts\/([\w-]+)\.woff2\)/g, (_m, name) => {
-    const b64 = readFileSync(join(FONTS, `${name}.woff2`)).toString("base64");
-    return `url(data:font/woff2;base64,${b64})`;
-  });
-  // Drop the woff/ttf fallbacks so no relative fonts/ paths remain.
-  css = css.replace(/,url\(fonts\/[\w-]+\.woff\)\s*format\((["'])woff\1\)/g, "");
-  css = css.replace(/,url\(fonts\/[\w-]+\.ttf\)\s*format\((["'])truetype\1\)/g, "");
-  if (css.includes("fonts/")) {
-    throw new Error("KaTeX CSS still references a relative fonts/ path after inlining");
-  }
-  return css;
-}
 
 const katexCss = inlineKatexCss();
-const katexJs = readFileSync(join(KATEX, "katex.min.js"), "utf8");
+const katexJs = readKatexJs();
 const appCss = readFileSync(join(APP, "styles.css"), "utf8");
 
 const result = await esbuild.build({

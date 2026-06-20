@@ -4,7 +4,15 @@ Last updated: 2026-06-20.
 
 ## Current phase
 
-Phase 1 — Foundation and First Vertical Slice. Phase 0 (source audit) is complete. **Node.js v24.17.0 is now installed**, the TypeScript production layer has begun, and the deterministic core + first generator are proven to match the Python oracle byte-for-byte.
+Phase 3 (early) — **Generator Studio MVP complete** for the arithmetic-sequences slice. Phase 0 (audit), Phase 1 (foundation), and Phase 2 (TS port + validator + parity) are done. Node.js v24.17.0 is installed. No new generator families added (awaiting owner approval).
+
+## Generator Studio MVP (this session)
+
+A single self-contained offline browser app: generate (seed/random/mode/task/target band) → preview (Question/Answer/Solution/Validation, KaTeX) → edit (protected params vs editable wording, lifecycle) → bank (IndexedDB: save/search/filter/open/duplicate/archive/delete, tested migrations) → export (standalone worksheet, answer key, worked solutions; JSON round-trip with integrity). KaTeX is bundled locally (fonts inlined); no CDN, no secrets, works from file://. The Python oracle remains a dev/verification reference only. Full details, decisions, gates, and known limitations: `docs/GENERATOR_STUDIO_MVP.md`.
+
+Verified in a browser: no console errors; KaTeX + MathML render; save→reload persists; seed reproduces identically; keyboard tab navigation works; exports offline-safe with answers hidden in the student worksheet.
+
+Tests: **46 TS** (`npm test`) + **18 Python** + 10,000-seed sweep (0 invalid) + conformance — all pass. Typecheck clean. Review pack: `docs/review/arithmetic_sequences_review_pack.md`. Build: `apps/generator-studio/dist/index.html` (via `npm run build:studio`).
 
 ## TypeScript production layer (this session, post Node.js install)
 
@@ -92,9 +100,9 @@ npm test                                   # node --test over core/** and domain
 
 ## Next recommended task
 
-The TypeScript foundation (PRNG, canonical serializer, generator, **validator**) is proven against the oracle across 300 parity entries. Recommended next increments, in order:
-1. **Renderer + Generator Studio MVP**: KaTeX rendering of `prompt`/`solution`, an IndexedDB `BankStore` (behind a storage abstraction), and a standalone offline-HTML export of a worksheet + answer key.
-2. **Schema validation in TS** (`core/validation`): a general JSON-schema check (Ajv) gating items against `question-item.schema.json`, complementing the domain validator.
-3. **Broaden the domain**: geometric sequences, sigma notation, arithmetic/geometric series — each oracle-first then TS, with golden parity.
+The Generator Studio MVP is complete and verified. Awaiting the owner:
+1. **Curriculum review** of `docs/review/arithmetic_sequences_review_pack.md` to advance items beyond `machine-validated` (only the authority may approve/publish).
+2. On approval, the next build increment is the **second generator family** (e.g. geometric sequences) — oracle-first, then TypeScript with golden parity. Explicitly gated on owner approval; not started.
+3. Optional hardening: move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv).
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.

@@ -64,5 +64,5 @@ Thumbs.db
 # ── Oracle reproducible artifacts (golden vectors ARE committed; dumps are not)
 oracle/failing_seeds/
 
-# ── Local tooling config (personal; not part of the project baseline) ────────
-.claude/settings.local.json
+# ── Local tooling config (personal / machine-specific; not part of baseline) ──
+.claude/
