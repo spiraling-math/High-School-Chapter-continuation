@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spi_oracle import sequences as seq          # noqa: E402
 from spi_oracle.seeded_random import Mulberry32   # noqa: E402
+from spi_oracle.misconceptions import MISCONCEPTIONS  # noqa: E402
 
 SWEEP = int(os.environ.get("SPI_SWEEP", "10000"))
 
@@ -148,6 +149,25 @@ class TestPropertySweep(unittest.TestCase):
             self.assertEqual(len(wrong), len(set(wrong)), f"dup distractor at seed {s}")
             self.assertGreaterEqual(len(wrong), 3, f"<3 distractors at seed {s}")
             self.assertEqual(sum(1 for o in item["options"] if o["correct"]), 1)
+            # Distinct misconceptions (no repeated error pathway in one item).
+            mids = [d["misconceptionId"] for d in item["distractors"]]
+            self.assertEqual(len(set(mids)), len(mids), f"repeated misconception at seed {s}")
+            # Each distractor equals its misconception formula (semantic agreement).
+            for d in item["distractors"]:
+                rule = MISCONCEPTIONS[d["misconceptionId"]]["formula"]
+                self.assertEqual(int(rule(item["params"])), d["value"], f"rule mismatch seed {s}")
+
+    def test_distractor_semantic_agreement_regression(self):
+        # Required regression seeds from the curriculum review.
+        for s in (1, 2, 3, 86):
+            for task in ("nth_term", "sum_n"):
+                item = seq.generate(s, {"task": task, "answerType": "multiple-choice"})
+                self.assertEqual(seq.validate(item)["status"], "pass", f"seed {s} {task}")
+                for d in item["distractors"]:
+                    m = MISCONCEPTIONS[d["misconceptionId"]]
+                    self.assertEqual(int(m["formula"](item["params"])), d["value"])
+                    self.assertEqual(d["rationale"], m["observableError"])
+                    self.assertTrue(m["feedback"])
 
 
 if __name__ == "__main__":

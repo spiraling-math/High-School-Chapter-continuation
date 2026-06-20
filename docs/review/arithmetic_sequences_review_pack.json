@@ -1,898 +1,2209 @@
 {
   "generatorId": "gen.sequences.arithmetic",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
   "note": "Representative items for curriculum review. None is approved or published; advancing lifecycle state beyond machine-validated is the curriculum authority's decision.",
-  "items": [
+  "combos": [
     {
-      "seed": 3,
-      "mode": "multiple-choice",
       "task": "nth_term",
-      "difficultyBand": 1,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": 9,
-        "d": 1,
-        "n": 5
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 9 and common difference 1.",
-        "Find the 5th term of the sequence."
-      ],
-      "canonicalAnswer": 13,
-      "workedSolution": [
+      "answerType": "multiple-choice",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{5} = 9 + (5 - 1)\\times(1)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{5} = 13",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "nth_term",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
           ],
-          "marks": 1
-        }
-      ],
-      "distractors": [
-        {
-          "value": 14,
-          "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
-          "misconception": "Off-by-one in term index",
-          "whyAStudentPicksIt": "Answer is exactly one common difference too large.",
-          "feedback": "Count the steps of the common difference from term 1 to term n: there are (n - 1), not n."
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5 and common difference -1.",
+            "Find the 40th term of the sequence."
+          ],
+          "answer": -34,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{40} = 5 + (40 - 1)\\times(-1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{40} = -34",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": -35,
+              "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+              "misconception": "Off-by-one in term index",
+              "formula": "u_1 + n*d",
+              "rationale": "Answer is exactly one common difference too large.",
+              "feedback": "Reaching the nth term takes (n - 1) steps of the common difference, not n."
+            },
+            {
+              "value": 44,
+              "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
+              "misconception": "Sign error on the common difference",
+              "formula": "u_1 - (n-1)*d",
+              "rationale": "Answer reflects the wrong direction of change.",
+              "feedback": "Add the common difference (which may be negative); check whether the sequence increases or decreases."
+            },
+            {
+              "value": -39,
+              "misconceptionId": "MISC.SEQ.FORGOT_FIRST_TERM",
+              "misconception": "Omitted the first term",
+              "formula": "(n-1)*d",
+              "rationale": "Answer is the change from u_1, not the term value itself.",
+              "feedback": "Add the first term u_1 to (n - 1)*d to get the nth term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "nth_term",
+              "answerType": "multiple-choice"
+            }
+          }
         },
         {
-          "value": 5,
-          "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
-          "misconception": "Sign error on common difference",
-          "whyAStudentPicksIt": "Answer reflects the wrong direction of change.",
-          "feedback": "Check whether the sequence increases or decreases, and add the common difference (which may be negative)."
+          "seed": 2,
+          "task": "nth_term",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10 and common difference 4.",
+            "Find the 23rd term of the sequence."
+          ],
+          "answer": 98,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{23} = 10 + (23 - 1)\\times(4)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{23} = 98",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": 102,
+              "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+              "misconception": "Off-by-one in term index",
+              "formula": "u_1 + n*d",
+              "rationale": "Answer is exactly one common difference too large.",
+              "feedback": "Reaching the nth term takes (n - 1) steps of the common difference, not n."
+            },
+            {
+              "value": -78,
+              "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
+              "misconception": "Sign error on the common difference",
+              "formula": "u_1 - (n-1)*d",
+              "rationale": "Answer reflects the wrong direction of change.",
+              "feedback": "Add the common difference (which may be negative); check whether the sequence increases or decreases."
+            },
+            {
+              "value": 32,
+              "misconceptionId": "MISC.SEQ.FORGOT_MULTIPLY",
+              "misconception": "Forgot to multiply by the common difference",
+              "formula": "u_1 + (n-1)",
+              "rationale": "Answer adds (n - 1) rather than (n - 1)*d.",
+              "feedback": "Each step changes the term by d, so multiply the (n - 1) steps by the common difference."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "nth_term",
+              "answerType": "multiple-choice"
+            }
+          }
         },
         {
-          "value": 15,
-          "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
-          "misconception": "Off-by-one in term index",
-          "whyAStudentPicksIt": "Answer is exactly one common difference too large.",
-          "feedback": "Count the steps of the common difference from term 1 to term n: there are (n - 1), not n."
+          "seed": 3,
+          "task": "nth_term",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 1,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9 and common difference 1.",
+            "Find the 5th term of the sequence."
+          ],
+          "answer": 13,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{5} = 9 + (5 - 1)\\times(1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{5} = 13",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": 14,
+              "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+              "misconception": "Off-by-one in term index",
+              "formula": "u_1 + n*d",
+              "rationale": "Answer is exactly one common difference too large.",
+              "feedback": "Reaching the nth term takes (n - 1) steps of the common difference, not n."
+            },
+            {
+              "value": 5,
+              "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
+              "misconception": "Sign error on the common difference",
+              "formula": "u_1 - (n-1)*d",
+              "rationale": "Answer reflects the wrong direction of change.",
+              "feedback": "Add the common difference (which may be negative); check whether the sequence increases or decreases."
+            },
+            {
+              "value": 4,
+              "misconceptionId": "MISC.SEQ.FORGOT_FIRST_TERM",
+              "misconception": "Omitted the first term",
+              "formula": "(n-1)*d",
+              "rationale": "Answer is the change from u_1, not the term value itself.",
+              "feedback": "Add the first term u_1 to (n - 1)*d to get the nth term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "nth_term",
+              "answerType": "multiple-choice"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "nth_term",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20 and common difference -1.",
+            "Find the 29th term of the sequence."
+          ],
+          "answer": -48,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{29} = -20 + (29 - 1)\\times(-1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{29} = -48",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": -49,
+              "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+              "misconception": "Off-by-one in term index",
+              "formula": "u_1 + n*d",
+              "rationale": "Answer is exactly one common difference too large.",
+              "feedback": "Reaching the nth term takes (n - 1) steps of the common difference, not n."
+            },
+            {
+              "value": 8,
+              "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
+              "misconception": "Sign error on the common difference",
+              "formula": "u_1 - (n-1)*d",
+              "rationale": "Answer reflects the wrong direction of change.",
+              "feedback": "Add the common difference (which may be negative); check whether the sequence increases or decreases."
+            },
+            {
+              "value": -28,
+              "misconceptionId": "MISC.SEQ.FORGOT_FIRST_TERM",
+              "misconception": "Omitted the first term",
+              "formula": "(n-1)*d",
+              "rationale": "Answer is the change from u_1, not the term value itself.",
+              "feedback": "Add the first term u_1 to (n - 1)*d to get the nth term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "nth_term",
+              "answerType": "multiple-choice"
+            }
+          }
         }
-      ],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "exactly-one-correct",
-        "distractors-unique",
-        "distractor-not-answer",
-        "distractor-misconception",
-        "min-three-distractors",
-        "a11y-fields-present"
       ]
     },
     {
-      "seed": 1,
-      "mode": "multiple-choice",
       "task": "nth_term",
-      "difficultyBand": 2,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5 and common difference -1.",
-        "Find the 40th term of the sequence."
-      ],
-      "canonicalAnswer": -34,
-      "workedSolution": [
+      "answerType": "integer",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{40} = 5 + (40 - 1)\\times(-1)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{40} = -34",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "nth_term",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
           ],
-          "marks": 1
-        }
-      ],
-      "distractors": [
-        {
-          "value": -35,
-          "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
-          "misconception": "Off-by-one in term index",
-          "whyAStudentPicksIt": "Answer is exactly one common difference too large.",
-          "feedback": "Count the steps of the common difference from term 1 to term n: there are (n - 1), not n."
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5 and common difference -1.",
+            "Find the 40th term of the sequence."
+          ],
+          "answer": -34,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{40} = 5 + (40 - 1)\\times(-1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{40} = -34",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "nth_term",
+              "answerType": "integer"
+            }
+          }
         },
         {
-          "value": 44,
-          "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
-          "misconception": "Sign error on common difference",
-          "whyAStudentPicksIt": "Answer reflects the wrong direction of change.",
-          "feedback": "Check whether the sequence increases or decreases, and add the common difference (which may be negative)."
+          "seed": 2,
+          "task": "nth_term",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10 and common difference 4.",
+            "Find the 23rd term of the sequence."
+          ],
+          "answer": 98,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{23} = 10 + (23 - 1)\\times(4)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{23} = 98",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "nth_term",
+              "answerType": "integer"
+            }
+          }
         },
         {
-          "value": -36,
-          "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
-          "misconception": "Off-by-one in term index",
-          "whyAStudentPicksIt": "Answer is exactly one common difference too large.",
-          "feedback": "Count the steps of the common difference from term 1 to term n: there are (n - 1), not n."
+          "seed": 3,
+          "task": "nth_term",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 1,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9 and common difference 1.",
+            "Find the 5th term of the sequence."
+          ],
+          "answer": 13,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{5} = 9 + (5 - 1)\\times(1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{5} = 13",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "nth_term",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "nth_term",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.2,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "nth_term",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20 and common difference -1.",
+            "Find the 29th term of the sequence."
+          ],
+          "answer": -48,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "u_{29} = -20 + (29 - 1)\\times(-1)",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "u_{29} = -48",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "nth_term",
+              "answerType": "integer"
+            }
+          }
         }
-      ],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "exactly-one-correct",
-        "distractors-unique",
-        "distractor-not-answer",
-        "distractor-misconception",
-        "min-three-distractors",
-        "a11y-fields-present"
       ]
     },
     {
-      "seed": 86,
-      "mode": "multiple-choice",
-      "task": "nth_term",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": -19,
-        "d": -12,
-        "n": 34
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term -19 and common difference -12.",
-        "Find the 34th term of the sequence."
-      ],
-      "canonicalAnswer": -415,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{34} = -19 + (34 - 1)\\times(-12)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{34} = -415",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [
-        {
-          "value": -427,
-          "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
-          "misconception": "Off-by-one in term index",
-          "whyAStudentPicksIt": "Answer is exactly one common difference too large.",
-          "feedback": "Count the steps of the common difference from term 1 to term n: there are (n - 1), not n."
-        },
-        {
-          "value": 377,
-          "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
-          "misconception": "Sign error on common difference",
-          "whyAStudentPicksIt": "Answer reflects the wrong direction of change.",
-          "feedback": "Check whether the sequence increases or decreases, and add the common difference (which may be negative)."
-        },
-        {
-          "value": 14,
-          "misconceptionId": "MISC.SEQ.FORGOT_MULTIPLY",
-          "misconception": "Forgot to multiply by the common difference",
-          "whyAStudentPicksIt": "Answer adds (n-1) rather than (n-1)*d.",
-          "feedback": "Each step changes the term by d, so multiply the (n - 1) steps by the common difference."
-        }
-      ],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "exactly-one-correct",
-        "distractors-unique",
-        "distractor-not-answer",
-        "distractor-misconception",
-        "min-three-distractors",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 3,
-      "mode": "integer",
-      "task": "nth_term",
-      "difficultyBand": 1,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": 9,
-        "d": 1,
-        "n": 5
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 9 and common difference 1.",
-        "Find the 5th term of the sequence."
-      ],
-      "canonicalAnswer": 13,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{5} = 9 + (5 - 1)\\times(1)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{5} = 13",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 1,
-      "mode": "integer",
-      "task": "nth_term",
-      "difficultyBand": 2,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5 and common difference -1.",
-        "Find the 40th term of the sequence."
-      ],
-      "canonicalAnswer": -34,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{40} = 5 + (40 - 1)\\times(-1)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{40} = -34",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 86,
-      "mode": "integer",
-      "task": "nth_term",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "nth_term",
-        "a1": -19,
-        "d": -12,
-        "n": 34
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term -19 and common difference -12.",
-        "Find the 34th term of the sequence."
-      ],
-      "canonicalAnswer": -415,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "u_{34} = -19 + (34 - 1)\\times(-12)",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "u_{34} = -415",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 2,
-      "mode": "multiple-choice",
       "task": "sum_n",
-      "difficultyBand": 2,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
-      ],
-      "params": {
-        "task": "sum_n",
-        "a1": 10,
-        "d": 4,
-        "n": 23
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 10 and common difference 4.",
-        "Find the sum of the first 23 terms of the sequence."
-      ],
-      "canonicalAnswer": 1242,
-      "workedSolution": [
+      "answerType": "multiple-choice",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "S_{23} = \\frac{23}{2}(2\\times10 + (23 - 1)\\times(4))",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "S_{23} = 1242",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "sum_n",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
           ],
-          "marks": 1
-        }
-      ],
-      "distractors": [
-        {
-          "value": 2484,
-          "misconceptionId": "MISC.SERIES.FORGOT_HALF",
-          "misconception": "Omitted the one-half in the sum formula",
-          "whyAStudentPicksIt": "Sum is exactly twice the correct value.",
-          "feedback": "The sum formula has a factor of one half: S_n = n/2 (2u_1 + (n-1)d)."
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5 and common difference -1.",
+            "Find the sum of the first 40 terms of the sequence."
+          ],
+          "answer": -580,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{40} = \\frac{40}{2}(2\\times5 + (40 - 1)\\times(-1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{40} = -580",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": -1160,
+              "misconceptionId": "MISC.SERIES.FORGOT_HALF",
+              "misconception": "Omitted the one-half in the sum formula",
+              "formula": "n*(2*u_1 + (n-1)*d)",
+              "rationale": "Sum is exactly twice the correct value.",
+              "feedback": "The sum formula has a factor of one half: S_n = (n/2)(2u_1 + (n - 1)d)."
+            },
+            {
+              "value": -1360,
+              "misconceptionId": "MISC.SERIES.CONSTANT_LAST_TERM",
+              "misconception": "Treats every term as equal to the last term",
+              "formula": "n*u_n  (= n*(u_1 + (n-1)*d))",
+              "rationale": "Sum equals n multiplied by the nth term.",
+              "feedback": "The terms change by the common difference; do not multiply the number of terms by only the last term."
+            },
+            {
+              "value": 200,
+              "misconceptionId": "MISC.SERIES.CONSTANT_FIRST_TERM",
+              "misconception": "Treats every term as equal to the first term",
+              "formula": "n*u_1",
+              "rationale": "Sum equals n multiplied by the first term.",
+              "feedback": "The terms change by the common difference. Do not multiply the number of terms by only the first term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "sum_n",
+              "answerType": "multiple-choice"
+            }
+          }
         },
         {
-          "value": 2254,
-          "misconceptionId": "MISC.SERIES.CONSTANT_TERMS",
-          "misconception": "Treats all terms as equal to the last term",
-          "whyAStudentPicksIt": "Sum equals n times the nth term.",
-          "feedback": "The terms are not all equal; use the sum formula or pair first and last terms."
+          "seed": 2,
+          "task": "sum_n",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10 and common difference 4.",
+            "Find the sum of the first 23 terms of the sequence."
+          ],
+          "answer": 1242,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{23} = \\frac{23}{2}(2\\times10 + (23 - 1)\\times(4))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{23} = 1242",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": 2484,
+              "misconceptionId": "MISC.SERIES.FORGOT_HALF",
+              "misconception": "Omitted the one-half in the sum formula",
+              "formula": "n*(2*u_1 + (n-1)*d)",
+              "rationale": "Sum is exactly twice the correct value.",
+              "feedback": "The sum formula has a factor of one half: S_n = (n/2)(2u_1 + (n - 1)d)."
+            },
+            {
+              "value": 2254,
+              "misconceptionId": "MISC.SERIES.CONSTANT_LAST_TERM",
+              "misconception": "Treats every term as equal to the last term",
+              "formula": "n*u_n  (= n*(u_1 + (n-1)*d))",
+              "rationale": "Sum equals n multiplied by the nth term.",
+              "feedback": "The terms change by the common difference; do not multiply the number of terms by only the last term."
+            },
+            {
+              "value": 230,
+              "misconceptionId": "MISC.SERIES.CONSTANT_FIRST_TERM",
+              "misconception": "Treats every term as equal to the first term",
+              "formula": "n*u_1",
+              "rationale": "Sum equals n multiplied by the first term.",
+              "feedback": "The terms change by the common difference. Do not multiply the number of terms by only the first term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "sum_n",
+              "answerType": "multiple-choice"
+            }
+          }
         },
         {
-          "value": 230,
-          "misconceptionId": "MISC.SERIES.CONSTANT_TERMS",
-          "misconception": "Treats all terms as equal to the last term",
-          "whyAStudentPicksIt": "Sum equals n times the nth term.",
-          "feedback": "The terms are not all equal; use the sum formula or pair first and last terms."
+          "seed": 3,
+          "task": "sum_n",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9 and common difference 1.",
+            "Find the sum of the first 5 terms of the sequence."
+          ],
+          "answer": 55,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{5} = \\frac{5}{2}(2\\times9 + (5 - 1)\\times(1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{5} = 55",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": 110,
+              "misconceptionId": "MISC.SERIES.FORGOT_HALF",
+              "misconception": "Omitted the one-half in the sum formula",
+              "formula": "n*(2*u_1 + (n-1)*d)",
+              "rationale": "Sum is exactly twice the correct value.",
+              "feedback": "The sum formula has a factor of one half: S_n = (n/2)(2u_1 + (n - 1)d)."
+            },
+            {
+              "value": 65,
+              "misconceptionId": "MISC.SERIES.CONSTANT_LAST_TERM",
+              "misconception": "Treats every term as equal to the last term",
+              "formula": "n*u_n  (= n*(u_1 + (n-1)*d))",
+              "rationale": "Sum equals n multiplied by the nth term.",
+              "feedback": "The terms change by the common difference; do not multiply the number of terms by only the last term."
+            },
+            {
+              "value": 45,
+              "misconceptionId": "MISC.SERIES.CONSTANT_FIRST_TERM",
+              "misconception": "Treats every term as equal to the first term",
+              "formula": "n*u_1",
+              "rationale": "Sum equals n multiplied by the first term.",
+              "feedback": "The terms change by the common difference. Do not multiply the number of terms by only the first term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "sum_n",
+              "answerType": "multiple-choice"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "sum_n",
+          "answerType": "multiple-choice",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20 and common difference -1.",
+            "Find the sum of the first 29 terms of the sequence."
+          ],
+          "answer": -986,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{29} = \\frac{29}{2}(2\\times-20 + (29 - 1)\\times(-1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{29} = -986",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [
+            {
+              "value": -1972,
+              "misconceptionId": "MISC.SERIES.FORGOT_HALF",
+              "misconception": "Omitted the one-half in the sum formula",
+              "formula": "n*(2*u_1 + (n-1)*d)",
+              "rationale": "Sum is exactly twice the correct value.",
+              "feedback": "The sum formula has a factor of one half: S_n = (n/2)(2u_1 + (n - 1)d)."
+            },
+            {
+              "value": -1392,
+              "misconceptionId": "MISC.SERIES.CONSTANT_LAST_TERM",
+              "misconception": "Treats every term as equal to the last term",
+              "formula": "n*u_n  (= n*(u_1 + (n-1)*d))",
+              "rationale": "Sum equals n multiplied by the nth term.",
+              "feedback": "The terms change by the common difference; do not multiply the number of terms by only the last term."
+            },
+            {
+              "value": -580,
+              "misconceptionId": "MISC.SERIES.CONSTANT_FIRST_TERM",
+              "misconception": "Treats every term as equal to the first term",
+              "formula": "n*u_1",
+              "rationale": "Sum equals n multiplied by the first term.",
+              "feedback": "The terms change by the common difference. Do not multiply the number of terms by only the first term."
+            }
+          ],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "distractors-distinct-misconceptions",
+            "min-three-distractors",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "distractor-misconception-known",
+            "distractor-value-matches-rule",
+            "distractor-rationale-matches",
+            "distractor-feedback-present",
+            "distractor-not-answer",
+            "exactly-one-correct",
+            "distractors-unique",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "sum_n",
+              "answerType": "multiple-choice"
+            }
+          }
         }
-      ],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "exactly-one-correct",
-        "distractors-unique",
-        "distractor-not-answer",
-        "distractor-misconception",
-        "min-three-distractors",
-        "a11y-fields-present"
       ]
     },
     {
-      "seed": 1,
-      "mode": "multiple-choice",
       "task": "sum_n",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
-      ],
-      "params": {
-        "task": "sum_n",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5 and common difference -1.",
-        "Find the sum of the first 40 terms of the sequence."
-      ],
-      "canonicalAnswer": -580,
-      "workedSolution": [
+      "answerType": "integer",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "S_{40} = \\frac{40}{2}(2\\times5 + (40 - 1)\\times(-1))",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "S_{40} = -580",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "sum_n",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
           ],
-          "marks": 1
-        }
-      ],
-      "distractors": [
-        {
-          "value": -1160,
-          "misconceptionId": "MISC.SERIES.FORGOT_HALF",
-          "misconception": "Omitted the one-half in the sum formula",
-          "whyAStudentPicksIt": "Sum is exactly twice the correct value.",
-          "feedback": "The sum formula has a factor of one half: S_n = n/2 (2u_1 + (n-1)d)."
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5 and common difference -1.",
+            "Find the sum of the first 40 terms of the sequence."
+          ],
+          "answer": -580,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{40} = \\frac{40}{2}(2\\times5 + (40 - 1)\\times(-1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{40} = -580",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "sum_n",
+              "answerType": "integer"
+            }
+          }
         },
         {
-          "value": -1360,
-          "misconceptionId": "MISC.SERIES.CONSTANT_TERMS",
-          "misconception": "Treats all terms as equal to the last term",
-          "whyAStudentPicksIt": "Sum equals n times the nth term.",
-          "feedback": "The terms are not all equal; use the sum formula or pair first and last terms."
+          "seed": 2,
+          "task": "sum_n",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10 and common difference 4.",
+            "Find the sum of the first 23 terms of the sequence."
+          ],
+          "answer": 1242,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{23} = \\frac{23}{2}(2\\times10 + (23 - 1)\\times(4))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{23} = 1242",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "sum_n",
+              "answerType": "integer"
+            }
+          }
         },
         {
-          "value": 200,
-          "misconceptionId": "MISC.SERIES.CONSTANT_TERMS",
-          "misconception": "Treats all terms as equal to the last term",
-          "whyAStudentPicksIt": "Sum equals n times the nth term.",
-          "feedback": "The terms are not all equal; use the sum formula or pair first and last terms."
+          "seed": 3,
+          "task": "sum_n",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 2,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9 and common difference 1.",
+            "Find the sum of the first 5 terms of the sequence."
+          ],
+          "answer": 55,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{5} = \\frac{5}{2}(2\\times9 + (5 - 1)\\times(1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{5} = 55",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "sum_n",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "sum_n",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.5,
+              "abstraction": 0.1
+            }
+          },
+          "params": {
+            "task": "sum_n",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20 and common difference -1.",
+            "Find the sum of the first 29 terms of the sequence."
+          ],
+          "answer": -986,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute",
+              "intermediateResult": "S_{29} = \\frac{29}{2}(2\\times-20 + (29 - 1)\\times(-1))",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "S_{29} = -986",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "sum_n",
+              "answerType": "integer"
+            }
+          }
         }
-      ],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "exactly-one-correct",
-        "distractors-unique",
-        "distractor-not-answer",
-        "distractor-misconception",
-        "min-three-distractors",
-        "a11y-fields-present"
       ]
     },
     {
-      "seed": 2,
-      "mode": "integer",
-      "task": "sum_n",
-      "difficultyBand": 2,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
-      ],
-      "params": {
-        "task": "sum_n",
-        "a1": 10,
-        "d": 4,
-        "n": 23
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 10 and common difference 4.",
-        "Find the sum of the first 23 terms of the sequence."
-      ],
-      "canonicalAnswer": 1242,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "S_{23} = \\frac{23}{2}(2\\times10 + (23 - 1)\\times(4))",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "S_{23} = 1242",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 1,
-      "mode": "integer",
-      "task": "sum_n",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.SUM_N.01"
-      ],
-      "params": {
-        "task": "sum_n",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5 and common difference -1.",
-        "Find the sum of the first 40 terms of the sequence."
-      ],
-      "canonicalAnswer": -580,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "S_n = n/2 (2u_1 + (n - 1)d)"
-        },
-        {
-          "number": 2,
-          "transformation": "Substitute",
-          "intermediateResult": "S_{40} = \\frac{40}{2}(2\\times5 + (40 - 1)\\times(-1))",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "S_{40} = -580",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 3,
-      "mode": "integer",
       "task": "find_d",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "find_d",
-        "a1": 9,
-        "d": 1,
-        "n": 5
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 9, and its 5th term is 13.",
-        "Find the common difference of the sequence."
-      ],
-      "canonicalAnswer": 1,
-      "workedSolution": [
+      "answerType": "integer",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Rearrange for d",
-          "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{13 - 9}{5 - 1}",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "d = 1",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "find_d",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
           ],
-          "marks": 1
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_d",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5, and its 40th term is -34.",
+            "Find the common difference of the sequence."
+          ],
+          "answer": -1,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for d",
+              "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{-34 - 5}{40 - 1}",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "d = -1",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "find_d",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "task": "find_d",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_d",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10, and its 23rd term is 98.",
+            "Find the common difference of the sequence."
+          ],
+          "answer": 4,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for d",
+              "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{98 - 10}{23 - 1}",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "d = 4",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "find_d",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "task": "find_d",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_d",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9, and its 5th term is 13.",
+            "Find the common difference of the sequence."
+          ],
+          "answer": 1,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for d",
+              "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{13 - 9}{5 - 1}",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "d = 1",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "find_d",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "find_d",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_d",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20, and its 29th term is -48.",
+            "Find the common difference of the sequence."
+          ],
+          "answer": -1,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for d",
+              "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{-48 - -20}{29 - 1}",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "d = -1",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "find_d",
+              "answerType": "integer"
+            }
+          }
         }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
       ]
     },
     {
-      "seed": 1,
-      "mode": "integer",
-      "task": "find_d",
-      "difficultyBand": 4,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "find_d",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5, and its 40th term is -34.",
-        "Find the common difference of the sequence."
-      ],
-      "canonicalAnswer": -1,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Rearrange for d",
-          "intermediateResult": "d = \\frac{u_n - u_1}{n - 1} = \\frac{-34 - 5}{40 - 1}",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "d = -1",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
-    },
-    {
-      "seed": 3,
-      "mode": "integer",
       "task": "find_n_for_value",
-      "difficultyBand": 3,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "find_n_for_value",
-        "a1": 9,
-        "d": 1,
-        "n": 5
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 9 and common difference 1.",
-        "One term of the sequence is 13. Find which term this is."
-      ],
-      "canonicalAnswer": 5,
-      "workedSolution": [
+      "answerType": "integer",
+      "count": 4,
+      "items": [
         {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
-        },
-        {
-          "number": 2,
-          "transformation": "Rearrange for n",
-          "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{13 - 9}{1} + 1",
-          "dependsOn": [
-            1
-          ]
-        },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "n = 5",
-          "dependsOn": [
-            2
+          "seed": 1,
+          "task": "find_n_for_value",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
           ],
-          "marks": 1
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.544,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_n_for_value",
+            "a1": 5,
+            "d": -1,
+            "n": 40
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 5 and common difference -1.",
+            "The nth term of the sequence is -34. Find the value of n."
+          ],
+          "answer": 40,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for n",
+              "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{-34 - 5}{-1} + 1",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "n = 40",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 1,
+            "config": {
+              "task": "find_n_for_value",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 2,
+          "task": "find_n_for_value",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.469,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_n_for_value",
+            "a1": 10,
+            "d": 4,
+            "n": 23
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 10 and common difference 4.",
+            "The nth term of the sequence is 98. Find the value of n."
+          ],
+          "answer": 23,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for n",
+              "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{98 - 10}{4} + 1",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "n = 23",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 2,
+            "config": {
+              "task": "find_n_for_value",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 3,
+          "task": "find_n_for_value",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 3,
+            "axes": {
+              "numericalComplexity": 0.219,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_n_for_value",
+            "a1": 9,
+            "d": 1,
+            "n": 5
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term 9 and common difference 1.",
+            "The nth term of the sequence is 13. Find the value of n."
+          ],
+          "answer": 5,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for n",
+              "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{13 - 9}{1} + 1",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "n = 5",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 3,
+            "config": {
+              "task": "find_n_for_value",
+              "answerType": "integer"
+            }
+          }
+        },
+        {
+          "seed": 7,
+          "task": "find_n_for_value",
+          "answerType": "integer",
+          "objectiveIds": [
+            "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
+          ],
+          "difficultyProfile": {
+            "overallBand": 4,
+            "axes": {
+              "numericalComplexity": 0.703,
+              "reasoningSteps": 0.7,
+              "abstraction": 0.6
+            }
+          },
+          "params": {
+            "task": "find_n_for_value",
+            "a1": -20,
+            "d": -1,
+            "n": 29
+          },
+          "calculatorPolicy": "calculator-not-required",
+          "prompt": [
+            "An arithmetic sequence has first term -20 and common difference -1.",
+            "The nth term of the sequence is -48. Find the value of n."
+          ],
+          "answer": 29,
+          "workedSolution": [
+            {
+              "number": 1,
+              "transformation": "State the formula",
+              "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+            },
+            {
+              "number": 2,
+              "transformation": "Rearrange for n",
+              "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{-48 - -20}{-1} + 1",
+              "dependsOn": [
+                1
+              ]
+            },
+            {
+              "number": 3,
+              "transformation": "Evaluate",
+              "intermediateResult": "n = 29",
+              "dependsOn": [
+                2
+              ],
+              "marks": 1
+            }
+          ],
+          "distractorCalculations": [],
+          "validation": "pass",
+          "validationChecks": [
+            "params-in-domain",
+            "arith-iterative-agreement",
+            "answer-solution-agree",
+            "no-answer-leakage",
+            "a11y-fields-present"
+          ],
+          "reproduce": {
+            "generatorId": "gen.sequences.arithmetic",
+            "generatorVersion": "1.0.1",
+            "seed": 7,
+            "config": {
+              "task": "find_n_for_value",
+              "answerType": "integer"
+            }
+          }
         }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
       ]
+    }
+  ],
+  "misconceptionCoverage": [
+    {
+      "misconceptionId": "MISC.SEQ.OFFBYONE_TERMINDEX",
+      "title": "Off-by-one in term index",
+      "formula": "u_1 + n*d",
+      "observableError": "Answer is exactly one common difference too large.",
+      "feedback": "Reaching the nth term takes (n - 1) steps of the common difference, not n.",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "nth_term",
+          "a1": 5,
+          "d": -1,
+          "n": 40
+        },
+        "correctAnswer": -34,
+        "distractorValue": -35
+      }
     },
     {
-      "seed": 1,
-      "mode": "integer",
-      "task": "find_n_for_value",
-      "difficultyBand": 4,
-      "objectiveIds": [
-        "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01"
-      ],
-      "params": {
-        "task": "find_n_for_value",
-        "a1": 5,
-        "d": -1,
-        "n": 40
-      },
-      "calculatorPolicy": "either",
-      "prompt": [
-        "An arithmetic sequence has first term 5 and common difference -1.",
-        "One term of the sequence is -34. Find which term this is."
-      ],
-      "canonicalAnswer": 40,
-      "workedSolution": [
-        {
-          "number": 1,
-          "transformation": "State the formula",
-          "ruleOrTheorem": "u_n = u_1 + (n - 1)d"
+      "misconceptionId": "MISC.SEQ.SIGN_DIFFERENCE",
+      "title": "Sign error on the common difference",
+      "formula": "u_1 - (n-1)*d",
+      "observableError": "Answer reflects the wrong direction of change.",
+      "feedback": "Add the common difference (which may be negative); check whether the sequence increases or decreases.",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "nth_term",
+          "a1": 5,
+          "d": -1,
+          "n": 40
         },
-        {
-          "number": 2,
-          "transformation": "Rearrange for n",
-          "intermediateResult": "n = \\frac{u_n - u_1}{d} + 1 = \\frac{-34 - 5}{-1} + 1",
-          "dependsOn": [
-            1
-          ]
+        "correctAnswer": -34,
+        "distractorValue": 44
+      }
+    },
+    {
+      "misconceptionId": "MISC.SEQ.FORGOT_MULTIPLY",
+      "title": "Forgot to multiply by the common difference",
+      "formula": "u_1 + (n-1)",
+      "observableError": "Answer adds (n - 1) rather than (n - 1)*d.",
+      "feedback": "Each step changes the term by d, so multiply the (n - 1) steps by the common difference.",
+      "example": {
+        "seed": 2,
+        "params": {
+          "task": "nth_term",
+          "a1": 10,
+          "d": 4,
+          "n": 23
         },
-        {
-          "number": 3,
-          "transformation": "Evaluate",
-          "intermediateResult": "n = 40",
-          "dependsOn": [
-            2
-          ],
-          "marks": 1
-        }
-      ],
-      "distractors": [],
-      "validation": "pass",
-      "validationChecks": [
-        "params-in-domain",
-        "arith-iterative-agreement",
-        "answer-solution-agree",
-        "no-answer-leakage",
-        "a11y-fields-present"
-      ]
+        "correctAnswer": 98,
+        "distractorValue": 32
+      }
+    },
+    {
+      "misconceptionId": "MISC.SEQ.FORGOT_FIRST_TERM",
+      "title": "Omitted the first term",
+      "formula": "(n-1)*d",
+      "observableError": "Answer is the change from u_1, not the term value itself.",
+      "feedback": "Add the first term u_1 to (n - 1)*d to get the nth term.",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "nth_term",
+          "a1": 5,
+          "d": -1,
+          "n": 40
+        },
+        "correctAnswer": -34,
+        "distractorValue": -39
+      }
+    },
+    {
+      "misconceptionId": "MISC.SERIES.FORGOT_HALF",
+      "title": "Omitted the one-half in the sum formula",
+      "formula": "n*(2*u_1 + (n-1)*d)",
+      "observableError": "Sum is exactly twice the correct value.",
+      "feedback": "The sum formula has a factor of one half: S_n = (n/2)(2u_1 + (n - 1)d).",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "sum_n",
+          "a1": 5,
+          "d": -1,
+          "n": 40
+        },
+        "correctAnswer": -580,
+        "distractorValue": -1160
+      }
+    },
+    {
+      "misconceptionId": "MISC.SERIES.CONSTANT_LAST_TERM",
+      "title": "Treats every term as equal to the last term",
+      "formula": "n*u_n  (= n*(u_1 + (n-1)*d))",
+      "observableError": "Sum equals n multiplied by the nth term.",
+      "feedback": "The terms change by the common difference; do not multiply the number of terms by only the last term.",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "sum_n",
+          "a1": 5,
+          "d": -1,
+          "n": 40
+        },
+        "correctAnswer": -580,
+        "distractorValue": -1360
+      }
+    },
+    {
+      "misconceptionId": "MISC.SERIES.CONSTANT_FIRST_TERM",
+      "title": "Treats every term as equal to the first term",
+      "formula": "n*u_1",
+      "observableError": "Sum equals n multiplied by the first term.",
+      "feedback": "The terms change by the common difference. Do not multiply the number of terms by only the first term.",
+      "example": {
+        "seed": 1,
+        "params": {
+          "task": "sum_n",
+          "a1": 5,
+          "d": -1,
+          "n": 40
+        },
+        "correctAnswer": -580,
+        "distractorValue": 200
+      }
     }
   ]
 }

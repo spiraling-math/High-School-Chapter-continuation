@@ -1,13 +1,13 @@
-"""Build the curriculum-review pack for the arithmetic-sequences generator.
+"""Build the revised curriculum-review pack for the arithmetic-sequences generator.
 
-Selects representative items covering every supported (task, mode, difficulty
-band) combination and emits BOTH a machine-readable JSON pack and a
-human-readable Markdown pack for the curriculum authority to review.
-
-Each item records: seed, parameters, objective, mode, canonical answer, worked
-solution, distractor rationales (with the named misconception), and the full
-validation result. No item is marked approved/published — review is the gate
-that advances lifecycle state, and only the curriculum authority does that.
+Coverage (per the curriculum-review requirements):
+  * at least three examples for every supported (task, answer type),
+  * the difficulty bands that occur, positive and negative common differences,
+    positive and negative first terms, and small and large term indices,
+  * a section exercising every approved misconception rule, and
+  * for each item: objective, task, difficulty profile, seed, parameters, prompt,
+    answer, worked solution, distractor calculations (formula + value +
+    misconception + rationale + feedback), and validation result.
 
 Run:  python oracle/make_review_pack.py
 Writes: docs/review/arithmetic_sequences_review_pack.{json,md}
@@ -24,156 +24,192 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 from spi_oracle import sequences as seq  # noqa: E402
+from spi_oracle.misconceptions import MISCONCEPTIONS  # noqa: E402
 
 REVIEW_DIR = os.path.join(ROOT, "docs", "review")
-MISC_PATH = os.path.join(ROOT, "core", "misconceptions", "sequences.json")
+SCAN_LIMIT = 60000
 
-# Supported (task, mode) combinations for the slice.
 COMBOS = [
-    ("nth_term", "multiple-choice"),
-    ("nth_term", "integer"),
-    ("sum_n", "multiple-choice"),
-    ("sum_n", "integer"),
-    ("find_d", "integer"),
-    ("find_n_for_value", "integer"),
+    ("nth_term", "multiple-choice"), ("nth_term", "integer"),
+    ("sum_n", "multiple-choice"), ("sum_n", "integer"),
+    ("find_d", "integer"), ("find_n_for_value", "integer"),
 ]
-SCAN_LIMIT = 20000
 
 
-def load_misconceptions() -> dict:
-    lib = {m["misconceptionId"]: m for m in json.load(open(MISC_PATH, encoding="utf-8"))}
-    return lib
+def pick_for_combo(task: str, mode: str, target: int = 6) -> list:
+    bands: set = set()
+    flags = {"dpos": False, "dneg": False, "a1pos": False, "a1neg": False, "nsmall": False, "nlarge": False}
+    picked = []
+    for seed in range(1, SCAN_LIMIT + 1):
+        item = seq.generate(seed, {"task": task, "answerType": mode})
+        p = item["params"]
+        band = item["difficulty"]["overallBand"]
+        contributes = (
+            band not in bands
+            or (p["d"] > 0 and not flags["dpos"]) or (p["d"] < 0 and not flags["dneg"])
+            or (p["a1"] > 0 and not flags["a1pos"]) or (p["a1"] < 0 and not flags["a1neg"])
+            or (p["n"] <= 12 and not flags["nsmall"]) or (p["n"] >= 30 and not flags["nlarge"])
+        )
+        if contributes or len(picked) < 3:
+            picked.append((seed, item))
+            bands.add(band)
+            if p["d"] > 0:
+                flags["dpos"] = True
+            elif p["d"] < 0:
+                flags["dneg"] = True
+            if p["a1"] > 0:
+                flags["a1pos"] = True
+            elif p["a1"] < 0:
+                flags["a1neg"] = True
+            if p["n"] <= 12:
+                flags["nsmall"] = True
+            if p["n"] >= 30:
+                flags["nlarge"] = True
+        diverse = (len(picked) >= 3 and len(bands) >= 2 and all(flags.values()))
+        if diverse or len(picked) >= target:
+            break
+    return picked
 
 
-def pick_representatives() -> list:
-    """For each (task, mode), keep the first seed found per difficulty band."""
-    buckets: dict = {}
-    for task, mode in COMBOS:
+def distractor_calcs(item: dict) -> list:
+    calcs = []
+    for d in item.get("distractors", []):
+        m = MISCONCEPTIONS[d["misconceptionId"]]
+        calcs.append({
+            "value": d["value"],
+            "misconceptionId": d["misconceptionId"],
+            "misconception": m["title"],
+            "formula": m["expression"],
+            "rationale": d["rationale"],
+            "feedback": m["feedback"],
+        })
+    return calcs
+
+
+def item_record(seed: int, task: str, mode: str, item: dict) -> dict:
+    validation = seq.validate(item)
+    return {
+        "seed": seed,
+        "task": task,
+        "answerType": mode,
+        "objectiveIds": item["objectiveIds"],
+        "difficultyProfile": item["difficulty"],
+        "params": item["params"],
+        "calculatorPolicy": item["calculatorPolicy"],
+        "prompt": [b.get("text", "") for b in item["prompt"]["blocks"]],
+        "answer": item["answer"]["canonical"],
+        "workedSolution": item["solution"]["steps"],
+        "distractorCalculations": distractor_calcs(item),
+        "validation": validation["status"],
+        "validationChecks": [c["name"] for c in validation["checks"]],
+        "reproduce": {"generatorId": seq.GENERATOR_ID, "generatorVersion": seq.GENERATOR_VERSION,
+                      "seed": seed, "config": {"task": task, "answerType": mode}},
+    }
+
+
+def misconception_examples() -> list:
+    """One concrete worked example per approved misconception rule."""
+    out = []
+    for mid, m in MISCONCEPTIONS.items():
+        task = "sum_n" if mid.startswith("MISC.SERIES") else "nth_term"
+        found = None
         for seed in range(1, SCAN_LIMIT + 1):
-            item = seq.generate(seed, {"task": task, "answerType": mode})
-            band = item["difficulty"]["overallBand"]
-            key = (task, mode, band)
-            if key not in buckets:
-                buckets[key] = (seed, item)
-    # Stable ordering: by task order in COMBOS, then mode, then band.
-    order = {tm: i for i, tm in enumerate(COMBOS)}
-    return sorted(buckets.items(), key=lambda kv: (order[(kv[0][0], kv[0][1])], kv[0][2]))
+            item = seq.generate(seed, {"task": task, "answerType": "multiple-choice"})
+            for d in item.get("distractors", []):
+                if d["misconceptionId"] == mid:
+                    found = {"seed": seed, "params": item["params"],
+                             "correctAnswer": item["answer"]["canonical"], "distractorValue": d["value"]}
+                    break
+            if found:
+                break
+        out.append({"misconceptionId": mid, "title": m["title"], "formula": m["expression"],
+                    "observableError": m["observableError"], "feedback": m["feedback"], "example": found})
+    return out
 
 
 def build() -> None:
     os.makedirs(REVIEW_DIR, exist_ok=True)
-    misc = load_misconceptions()
-    reps = pick_representatives()
-
     pack = {
         "generatorId": seq.GENERATOR_ID,
         "generatorVersion": seq.GENERATOR_VERSION,
-        "note": "Representative items for curriculum review. None is approved or published; "
-                "advancing lifecycle state beyond machine-validated is the curriculum authority's decision.",
-        "items": [],
+        "note": "Representative items for curriculum review. None is approved or published; advancing "
+                "lifecycle state beyond machine-validated is the curriculum authority's decision.",
+        "combos": [],
+        "misconceptionCoverage": misconception_examples(),
     }
-
-    for (task, mode, band), (seed, item) in reps:
-        validation = seq.validate(item)
-        distractors = []
-        for d in item.get("distractors", []):
-            mid = d.get("misconceptionId")
-            m = misc.get(mid, {})
-            distractors.append({
-                "value": d["value"],
-                "misconceptionId": mid,
-                "misconception": m.get("title", ""),
-                "whyAStudentPicksIt": m.get("observableError", ""),
-                "feedback": m.get("feedback", ""),
-            })
-        pack["items"].append({
-            "seed": seed,
-            "mode": mode,
-            "task": task,
-            "difficultyBand": band,
-            "objectiveIds": item["objectiveIds"],
-            "params": item["params"],
-            "calculatorPolicy": item["calculatorPolicy"],
-            "prompt": [b.get("text", "") for b in item["prompt"]["blocks"]],
-            "canonicalAnswer": item["answer"]["canonical"],
-            "workedSolution": item["solution"]["steps"],
-            "distractors": distractors,
-            "validation": validation["status"],
-            "validationChecks": [c["name"] for c in validation["checks"]],
-        })
+    for task, mode in COMBOS:
+        items = [item_record(s, task, mode, it) for s, it in pick_for_combo(task, mode)]
+        pack["combos"].append({"task": task, "answerType": mode, "count": len(items), "items": items})
 
     json_path = os.path.join(REVIEW_DIR, "arithmetic_sequences_review_pack.json")
     with open(json_path, "w", encoding="utf-8") as fh:
         json.dump(pack, fh, indent=2)
 
-    # Markdown
-    lines = [
-        "# Curriculum-Review Pack — Arithmetic Sequences",
+    # ---- Markdown ----
+    L = [
+        "# Curriculum-Review Pack — Arithmetic Sequences (revised)",
         "",
-        f"Generator: `{seq.GENERATOR_ID}` v`{seq.GENERATOR_VERSION}`. "
-        f"Generated by `oracle/make_review_pack.py`.",
+        f"Generator: `{seq.GENERATOR_ID}` v`{seq.GENERATOR_VERSION}`. Generated by `oracle/make_review_pack.py`.",
         "",
         "> **Review purpose.** These items are machine-validated. Advancing any item to "
-        "`curriculum-reviewed` / `approved` / `published` is the curriculum authority's decision; "
-        "this tool never does so. Please review wording, difficulty-band fit, and distractor pedagogy.",
+        "`curriculum-reviewed` / `approved` / `published` is the curriculum authority's decision; this tool "
+        "never does so. Each multiple-choice distractor is recomputed from its misconception formula and "
+        "checked for value / rationale / feedback agreement during validation.",
         "",
-        f"**Coverage:** {len(pack['items'])} representative items across "
-        f"{len(COMBOS)} supported (task, mode) combinations and the difficulty bands that occur.",
+        "## Misconception rule coverage",
         "",
-        "| # | Task | Mode | Band | Seed | Answer | Validation |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| ID | Misconception | Formula | Example (seed · params → distractor) |",
+        "| --- | --- | --- | --- |",
     ]
-    for i, it in enumerate(pack["items"], 1):
-        lines.append(f"| {i} | {it['task']} | {it['mode']} | {it['difficultyBand']} | "
-                     f"{it['seed']} | {it['canonicalAnswer']} | {it['validation']} |")
-    lines.append("")
+    for mc in pack["misconceptionCoverage"]:
+        ex = mc["example"]
+        exs = (f"{ex['seed']} · a1={ex['params']['a1']}, d={ex['params']['d']}, n={ex['params']['n']} "
+               f"→ {ex['distractorValue']} (correct {ex['correctAnswer']})") if ex else "—"
+        L.append(f"| `{mc['misconceptionId']}` | {mc['title']} | `{mc['formula']}` | {exs} |")
+    L.append("")
 
-    for i, it in enumerate(pack["items"], 1):
-        lines += [
-            f"## {i}. {it['task']} · {it['mode']} · band {it['difficultyBand']}",
-            "",
-            f"- **Objective:** `{it['objectiveIds'][0]}`",
-            f"- **Seed:** `{it['seed']}`  ·  **Parameters:** `{json.dumps(it['params'])}`  ·  "
-            f"**Calculator:** {it['calculatorPolicy']}",
-            f"- **Reproduce:** `generate(seed={it['seed']}, {{ task: \"{it['task']}\", "
-            f"answerType: \"{it['mode']}\" }})` on `{seq.GENERATOR_ID}` v`{seq.GENERATOR_VERSION}`",
-            "",
-            "**Question**",
-            "",
-        ]
-        for p in it["prompt"]:
-            lines.append(f"> {p}")
-        lines.append("")
-        lines.append(f"**Canonical answer:** `{it['canonicalAnswer']}`")
-        lines.append("")
-        lines.append("**Worked solution**")
-        lines.append("")
-        for s in it["workedSolution"]:
-            bit = s.get("ruleOrTheorem") or s.get("intermediateResult") or ""
-            lines.append(f"{s['number']}. {s.get('transformation','')} — `{bit}`")
-        lines.append("")
-        if it["distractors"]:
-            lines.append("**Distractors (each from a named misconception)**")
-            lines.append("")
-            lines.append("| Value | Misconception | Why a student picks it | Feedback |")
-            lines.append("| --- | --- | --- | --- |")
-            for d in it["distractors"]:
-                lines.append(f"| {d['value']} | {d['misconception']} (`{d['misconceptionId']}`) | "
-                             f"{d['whyAStudentPicksIt']} | {d['feedback']} |")
-            lines.append("")
-        lines.append(f"**Validation:** {it['validation']} — checks: "
-                     f"{', '.join('`'+c+'`' for c in it['validationChecks'])}")
-        lines.append("")
-        lines.append("**Curriculum decision:** ☐ approve  ☐ revise  ☐ reject — notes: ____")
-        lines.append("")
-        lines.append("---")
-        lines.append("")
+    for combo in pack["combos"]:
+        L.append(f"## {combo['task']} · {combo['answerType']} — {combo['count']} examples")
+        L.append("")
+        for i, it in enumerate(combo["items"], 1):
+            dp = it["difficultyProfile"]
+            L += [
+                f"### {combo['task']}/{combo['answerType']} #{i} — band {dp['overallBand']}",
+                "",
+                f"- **Objective:** `{it['objectiveIds'][0]}`  ·  **Calculator:** {it['calculatorPolicy']}",
+                f"- **Seed:** `{it['seed']}`  ·  **Parameters:** `{json.dumps(it['params'])}`",
+                f"- **Difficulty axes:** `{json.dumps(dp['axes'])}`",
+                f"- **Reproduce:** `generate({it['seed']}, {json.dumps(it['reproduce']['config'])})` on v`{seq.GENERATOR_VERSION}`",
+                "",
+                "**Question**", "",
+            ]
+            for p in it["prompt"]:
+                L.append(f"> {p}")
+            L += ["", f"**Answer:** `{it['answer']}`", "", "**Worked solution**", ""]
+            for s in it["workedSolution"]:
+                bit = s.get("ruleOrTheorem") or s.get("intermediateResult") or ""
+                L.append(f"{s['number']}. {s.get('transformation','')} — `{bit}`")
+            L.append("")
+            if it["distractorCalculations"]:
+                L += ["**Distractor calculations (each a distinct misconception)**", "",
+                      "| Value | Formula | Misconception | Rationale | Feedback |",
+                      "| --- | --- | --- | --- | --- |"]
+                for d in it["distractorCalculations"]:
+                    L.append(f"| {d['value']} | `{d['formula']}` | {d['misconception']} (`{d['misconceptionId']}`) "
+                             f"| {d['rationale']} | {d['feedback']} |")
+                L.append("")
+            else:
+                L += ["_Integer free-response: no distractors._", ""]
+            L += [f"**Validation:** {it['validation']} — {', '.join('`'+c+'`' for c in it['validationChecks'])}", "",
+                  "**Curriculum decision:** ☐ approve  ☐ revise  ☐ reject — notes: ____", "", "---", ""]
 
     md_path = os.path.join(REVIEW_DIR, "arithmetic_sequences_review_pack.md")
     with open(md_path, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(lines))
+        fh.write("\n".join(L))
 
-    print(f"Review pack: {len(pack['items'])} items")
+    total = sum(c["count"] for c in pack["combos"])
+    print(f"Review pack: {total} items across {len(COMBOS)} (task, answerType) combinations; "
+          f"{len(pack['misconceptionCoverage'])} misconception rules covered.")
     print(f"  {os.path.relpath(json_path, ROOT)}")
     print(f"  {os.path.relpath(md_path, ROOT)}")
 

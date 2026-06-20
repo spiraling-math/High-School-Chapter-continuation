@@ -14,6 +14,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { generate, serialize, solve, ALL_TASKS } from "./arithmetic.ts";
+import { MISCONCEPTIONS } from "./misconceptions.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const golden: Array<{ seed: number; serialized: string; validation: string }> = JSON.parse(
@@ -49,7 +50,7 @@ test("rejects invalid configuration", () => {
   assert.throws(() => generate(1, { task: "find_d", answerType: "multiple-choice" }));
 });
 
-test("multiple-choice items have exactly one correct option and 3 distinct distractors", () => {
+test("multiple-choice items have one correct option and 3 distinct-misconception distractors", () => {
   for (let s = 1; s <= 2000; s++) {
     const item = generate(s, { answerType: "multiple-choice" });
     const options = item["options"] as Array<{ value: number; correct: boolean }>;
@@ -61,6 +62,32 @@ test("multiple-choice items have exactly one correct option and 3 distinct distr
     assert.equal(new Set(wrong).size, wrong.length, `dup distractor at seed ${s}`);
     assert.ok(!wrong.includes(answer), `distractor==answer at seed ${s}`);
     assert.ok(wrong.length >= 3, `<3 distractors at seed ${s}`);
+    // Distinct misconceptions + semantic agreement with the registry formula.
+    const ds = item["distractors"] as Array<{ value: number; misconceptionId: string; rationale: string }>;
+    const mids = ds.map((x) => x.misconceptionId);
+    assert.equal(new Set(mids).size, mids.length, `repeated misconception at seed ${s}`);
+    for (const dd of ds) {
+      const m = MISCONCEPTIONS[dd.misconceptionId]!;
+      assert.equal(m.formula(item["params"] as { a1: number; d: number; n: number }), dd.value, `rule mismatch seed ${s}`);
+      assert.equal(dd.rationale, m.observableError, `rationale mismatch seed ${s}`);
+    }
+  }
+});
+
+test("distractor semantic-agreement regression (seeds 1, 2, 3, 86)", () => {
+  for (const s of [1, 2, 3, 86]) {
+    for (const task of ["nth_term", "sum_n"] as const) {
+      const item = generate(s, { task, answerType: "multiple-choice" });
+      const ds = item["distractors"] as Array<{ value: number; misconceptionId: string; rationale: string }>;
+      assert.equal(ds.length, 3);
+      assert.equal(new Set(ds.map((x) => x.misconceptionId)).size, 3, `seed ${s} ${task}`);
+      for (const dd of ds) {
+        const m = MISCONCEPTIONS[dd.misconceptionId]!;
+        assert.equal(m.formula(item["params"] as { a1: number; d: number; n: number }), dd.value);
+        assert.equal(dd.rationale, m.observableError);
+        assert.ok(m.feedback.length > 0);
+      }
+    }
   }
 });
 

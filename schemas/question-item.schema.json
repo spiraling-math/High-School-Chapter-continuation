@@ -118,7 +118,7 @@
       }
     },
     "difficulty": { "$ref": "#/$defs/difficultyProfile" },
-    "calculatorPolicy": { "type": "string", "enum": ["no-calculator", "calculator-allowed", "calculator-required", "graphical-calculator", "either"] },
+    "calculatorPolicy": { "type": "string", "enum": ["calculator-not-required", "calculator-allowed", "calculator-required", "graphical-calculator", "configurable-by-assessment"] },
     "estimatedTimeSeconds": { "type": "integer", "minimum": 0, "description": "Estimated completion time." },
     "media": {
       "type": "array",
@@ -384,7 +384,7 @@
         ]
       },
       "difficulty": { "overallBand": 1, "axes": { "numericalComplexity": 0.15, "reasoningSteps": 0.1 } },
-      "calculatorPolicy": "either",
+      "calculatorPolicy": "calculator-not-required",
       "estimatedTimeSeconds": 60,
       "accessibility": {
         "spokenMath": "Find the tenth term of an arithmetic sequence with first term four and common difference three.",

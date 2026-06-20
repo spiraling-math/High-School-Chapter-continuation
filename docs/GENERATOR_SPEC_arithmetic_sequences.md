@@ -1,7 +1,28 @@
 # Generator Specification — Arithmetic Sequences
 
-Generator: `gen.sequences.arithmetic` · Version: `1.0.0` · Status: in-development
+Generator: `gen.sequences.arithmetic` · Version: `1.0.1` · Status: in-development
 First vertical slice (Decision #7). Last updated: 2026-06-20.
+
+## v1.0.1 revision (curriculum-review corrections)
+
+- **Distractors are distinct, formula-backed misconceptions** drawn from the
+  canonical registry (`domains/sequences/misconceptions.ts` /
+  `oracle/spi_oracle/misconceptions.py`). No misconception is reused within an
+  item. If a clean set of three is not possible for the drawn parameters, the
+  parameters are **deterministically regenerated** from the same seed stream.
+  - nth_term rules: `OFFBYONE_TERMINDEX` (u_1+n·d), `SIGN_DIFFERENCE`,
+    `FORGOT_MULTIPLY`, `FORGOT_FIRST_TERM` ((n−1)·d, new).
+  - sum_n rules: `SERIES.FORGOT_HALF`, `SERIES.CONSTANT_LAST_TERM` (n·u_n, renamed
+    from CONSTANT_TERMS), `SERIES.CONSTANT_FIRST_TERM` (n·u_1, new).
+- **Semantic-agreement validation:** the validator (v1.1.0) independently
+  recomputes every distractor from its misconception formula and checks the
+  value, rationale, misconception, and feedback agree.
+- **Clarified wording** for `find_n_for_value`: "The nth term of the sequence is
+  V. Find the value of n."
+- **Calculator policy** is explicit: `calculator-not-required`.
+- The objective split for reverse tasks is **proposed** (see
+  `docs/CURRICULUM_OBJECTIVE_PROPOSAL.md`); mapping is unchanged in v1.0.1 and
+  would bump to v1.1.0 on approval.
 
 This is the design specification for the first production generator. It is implemented first as the Python oracle (`oracle/spi_oracle/sequences.py`) and will be mirrored in TypeScript. It conforms to `GENERATOR_STANDARD.md`, `VALIDATION_STANDARD.md`, `DIFFICULTY_MODEL.md`, and the JSON schemas.
 

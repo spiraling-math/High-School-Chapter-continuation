@@ -1,23 +1,24 @@
 /**
  * Arithmetic sequences generator (production TypeScript).
  *
- * Generator id : gen.sequences.arithmetic   Version: 1.0.0
+ * Generator id : gen.sequences.arithmetic   Version: 1.0.1
  * Spec         : docs/GENERATOR_SPEC_arithmetic_sequences.md
  *
- * This is the byte-for-byte counterpart of the Python oracle
- * (oracle/spi_oracle/sequences.py). For any seed the two produce identical
- * canonical serializations; this is asserted by the golden-parity test against
- * oracle/golden/arithmetic_sequences.golden.json (Principle 4: independent
- * verification across two implementations).
+ * Byte-for-byte counterpart of oracle/spi_oracle/sequences.py, asserted by the
+ * golden- and parity-vector tests (Principle 4: independent verification across
+ * two implementations). All maths uses integers only.
  *
- * All maths uses integers only (the first slice is exact by construction).
+ * v1.0.1: distinct-misconception distractors from the canonical registry, with
+ * deterministic parameter regeneration when a clean set of three is not
+ * available; clarified "find term index" wording; explicit calculator policy.
  */
 
 import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
+import { MISCONCEPTIONS, rulesFor } from "./misconceptions.ts";
 
 export const GENERATOR_ID = "gen.sequences.arithmetic";
-export const GENERATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
 
 export type Task = "nth_term" | "sum_n" | "find_d" | "find_n_for_value";
 export const FORWARD_TASKS: Task[] = ["nth_term", "sum_n"];
@@ -27,6 +28,8 @@ export const ALL_TASKS: Task[] = ["nth_term", "sum_n", "find_d", "find_n_for_val
 const A1_MIN = -20, A1_MAX = 20;
 const D_ABS_MIN = 1, D_ABS_MAX = 12;
 const N_MIN = 3, N_MAX = 40;
+const MAX_PARAM_ATTEMPTS = 64;
+const CALCULATOR_POLICY = "calculator-not-required";
 
 const OBJECTIVE_BY_TASK: Record<Task, string> = {
   nth_term: "SPI.IBDPAASL.SEQSER.ARITH.NTH_TERM.01",
@@ -37,14 +40,13 @@ const OBJECTIVE_BY_TASK: Record<Task, string> = {
 
 export interface Params { task: Task; a1: number; d: number; n: number; }
 export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; }
+interface Cand { value: number; misconceptionId: string; rationale: string; }
 
 // --------------------------------------------------------------------------- //
-// Canonical mathematics (closed form) — mirrors solve()
+// Canonical mathematics (closed form)
 // --------------------------------------------------------------------------- //
 function nthTerm(a1: number, d: number, n: number): number { return a1 + (n - 1) * d; }
-function sumN(a1: number, d: number, n: number): number {
-  return (n * (2 * a1 + (n - 1) * d)) / 2; // even numerator => exact integer
-}
+function sumN(a1: number, d: number, n: number): number { return (n * (2 * a1 + (n - 1) * d)) / 2; }
 function givenValue(p: Params): number { return nthTerm(p.a1, p.d, p.n); }
 
 export function solve(p: Params): number {
@@ -57,70 +59,27 @@ export function solve(p: Params): number {
 }
 
 // --------------------------------------------------------------------------- //
-// Parameter selection (identical RNG draw order to the oracle)
+// Distractors — distinct misconceptions from the canonical registry
 // --------------------------------------------------------------------------- //
-function chooseParams(rng: Mulberry32, config: Config): { params: Params; answerType: string } {
-  const answerType = config.answerType ?? "integer";
-  let task: Task;
-  if (config.task != null) {
-    if (!ALL_TASKS.includes(config.task)) throw new Error(`unknown task: ${config.task}`);
-    if (answerType === "multiple-choice" && REVERSE_TASKS.includes(config.task)) {
-      throw new Error("multiple-choice is only offered for forward tasks");
-    }
-    task = config.task;
-  } else {
-    const pool = answerType === "multiple-choice" ? FORWARD_TASKS : ALL_TASKS;
-    task = rng.choice(pool);
-  }
-  const a1 = rng.nextInt(A1_MIN, A1_MAX);
-  const dMag = rng.nextInt(D_ABS_MIN, D_ABS_MAX);
-  const d = rng.nextFloat() < 0.5 ? dMag : -dMag;
-  const n = rng.nextInt(N_MIN, N_MAX);
-  return { params: { task, a1, d, n }, answerType };
-}
-
-// --------------------------------------------------------------------------- //
-// Distractors (forward tasks) — each maps to a misconception
-// --------------------------------------------------------------------------- //
-interface Cand { value: number; misconceptionId: string; }
-
-export function generateDistractors(p: Params): Cand[] {
+export function generateDistractors(p: Params): Cand[] | null {
+  const ruleIds = rulesFor(p.task);
+  if (ruleIds.length === 0) return [];
   const correct = solve(p);
-  const { a1, d, n, task } = p;
-  let candidates: Cand[] = [];
-  if (task === "nth_term") {
-    candidates = [
-      { value: a1 + n * d, misconceptionId: "MISC.SEQ.OFFBYONE_TERMINDEX" },
-      { value: a1 - (n - 1) * d, misconceptionId: "MISC.SEQ.SIGN_DIFFERENCE" },
-      { value: a1 + (n - 1), misconceptionId: "MISC.SEQ.FORGOT_MULTIPLY" },
-      { value: a1 + (n + 1) * d, misconceptionId: "MISC.SEQ.OFFBYONE_TERMINDEX" },
-    ];
-  } else if (task === "sum_n") {
-    const uN = nthTerm(a1, d, n);
-    candidates = [
-      { value: n * (2 * a1 + (n - 1) * d), misconceptionId: "MISC.SERIES.FORGOT_HALF" },
-      { value: n * uN, misconceptionId: "MISC.SERIES.CONSTANT_TERMS" },
-      { value: n * a1, misconceptionId: "MISC.SERIES.CONSTANT_TERMS" },
-      { value: (n * (2 * a1 + (n + 1) * d)) / 2, misconceptionId: "MISC.SEQ.OFFBYONE_TERMINDEX" },
-      { value: correct + (a1 + n * d), misconceptionId: "MISC.SEQ.OFFBYONE_TERMINDEX" },
-      { value: correct - uN, misconceptionId: "MISC.SEQ.OFFBYONE_TERMINDEX" },
-    ];
-  } else {
-    return [];
-  }
   const chosen: Cand[] = [];
   const seen = new Set<number>([correct]);
-  for (const c of candidates) {
-    if (seen.has(c.value)) continue;
-    seen.add(c.value);
-    chosen.push({ value: c.value, misconceptionId: c.misconceptionId });
+  for (const mid of ruleIds) {
+    const m = MISCONCEPTIONS[mid]!;
+    const val = m.formula(p);
+    if (seen.has(val)) continue;
+    seen.add(val);
+    chosen.push({ value: val, misconceptionId: mid, rationale: m.observableError });
     if (chosen.length === 3) break;
   }
-  return chosen;
+  return chosen.length === 3 ? chosen : null;
 }
 
 // --------------------------------------------------------------------------- //
-// Structured solution — mirrors generate_solution()
+// Structured solution
 // --------------------------------------------------------------------------- //
 export function generateSolution(p: Params): Json {
   const { task, a1, d, n } = p;
@@ -157,7 +116,7 @@ export function generateSolution(p: Params): Json {
 }
 
 // --------------------------------------------------------------------------- //
-// Prompt + accessibility + difficulty — mirror the oracle
+// Prompt + accessibility + difficulty
 // --------------------------------------------------------------------------- //
 function ordinal(n: number): string {
   let suffix: string;
@@ -204,14 +163,13 @@ function promptBlocks(p: Params): { instruction: string; blocks: Json[]; spoken:
     instruction: "Find",
     blocks: [
       { kind: "text", text: `An arithmetic sequence has first term ${a1} and common difference ${d}.` },
-      { kind: "text", text: `One term of the sequence is ${value}. Find which term this is.` },
+      { kind: "text", text: `The nth term of the sequence is ${value}. Find the value of n.` },
     ],
-    spoken: `An arithmetic sequence has first term ${a1} and common difference ${d}. One term is ${value}. Find which term it is.`,
+    spoken: `An arithmetic sequence has first term ${a1} and common difference ${d}. The nth term of the sequence is ${value}. Find the value of n.`,
   };
 }
 
 const DIFFICULTY_WEIGHTS = { numericalComplexity: 0.3, reasoningSteps: 0.45, abstraction: 0.25 };
-
 function round3(x: number): number { return Math.floor(x * 1000 + 0.5) / 1000; }
 
 function difficulty(p: Params): Json {
@@ -232,9 +190,44 @@ function difficulty(p: Params): Json {
 // --------------------------------------------------------------------------- //
 // generate()
 // --------------------------------------------------------------------------- //
+function drawParams(rng: Mulberry32, explicitTask: Task | undefined, answerType: string): Params {
+  let task: Task;
+  if (explicitTask != null) {
+    task = explicitTask;
+  } else {
+    const pool = answerType === "multiple-choice" ? FORWARD_TASKS : ALL_TASKS;
+    task = rng.choice(pool);
+  }
+  const a1 = rng.nextInt(A1_MIN, A1_MAX);
+  const dMag = rng.nextInt(D_ABS_MIN, D_ABS_MAX);
+  const d = rng.nextFloat() < 0.5 ? dMag : -dMag;
+  const n = rng.nextInt(N_MIN, N_MAX);
+  return { task, a1, d, n };
+}
+
 export function generate(seed: number, config: Config = {}): Record<string, Json> {
+  const answerType = config.answerType ?? "integer";
+  const explicitTask = config.task;
+  if (explicitTask != null && !ALL_TASKS.includes(explicitTask)) throw new Error(`unknown task: ${explicitTask}`);
+  if (answerType === "multiple-choice" && explicitTask != null && REVERSE_TASKS.includes(explicitTask)) {
+    throw new Error("multiple-choice is only offered for forward tasks");
+  }
+
   const rng = new Mulberry32(seed);
-  const { params, answerType } = chooseParams(rng, config);
+  let params!: Params;
+  let distractors: Cand[] | null = null;
+  let ok = false;
+  for (let attempt = 0; attempt < MAX_PARAM_ATTEMPTS; attempt++) {
+    params = drawParams(rng, explicitTask, answerType);
+    if (answerType === "multiple-choice") {
+      distractors = generateDistractors(params);
+      if (distractors === null) continue; // regenerate parameters
+    }
+    ok = true;
+    break;
+  }
+  if (!ok) throw new Error("could not find parameters yielding three distinct distractors");
+
   const { task } = params;
   const answerValue = solve(params);
   const pr = promptBlocks(params);
@@ -251,7 +244,7 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
     answer: { type: "integer", canonical: answerValue, display: String(answerValue) },
     solution: generateSolution(params),
     difficulty: difficulty(params),
-    calculatorPolicy: "either",
+    calculatorPolicy: CALCULATOR_POLICY,
     accessibility: { spokenMath: pr.spoken, nonColorIndicators: true },
     provenance: {
       origin: "generated",
@@ -262,14 +255,15 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
   };
 
   if (answerType === "multiple-choice") {
+    const ds = distractors ?? [];
     (item["answer"] as Record<string, Json>)["type"] = "multiple-choice";
-    const distractors = generateDistractors(params);
-    item["distractors"] = distractors.map((dd, i) => ({
-      id: `d${i + 1}`, value: dd.value, display: String(dd.value), misconceptionId: dd.misconceptionId,
+    item["distractors"] = ds.map((dd, i) => ({
+      id: `d${i + 1}`, value: dd.value, display: String(dd.value),
+      misconceptionId: dd.misconceptionId, rationale: dd.rationale,
     }));
     interface Opt { value: number; correct: boolean; misconceptionId: string | null; }
     const pool: Opt[] = [{ value: answerValue, correct: true, misconceptionId: null }];
-    for (const dd of distractors) pool.push({ value: dd.value, correct: false, misconceptionId: dd.misconceptionId });
+    for (const dd of ds) pool.push({ value: dd.value, correct: false, misconceptionId: dd.misconceptionId });
     const shuffled = rng.shuffle(pool);
     const labels = ["A", "B", "C", "D", "E"];
     item["options"] = shuffled.map((o, i) => {

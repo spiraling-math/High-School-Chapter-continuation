@@ -98,11 +98,15 @@ $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';'
 npm test                                   # node --test over core/** and domains/** (16 tests)
 ```
 
+## Generator v1.0.1 (curriculum-review REVISE corrections)
+
+Applied the owner's review corrections: distractors are now distinct, formula-backed misconceptions from a canonical registry (`domains/sequences/misconceptions.ts` + `oracle/spi_oracle/misconceptions.py`) with deterministic parameter regeneration when a clean set isn't available; new `MISC.SEQ.FORGOT_FIRST_TERM`; renamed `MISC.SERIES.CONSTANT_TERMS`→`CONSTANT_LAST_TERM`; new `MISC.SERIES.CONSTANT_FIRST_TERM`. Validator v1.1.0 adds distractor semantic-agreement (recompute each distractor from its formula; value/rationale/feedback must agree) + distinct-misconception. Clarified `find_n_for_value` wording; calculator policy `calculator-not-required` (schema enum updated). Generator bumped to **v1.0.1**; golden/parity fixtures + review pack regenerated. All tests pass (TS 47, Python 19, sweep 0 invalid, conformance). The objective split for reverse tasks is **proposed** in `docs/CURRICULUM_OBJECTIVE_PROPOSAL.md` (awaiting approval; would be v1.1.0).
+
 ## Next recommended task
 
-The Generator Studio MVP is complete and verified. Awaiting the owner:
-1. **Curriculum review** of `docs/review/arithmetic_sequences_review_pack.md` to advance items beyond `machine-validated` (only the authority may approve/publish).
-2. On approval, the next build increment is the **second generator family** (e.g. geometric sequences) — oracle-first, then TypeScript with golden parity. Explicitly gated on owner approval; not started.
-3. Optional hardening: move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv).
+Awaiting the owner:
+1. **Review the revised pack** `docs/review/arithmetic_sequences_review_pack.md` and **approve/amend the proposed objective IDs** in `docs/CURRICULUM_OBJECTIVE_PROPOSAL.md`.
+2. On objective approval: apply the remap as **v1.1.0** (regenerate fixtures + pack).
+3. Only after your approval: the **second generator family** (e.g. geometric sequences) — oracle-first, then TypeScript with golden parity. Not started.
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.
