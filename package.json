@@ -16,6 +16,7 @@
   },
   "comment:test-runner": "Core/domain tests use Node's built-in test runner (node:test) and run offline on Node >=23 with native TypeScript type-stripping — no install required. typecheck needs `npm install` (typescript) and a network connection, once.",
   "devDependencies": {
-    "typescript": "^5.5.0"
+    "@types/node": "24.13.2",
+    "typescript": "5.9.3"
   }
 }
