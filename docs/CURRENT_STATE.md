@@ -108,9 +108,9 @@ Applied the owner's review corrections: distractors are now distinct, formula-ba
 
 ## Next recommended task
 
-Awaiting the owner:
-1. **Review the revised pack** `docs/review/arithmetic_sequences_review_pack.md` and **approve/amend the proposed objective IDs** in `docs/CURRICULUM_OBJECTIVE_PROPOSAL.md`.
-2. On objective approval: apply the remap as **v1.1.0** (regenerate fixtures + pack).
-3. Only after your approval: the **second generator family** (e.g. geometric sequences) — oracle-first, then TypeScript with golden parity. Not started.
+Arithmetic sequences is complete and **curriculum-approved at v1.1.0**. Awaiting the owner:
+1. **Review and approve/amend the geometric-sequences proposal** `docs/GENERATOR_SPEC_geometric_sequences_PROPOSAL.md` — objectives, task coverage (incl. exact fractional answers and optional sum-to-infinity), difficulty model, misconceptions, and generator contract.
+2. Only after that approval: implement `gen.sequences.geometric` oracle-first, then TypeScript with golden parity, then a curriculum-review pack. **Not started.**
+3. Optional hardening (any time): move renderers to `/renderers`, add an `axe-core` browser a11y scan, general JSON-schema validation in TS (Ajv), add an exact rational type to the TS core (needed for geometric).
 
 See `ROADMAP.md`. The arithmetic-sequences slice still awaits your mathematics/curriculum review to advance items past `machine-validated`.
