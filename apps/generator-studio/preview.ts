@@ -40,6 +40,8 @@ function meta(studio: Studio): HTMLElement {
   const genId = String(item["generatorId"]);
   const genVer = String(item["generatorVersion"]);
 
+  const interaction = String(item["interactionType"] ?? (studio.mode === "multiple-choice" ? "multiple-choice" : "free-response"));
+  const answerType = String((item["answer"] as { type?: string }).type ?? "");
   const dl = el("dl", { class: "meta-grid" });
   const rows: [string, string][] = [
     ["Seed", String(item["seed"])],
@@ -47,7 +49,8 @@ function meta(studio: Studio): HTMLElement {
     ["Parameters", paramSummary(p)],
     ["Objective", (item["objectiveIds"] as string[])[0]!],
     ["Difficulty band", String(band)],
-    ["Mode", studio.mode],
+    ["Interaction", interaction],
+    ["Answer type", answerType],
   ];
   for (const [k, v] of rows) dl.append(el("dt", {}, k), el("dd", {}, v));
 

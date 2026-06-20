@@ -1,8 +1,14 @@
 # Generator Proposal — Geometric Sequences (next family)
 
-Status: **APPROVED and IMPLEMENTED as `gen.sequences.geometric` v1.0.0.**
-(Originally a proposal; the owner approved it. This document is retained as the
-design record.)
+Status: **APPROVED and IMPLEMENTED. Current release: `gen.sequences.geometric`
+v1.1.0** (v1.0.0 preserved). This document is retained as the design record.
+
+**v1.1.0 curriculum-review corrections:** interactionType separated from
+answer.type (`integer`/`exact-rational`, normalized `{num,den}` canonical with an
+`accepts` policy and an exact-rational checker); geometric-**series** wording for
+sums; step-by-step `find_n` exponent reasoning; and independent validators for
+answer-type/value consistency, find_r real-solution-set uniqueness, and
+term-index uniqueness. See `DECISION_LOG.md` #23.
 
 **As-built scope decisions** (within the approved proposal):
 - Multiple-choice is offered for `nth_term` and `sum_n`; `find_r`,

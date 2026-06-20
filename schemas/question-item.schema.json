@@ -118,6 +118,7 @@
       }
     },
     "difficulty": { "$ref": "#/$defs/difficultyProfile" },
+    "interactionType": { "type": "string", "enum": ["free-response", "multiple-choice", "multiple-select", "matching", "ordering", "classification"], "description": "How the student interacts with the item, independent of the mathematical answer type." },
     "calculatorPolicy": { "type": "string", "enum": ["calculator-not-required", "calculator-allowed", "calculator-required", "graphical-calculator", "configurable-by-assessment"] },
     "estimatedTimeSeconds": { "type": "integer", "minimum": 0, "description": "Estimated completion time." },
     "media": {
@@ -193,7 +194,7 @@
       "type": "string",
       "description": "Platform-wide answer type vocabulary. Shared by curriculum objectives, items, and answer checkers.",
       "enum": [
-        "integer", "decimal", "fraction", "mixed-number", "exact-surd", "exact-trig",
+        "integer", "decimal", "fraction", "exact-rational", "mixed-number", "exact-surd", "exact-trig",
         "algebraic-expression", "equation", "inequality", "interval", "set",
         "ordered-pair", "coordinate", "sequence", "permutation", "combination",
         "vector", "matrix", "complex-number",
@@ -209,8 +210,18 @@
       "required": ["type", "canonical"],
       "properties": {
         "type": { "$ref": "#/$defs/answerType" },
-        "canonical": { "description": "The canonical answer value. Encoding depends on type (e.g. integer for 'integer', {num,den} for 'fraction', string for 'algebraic-expression')." },
+        "canonical": { "description": "The canonical answer value. Encoding depends on type. For 'integer' and 'exact-rational' it is a normalized rational object {num, den} with den >= 1 (den = 1 for integers); for 'algebraic-expression' a string; etc." },
         "display": { "type": "string", "description": "Canonical display form (KaTeX-ready)." },
+        "accepts": {
+          "type": "object",
+          "description": "Which equivalent input forms the checker accepts for exact-rational/integer answers.",
+          "additionalProperties": false,
+          "properties": {
+            "fraction": { "type": "boolean", "description": "Accept any equivalent fraction (e.g. 30/8 for 15/4). Default true." },
+            "decimal": { "type": "boolean", "description": "Accept the decimal form (only when the rational terminates and the item permits it)." },
+            "mixed": { "type": "boolean", "description": "Accept mixed-number form (only when enabled)." }
+          }
+        },
         "equivalentForms": { "type": "array", "items": {}, "description": "Other forms accepted as fully correct (e.g. '1/2' and '0.5')." },
         "tolerance": {
           "type": "object",
@@ -226,7 +237,19 @@
         "units": { "type": "string", "description": "Units of the answer, if any (e.g. 'cm', 'm s^-1')." },
         "rounding": { "type": "string", "description": "Rounding instruction shown to the student and enforced by the checker (e.g. 'to 3 significant figures')." },
         "workingRequired": { "type": "boolean", "default": false, "description": "Whether working must be shown for full marks." }
-      }
+      },
+      "allOf": [
+        {
+          "$comment": "An 'integer' answer whose canonical is a rational object must have denominator 1 (no false labelling).",
+          "if": { "properties": { "type": { "const": "integer" }, "canonical": { "type": "object", "required": ["den"] } }, "required": ["type"] },
+          "then": { "properties": { "canonical": { "properties": { "den": { "const": 1 } } } } }
+        },
+        {
+          "$comment": "An 'exact-rational' answer must carry a normalized rational object {num, den>=1}.",
+          "if": { "properties": { "type": { "const": "exact-rational" } }, "required": ["type"] },
+          "then": { "properties": { "canonical": { "type": "object", "required": ["num", "den"], "properties": { "num": { "type": "integer" }, "den": { "type": "integer", "minimum": 1 } } } } }
+        }
+      ]
     },
     "contentBlock": {
       "type": "object",

@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spi_oracle import geometric as geo  # noqa: E402
 from spi_oracle.geometric_misconceptions import MISCONCEPTIONS  # noqa: E402
+from spi_oracle import geometric_uniqueness as gu  # noqa: E402
 
 SWEEP = int(os.environ.get("SPI_SWEEP", "10000"))
 
@@ -106,6 +107,52 @@ class TestPropertySweep(unittest.TestCase):
             for task in ("nth_term", "sum_n"):
                 item = geo.generate(s, {"task": task, "answerType": "multiple-choice"})
                 self.assertEqual(geo.validate(item)["status"], "pass", f"seed {s} {task}")
+
+
+class TestAnswerTypeModel(unittest.TestCase):
+    def test_fractional_answer_is_exact_rational(self):
+        # Find a free-response item with a non-integer answer.
+        for s in range(1, 5000):
+            it = geo.generate(s, {"task": "nth_term", "answerType": "integer"})
+            if it["answer"]["canonical"]["den"] != 1:
+                self.assertEqual(it["answer"]["type"], "exact-rational")
+                self.assertEqual(it["interactionType"], "free-response")
+                self.assertTrue(it["answer"]["accepts"]["fraction"])
+                return
+        self.fail("no fractional answer found")
+
+    def test_integer_answer_is_integer_type(self):
+        it = geo.generate(1, {"task": "find_n_for_value", "answerType": "integer"})
+        self.assertEqual(it["answer"]["canonical"]["den"], 1)
+        self.assertEqual(it["answer"]["type"], "integer")
+
+    def test_validator_rejects_type_value_contradiction(self):
+        it = geo.generate(1, {"task": "nth_term", "answerType": "integer"})
+        it["answer"]["type"] = "integer"
+        it["answer"]["canonical"] = {"num": 3, "den": 4}  # contradiction
+        result = geo.validate(it)
+        names = {c["name"]: c["result"] for c in result["checks"]}
+        self.assertEqual(names["answer-type-consistency"], "fail")
+
+
+class TestUniqueness(unittest.TestCase):
+    def test_find_r_counts(self):
+        self.assertEqual(gu.real_ratio_solution_count(Fraction(8), 3), 1)   # odd
+        self.assertEqual(gu.real_ratio_solution_count(Fraction(9), 2), 2)   # even, positive
+        self.assertEqual(gu.real_ratio_solution_count(Fraction(-4), 2), 0)  # even, negative
+        self.assertEqual(gu.real_ratio_solution_count(Fraction(0), 2), 1)   # zero
+
+    def test_find_r_solution_sets(self):
+        self.assertEqual(gu.real_ratio_solutions(1, Fraction(8), 4), [Fraction(2)])       # cube root
+        self.assertEqual(sorted(gu.real_ratio_solutions(1, Fraction(9), 3)), [Fraction(-3), Fraction(3)])
+        self.assertEqual(gu.real_ratio_solutions(1, Fraction(-4), 3), [])                 # no real
+        self.assertEqual(gu.real_ratio_solutions(1, Fraction(-8), 4), [Fraction(-2)])     # neg quotient, odd
+
+    def test_term_index_unique_and_degenerate(self):
+        self.assertEqual(gu.term_index_solutions(3, Fraction(2), Fraction(24)), [4])
+        self.assertGreater(len(gu.term_index_solutions(5, Fraction(1), Fraction(5))), 1)   # r=1 degenerate
+        self.assertGreater(len(gu.term_index_solutions(5, Fraction(-1), Fraction(5))), 1)  # r=-1 degenerate
+        self.assertGreater(len(gu.term_index_solutions(7, Fraction(0), Fraction(0))), 1)   # r=0 degenerate
 
 
 if __name__ == "__main__":

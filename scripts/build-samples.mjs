@@ -15,6 +15,7 @@ import { join } from "node:path";
 import { ROOT, inlineKatexCss } from "./katex-bundle.mjs";
 import { generate } from "../domains/sequences/arithmetic.ts";
 import { validate } from "../domains/sequences/validate.ts";
+import * as geometric from "../domains/sequences/geometric.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -30,6 +31,11 @@ const records = seeds.map((s, i) => {
   const item = generate(s, { answerType: mode });
   return makeRecord(item, validate(item).status, { mode, genConfig: { answerType: mode } });
 });
+// Include geometric items (exact-rational answers, all five tasks).
+for (const [task, mode] of [["nth_term", "multiple-choice"], ["sum_n", "integer"], ["find_r", "integer"], ["find_n_for_value", "integer"], ["sum_infinite", "integer"]]) {
+  const item = geometric.generate(7, { task, answerType: mode });
+  records.push(makeRecord(item, geometric.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
+}
 
 const katexCss = inlineKatexCss();
 

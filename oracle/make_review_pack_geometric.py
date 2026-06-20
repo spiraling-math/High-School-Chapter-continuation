@@ -36,20 +36,23 @@ def rdisp(rspec) -> str:
     return str(rspec["num"]) if rspec["den"] == 1 else f"{rspec['num']}/{rspec['den']}"
 
 
-def pick(task: str, mode: str, target: int = 6) -> list:
+def pick(task: str, mode: str, target: int = 8) -> list:
     bands, flags = set(), {"rpos": False, "rneg": False, "rfrac": False, "rint": False,
-                           "u1pos": False, "u1neg": False, "rlt1": False, "rgt1": False}
+                           "u1pos": False, "u1neg": False, "rlt1": False, "rgt1": False,
+                           "ansint": False, "ansfrac": False}
     picked = []
     for seed in range(1, SCAN_LIMIT + 1):
         item = geo.generate(seed, {"task": task, "answerType": mode})
         p = item["params"]
         r = Fraction(p["r"]["num"], p["r"]["den"])
         band = item["difficulty"]["overallBand"]
+        ans_int = item["answer"]["canonical"]["den"] == 1
         contrib = (band not in bands
                    or (r > 0 and not flags["rpos"]) or (r < 0 and not flags["rneg"])
                    or (p["r"]["den"] != 1 and not flags["rfrac"]) or (p["r"]["den"] == 1 and not flags["rint"])
                    or (p["u1"] > 0 and not flags["u1pos"]) or (p["u1"] < 0 and not flags["u1neg"])
-                   or (abs(r) < 1 and not flags["rlt1"]) or (abs(r) > 1 and not flags["rgt1"]))
+                   or (abs(r) < 1 and not flags["rlt1"]) or (abs(r) > 1 and not flags["rgt1"])
+                   or (ans_int and not flags["ansint"]) or (not ans_int and not flags["ansfrac"]))
         if contrib or len(picked) < 3:
             picked.append((seed, item))
             bands.add(band)
@@ -61,9 +64,23 @@ def pick(task: str, mode: str, target: int = 6) -> list:
             flags["u1neg"] |= p["u1"] < 0
             flags["rlt1"] |= abs(r) < 1
             flags["rgt1"] |= abs(r) > 1
+            flags["ansint"] |= ans_int
+            flags["ansfrac"] |= not ans_int
         if (len(picked) >= 3 and len(bands) >= 2 and all(flags.values())) or len(picked) >= target:
             break
     return picked
+
+
+def accepted_forms(answer: dict) -> str:
+    acc = answer.get("accepts", {})
+    forms = []
+    if acc.get("fraction", True):
+        forms.append("any equivalent fraction")
+    if acc.get("decimal"):
+        forms.append("terminating decimal")
+    if acc.get("mixed"):
+        forms.append("mixed number")
+    return ", ".join(forms) if forms else "exact reduced fraction only"
 
 
 def item_record(seed, task, mode, item) -> dict:
@@ -73,9 +90,13 @@ def item_record(seed, task, mode, item) -> dict:
         m = MISCONCEPTIONS[d["misconceptionId"]]
         calcs.append({"value": d["display"], "misconceptionId": d["misconceptionId"], "misconception": m["title"],
                       "formula": m["expression"], "rationale": d["rationale"], "feedback": m["feedback"]})
-    return {"seed": seed, "task": task, "answerType": mode, "objectiveIds": item["objectiveIds"],
+    ans = item["answer"]
+    return {"seed": seed, "task": task, "objectiveIds": item["objectiveIds"],
+            "interactionType": item["interactionType"], "answerType": ans["type"],
+            "canonicalValue": ans["canonical"], "canonicalDisplay": ans["display"],
+            "acceptedEquivalentForms": accepted_forms(ans),
             "difficultyProfile": item["difficulty"], "params": item["params"], "calculatorPolicy": item["calculatorPolicy"],
-            "prompt": [b.get("text", "") for b in item["prompt"]["blocks"]], "answer": item["answer"]["display"],
+            "prompt": [b.get("text", "") for b in item["prompt"]["blocks"]],
             "workedSolution": item["solution"]["steps"], "distractorCalculations": calcs,
             "validation": v["status"], "validationChecks": [c["name"] for c in v["checks"]],
             "reproduce": {"generatorId": geo.GENERATOR_ID, "generatorVersion": geo.GENERATOR_VERSION,
@@ -135,15 +156,19 @@ def build() -> None:
         L += [f"## {combo['task']} · {combo['answerType']} — {combo['count']} examples", ""]
         for i, it in enumerate(combo["items"], 1):
             dp = it["difficultyProfile"]
+            cv = it["canonicalValue"]
             L += [f"### {combo['task']}/{combo['answerType']} #{i} — band {dp['overallBand']}", "",
                   f"- **Objective:** `{it['objectiveIds'][0]}`  ·  **Calculator:** {it['calculatorPolicy']}",
+                  f"- **Interaction type:** {it['interactionType']}  ·  **Canonical answer type:** {it['answerType']}",
+                  f"- **Canonical value:** `num={cv['num']}, den={cv['den']}` → `{it['canonicalDisplay']}`",
+                  f"- **Accepted equivalent forms:** {it['acceptedEquivalentForms']}",
                   f"- **Seed:** `{it['seed']}`  ·  **Parameters:** `{json.dumps(it['params'])}`",
                   f"- **Difficulty axes:** `{json.dumps(dp['axes'])}`",
                   f"- **Reproduce:** `generate({it['seed']}, {json.dumps(it['reproduce']['config'])})` on v`{geo.GENERATOR_VERSION}`",
                   "", "**Question**", ""]
             for p in it["prompt"]:
                 L.append(f"> {p}")
-            L += ["", f"**Answer:** `{it['answer']}`", "", "**Worked solution**", ""]
+            L += ["", f"**Answer:** `{it['canonicalDisplay']}`", "", "**Worked solution**", ""]
             for s in it["workedSolution"]:
                 bit = s.get("ruleOrTheorem") or s.get("intermediateResult") or ""
                 L.append(f"{s['number']}. {s.get('transformation','')} — `{bit}`")

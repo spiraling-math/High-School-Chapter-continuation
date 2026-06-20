@@ -1,6 +1,6 @@
 {
   "generatorId": "gen.sequences.geometric",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.1.0",
   "note": "Representative items for curriculum review. None is approved or published; advancing lifecycle state beyond machine-validated is the curriculum authority's decision.",
   "combos": [
     {
@@ -11,10 +11,17 @@
         {
           "seed": 1,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 24,
+            "den": 1
+          },
+          "canonicalDisplay": "24",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -38,7 +45,6 @@
             "A geometric sequence has first term 3 and common ratio 2.",
             "Find the 4th term of the sequence."
           ],
-          "answer": "24",
           "workedSolution": [
             {
               "number": 1,
@@ -92,6 +98,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -115,7 +123,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "nth_term",
@@ -126,10 +134,17 @@
         {
           "seed": 2,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 45,
+            "den": 1
+          },
+          "canonicalDisplay": "45",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -153,7 +168,6 @@
             "A geometric sequence has first term 5 and common ratio -3.",
             "Find the 3rd term of the sequence."
           ],
-          "answer": "45",
           "workedSolution": [
             {
               "number": 1,
@@ -207,6 +221,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -230,7 +246,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "nth_term",
@@ -241,10 +257,17 @@
         {
           "seed": 3,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 32,
+            "den": 1
+          },
+          "canonicalDisplay": "32",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -268,7 +291,6 @@
             "A geometric sequence has first term 4 and common ratio 2.",
             "Find the 4th term of the sequence."
           ],
-          "answer": "32",
           "workedSolution": [
             {
               "number": 1,
@@ -322,6 +344,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -345,7 +369,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "nth_term",
@@ -356,10 +380,17 @@
         {
           "seed": 5,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 16,
+            "den": 9
+          },
+          "canonicalDisplay": "16/9",
+          "acceptedEquivalentForms": "any equivalent fraction",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -383,7 +414,6 @@
             "A geometric sequence has first term 4 and common ratio -2/3.",
             "Find the 3rd term of the sequence."
           ],
-          "answer": "16/9",
           "workedSolution": [
             {
               "number": 1,
@@ -437,6 +467,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -460,7 +492,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "nth_term",
@@ -471,10 +503,17 @@
         {
           "seed": 6,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -2,
+            "den": 1
+          },
+          "canonicalDisplay": "-2",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -498,7 +537,6 @@
             "A geometric sequence has first term -6 and common ratio 1/3.",
             "Find the 2nd term of the sequence."
           ],
-          "answer": "-2",
           "workedSolution": [
             {
               "number": 1,
@@ -552,6 +590,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -575,7 +615,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 6,
             "config": {
               "task": "nth_term",
@@ -586,10 +626,17 @@
         {
           "seed": 22,
           "task": "nth_term",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": -3,
+            "den": 16
+          },
+          "canonicalDisplay": "-3/16",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -613,7 +660,6 @@
             "A geometric sequence has first term -6 and common ratio 1/2.",
             "Find the 6th term of the sequence."
           ],
-          "answer": "-3/16",
           "workedSolution": [
             {
               "number": 1,
@@ -667,6 +713,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -690,7 +738,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 22,
             "config": {
               "task": "nth_term",
@@ -708,10 +756,17 @@
         {
           "seed": 1,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 24,
+            "den": 1
+          },
+          "canonicalDisplay": "24",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -735,7 +790,6 @@
             "A geometric sequence has first term 3 and common ratio 2.",
             "Find the 4th term of the sequence."
           ],
-          "answer": "24",
           "workedSolution": [
             {
               "number": 1,
@@ -764,6 +818,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -771,7 +827,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "nth_term",
@@ -782,10 +838,17 @@
         {
           "seed": 2,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 45,
+            "den": 1
+          },
+          "canonicalDisplay": "45",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -809,7 +872,6 @@
             "A geometric sequence has first term 5 and common ratio -3.",
             "Find the 3rd term of the sequence."
           ],
-          "answer": "45",
           "workedSolution": [
             {
               "number": 1,
@@ -838,6 +900,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -845,7 +909,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "nth_term",
@@ -856,10 +920,17 @@
         {
           "seed": 3,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 32,
+            "den": 1
+          },
+          "canonicalDisplay": "32",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -883,7 +954,6 @@
             "A geometric sequence has first term 4 and common ratio 2.",
             "Find the 4th term of the sequence."
           ],
-          "answer": "32",
           "workedSolution": [
             {
               "number": 1,
@@ -912,6 +982,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -919,7 +991,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "nth_term",
@@ -930,10 +1002,17 @@
         {
           "seed": 5,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 16,
+            "den": 9
+          },
+          "canonicalDisplay": "16/9",
+          "acceptedEquivalentForms": "any equivalent fraction",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -957,7 +1036,6 @@
             "A geometric sequence has first term 4 and common ratio -2/3.",
             "Find the 3rd term of the sequence."
           ],
-          "answer": "16/9",
           "workedSolution": [
             {
               "number": 1,
@@ -986,6 +1064,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -993,7 +1073,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "nth_term",
@@ -1004,10 +1084,17 @@
         {
           "seed": 7,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -288,
+            "den": 1
+          },
+          "canonicalDisplay": "-288",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1031,7 +1118,6 @@
             "A geometric sequence has first term -9 and common ratio 2.",
             "Find the 6th term of the sequence."
           ],
-          "answer": "-288",
           "workedSolution": [
             {
               "number": 1,
@@ -1060,6 +1146,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1067,7 +1155,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "nth_term",
@@ -1078,10 +1166,17 @@
         {
           "seed": 30,
           "task": "nth_term",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.NTH_TERM.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 189,
+            "den": 8
+          },
+          "canonicalDisplay": "189/8",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -1105,7 +1200,6 @@
             "A geometric sequence has first term 7 and common ratio 3/2.",
             "Find the 4th term of the sequence."
           ],
-          "answer": "189/8",
           "workedSolution": [
             {
               "number": 1,
@@ -1134,6 +1228,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1141,7 +1237,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 30,
             "config": {
               "task": "nth_term",
@@ -1159,10 +1255,17 @@
         {
           "seed": 1,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 45,
+            "den": 1
+          },
+          "canonicalDisplay": "45",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1183,10 +1286,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 3 and common ratio 2.",
-            "Find the sum of the first 4 terms of the sequence."
+            "A geometric series has first term 3 and common ratio 2.",
+            "Find the sum of the first 4 terms of the series."
           ],
-          "answer": "45",
           "workedSolution": [
             {
               "number": 1,
@@ -1240,6 +1342,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1263,7 +1367,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "sum_n",
@@ -1274,10 +1378,17 @@
         {
           "seed": 2,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 35,
+            "den": 1
+          },
+          "canonicalDisplay": "35",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1298,10 +1409,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 5 and common ratio -3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 5 and common ratio -3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "35",
           "workedSolution": [
             {
               "number": 1,
@@ -1355,6 +1465,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1378,7 +1490,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "sum_n",
@@ -1389,10 +1501,17 @@
         {
           "seed": 3,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 60,
+            "den": 1
+          },
+          "canonicalDisplay": "60",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1413,10 +1532,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 4 and common ratio 2.",
-            "Find the sum of the first 4 terms of the sequence."
+            "A geometric series has first term 4 and common ratio 2.",
+            "Find the sum of the first 4 terms of the series."
           ],
-          "answer": "60",
           "workedSolution": [
             {
               "number": 1,
@@ -1470,6 +1588,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1493,7 +1613,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "sum_n",
@@ -1504,10 +1624,17 @@
         {
           "seed": 4,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 56,
+            "den": 1
+          },
+          "canonicalDisplay": "56",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -1528,10 +1655,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 8 and common ratio -3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 8 and common ratio -3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "56",
           "workedSolution": [
             {
               "number": 1,
@@ -1585,6 +1711,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1608,7 +1736,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 4,
             "config": {
               "task": "sum_n",
@@ -1619,10 +1747,17 @@
         {
           "seed": 5,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 28,
+            "den": 9
+          },
+          "canonicalDisplay": "28/9",
+          "acceptedEquivalentForms": "any equivalent fraction",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -1643,10 +1778,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 4 and common ratio -2/3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 4 and common ratio -2/3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "28/9",
           "workedSolution": [
             {
               "number": 1,
@@ -1700,6 +1834,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1723,7 +1859,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "sum_n",
@@ -1734,10 +1870,17 @@
         {
           "seed": 7,
           "task": "sum_n",
-          "answerType": "multiple-choice",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "multiple-choice",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -567,
+            "den": 1
+          },
+          "canonicalDisplay": "-567",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -1758,10 +1901,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term -9 and common ratio 2.",
-            "Find the sum of the first 6 terms of the sequence."
+            "A geometric series has first term -9 and common ratio 2.",
+            "Find the sum of the first 6 terms of the series."
           ],
-          "answer": "-567",
           "workedSolution": [
             {
               "number": 1,
@@ -1815,6 +1957,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1838,7 +1982,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "sum_n",
@@ -1856,10 +2000,17 @@
         {
           "seed": 1,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 45,
+            "den": 1
+          },
+          "canonicalDisplay": "45",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1880,10 +2031,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 3 and common ratio 2.",
-            "Find the sum of the first 4 terms of the sequence."
+            "A geometric series has first term 3 and common ratio 2.",
+            "Find the sum of the first 4 terms of the series."
           ],
-          "answer": "45",
           "workedSolution": [
             {
               "number": 1,
@@ -1912,6 +2062,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1919,7 +2071,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "sum_n",
@@ -1930,10 +2082,17 @@
         {
           "seed": 2,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 35,
+            "den": 1
+          },
+          "canonicalDisplay": "35",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -1954,10 +2113,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 5 and common ratio -3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 5 and common ratio -3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "35",
           "workedSolution": [
             {
               "number": 1,
@@ -1986,6 +2144,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -1993,7 +2153,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "sum_n",
@@ -2004,10 +2164,17 @@
         {
           "seed": 3,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 60,
+            "den": 1
+          },
+          "canonicalDisplay": "60",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 2,
             "axes": {
@@ -2028,10 +2195,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 4 and common ratio 2.",
-            "Find the sum of the first 4 terms of the sequence."
+            "A geometric series has first term 4 and common ratio 2.",
+            "Find the sum of the first 4 terms of the series."
           ],
-          "answer": "60",
           "workedSolution": [
             {
               "number": 1,
@@ -2060,6 +2226,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -2067,7 +2235,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "sum_n",
@@ -2078,10 +2246,17 @@
         {
           "seed": 4,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 56,
+            "den": 1
+          },
+          "canonicalDisplay": "56",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2102,10 +2277,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 8 and common ratio -3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 8 and common ratio -3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "56",
           "workedSolution": [
             {
               "number": 1,
@@ -2134,6 +2308,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -2141,7 +2317,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 4,
             "config": {
               "task": "sum_n",
@@ -2152,10 +2328,17 @@
         {
           "seed": 5,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 28,
+            "den": 9
+          },
+          "canonicalDisplay": "28/9",
+          "acceptedEquivalentForms": "any equivalent fraction",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2176,10 +2359,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 4 and common ratio -2/3.",
-            "Find the sum of the first 3 terms of the sequence."
+            "A geometric series has first term 4 and common ratio -2/3.",
+            "Find the sum of the first 3 terms of the series."
           ],
-          "answer": "28/9",
           "workedSolution": [
             {
               "number": 1,
@@ -2208,6 +2390,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -2215,7 +2399,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "sum_n",
@@ -2226,10 +2410,17 @@
         {
           "seed": 7,
           "task": "sum_n",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_N.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -567,
+            "den": 1
+          },
+          "canonicalDisplay": "-567",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2250,10 +2441,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term -9 and common ratio 2.",
-            "Find the sum of the first 6 terms of the sequence."
+            "A geometric series has first term -9 and common ratio 2.",
+            "Find the sum of the first 6 terms of the series."
           ],
-          "answer": "-567",
           "workedSolution": [
             {
               "number": 1,
@@ -2282,6 +2472,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -2289,7 +2481,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "sum_n",
@@ -2307,10 +2499,17 @@
         {
           "seed": 1,
           "task": "find_r",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.COMMON_RATIO.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 2,
+            "den": 1
+          },
+          "canonicalDisplay": "2",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2334,7 +2533,6 @@
             "A geometric sequence has first term 3, and its 4th term is 24.",
             "Find the common ratio of the sequence."
           ],
-          "answer": "2",
           "workedSolution": [
             {
               "number": 1,
@@ -2363,14 +2561,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "find_r-unique-real-ratio",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "find_r",
@@ -2381,10 +2582,17 @@
         {
           "seed": 2,
           "task": "find_r",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.COMMON_RATIO.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -3,
+            "den": 1
+          },
+          "canonicalDisplay": "-3",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2408,7 +2616,6 @@
             "A geometric sequence has first term 5, and its 2nd term is -15.",
             "Find the common ratio of the sequence."
           ],
-          "answer": "-3",
           "workedSolution": [
             {
               "number": 1,
@@ -2437,14 +2644,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "find_r-unique-real-ratio",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "find_r",
@@ -2455,10 +2665,17 @@
         {
           "seed": 3,
           "task": "find_r",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.COMMON_RATIO.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 2,
+            "den": 1
+          },
+          "canonicalDisplay": "2",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2482,7 +2699,6 @@
             "A geometric sequence has first term 4, and its 2nd term is 8.",
             "Find the common ratio of the sequence."
           ],
-          "answer": "2",
           "workedSolution": [
             {
               "number": 1,
@@ -2511,14 +2727,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "find_r-unique-real-ratio",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "find_r",
@@ -2529,10 +2748,17 @@
         {
           "seed": 5,
           "task": "find_r",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.COMMON_RATIO.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": -2,
+            "den": 3
+          },
+          "canonicalDisplay": "-2/3",
+          "acceptedEquivalentForms": "any equivalent fraction",
           "difficultyProfile": {
             "overallBand": 4,
             "axes": {
@@ -2556,7 +2782,6 @@
             "A geometric sequence has first term 4, and its 2nd term is -8/3.",
             "Find the common ratio of the sequence."
           ],
-          "answer": "-2/3",
           "workedSolution": [
             {
               "number": 1,
@@ -2585,14 +2810,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "find_r-unique-real-ratio",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "find_r",
@@ -2603,10 +2831,17 @@
         {
           "seed": 7,
           "task": "find_r",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.COMMON_RATIO.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 2,
+            "den": 1
+          },
+          "canonicalDisplay": "2",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2630,7 +2865,6 @@
             "A geometric sequence has first term -9, and its 4th term is -72.",
             "Find the common ratio of the sequence."
           ],
-          "answer": "2",
           "workedSolution": [
             {
               "number": 1,
@@ -2659,14 +2893,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "find_r-unique-real-ratio",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "find_r",
@@ -2684,10 +2921,17 @@
         {
           "seed": 1,
           "task": "find_n_for_value",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.TERM_INDEX.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 4,
+            "den": 1
+          },
+          "canonicalDisplay": "4",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2711,7 +2955,6 @@
             "A geometric sequence has first term 3 and common ratio 2.",
             "The nth term of the sequence is 24. Find the value of n."
           ],
-          "answer": "4",
           "workedSolution": [
             {
               "number": 1,
@@ -2720,7 +2963,7 @@
             },
             {
               "number": 2,
-              "transformation": "Set up the equation",
+              "transformation": "Substitute",
               "intermediateResult": "3\\times(2)^{n-1} = 24",
               "dependsOn": [
                 1
@@ -2728,10 +2971,34 @@
             },
             {
               "number": 3,
+              "transformation": "Isolate the power",
+              "intermediateResult": "(2)^{n-1} = 8",
+              "dependsOn": [
+                2
+              ]
+            },
+            {
+              "number": 4,
+              "transformation": "Write both sides with base r",
+              "intermediateResult": "(2)^{n-1} = (2)^{3}",
+              "dependsOn": [
+                3
+              ]
+            },
+            {
+              "number": 5,
+              "transformation": "Equate exponents",
+              "intermediateResult": "n - 1 = 3",
+              "dependsOn": [
+                4
+              ]
+            },
+            {
+              "number": 6,
               "transformation": "Solve for n",
               "intermediateResult": "n = 4",
               "dependsOn": [
-                2
+                5
               ],
               "marks": 1
             }
@@ -2740,14 +3007,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "term-index-unique",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "find_n_for_value",
@@ -2758,10 +3028,17 @@
         {
           "seed": 2,
           "task": "find_n_for_value",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.TERM_INDEX.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 3,
+            "den": 1
+          },
+          "canonicalDisplay": "3",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2785,7 +3062,6 @@
             "A geometric sequence has first term 5 and common ratio -3.",
             "The nth term of the sequence is 45. Find the value of n."
           ],
-          "answer": "3",
           "workedSolution": [
             {
               "number": 1,
@@ -2794,7 +3070,7 @@
             },
             {
               "number": 2,
-              "transformation": "Set up the equation",
+              "transformation": "Substitute",
               "intermediateResult": "5\\times(-3)^{n-1} = 45",
               "dependsOn": [
                 1
@@ -2802,10 +3078,35 @@
             },
             {
               "number": 3,
+              "transformation": "Isolate the power",
+              "intermediateResult": "(-3)^{n-1} = 9",
+              "dependsOn": [
+                2
+              ]
+            },
+            {
+              "number": 4,
+              "transformation": "Write both sides with base r",
+              "intermediateResult": "(-3)^{n-1} = (-3)^{2}",
+              "dependsOn": [
+                3
+              ],
+              "explanation": "Since the common ratio is negative, the sign of the term confirms the exponent (n - 1) is even."
+            },
+            {
+              "number": 5,
+              "transformation": "Equate exponents",
+              "intermediateResult": "n - 1 = 2",
+              "dependsOn": [
+                4
+              ]
+            },
+            {
+              "number": 6,
               "transformation": "Solve for n",
               "intermediateResult": "n = 3",
               "dependsOn": [
-                2
+                5
               ],
               "marks": 1
             }
@@ -2814,14 +3115,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "term-index-unique",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "find_n_for_value",
@@ -2832,10 +3136,17 @@
         {
           "seed": 3,
           "task": "find_n_for_value",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.TERM_INDEX.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 4,
+            "den": 1
+          },
+          "canonicalDisplay": "4",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -2859,7 +3170,6 @@
             "A geometric sequence has first term 4 and common ratio 2.",
             "The nth term of the sequence is 32. Find the value of n."
           ],
-          "answer": "4",
           "workedSolution": [
             {
               "number": 1,
@@ -2868,7 +3178,7 @@
             },
             {
               "number": 2,
-              "transformation": "Set up the equation",
+              "transformation": "Substitute",
               "intermediateResult": "4\\times(2)^{n-1} = 32",
               "dependsOn": [
                 1
@@ -2876,10 +3186,34 @@
             },
             {
               "number": 3,
+              "transformation": "Isolate the power",
+              "intermediateResult": "(2)^{n-1} = 8",
+              "dependsOn": [
+                2
+              ]
+            },
+            {
+              "number": 4,
+              "transformation": "Write both sides with base r",
+              "intermediateResult": "(2)^{n-1} = (2)^{3}",
+              "dependsOn": [
+                3
+              ]
+            },
+            {
+              "number": 5,
+              "transformation": "Equate exponents",
+              "intermediateResult": "n - 1 = 3",
+              "dependsOn": [
+                4
+              ]
+            },
+            {
+              "number": 6,
               "transformation": "Solve for n",
               "intermediateResult": "n = 4",
               "dependsOn": [
-                2
+                5
               ],
               "marks": 1
             }
@@ -2888,14 +3222,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "term-index-unique",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "find_n_for_value",
@@ -2906,10 +3243,17 @@
         {
           "seed": 5,
           "task": "find_n_for_value",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.TERM_INDEX.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 3,
+            "den": 1
+          },
+          "canonicalDisplay": "3",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 4,
             "axes": {
@@ -2933,7 +3277,6 @@
             "A geometric sequence has first term 4 and common ratio -2/3.",
             "The nth term of the sequence is 16/9. Find the value of n."
           ],
-          "answer": "3",
           "workedSolution": [
             {
               "number": 1,
@@ -2942,7 +3285,7 @@
             },
             {
               "number": 2,
-              "transformation": "Set up the equation",
+              "transformation": "Substitute",
               "intermediateResult": "4\\times(-2/3)^{n-1} = 16/9",
               "dependsOn": [
                 1
@@ -2950,10 +3293,35 @@
             },
             {
               "number": 3,
+              "transformation": "Isolate the power",
+              "intermediateResult": "(-2/3)^{n-1} = 4/9",
+              "dependsOn": [
+                2
+              ]
+            },
+            {
+              "number": 4,
+              "transformation": "Write both sides with base r",
+              "intermediateResult": "(-2/3)^{n-1} = (-2/3)^{2}",
+              "dependsOn": [
+                3
+              ],
+              "explanation": "Since the common ratio is negative, the sign of the term confirms the exponent (n - 1) is even."
+            },
+            {
+              "number": 5,
+              "transformation": "Equate exponents",
+              "intermediateResult": "n - 1 = 2",
+              "dependsOn": [
+                4
+              ]
+            },
+            {
+              "number": 6,
               "transformation": "Solve for n",
               "intermediateResult": "n = 3",
               "dependsOn": [
-                2
+                5
               ],
               "marks": 1
             }
@@ -2962,14 +3330,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "term-index-unique",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 5,
             "config": {
               "task": "find_n_for_value",
@@ -2980,10 +3351,17 @@
         {
           "seed": 7,
           "task": "find_n_for_value",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.TERM_INDEX.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 6,
+            "den": 1
+          },
+          "canonicalDisplay": "6",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -3007,7 +3385,6 @@
             "A geometric sequence has first term -9 and common ratio 2.",
             "The nth term of the sequence is -288. Find the value of n."
           ],
-          "answer": "6",
           "workedSolution": [
             {
               "number": 1,
@@ -3016,7 +3393,7 @@
             },
             {
               "number": 2,
-              "transformation": "Set up the equation",
+              "transformation": "Substitute",
               "intermediateResult": "-9\\times(2)^{n-1} = -288",
               "dependsOn": [
                 1
@@ -3024,10 +3401,34 @@
             },
             {
               "number": 3,
+              "transformation": "Isolate the power",
+              "intermediateResult": "(2)^{n-1} = 32",
+              "dependsOn": [
+                2
+              ]
+            },
+            {
+              "number": 4,
+              "transformation": "Write both sides with base r",
+              "intermediateResult": "(2)^{n-1} = (2)^{5}",
+              "dependsOn": [
+                3
+              ]
+            },
+            {
+              "number": 5,
+              "transformation": "Equate exponents",
+              "intermediateResult": "n - 1 = 5",
+              "dependsOn": [
+                4
+              ]
+            },
+            {
+              "number": 6,
               "transformation": "Solve for n",
               "intermediateResult": "n = 6",
               "dependsOn": [
-                2
+                5
               ],
               "marks": 1
             }
@@ -3036,14 +3437,17 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
+            "term-index-unique",
             "answer-solution-agree",
             "no-answer-leakage",
             "a11y-fields-present"
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "find_n_for_value",
@@ -3061,10 +3465,17 @@
         {
           "seed": 1,
           "task": "sum_infinite",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_INFINITE.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 6,
+            "den": 1
+          },
+          "canonicalDisplay": "6",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -3084,10 +3495,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 3 and common ratio 1/2, with |r| < 1.",
-            "Find the sum to infinity of the sequence."
+            "A geometric series has first term 3 and common ratio 1/2, with |r| < 1.",
+            "Find the sum to infinity of the series."
           ],
-          "answer": "6",
           "workedSolution": [
             {
               "number": 1,
@@ -3113,6 +3523,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -3120,7 +3532,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 1,
             "config": {
               "task": "sum_infinite",
@@ -3131,10 +3543,17 @@
         {
           "seed": 2,
           "task": "sum_infinite",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_INFINITE.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "exact-rational",
+          "canonicalValue": {
+            "num": 15,
+            "den": 4
+          },
+          "canonicalDisplay": "15/4",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 4,
             "axes": {
@@ -3154,10 +3573,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 5 and common ratio -1/3, with |r| < 1.",
-            "Find the sum to infinity of the sequence."
+            "A geometric series has first term 5 and common ratio -1/3, with |r| < 1.",
+            "Find the sum to infinity of the series."
           ],
-          "answer": "15/4",
           "workedSolution": [
             {
               "number": 1,
@@ -3183,6 +3601,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -3190,7 +3610,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 2,
             "config": {
               "task": "sum_infinite",
@@ -3201,10 +3621,17 @@
         {
           "seed": 3,
           "task": "sum_infinite",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_INFINITE.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": 8,
+            "den": 1
+          },
+          "canonicalDisplay": "8",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 3,
             "axes": {
@@ -3224,10 +3651,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term 4 and common ratio 1/2, with |r| < 1.",
-            "Find the sum to infinity of the sequence."
+            "A geometric series has first term 4 and common ratio 1/2, with |r| < 1.",
+            "Find the sum to infinity of the series."
           ],
-          "answer": "8",
           "workedSolution": [
             {
               "number": 1,
@@ -3253,6 +3679,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -3260,7 +3688,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 3,
             "config": {
               "task": "sum_infinite",
@@ -3271,10 +3699,17 @@
         {
           "seed": 7,
           "task": "sum_infinite",
-          "answerType": "integer",
           "objectiveIds": [
             "SPI.IBDPAASL.SEQSER.GEO.SUM_INFINITE.01"
           ],
+          "interactionType": "free-response",
+          "answerType": "integer",
+          "canonicalValue": {
+            "num": -18,
+            "den": 1
+          },
+          "canonicalDisplay": "-18",
+          "acceptedEquivalentForms": "any equivalent fraction, terminating decimal",
           "difficultyProfile": {
             "overallBand": 4,
             "axes": {
@@ -3294,10 +3729,9 @@
           },
           "calculatorPolicy": "calculator-not-required",
           "prompt": [
-            "A geometric sequence has first term -9 and common ratio 1/2, with |r| < 1.",
-            "Find the sum to infinity of the sequence."
+            "A geometric series has first term -9 and common ratio 1/2, with |r| < 1.",
+            "Find the sum to infinity of the series."
           ],
-          "answer": "-18",
           "workedSolution": [
             {
               "number": 1,
@@ -3323,6 +3757,8 @@
           "validation": "pass",
           "validationChecks": [
             "params-in-domain",
+            "answer-type-consistency",
+            "interaction-type",
             "geo-iterative-agreement",
             "answer-solution-agree",
             "no-answer-leakage",
@@ -3330,7 +3766,7 @@
           ],
           "reproduce": {
             "generatorId": "gen.sequences.geometric",
-            "generatorVersion": "1.0.0",
+            "generatorVersion": "1.1.0",
             "seed": 7,
             "config": {
               "task": "sum_infinite",

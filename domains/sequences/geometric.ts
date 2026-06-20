@@ -1,21 +1,23 @@
 /**
  * Geometric sequences generator (production TypeScript).
  *
- * Generator id : gen.sequences.geometric   Version: 1.0.0
+ * Generator id : gen.sequences.geometric   Version: 1.1.0
  * Spec         : docs/GENERATOR_SPEC_geometric_sequences_PROPOSAL.md (approved)
  *
- * Byte-for-byte counterpart of oracle/spi_oracle/geometric.py using the exact
- * Rational type. Tasks: nth_term, sum_n (MC or free-response), find_r,
- * find_n_for_value, sum_infinite (free-response). Asserted by golden/parity tests.
+ * Byte-for-byte counterpart of oracle/spi_oracle/geometric.py (v1.1.0). v1.1.0:
+ * interactionType separate from answer.type (integer | exact-rational, canonical
+ * {num,den}); geometric-series wording for sums; step-by-step find_n reasoning;
+ * answer-type/value consistency + find_r / term-index uniqueness validation.
  */
 
 import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
 import { Rational, rat } from "../../core/exact-math/rational.ts";
 import { MISCONCEPTIONS, rulesFor } from "./geometric-misconceptions.ts";
+import { realRatioSolutions, termIndexSolutions } from "./geometric-uniqueness.ts";
 
 export const GENERATOR_ID = "gen.sequences.geometric";
-export const GENERATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.1.0";
 
 export type Task = "nth_term" | "sum_n" | "find_r" | "find_n_for_value" | "sum_infinite";
 export const FORWARD_MC_TASKS: Task[] = ["nth_term", "sum_n"];
@@ -42,15 +44,30 @@ export interface Params { task: Task; u1: number; r: { num: number; den: number 
 export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; }
 interface Cand { value: Rational; misconceptionId: string; rationale: string; }
 
-// --------------------------------------------------------------------------- //
 function rOf(p: Params): Rational { return new Rational(p.r.num, p.r.den); }
 function disp(x: Rational | number): string { return typeof x === "number" ? String(x) : x.toString(); }
 function withinCaps(x: Rational): boolean { return Math.abs(x.num) <= MAX_NUM && x.den <= MAX_DEN; }
 
+function terminates(den: number): boolean {
+  let d = den;
+  while (d % 2 === 0) d /= 2;
+  while (d % 5 === 0) d /= 5;
+  return d === 1;
+}
+
+function answerObj(value: Rational): Record<string, Json> {
+  return {
+    type: value.den === 1 ? "integer" : "exact-rational",
+    canonical: value.toJSON(),
+    display: value.toString(),
+    accepts: { fraction: true, decimal: terminates(value.den), mixed: false },
+  };
+}
+
 function iroot(x: number, m: number): number {
   if (x === 0) return 0;
   const r = Math.round(x ** (1 / m));
-  for (const cand of [r - 1, r, r + 1]) if (cand >= 0 && cand ** m === x) return cand;
+  for (const c of [r - 1, r, r + 1]) if (c >= 0 && c ** m === x) return c;
   throw new Error(`no exact integer ${m}th root of ${x}`);
 }
 function rationalRoot(q: Rational, m: number): Rational {
@@ -67,23 +84,15 @@ export function solve(p: Params): Rational | number {
   if (p.task === "nth_term") return nth(p.u1, r, p.n!);
   if (p.task === "sum_n") return sumN(p.u1, r, p.n!);
   if (p.task === "sum_infinite") return rat(p.u1).div(rat(1).sub(r));
-  if (p.task === "find_r") {
-    const value = nth(p.u1, r, p.k!);
-    return rationalRoot(value.div(rat(p.u1)), p.k! - 1);
-  }
-  // find_n_for_value
+  if (p.task === "find_r") return rationalRoot(nth(p.u1, r, p.k!).div(rat(p.u1)), p.k! - 1);
   const value = nth(p.u1, r, p.n!);
   let t = rat(p.u1);
   for (let k = 1; k <= 64; k++) { if (t.equals(value)) return k; t = t.mul(r); }
   throw new Error("term index not found");
 }
 
-function givenValue(p: Params): Rational {
-  const pos = p.task === "find_r" ? p.k! : p.n!;
-  return nth(p.u1, rOf(p), pos);
-}
+function givenValue(p: Params): Rational { return nth(p.u1, rOf(p), p.task === "find_r" ? p.k! : p.n!); }
 
-// --------------------------------------------------------------------------- //
 export function generateDistractors(p: Params): Cand[] | null {
   const ruleIds = rulesFor(p.task);
   if (ruleIds.length === 0) return [];
@@ -145,11 +154,22 @@ export function generateSolution(p: Params): Json {
       { number: 3, transformation: "Take the root", intermediateResult: `r = ${ad}`, dependsOn: [2], marks: 1 },
     ] };
   }
-  const value = disp(givenValue(p));
+  // find_n_for_value — step-by-step exponent reasoning
+  const n = p.n!;
+  const value = givenValue(p);
+  const q = value.div(rat(u1));
+  const m = n - 1;
+  const step4: Record<string, Json> = { number: 4, transformation: "Write both sides with base r", intermediateResult: `(${rd})^{n-1} = (${rd})^{${m}}`, dependsOn: [3] };
+  if (r.num < 0) {
+    step4["explanation"] = `Since the common ratio is negative, the sign of the term confirms the exponent (n - 1) is ${m % 2 === 1 ? "odd" : "even"}.`;
+  }
   return { steps: [
     { number: 1, transformation: "State the formula", ruleOrTheorem: "u_n = u_1 r^{n-1}" },
-    { number: 2, transformation: "Set up the equation", intermediateResult: `${u1}\\times(${rd})^{n-1} = ${value}`, dependsOn: [1] },
-    { number: 3, transformation: "Solve for n", intermediateResult: `n = ${ad}`, dependsOn: [2], marks: 1 },
+    { number: 2, transformation: "Substitute", intermediateResult: `${u1}\\times(${rd})^{n-1} = ${disp(value)}`, dependsOn: [1] },
+    { number: 3, transformation: "Isolate the power", intermediateResult: `(${rd})^{n-1} = ${disp(q)}`, dependsOn: [2] },
+    step4,
+    { number: 5, transformation: "Equate exponents", intermediateResult: `n - 1 = ${m}`, dependsOn: [4] },
+    { number: 6, transformation: "Solve for n", intermediateResult: `n = ${n}`, dependsOn: [5], marks: 1 },
   ] };
 }
 
@@ -165,15 +185,15 @@ function promptBlocks(p: Params): { instruction: string; blocks: Json[]; spoken:
   if (p.task === "sum_n") {
     const n = p.n!;
     return { instruction: "Find", blocks: [
-      { kind: "text", text: `A geometric sequence has first term ${u1} and common ratio ${rd}.` },
-      { kind: "text", text: `Find the sum of the first ${n} terms of the sequence.` }],
-      spoken: `A geometric sequence has first term ${u1} and common ratio ${rd}. Find the sum of the first ${n} terms.` };
+      { kind: "text", text: `A geometric series has first term ${u1} and common ratio ${rd}.` },
+      { kind: "text", text: `Find the sum of the first ${n} terms of the series.` }],
+      spoken: `A geometric series has first term ${u1} and common ratio ${rd}. Find the sum of the first ${n} terms.` };
   }
   if (p.task === "sum_infinite") {
     return { instruction: "Find", blocks: [
-      { kind: "text", text: `A geometric sequence has first term ${u1} and common ratio ${rd}, with |r| < 1.` },
-      { kind: "text", text: "Find the sum to infinity of the sequence." }],
-      spoken: `A geometric sequence has first term ${u1} and common ratio ${rd}, with absolute value of r less than 1. Find the sum to infinity.` };
+      { kind: "text", text: `A geometric series has first term ${u1} and common ratio ${rd}, with |r| < 1.` },
+      { kind: "text", text: "Find the sum to infinity of the series." }],
+      spoken: `A geometric series has first term ${u1} and common ratio ${rd}, with absolute value of r less than 1. Find the sum to infinity.` };
   }
   if (p.task === "find_r") {
     const k = p.k!, value = disp(givenValue(p));
@@ -195,7 +215,7 @@ function givenInts(p: Params): Set<number> {
 }
 
 const W = { numericalComplexity: 0.25, reasoningSteps: 0.4, abstraction: 0.2, exactVsApproximate: 0.15 };
-function round3(x: number): number { const v = Math.floor(x * 1000 + 0.5) / 1000; return v; }
+function round3(x: number): number { return Math.floor(x * 1000 + 0.5) / 1000; }
 
 function difficulty(p: Params): Json {
   const u1 = p.u1, r = rOf(p);
@@ -229,7 +249,7 @@ function acceptable(p: Params, answerType: string): Cand[] | null {
   try { ans = solve(p); } catch { return null; }
   const af = typeof ans === "number" ? rat(ans) : ans;
   if (!withinCaps(af)) return null;
-  if (p.task === "find_r" || p.task === "find_n_for_value") { if (!withinCaps(givenValue(p))) return null; }
+  if ((p.task === "find_r" || p.task === "find_n_for_value") && !withinCaps(givenValue(p))) return null;
   if (answerType === "multiple-choice") return generateDistractors(p);
   return [];
 }
@@ -257,11 +277,9 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
 
   const task = params.task;
   const ans = solve(params);
+  const ansR = typeof ans === "number" ? rat(ans) : ans;
   const pr = promptBlocks(params);
-
-  let answerObj: Record<string, Json>;
-  if (task === "find_n_for_value") answerObj = { type: "integer", canonical: ans as number, display: String(ans) };
-  else { const af = ans as Rational; answerObj = { type: "fraction", canonical: af.toJSON(), display: af.toString() }; }
+  const interaction = answerType === "multiple-choice" ? "multiple-choice" : "free-response";
 
   const paramsJson: Record<string, Json> = { task: params.task, u1: params.u1, r: { num: params.r.num, den: params.r.den } };
   if (params.n !== undefined) paramsJson["n"] = params.n;
@@ -275,8 +293,9 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
     generatorVersion: GENERATOR_VERSION,
     seed,
     params: paramsJson,
+    interactionType: interaction,
     prompt: { instruction: pr.instruction, blocks: pr.blocks },
-    answer: answerObj,
+    answer: answerObj(ansR),
     solution: generateSolution(params),
     difficulty: difficulty(params),
     calculatorPolicy: CALCULATOR_POLICY,
@@ -287,14 +306,12 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
 
   if (answerType === "multiple-choice") {
     const ds = distractors ?? [];
-    (item["answer"] as Record<string, Json>)["type"] = "multiple-choice";
     item["distractors"] = ds.map((dd, i) => ({
       id: `d${i + 1}`, value: dd.value.toJSON(), display: dd.value.toString(),
       misconceptionId: dd.misconceptionId, rationale: dd.rationale,
     }));
     interface Opt { value: Rational; correct: boolean; misconceptionId: string | null; }
-    const correctR = ans as Rational;
-    const pool: Opt[] = [{ value: correctR, correct: true, misconceptionId: null }];
+    const pool: Opt[] = [{ value: ansR, correct: true, misconceptionId: null }];
     for (const dd of ds) pool.push({ value: dd.value, correct: false, misconceptionId: dd.misconceptionId });
     const shuffled = rng.shuffle(pool);
     const labels = ["A", "B", "C", "D", "E"];
@@ -316,28 +333,36 @@ export function validate(item: Record<string, Json>): ValidationResult {
   const add = (name: string, ok: boolean, detail = ""): void => { checks.push({ name, result: ok ? "pass" : "fail", detail }); };
   const params = item["params"] as unknown as Params;
   const u1 = params.u1, r = new Rational(params.r.num, params.r.den);
-  const ansF = item["answer"] as { type: string; canonical: Json; display: string };
+  const ansF = item["answer"] as { type: string; canonical: { num: number; den: number }; display: string };
+  const ans = new Rational(ansF.canonical.num, ansF.canonical.den);
 
   add("params-in-domain", u1 !== 0 && u1 >= -9 && u1 <= 9 && !r.isZero() && !r.equals(rat(1)) && !r.equals(rat(-1)) && params.r.den >= 1, `u1=${u1}, r=${r.toString()}`);
+  add("answer-type-consistency",
+    (ansF.type === "integer" && ansF.canonical.den === 1) || (ansF.type === "exact-rational" && ansF.canonical.den >= 1),
+    `type=${ansF.type}, den=${ansF.canonical.den}`);
+  add("interaction-type", ["free-response", "multiple-choice"].includes(String(item["interactionType"])), String(item["interactionType"]));
 
-  const canRat = (): Rational => new Rational((ansF.canonical as { num: number }).num, (ansF.canonical as { den: number }).den);
   if (params.task === "nth_term") {
     let t = rat(u1); for (let i = 0; i < params.n! - 1; i++) t = t.mul(r);
-    add("geo-iterative-agreement", t.equals(canRat()), "");
+    add("geo-iterative-agreement", t.equals(ans), "");
   } else if (params.task === "sum_n") {
     let t = rat(u1), s = rat(0); for (let i = 0; i < params.n!; i++) { s = s.add(t); t = t.mul(r); }
-    add("geo-iterative-agreement", s.equals(canRat()), "");
+    add("geo-iterative-agreement", s.equals(ans), "");
   } else if (params.task === "sum_infinite") {
-    add("geo-iterative-agreement", r.cmpAbs(rat(1)) < 0 && canRat().mul(rat(1).sub(r)).equals(rat(u1)), "");
+    add("geo-iterative-agreement", r.cmpAbs(rat(1)) < 0 && ans.mul(rat(1).sub(r)).equals(rat(u1)), "");
   } else if (params.task === "find_r") {
-    const found = canRat(); const value = givenValue(params);
-    let t = rat(u1); for (let i = 0; i < params.k! - 1; i++) t = t.mul(found);
+    const value = givenValue(params);
+    let t = rat(u1); for (let i = 0; i < params.k! - 1; i++) t = t.mul(ans);
     add("geo-iterative-agreement", t.equals(value), "");
+    const sols = realRatioSolutions(u1, value, params.k!);
+    add("find_r-unique-real-ratio", sols.length === 1 && sols[0]!.equals(ans), `real solutions ${sols.map((s) => s.toString())}`);
   } else {
-    const nAns = ansF.canonical as number; const value = givenValue(params);
+    const nAns = ansF.canonical.num; const value = givenValue(params);
     const terms: Rational[] = []; let t = rat(u1);
     for (let i = 0; i < nAns; i++) { terms.push(t); t = t.mul(r); }
-    add("geo-iterative-agreement", terms.length === nAns && terms[terms.length - 1]!.equals(value) && !terms.slice(0, -1).some((x) => x.equals(value)), "");
+    add("geo-iterative-agreement", terms.length === nAns && terms[terms.length - 1]!.equals(value), "");
+    const idx = termIndexSolutions(u1, r, value);
+    add("term-index-unique", idx.length === 1 && idx[0] === nAns, `indices ${JSON.stringify(idx)}`);
   }
 
   const steps = (item["solution"] as { steps: Array<{ intermediateResult?: string }> }).steps;
@@ -375,7 +400,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("a11y-fields-present", Boolean((item["accessibility"] as { spokenMath?: string } | undefined)?.spokenMath), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.0.0", checks };
+  return { status, validatorVersion: "1.1.0", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }
