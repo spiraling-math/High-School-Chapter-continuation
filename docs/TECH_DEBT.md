@@ -75,3 +75,17 @@ item.answer.type       : "integer" | "exact-rational" (already implemented)
 
 To be handled in the **Foundation Readiness & Generator SDK design** phase, not
 in a sequence-generator phase.
+
+## TD-2 — Middle-School algebra objective-ID normalization & planned prerequisites
+
+**Status: recorded (2026-06-21).** The linear-equations objectives use the
+future-proof six-segment scheme `SPI.MIDDLE.ALG.LINEQ.<MICRO>.01` (owner decision
+D-0). The pre-existing reference `SPI.MIDDLE.ALG.SUBSTITUTION.01` is shallower
+(five-segment). **Do not silently rename a published objective.** When the
+Middle-School algebra foundations are authored, normalize the substitution id
+under the same scheme (with an alias/redirect if it has been published) and define
+the currently-**planned** prerequisites referenced by the LINEQ objectives:
+`SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01`, `SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01`, and
+`SPI.MIDDLE.ALG.EXPAND_BRACKETS.01`. Until then these remain explicitly marked
+`planned`; the curriculum-graph check warns on the unresolved prerequisites, which
+is expected and acceptable.

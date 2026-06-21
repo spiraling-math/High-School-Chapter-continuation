@@ -2,6 +2,35 @@
 
 Last updated: 2026-06-21.
 
+## Linear equations pilot — IMPLEMENTED, awaiting curriculum review (2026-06-21)
+
+First non-sequence family, proving the SDK on new mathematics:
+**`gen.algebra.linear-equations` v1.0.0**, placed in the uploaded curriculum at
+**SPI-Math Middle School → Algebra → Linear equations in one variable** (Topic 12;
+aligned to IGCSE 0580 C2.5/E2.5 and Singapore Lower Secondary). Built from the
+owner's APPROVE-WITH-REVISIONS decision (`DECISION_LOG.md` #28).
+
+- Tasks: one-step (+/−), one-step (×, `ax=c`), two-step, variables-both-sides, one
+  bracket; free-response + multiple-choice; integer + exact-rational answers.
+- Minimal `LinExpr` algebra (`core/exact-math/linexpr.ts` + oracle mirror) — no CAS;
+  backward construction from a chosen exact solution; uniqueness via `a ≠ c`.
+- Independent Python oracle + TypeScript with **byte-for-byte parity** (golden +
+  300-entry fixture); approved misconception set with per-task eligibility, dedupe,
+  and deterministic regeneration (3 distinct distractors); the approved 6-step
+  worked solution with substitution check; revised leakage rule; difficulty floors.
+- 5 objectives (`SPI.MIDDLE.ALG.LINEQ.*`, `reviewStatus: proposed`) + misconception
+  data; registered in the SDK registry and the Studio.
+
+Verified: typecheck clean; **137 TS tests** (incl. parity + 2000-seed stability gate
++ linear a11y); **12 Python linear tests**; oracle **10,000-seed sweep 0 invalid**
+(all 5 tasks, bands 1–5); schema conformance (Python + Ajv); offline build
+`external references: none`; Studio browser-verified (all tasks render, MC, worked
+solution + substitution, validation PASS, no console errors). Review pack:
+`docs/review/linear_equations_review_pack.md` (50 items, all 11 MC rules, 0 collision
+violations). **Items start `machine-validated`; the generator/objectives/spec are
+curriculum-approved only after the owner reviews the pack.** No third generator
+family started.
+
 ## Generator SDK foundation — COMPLETE (2026-06-21)
 
 The technical SDK-foundation milestone is done (5 steps, all **output-neutral**).

@@ -28,6 +28,7 @@ import katex from "katex";
 import "fake-indexeddb/auto";
 import { generate as genArith } from "../../domains/sequences/arithmetic.ts";
 import { validate } from "../../domains/sequences/validate.ts";
+import { generate as genLinear, validate as validateLinear } from "../../domains/algebra/linear-equations.ts";
 import { makeRecord } from "../../core/bank/record.ts";
 import { renderQuestionTeacher, renderSolution, renderValidation, type KatexLike } from "./render/katex-render.ts";
 import { studentWorksheet } from "../../exporters/html/worksheet.ts";
@@ -70,6 +71,9 @@ function page(title: string, body: string): string {
 
 const item = genArith(123, { answerType: "multiple-choice" });
 const rec = makeRecord(item, validate(item).status, { mode: "multiple-choice", genConfig: { answerType: "multiple-choice" } });
+
+const linItem = genLinear(7, { task: "brackets", answerType: "multiple-choice" });
+const linRec = makeRecord(linItem, validateLinear(linItem).status, { mode: "multiple-choice", genConfig: { answerType: "multiple-choice", task: "brackets" } });
 
 // --- WCAG contrast guard (the color-contrast rule cannot run in jsdom) --------- //
 function relLum(hex: string): number {
@@ -120,6 +124,14 @@ test("a11y: answer-key export — no critical/serious violations", async () => {
 
 test("a11y: worked-solution export — no critical/serious violations", async () => {
   noViolations(await seriousViolations(workedSolutions([rec], { katex: kx, katexCss: "", title: "Solutions" })));
+});
+
+test("a11y: linear-equations views and exports — no critical/serious violations", async () => {
+  noViolations(await seriousViolations(page("Linear preview", renderQuestionTeacher(linItem, kx))));
+  noViolations(await seriousViolations(page("Linear solution", renderSolution(linItem, kx))));
+  noViolations(await seriousViolations(studentWorksheet([linRec], { katex: kx, title: "Linear worksheet" })));
+  noViolations(await seriousViolations(answerKey([linRec], { title: "Linear answer key" })));
+  noViolations(await seriousViolations(workedSolutions([linRec], { katex: kx, katexCss: "", title: "Linear solutions" })));
 });
 
 test("a11y: Generator Studio shell + question-bank table — no critical/serious violations", async () => {

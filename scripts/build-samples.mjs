@@ -16,6 +16,7 @@ import { ROOT, inlineKatexCss } from "./katex-bundle.mjs";
 import { generate } from "../domains/sequences/arithmetic.ts";
 import { validate } from "../domains/sequences/validate.ts";
 import * as geometric from "../domains/sequences/geometric.ts";
+import * as linear from "../domains/algebra/linear-equations.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -35,6 +36,11 @@ const records = seeds.map((s, i) => {
 for (const [task, mode] of [["nth_term", "multiple-choice"], ["sum_n", "integer"], ["find_r", "integer"], ["find_n_for_value", "integer"], ["sum_infinite", "integer"]]) {
   const item = geometric.generate(7, { task, answerType: mode });
   records.push(makeRecord(item, geometric.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
+}
+// Include linear-equations items (all five tasks; integer + exact-rational answers).
+for (const [task, mode] of [["one_step_add", "multiple-choice"], ["one_step_mul", "integer"], ["two_step", "multiple-choice"], ["both_sides", "integer"], ["brackets", "multiple-choice"]]) {
+  const item = linear.generate(11, { task, answerType: mode });
+  records.push(makeRecord(item, linear.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
 }
 
 const katexCss = inlineKatexCss();

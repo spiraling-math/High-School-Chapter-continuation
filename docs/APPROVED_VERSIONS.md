@@ -17,6 +17,19 @@ committed golden/parity fixtures.
 Git tags identify the approved reference implementations:
 `approved-arith-v1.1.0`, `approved-geo-v1.0.0`, `approved-geo-v1.1.0`.
 
+## Pending curriculum review (NOT approved)
+
+| Generator | Version | Status | Spec | Review pack |
+| --- | --- | --- | --- | --- |
+| `gen.algebra.linear-equations` | 1.0.0 | **implemented; awaiting curriculum review of the pack** | `GENERATOR_SPEC_linear_equations_proposal.md` (approved-with-revisions) | `docs/review/linear_equations_review_pack.md` |
+
+The five `SPI.MIDDLE.ALG.LINEQ.*` objectives are `reviewStatus: proposed`. The
+generator, its objectives, and its spec become curriculum-approved **only after the
+owner reviews the completed review pack**. Items begin at `machine-validated`;
+nothing is auto-approved or published. Fixtures
+(`oracle/golden/linear_equations.{golden,parity}.json`) become immutable once the
+version is approved.
+
 ## Approved curriculum objectives
 
 | Objective ID | Generator task | Version | Status |
