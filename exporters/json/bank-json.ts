@@ -12,6 +12,7 @@
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
 import { generate, serialize } from "../../domains/sequences/arithmetic.ts";
 import { validate } from "../../domains/sequences/validate.ts";
+import { ensureInteractionType } from "../../core/bank/record.ts";
 import type { BankRecord, Mode } from "../../core/bank/types.ts";
 
 const FORMAT = "spi-math-bank";
@@ -41,7 +42,8 @@ export function importBankJson(text: string): ImportResult {
     return { records: [], errors: ["Not an SPI-Math bank file"], integrityOk: false };
   }
 
-  const records = doc.records as BankRecord[];
+  // Normalize legacy/imported records to the canonical interactionType (TD-1). Idempotent.
+  const records = (doc.records as BankRecord[]).map(ensureInteractionType);
   let integrityOk = true;
 
   records.forEach((r, i) => {

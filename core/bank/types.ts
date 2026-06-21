@@ -29,6 +29,9 @@ export const APP_SETTABLE_STATES: LifecycleState[] = [
 
 export type Mode = "integer" | "multiple-choice";
 
+/** Canonical interaction classification (TD-1). Stored on every record. */
+export type InteractionType = "free-response" | "multiple-choice";
+
 /** Editable wording overlay. Overrides display text only. */
 export interface WordingOverlay {
   title?: string;
@@ -55,9 +58,13 @@ export interface BankRecord {
   task: string;
   band: number;
   seed: number;
+  /** Legacy interaction mode (kept for back-compat and the genConfig reproduction). */
   mode: Mode;
+  /** Canonical interaction field (TD-1). Derived from mode for legacy records. */
+  interactionType: InteractionType;
   /** Exact config passed to generate(seed, config), so the item reproduces
-   *  identically. Distinguishes auto-task (no `task`) from explicit-task runs. */
+   *  identically. Distinguishes auto-task (no `task`) from explicit-task runs.
+   *  This is the preserved original (legacy) configuration used for reproduction. */
   genConfig: { answerType: Mode; task?: string };
   /** Internal schema revision of the record shape (set by migrations). */
   schemaRev?: number;

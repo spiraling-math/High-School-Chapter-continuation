@@ -40,9 +40,23 @@ export function makeRecord(
     band: diff.overallBand,
     seed: Number(item["seed"]),
     mode: opts.mode,
+    interactionType: opts.mode === "multiple-choice" ? "multiple-choice" : "free-response",
     genConfig: opts.genConfig ?? { answerType: opts.mode },
-    schemaRev: 2,
+    schemaRev: 3,
   };
+}
+
+/**
+ * Ensure a record carries the canonical `interactionType` field (TD-1).
+ *
+ * Idempotent: a record that already has a valid interactionType (and schemaRev 3)
+ * is returned unchanged in content. Used by the IndexedDB v3 migration and by JSON
+ * import so legacy and imported records are normalized identically.
+ */
+export function ensureInteractionType(rec: BankRecord): BankRecord {
+  const valid = rec.interactionType === "free-response" || rec.interactionType === "multiple-choice";
+  const interactionType = valid ? rec.interactionType : (rec.mode === "multiple-choice" ? "multiple-choice" : "free-response");
+  return { ...rec, interactionType, schemaRev: 3 };
 }
 
 /** Apply an editable wording overlay. Returns a new record; `item` is untouched. */

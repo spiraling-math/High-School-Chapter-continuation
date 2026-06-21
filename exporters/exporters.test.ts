@@ -102,6 +102,17 @@ test("JSON import integrity catches a tampered item", () => {
   assert.ok(imp.errors.length > 0);
 });
 
+test("JSON import backfills interactionType on legacy records (idempotent)", () => {
+  const rs = recs([3], "multiple-choice");
+  const legacy = rs.map((r) => { const c = { ...r } as Record<string, unknown>; delete c["interactionType"]; return c; });
+  const imp = importBankJson(JSON.stringify({ format: "spi-math-bank", version: "1.0.0", records: legacy }));
+  assert.equal(imp.records[0]!.interactionType, "multiple-choice");
+  assert.equal(imp.integrityOk, true, imp.errors.join("; "));
+  // Re-importing the normalized records is stable.
+  const imp2 = importBankJson(exportBankJson(imp.records));
+  assert.equal(imp2.records[0]!.interactionType, "multiple-choice");
+});
+
 test("auto-task records reproduce from stored config", () => {
   // Auto mode draws the task from the RNG; the stored genConfig must omit task.
   const item = generate(3, { answerType: "multiple-choice" });

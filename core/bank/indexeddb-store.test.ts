@@ -103,29 +103,67 @@ async function indexNames(factory: IDBFactory, name: string): Promise<string[]> 
   });
 }
 
-test("schema migration v1 -> v2 adds the tags index and backfills records", async () => {
+test("schema migration v1 -> current backfills tags/archived and the canonical interactionType", async () => {
   const factory = new IDBFactory();
   const name = `bank-migrate-${dbCounter++}`;
+  assert.equal(DB_VERSION, 3);
 
-  // Open at v1 and write a record shaped like an old one (no tags / archived).
+  // Open at v1 and write a pre-tags, pre-interactionType record.
   const v1 = new IndexedDBBankStore({ factory, name, version: 1 });
   const old = record(5, "multiple-choice");
   const oldShape = { ...old } as Partial<BankRecord> as BankRecord;
   delete (oldShape as { tags?: unknown }).tags;
   delete (oldShape as { archived?: unknown }).archived;
   delete (oldShape as { schemaRev?: unknown }).schemaRev;
+  delete (oldShape as { interactionType?: unknown }).interactionType;
   await v1.put(oldShape);
   v1.close();
   assert.ok(!(await indexNames(factory, name)).includes("tags"), "no tags index at v1");
 
-  // Reopen at current version -> triggers the v2 migration (index + backfill).
-  const v2 = new IndexedDBBankStore({ factory, name }); // version defaults to DB_VERSION
-  await v2.count(); // force open/upgrade
-  const migrated = await v2.get(old.itemId);
+  // Reopen at current version -> runs the v2 + v3 migrations.
+  const cur = new IndexedDBBankStore({ factory, name });
+  await cur.count();
+  const migrated = await cur.get(old.itemId);
   assert.deepEqual(migrated?.tags, [], "tags backfilled to []");
   assert.equal(migrated?.archived, false, "archived backfilled to false");
-  assert.equal(migrated?.schemaRev, 2, "schemaRev set to 2");
-  assert.ok((await indexNames(factory, name)).includes("tags"), "tags index present at v2");
-  assert.equal(DB_VERSION, 2);
+  assert.equal(migrated?.interactionType, "multiple-choice", "interactionType backfilled from mode");
+  assert.equal(migrated?.schemaRev, 3, "schemaRev set to 3");
+  assert.ok((await indexNames(factory, name)).includes("tags"), "tags index present");
+  cur.close();
+
+  // Repeated migration is idempotent: reopening again changes nothing.
+  const again = new IndexedDBBankStore({ factory, name });
+  const m2 = await again.get(old.itemId);
+  assert.equal(m2?.interactionType, "multiple-choice");
+  assert.equal(m2?.schemaRev, 3);
+  again.close();
+});
+
+test("v2 -> v3 migration backfills interactionType for a free-response record", async () => {
+  const factory = new IDBFactory();
+  const name = `bank-v2v3-${dbCounter++}`;
+  // Seed a record at v2 (no interactionType).
+  const v2 = new IndexedDBBankStore({ factory, name, version: 2 });
+  const r = record(2, "integer");
+  const v2shape = { ...r } as Partial<BankRecord> as BankRecord;
+  delete (v2shape as { interactionType?: unknown }).interactionType;
+  await v2.put(v2shape);
   v2.close();
+  // Reopen at v3.
+  const v3 = new IndexedDBBankStore({ factory, name });
+  const migrated = await v3.get(r.itemId);
+  assert.equal(migrated?.interactionType, "free-response");
+  assert.equal(migrated?.schemaRev, 3);
+  v3.close();
+});
+
+test("a canonical-only record (already interactionType) round-trips unchanged", async () => {
+  const { store } = freshStore();
+  const r = record(9, "multiple-choice"); // makeRecord already sets interactionType + schemaRev 3
+  assert.equal(r.interactionType, "multiple-choice");
+  await store.put(r);
+  const got = await store.get(r.itemId);
+  assert.equal(got?.interactionType, "multiple-choice");
+  assert.equal(got?.schemaRev, 3);
+  store.close();
 });

@@ -8,7 +8,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { generate, serialize } from "../../domains/sequences/arithmetic.ts";
-import { makeRecord, withWording, withLifecycle, duplicateRecord } from "./record.ts";
+import { makeRecord, withWording, withLifecycle, duplicateRecord, ensureInteractionType } from "./record.ts";
+import type { BankRecord } from "./types.ts";
 
 function rec(seed = 1, mode: "integer" | "multiple-choice" = "multiple-choice") {
   const item = generate(seed, { answerType: mode });
@@ -38,6 +39,22 @@ test("lifecycle changes never mutate the item", () => {
   const moved = withLifecycle(r, "revised");
   assert.equal(serialize(moved.item), before);
   assert.equal(moved.lifecycleState, "revised");
+});
+
+test("makeRecord sets the canonical interactionType from mode", () => {
+  assert.equal(rec(1, "multiple-choice").interactionType, "multiple-choice");
+  assert.equal(rec(1, "integer").interactionType, "free-response");
+});
+
+test("ensureInteractionType backfills from mode and is idempotent", () => {
+  const r = rec(1, "multiple-choice");
+  const legacy = { ...r } as Partial<BankRecord> as BankRecord;
+  delete (legacy as { interactionType?: unknown }).interactionType;
+  const once = ensureInteractionType(legacy);
+  assert.equal(once.interactionType, "multiple-choice");
+  assert.equal(once.schemaRev, 3);
+  const twice = ensureInteractionType(once);
+  assert.deepEqual(twice, once); // applying again changes nothing
 });
 
 test("duplicate produces an independent draft copy with a new id", () => {

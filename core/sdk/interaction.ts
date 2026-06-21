@@ -11,12 +11,22 @@
 import type { InteractionType, GenConfig } from "./generator-module.ts";
 
 export function resolveInteractionType(config: GenConfig): InteractionType {
-  if (config.interactionType === "free-response" || config.interactionType === "multiple-choice") {
-    return config.interactionType;
+  const fromInteraction =
+    config.interactionType === "free-response" || config.interactionType === "multiple-choice"
+      ? config.interactionType
+      : undefined;
+  const fromAnswerType =
+    config.answerType === "multiple-choice" ? "multiple-choice"
+    : config.answerType === "integer" ? "free-response" // legacy "integer" meant free-response
+    : undefined;
+
+  // Reject when both fields are supplied and disagree; accept when they agree.
+  if (fromInteraction && fromAnswerType && fromInteraction !== fromAnswerType) {
+    throw new Error(
+      `conflicting configuration: interactionType='${config.interactionType}' vs answerType='${config.answerType}'`,
+    );
   }
-  if (config.answerType === "multiple-choice") return "multiple-choice";
-  // Legacy "integer" (which meant free-response) and unset both map to free-response.
-  return "free-response";
+  return fromInteraction ?? fromAnswerType ?? "free-response";
 }
 
 /** The legacy answerType selector equivalent to a given interaction type, for

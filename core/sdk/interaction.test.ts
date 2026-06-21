@@ -13,9 +13,16 @@ test("maps the legacy answerType selector back-compatibly", () => {
   assert.equal(resolveInteractionType({}), "free-response");
 });
 
-test("prefers explicit interactionType when present", () => {
-  assert.equal(resolveInteractionType({ interactionType: "multiple-choice", answerType: "integer" }), "multiple-choice");
-  assert.equal(resolveInteractionType({ interactionType: "free-response", answerType: "multiple-choice" }), "free-response");
+test("accepts canonical-only interactionType", () => {
+  assert.equal(resolveInteractionType({ interactionType: "multiple-choice" }), "multiple-choice");
+  assert.equal(resolveInteractionType({ interactionType: "free-response" }), "free-response");
+});
+
+test("accepts matching dual fields; rejects conflicting dual fields", () => {
+  assert.equal(resolveInteractionType({ interactionType: "multiple-choice", answerType: "multiple-choice" }), "multiple-choice");
+  assert.equal(resolveInteractionType({ interactionType: "free-response", answerType: "integer" }), "free-response");
+  assert.throws(() => resolveInteractionType({ interactionType: "multiple-choice", answerType: "integer" }));
+  assert.throws(() => resolveInteractionType({ interactionType: "free-response", answerType: "multiple-choice" }));
 });
 
 test("legacyAnswerType is the inverse mapping", () => {

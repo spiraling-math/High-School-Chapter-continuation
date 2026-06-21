@@ -10,13 +10,19 @@
  */
 
 import type { BankRecord, BankQuery, BankStore } from "./types.ts";
+import { ensureInteractionType } from "./record.ts";
 
 const STORE = "items";
 
-type Migration = (db: IDBDatabase, tx: IDBTransaction) => void;
+type SchemaMigration = (db: IDBDatabase, tx: IDBTransaction) => void;
 
-/** Ordered migrations. Index v migrates the DB to version v+1. */
-export const MIGRATIONS: Migration[] = [
+/**
+ * SCHEMA migrations only (object store + index creation). Index v upgrades the DB
+ * to version v+1. DATA normalization is handled separately by a single idempotent
+ * backfill pass after the schema migrations, so multiple migrations never race on
+ * the same records.
+ */
+const SCHEMA_MIGRATIONS: SchemaMigration[] = [
   // v1 — create the object store and the base indexes.
   (db) => {
     const os = db.createObjectStore(STORE, { keyPath: "itemId" });
@@ -27,26 +33,31 @@ export const MIGRATIONS: Migration[] = [
     os.createIndex("lifecycleState", "lifecycleState");
     os.createIndex("seed", "seed");
   },
-  // v2 — add a multiEntry tags index and backfill existing records.
-  (_db, tx) => {
-    const os = tx.objectStore(STORE);
-    os.createIndex("tags", "tags", { multiEntry: true });
-    const cursorReq = os.openCursor();
-    cursorReq.onsuccess = () => {
-      const cur = cursorReq.result;
-      if (!cur) return;
-      const v = cur.value as BankRecord;
-      let changed = false;
-      if (!Array.isArray(v.tags)) { v.tags = []; changed = true; }
-      if (typeof v.archived !== "boolean") { v.archived = false; changed = true; }
-      if (v.schemaRev !== 2) { v.schemaRev = 2; changed = true; }
-      if (changed) cur.update(v);
-      cur.continue();
-    };
-  },
+  // v2 — add a multiEntry tags index.
+  (_db, tx) => { tx.objectStore(STORE).createIndex("tags", "tags", { multiEntry: true }); },
+  // v3 — interactionType backfill (no new index); handled by the data backfill.
+  (_db, _tx) => { /* no schema change */ },
 ];
 
-export const DB_VERSION = MIGRATIONS.length;
+export const DB_VERSION = SCHEMA_MIGRATIONS.length;
+
+/** Bring a record to the latest shape. Idempotent and order-independent. */
+function normalizeRecord(v: BankRecord): BankRecord {
+  const tags = Array.isArray(v.tags) ? v.tags : [];
+  const archived = typeof v.archived === "boolean" ? v.archived : false;
+  return ensureInteractionType({ ...v, tags, archived });
+}
+
+/** A single idempotent data-backfill pass over every record (no cross-cursor races). */
+function backfillRecords(tx: IDBTransaction): void {
+  const req = tx.objectStore(STORE).openCursor();
+  req.onsuccess = () => {
+    const cur = req.result;
+    if (!cur) return;
+    cur.update(normalizeRecord(cur.value as BankRecord));
+    cur.continue();
+  };
+}
 
 function pr<T>(req: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -61,7 +72,8 @@ function openDb(factory: IDBFactory, name: string, version: number): Promise<IDB
     req.onupgradeneeded = (e) => {
       const db = req.result;
       const tx = req.transaction!;
-      for (let v = e.oldVersion; v < version; v++) MIGRATIONS[v]!(db, tx);
+      for (let v = e.oldVersion; v < version; v++) SCHEMA_MIGRATIONS[v]!(db, tx);
+      if (db.objectStoreNames.contains(STORE)) backfillRecords(tx);
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);

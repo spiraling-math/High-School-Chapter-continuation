@@ -34,11 +34,11 @@ for (const g of GENS) {
     }
   });
 
-  test(`${g.name}: explicit interactionType overrides answerType`, () => {
-    // interactionType wins when both are present.
+  test(`${g.name}: agreeing dual config accepted; conflicting dual config rejected`, () => {
     assert.equal(
-      g.serialize(g.generate(7, { interactionType: "multiple-choice", answerType: "integer" } as never)),
+      g.serialize(g.generate(7, { interactionType: "multiple-choice", answerType: "multiple-choice" } as never)),
       g.serialize(g.generate(7, { answerType: "multiple-choice" } as never)),
     );
+    assert.throws(() => g.generate(7, { interactionType: "multiple-choice", answerType: "integer" } as never));
   });
 }
