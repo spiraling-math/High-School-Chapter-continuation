@@ -1,0 +1,75 @@
+[
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "algebraic-foundations",
+    "topic": "inverse operations",
+    "subtopic": "inverse operations and changing the subject",
+    "microSkill": "reverse a chain of operations using inverse pairs (+/-, x/div) applied in reverse order",
+    "objectiveWording": "Identify and apply inverse operations - undoing a sequence of operations in reverse order - to isolate a target quantity.",
+    "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01"],
+    "successCriteria": [
+      "States the inverse of each operation and recognises +/- and x// as inverse pairs.",
+      "Undoes a two-operation chain in the correct reverse order (e.g. for 'multiply by 3 then add 2', subtract 2 first, then divide by 3).",
+      "Changes the subject of a simple formula by applying inverse operations to both sides (e.g. make r the subject of C = 2*pi*r)."
+    ],
+    "allowedRepresentations": ["numeric", "symbolic"],
+    "vocabulary": ["inverse operation", "undo", "isolate", "subject of a formula", "reverse order", "balance"],
+    "notation": ["+ <-> -    x <-> /", "the operation applied last is undone first", "make x the subject: x = ..."],
+    "answerTypes": ["integer", "exact-rational", "algebraic-expression"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": [],
+    "relatedObjectives": ["SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01", "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"],
+    "sourceReferences": [
+      { "sourceId": "SRC-middle-ch10", "locator": "Middle School Topic 10: Algebraic Notation, Substitution & Formulae (changing the subject)" },
+      { "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations (the golden rule; inverse pairs)" }
+    ],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.1", "label": "Algebraic notation and manipulation of formulae" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Algebraic manipulation and inverse operations" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.EXPAND_BRACKETS.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "algebraic-foundations",
+    "topic": "expanding brackets",
+    "subtopic": "expanding a single bracket (distributive law)",
+    "microSkill": "multiply each term inside one bracket by the term outside, preserving signs",
+    "objectiveWording": "Expand a single bracket of the form k(ax + b) using the distributive law, distributing the sign correctly across every term inside.",
+    "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01"],
+    "successCriteria": [
+      "Expands k(ax + b) correctly, e.g. 3(x + 4) = 3x + 12.",
+      "Distributes a negative multiplier across all terms, e.g. -2(x - 5) = -2x + 10 and -(x - 4) = -x + 4.",
+      "Expands then collects like terms with a trailing expression, e.g. 5 + 3(x - 1) = 3x + 2."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["distributive law", "expand", "bracket", "term", "coefficient", "like terms"],
+    "notation": ["k(ax + b) = kax + kb", "a(b + c) = ab + ac", "-(x - 4) = -x + 4 (the minus distributes too)"],
+    "answerTypes": ["algebraic-expression"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": [],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.BRACKETS.01", "SPI.MIDDLE.ALG.FACTORISE_COMMON_FACTOR.01"],
+    "sourceReferences": [
+      { "sourceId": "SRC-middle-ch11", "locator": "Middle School Topic 11: Simplifying, Expanding & Factorising (A2)" }
+    ],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.2/E2.2", "label": "Expansion of brackets" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Expansion of linear expressions" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "objectiveId": "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "number",
+    "strand": "signed-numbers",
+    "topic": "signed-integer operations",
+    "subtopic": "add, subtract, multiply, and divide signed integers",
+    "microSkill": "apply directional number-line moves and same-sign/different-sign rules to evaluate signed-integer arithmetic",
+    "objectiveWording": "Add, subtract, multiply, and divide signed integers, applying number-line reasoning for addition and subtraction and the sign rules for multiplication and division.",
+    "prerequisites": ["SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01"],
+    "successCriteria": [
+      "Adds and subtracts signed integers correctly, treating 'subtract a negative' as a move to the right (e.g. -8 + 11 - 5 = -2; 3 - (-4) = 7).",
+      "Multiplies and divides signed integers using the sign rule (same signs give positive, different signs give negative), e.g. (-6) x (-4) = 24, (-20) / 4 = -5.",
+      "Distinguishes -3^2 = -9 from (-3)^2 = 9, using brackets to control the sign of a base under a power."
+    ],
+    "allowedRepresentations": ["numeric", "symbolic"],
+    "vocabulary": ["signed integer", "sign", "opposite", "absolute value", "sign rule", "double negative"],
+    "notation": ["(+)x(+)=+, (-)x(-)=+, (+)x(-)=-, (-)x(+)=-", "-(-a) = +a", "(-3)^2 = 9 versus -3^2 = -(3^2) = -9"],
+    "answerTypes": ["integer"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 2 },
+    "commonMisconceptions": [],
+    "relatedObjectives": ["SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01", "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01"],
+    "sourceReferences": [
+      { "sourceId": "SRC-middle-ch01", "locator": "Middle School Topic 01: Integers & Place Value (number line, ordering, absolute value)" },
+      { "sourceId": "SRC-middle-ch04", "locator": "Middle School Topic 04: Four Operations, Brackets & Calculator" }
+    ],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C1.1/C1.6", "label": "Operations with integers and directed numbers" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Negative numbers and the four operations" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  }
+]
