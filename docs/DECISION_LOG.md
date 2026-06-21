@@ -1,6 +1,6 @@
 # Decision Log
 
-Originated: 2026-06-19. Last updated: 2026-06-20.
+Originated: 2026-06-19. Last updated: 2026-06-21.
 
 This log records significant, durable decisions. Each row is an architectural decision record (ADR) in compact form. Decisions are not silently changed; superseded rows are marked and a new row is added.
 
@@ -38,6 +38,7 @@ This log records significant, durable decisions. Each row is an architectural de
 | 25 | 2026-06-20 | **Recorded tech debt TD-1:** the legacy `answerType` config key conflates interaction mode with mathematical answer type. A back-compatible migration to `config.interactionType` + `answer.type` is planned for the Generator SDK phase; stored seeds, fixtures, and bank items must keep reproducing byte-for-byte. No change to approved v1.1.0 output now. See `TECH_DEBT.md`. | Owner-requested non-blocking cleanup for the future SDK. | Recorded |
 
 | 26 | 2026-06-21 | **Began Foundation Readiness & Generator SDK phase.** Formalized the generator contract (`core/sdk/generator-module.ts`), added a back-compatible TD-1 interaction resolver (`core/sdk/interaction.ts`), a reusable stability-gate harness (`core/sdk/harness.ts`) validated against both approved generators, a unified generator registry (`core/sdk/sequence-registry.ts`; the Studio re-exports it), and a curriculum-graph integrity check (`core/curriculum/graph-check.ts`). Design in `GENERATOR_SDK_DESIGN.md`; readiness audit in `FOUNDATION_READINESS.md`. **Output-neutral**: no approved generator output or fixture changed (golden/parity/harness gates confirm). | Two approved families share repeated structure; an SDK turns new families into "math + config" while preserving every principle and approved output. | Accepted |
+| 27 | 2026-06-21 | **Completed the Generator SDK foundation (5 steps, output-neutral).** (1) Shared MC option assembly (`core/sdk/multiple-choice.ts`). (2) Universal validation predicates (`core/sdk/checks.ts`) composed by both validators, which keep their domain-specific checks and exact IDs/order/messages; added provenance/version checks. (3) **TD-1 resolved**: `interactionType` canonical, conflicts rejected, `BankRecord` + IndexedDB **v3** (single idempotent backfill) + JSON import normalized and tested. (4) **Runtime schema validation** via a build-time **precompiled standalone Ajv** validator (no codegen/network) at storage/import/export boundaries, with rich errors; never repairs invalid math. (5) **Automated axe-core a11y gates** (dev/test only) requiring zero critical/serious across app + views + exports; fixed an unlabeled file input and a 4.47:1 muted-text contrast. Checkpoint: `docs/SDK_FOUNDATION_CHECKPOINT.md`. Verified: 121 TS + 19 Python tests, both 10k sweeps 0 invalid, **no fixture drift**, conformance pass, offline build `external references: none`, live axe 0 violations. Foundation is **ready** to scaffold the linear-equations pilot (a curriculum decision, not started). | Turns new families into "math + config + fixtures"; hardens trust boundaries and accessibility while preserving every approved output byte-for-byte. | Accepted |
 
 ## Pending / awaiting owner
 

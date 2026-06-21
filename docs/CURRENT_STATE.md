@@ -1,6 +1,35 @@
 # Current State
 
-Last updated: 2026-06-20.
+Last updated: 2026-06-21.
+
+## Generator SDK foundation — COMPLETE (2026-06-21)
+
+The technical SDK-foundation milestone is done (5 steps, all **output-neutral**).
+Full record: `docs/SDK_FOUNDATION_CHECKPOINT.md`; decision `DECISION_LOG.md` #27.
+
+- **Shared MC assembly** (`core/sdk/multiple-choice.ts`) — deterministic option
+  assembly reused by both generators; misconception metadata/order/IDs preserved.
+- **Universal validation predicates** (`core/sdk/checks.ts`) — domain-independent
+  checks composed by both validators, which keep their domain-specific checks and
+  exact IDs/order/messages; provenance/version checks added.
+- **TD-1 resolved** — `interactionType` is the canonical config + bank field;
+  legacy `answerType` normalized at the boundary; **conflicts rejected**;
+  `BankRecord` schemaRev 3; IndexedDB **v3** single idempotent backfill; JSON
+  import normalized; all six migration cases tested.
+- **Runtime schema validation** (`core/schema/`) — build-time **precompiled
+  standalone Ajv** (no codegen/network) gating bank storage, JSON import/export,
+  and export assembly with rich errors; never repairs invalid math.
+- **Automated a11y gates** (`apps/generator-studio/a11y.test.ts`) — axe-core +
+  jsdom (dev/test only), zero critical/serious across the app, views, and exports,
+  plus a WCAG-AA token-contrast guard. Fixed an unlabeled file input and a 4.47:1
+  muted-text colour.
+
+Verified: typecheck clean; **121 TS tests**; **19 Python tests**; both
+**10,000-seed sweeps 0 invalid**; **no golden/parity fixture drift**; conformance
+pass; offline build `external references: none`; live browser axe **0 violations**.
+Ajv/axe-core/jsdom are dev/test-only (absent from the production bundle). The
+foundation is **ready** to scaffold the linear-equations pilot — a curriculum
+decision, not yet started. Do not add another mathematics generator until directed.
 
 ## Current phase
 

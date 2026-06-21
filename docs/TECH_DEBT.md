@@ -5,13 +5,22 @@ output now.
 
 ## TD-1 — Legacy `answerType` config key (Generator SDK migration)
 
-**Status:** in progress. Step 1 done (2026-06-21): both TS generators now accept
-`config.interactionType` and map the legacy `answerType` via
-`core/sdk/interaction.ts` `resolveInteractionType`. Verified **output-neutral** —
-`generate(seed, {interactionType})` is byte-for-byte identical to the legacy
-`generate(seed, {answerType})` for every seed (test:
-`domains/sequences/interaction-config.test.ts`), and all golden/parity fixtures are
-unchanged. Remaining steps (2–5 below) pending. Approved v1.1.0 output is unchanged.
+**Status: RESOLVED (2026-06-21).** `interactionType` is now the canonical config and
+bank field; `answerType` is a legacy compatibility input only.
+`resolveInteractionType` normalizes the legacy key, **accepts agreeing** dual fields
+and **rejects conflicting** ones. `BankRecord` carries canonical `interactionType`
+(schemaRev 3); the IndexedDB **v3** migration backfills it via a single idempotent
+data pass; JSON import normalizes legacy/imported records identically; `genConfig`
+is retained as the preserved original config for exact reproduction. Tests cover
+legacy-only / canonical-only / matching-dual / conflicting-dual / imported-record /
+repeated-migration cases. Verified **output-neutral**:
+`generate(seed, {interactionType})` is byte-for-byte identical to the legacy form
+for every seed, and all golden/parity fixtures are unchanged. Approved v1.1.0 output
+is unchanged. Residual (intentional): the descriptor/schema still list `answerType`
+as an accepted input for backward compatibility; read-support is retained. See
+`docs/SDK_FOUNDATION_CHECKPOINT.md`.
+
+_Original analysis and phased plan retained below for the record._
 
 ### Problem
 
