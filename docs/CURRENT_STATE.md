@@ -2,7 +2,15 @@
 
 Last updated: 2026-06-21.
 
-## Linear equations pilot — IMPLEMENTED, awaiting curriculum review (2026-06-21)
+## Linear equations pilot — CURRICULUM-APPROVED v1.0.1 (2026-06-21)
+
+**Owner-approved** (`DECISION_LOG.md` #30): the generator, the five
+`SPI.MIDDLE.ALG.LINEQ.*` objectives (now `reviewStatus: approved`), the
+misconceptions, and the spec are curriculum-approved at **v1.0.1**; reviewed items
+are approved golden exemplars; v1.0.1 fixtures are frozen immutable; v1.0.0 preserved;
+tag `approved-linear-v1.0.1`. `ONESTEP_ADD.01` is integer-only. Newly generated items
+remain `machine-validated`; no auto-approval/publication.
+
 
 First non-sequence family, proving the SDK on new mathematics:
 **`gen.algebra.linear-equations` v1.0.1**, placed in the uploaded curriculum at

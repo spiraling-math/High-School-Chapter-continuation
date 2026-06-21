@@ -30,8 +30,8 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
     ],
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "objectiveId": "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01",
@@ -64,8 +64,8 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
     ],
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "objectiveId": "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01",
@@ -98,8 +98,8 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
     ],
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "objectiveId": "SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01",
@@ -132,8 +132,8 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
     ],
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "objectiveId": "SPI.MIDDLE.ALG.LINEQ.BRACKETS.01",
@@ -166,7 +166,7 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
     ],
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   }
 ]

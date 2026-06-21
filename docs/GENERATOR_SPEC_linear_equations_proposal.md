@@ -1,11 +1,13 @@
 # Linear Equations (one variable) — Generator Proposal v1.0.0
 
-**Status: APPROVED WITH REVISIONS (owner, 2026-06-21).** The owner approved the
-pilot subject to revisions. This top section is the **authoritative final v1.0.0
-contract**; the sections below it are retained as background and are superseded by
-this section wherever they differ. Objectives and this spec become
-**curriculum-approved only after** the owner reviews the completed review pack;
-generated items begin at `machine-validated` and are never auto-approved/published.
+**Status: CURRICULUM-APPROVED at v1.0.1 (owner, 2026-06-21).** The owner reviewed the
+v1.0.1 review pack and **approved** the generator, its five `SPI.MIDDLE.ALG.LINEQ.*`
+objectives, and this specification (`DECISION_LOG.md` #30). This top section is the
+**authoritative final v1.0.1 contract**; the sections below it are retained as
+background and are superseded by this section wherever they differ. The v1.0.1
+golden/parity fixtures are frozen immutable; v1.0.0 is preserved in git history.
+Generated items still begin at `machine-validated` and are **never** auto-approved or
+published — advancing any individual item remains a per-item curriculum decision.
 
 Generator id: `gen.algebra.linear-equations` · version **`1.0.1`** (v1.0.0 preserved
 in git history). **v1.0.1 curriculum-review REVISE corrections** (`DECISION_LOG.md`

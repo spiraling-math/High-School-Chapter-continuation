@@ -9,8 +9,8 @@
     "distractorRule": { "summary": "Use t - q instead of (t - q)/(p - r)", "expression": "t - q" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "You have isolated the variable term, but not the variable. Divide both sides by the coefficient of x.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.WRONG_INVERSE",
@@ -22,8 +22,8 @@
     "distractorRule": { "summary": "Use (t + q)/(p - r)", "expression": "(t + q)/(p - r)" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Use the inverse operation on the constant term and apply it to both sides.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.VAR_SIGN",
@@ -35,8 +35,8 @@
     "distractorRule": { "summary": "Use (t - q)/(p + r)", "expression": "(t - q)/(p + r)" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Move the variable term to the other side by applying the opposite operation to both sides.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.CONST_SIGN",
@@ -48,8 +48,8 @@
     "distractorRule": { "summary": "Use (q - t)/(p - r)", "expression": "(q - t)/(p - r)" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Apply the same subtraction to both sides and check the order of the constants.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.COMBINE_UNLIKE_AS_COEFFICIENT",
@@ -61,8 +61,8 @@
     "distractorRule": { "summary": "Use t/(p + q - r)", "expression": "t/(p + q - r)" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "An x-term and a constant are unlike terms. Their coefficients cannot be combined.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.DIVIDE_ONE_TERM",
@@ -74,8 +74,8 @@
     "distractorRule": { "summary": "Use t/(p - r) - q", "expression": "t/(p - r) - q" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "When dividing an equation, divide every term on the relevant side by the coefficient.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.DIVIDE_BY_CONSTANT",
@@ -87,8 +87,8 @@
     "distractorRule": { "summary": "Use (t - q)/q", "expression": "(t - q)/q" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Divide by the coefficient of x, not by the constant term.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.IGNORE_CONSTANT",
@@ -100,8 +100,8 @@
     "distractorRule": { "summary": "Use t (ignoring q)", "expression": "t" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Apply the inverse of the constant to both sides; do not ignore it.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.MULTIPLY_INSTEAD_OF_DIVIDE",
@@ -113,8 +113,8 @@
     "distractorRule": { "summary": "Use p*t", "expression": "p * t" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "To undo multiplication by the coefficient, divide both sides by it.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.REVERSES_DIVISION",
@@ -126,8 +126,8 @@
     "distractorRule": { "summary": "Use p/t", "expression": "p / t" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Divide the constant by the coefficient, not the coefficient by the constant.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.DISTRIBUTE_PARTIAL",
@@ -139,8 +139,8 @@
     "distractorRule": { "summary": "Expand k(px + q) -> kp*x + q", "expression": "(t - q)/(p - r)" },
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Multiply every term inside the brackets by the factor outside.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   },
   {
     "misconceptionId": "MISC.LINEQ.SIGNED_ARITH_SLIP",
@@ -151,7 +151,7 @@
     "typicalIncorrectMethod": "Sign or arithmetic error during an otherwise valid step.",
     "validRange": { "levels": ["middle-school"] },
     "feedback": "Re-check the signed arithmetic at each step.",
-    "reviewStatus": "proposed",
-    "version": "1.0.0"
+    "reviewStatus": "approved",
+    "version": "1.0.1"
   }
 ]
