@@ -14,7 +14,7 @@
   --line: #d8e0f0;
   --ink: #11203f;
   --ink-soft: #44516e;
-  --ink-faint: #6b7794;
+  --ink-faint: #67738f; /* >= 4.5:1 on white (WCAG AA); was #6b7794 at 4.47:1 */
   --good: #137a4b;
   --bad: #b4243a;
   --warn: #9a6700;

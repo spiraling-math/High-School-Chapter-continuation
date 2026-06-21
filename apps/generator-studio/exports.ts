@@ -56,7 +56,7 @@ export function exportToolbar(studio: Studio): HTMLElement {
     download("spi-math-bank.json", "application/json", exportBankJson(rs));
   });
   const imp = el("button", { type: "button", class: "ghost" }, "Import JSON");
-  const fileInput = el("input", { type: "file", accept: "application/json,.json", class: "sr-only" }) as HTMLInputElement;
+  const fileInput = el("input", { type: "file", accept: "application/json,.json", class: "sr-only", "aria-label": "Import question-bank JSON file" }) as HTMLInputElement;
   imp.addEventListener("click", () => fileInput.click());
   fileInput.addEventListener("change", async () => {
     const f = fileInput.files?.[0];

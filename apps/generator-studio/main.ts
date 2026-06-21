@@ -16,7 +16,7 @@ import { mountPreview } from "./preview.ts";
 import { mountEdit } from "./edit-panel.ts";
 import { mountBank } from "./bank-panel.ts";
 
-function main(): void {
+export function mountStudio(): void {
   const app = document.getElementById("app")!;
   app.append(
     el("header", { class: "app-header" },
@@ -63,4 +63,6 @@ function main(): void {
   doGenerate(studio); // initial item
 }
 
-main();
+// Auto-start in the bundled browser app (where #app exists). Tests import
+// mountStudio and drive it against a jsdom document instead.
+if (typeof document !== "undefined" && document.getElementById("app")) mountStudio();
