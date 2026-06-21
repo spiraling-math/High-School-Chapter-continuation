@@ -14,7 +14,7 @@ import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { type Json } from "../../core/serialization/canonical.ts";
 import { Rational, rat } from "../../core/exact-math/rational.ts";
 import { LinExpr, normalize } from "../../core/exact-math/linexpr.ts";
-import { round3, bandFromScore } from "../../core/difficulty/band.ts";
+import { round3 } from "../../core/difficulty/band.ts";
 import { resolveInteractionType } from "../../core/sdk/interaction.ts";
 import { assembleMultipleChoice } from "../../core/sdk/multiple-choice.ts";
 import { canonicalStringify } from "../../core/serialization/canonical.ts";
@@ -25,7 +25,7 @@ import {
 import { MISCONCEPTIONS, rulesFor, type Red } from "./linear-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.algebra.linear-equations";
-export const GENERATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
 
 export type Task = "one_step_add" | "one_step_mul" | "two_step" | "both_sides" | "brackets";
 export const TASKS: Task[] = ["one_step_add", "one_step_mul", "two_step", "both_sides", "brackets"];
@@ -144,6 +144,7 @@ function side(a: Rational, b: Rational): string {
 function eq(aL: Rational, bL: Rational, aR: Rational, bR: Rational): string {
   return `${side(aL, bL)} = ${side(aR, bR)}`;
 }
+function rgt(a: Rational, b: Rational): boolean { return a.num * b.den > b.num * a.den; } // a > b (dens > 0)
 function equationLatex(p: Params): string {
   if (p.task === "brackets") {
     const k = F(p["k"] as RJ), pp = F(p["p"] as RJ), q = F(p["q"] as RJ), c = F(p["c"] as RJ), d = F(p["d"] as RJ);
@@ -181,57 +182,79 @@ export function generateSolution(p: Params): Json {
   };
   const dep = (): number[] | undefined => (prev !== null ? [prev] : undefined);
 
+  const subTerm = (coef: Rational): string =>
+    coef.num > 0 ? `Subtract ${coefTerm(coef)} from both sides` : `Add ${coefTerm(coef.neg())} to both sides`;
+  const moveConst = (c: Rational): string =>
+    c.num > 0 ? `Subtract ${c.toString()} from both sides` : `Add ${c.neg().toString()} to both sides`;
+
   let aL = red.P, bL = red.Q, aR = red.R, bR = red.T;
   if (p.task === "brackets") {
     prev = add("Expand the brackets", { intermediate: eq(red.P, red.Q, red.R, red.T), rule: `Multiply every term inside the bracket by ${dispR(red.kMul as Rational)}.` });
   }
+  // Collect variable terms keeping a POSITIVE coefficient: subtract the smaller term.
+  let varLeft = true;
   if (!aR.isZero()) {
-    const newAL = aL.sub(aR);
-    const tr = aR.num > 0 ? `Subtract ${coefTerm(aR)} from both sides` : `Add ${coefTerm(aR.neg())} to both sides`;
-    prev = add(tr, { intermediate: eq(newAL, bL, rat(0), bR), explanation: "Collect the variable terms on one side.", depends: dep() });
-    aL = newAL; aR = rat(0);
+    if (rgt(aL, aR)) {
+      const newAL = aL.sub(aR);
+      prev = add(subTerm(aR), { intermediate: eq(newAL, bL, rat(0), bR), explanation: "Collect the variable terms on one side (keeping a positive coefficient).", depends: dep() });
+      aL = newAL; aR = rat(0);
+    } else {
+      const newAR = aR.sub(aL);
+      prev = add(subTerm(aL), { intermediate: eq(rat(0), bL, newAR, bR), explanation: "Collect the variable terms on one side (keeping a positive coefficient).", depends: dep() });
+      aL = rat(0); aR = newAR; varLeft = false;
+    }
   }
-  if (!bL.isZero()) {
-    const newBR = bR.sub(bL);
-    const tr = bL.num > 0 ? `Subtract ${bL.toString()} from both sides` : `Add ${bL.neg().toString()} to both sides`;
-    prev = add(tr, { intermediate: eq(aL, rat(0), rat(0), newBR), explanation: "Collect the constants on the other side.", depends: dep() });
-    bL = rat(0); bR = newBR;
+  let coef: Rational;
+  if (varLeft) {
+    coef = aL;
+    if (!bL.isZero()) {
+      const newBR = bR.sub(bL);
+      prev = add(moveConst(bL), { intermediate: eq(aL, rat(0), rat(0), newBR), explanation: "Collect the constants on the other side.", depends: dep() });
+      bL = rat(0); bR = newBR;
+    }
+  } else {
+    coef = aR;
+    if (!bR.isZero()) {
+      const newBL = bL.sub(bR);
+      prev = add(moveConst(bR), { intermediate: eq(rat(0), newBL, aR, rat(0)), explanation: "Collect the constants on the other side.", depends: dep() });
+      bL = newBL; bR = rat(0);
+    }
   }
-  if (!aL.equals(rat(1))) {
-    prev = add(`Divide both sides by ${dispR(aL)}`, { intermediate: `x = ${sd}`, explanation: "Divide by the coefficient of x.", depends: dep() });
+  if (!coef.equals(rat(1))) {
+    prev = add(`Divide both sides by ${dispR(coef)}`, { intermediate: `x = ${sd}`, explanation: "Divide by the coefficient of x.", depends: dep() });
   }
   prev = add("State the exact solution", { intermediate: `x = ${sd}`, marks: 1, depends: dep() });
-  const [lhs, rhs] = buildSides(p);
-  const lv = lhs.eval(s), rv = rhs.eval(s);
-  void rv;
+  const [lhs] = buildSides(p);
+  const lv = lhs.eval(s);
   add("Verify by substitution", { intermediate: `Substitute x = ${sd}: \\text{LHS} = ${dispR(lv)} = \\text{RHS}, so x = ${sd}.`, explanation: "Both sides are equal, confirming the solution.", depends: [prev] });
   return { steps };
 }
 
 // --- difficulty ---------------------------------------------------------- //
-const W = { numericalComplexity: 0.2, reasoningSteps: 0.3, algebraicComplexity: 0.35, representation: 0.15 };
 const STEP_COUNT: Record<Task, number> = { one_step_add: 1, one_step_mul: 1, two_step: 2, both_sides: 3, brackets: 4 };
 
 function difficulty(p: Params): Json {
   const red = reduced(p);
   const s = solve(p);
-  const coefVals = [red.P, red.Q, red.R, red.T, s];
-  const mag = Math.max(...coefVals.map((v) => Math.abs(v.num) + (v.den - 1)));
+  const disp: Rational[] = [];
+  for (const key of ["a", "b", "c", "d", "k", "p", "q"]) if (key in p) disp.push(F(p[key] as RJ));
+  const mag = Math.max(...disp.map((v) => Math.abs(v.num) + (v.den - 1)), Math.abs(s.num) + (s.den - 1));
   const numerical = Math.min(1.0, mag / 12.0);
   const reasoning = STEP_COUNT[p.task] / 4.0;
-  const fracCoef = ["a", "k", "p"].some((k) => k in p && F(p[k] as RJ).den !== 1);
-  const baseAlg = { one_step_add: 0.1, one_step_mul: 0.2, two_step: 0.4, both_sides: 0.65, brackets: 0.85 }[p.task];
-  const algebraic = Math.min(1.0, baseAlg + (fracCoef ? 0.1 : 0.0));
-  const negatives = [red.P, red.Q, red.R, red.T].some((v) => v.num < 0);
+  const fracCoef = disp.some((v) => v.den !== 1);
+  const both = !red.R.isZero();
+  const negatives = disp.some((v) => v.num < 0);
   const rationy = s.den !== 1 || fracCoef;
+  const baseAlg = { one_step_add: 0.1, one_step_mul: 0.2, two_step: 0.4, both_sides: 0.65, brackets: 0.85 }[p.task];
+  const algebraic = Math.min(1.0, baseAlg + (fracCoef ? 0.1 : 0.0) + (both ? 0.1 : 0.0));
   const representation = Math.min(1.0, (negatives ? 0.5 : 0.15) + (rationy ? 0.25 : 0.0));
   const axes = {
     numericalComplexity: round3(numerical), reasoningSteps: round3(reasoning),
     algebraicComplexity: round3(algebraic), representation: round3(representation),
   };
-  const derived = bandFromScore(W.numericalComplexity * axes.numericalComplexity + W.reasoningSteps * axes.reasoningSteps + W.algebraicComplexity * axes.algebraicComplexity + W.representation * axes.representation);
+  const factors = (negatives ? 1 : 0) + (rationy ? 1 : 0) + (mag > 9 ? 1 : 0);
   const [lo, hi] = TASK_BANDS[p.task];
-  const band = Math.max(lo, Math.min(hi, derived));
+  const band = lo + Math.min(factors, hi - lo);
   return { overallBand: band, axes };
 }
 
@@ -258,10 +281,24 @@ function drawParams(rng: Mulberry32, explicitTask: Task | undefined): Params {
     const m = rng.nextInt(-9, 9), b = rng.choice(NZ);
     return { task, a: J(a), b: J(b), c: J(c), d: J(m + b) };
   }
-  const k = rng.choice(K_POOL), pp = rng.choice(NZ), q = rng.choice(NZ);
-  let c = rng.nextInt(-9, 9);
-  while (k * pp === c) c = rng.nextInt(-9, 9);
-  const m = rng.nextInt(-9, 9);
+  // brackets: two-way draw spreads complexity across bands 3-5.
+  let k: number, pp: number, q: number, c: number, m: number;
+  if (rng.nextInt(0, 1) === 0) {
+    k = rng.choice([2, 3, -2, -3]);
+    pp = 1;
+    q = rng.choice([1, 2, 3, -1, -2, -3]);
+    c = rng.choice([0, 1, -1, 2, -2]);
+    while (k * pp === c) c = rng.choice([0, 1, -1, 2, -2]);
+    const j = rng.nextInt(-4, 4);
+    m = (k * pp - c) * j; // integer solution j
+  } else {
+    k = rng.choice(K_POOL);
+    pp = rng.choice(NZ);
+    q = rng.choice(NZ);
+    c = rng.nextInt(-9, 9);
+    while (k * pp === c) c = rng.nextInt(-9, 9);
+    m = rng.nextInt(-9, 9);
+  }
   return { task, k: J(k), p: J(pp), q: J(q), c: J(c), d: J(m + k * q) };
 }
 
@@ -349,15 +386,25 @@ function stepsPreserve(red: Red, ans: Rational): boolean {
   const root = (a1: Rational, b1: Rational, a2: Rational, b2: Rational): Rational | null =>
     a1.sub(a2).isZero() ? null : b2.sub(b1).div(a1.sub(a2));
   const stages: Array<[Rational, Rational, Rational, Rational]> = [[aL, bL, aR, bR]];
-  if (!aR.isZero()) { const aL2 = aL.sub(aR); stages.push([aL2, bL, rat(0), bR]); aL = aL2; aR = rat(0); }
-  if (!bL.isZero()) { const bR2 = bR.sub(bL); stages.push([aL, rat(0), rat(0), bR2]); bL = rat(0); bR = bR2; }
-  if (aL.isZero()) return false;
-  const final = bR.sub(bL).div(aL.sub(aR));
+  let varLeft = true;
+  if (!aR.isZero()) {
+    if (rgt(aL, aR)) { const aL2 = aL.sub(aR); stages.push([aL2, bL, rat(0), bR]); aL = aL2; aR = rat(0); }
+    else { const aR2 = aR.sub(aL); stages.push([rat(0), bL, aR2, bR]); aL = rat(0); aR = aR2; varLeft = false; }
+  }
+  let coef: Rational;
+  if (varLeft) { coef = aL; if (!bL.isZero()) { const nb = bR.sub(bL); stages.push([aL, rat(0), rat(0), nb]); } }
+  else { coef = aR; if (!bR.isZero()) { const nb = bL.sub(bR); stages.push([rat(0), nb, aR, rat(0)]); } }
+  if (coef.isZero()) return false;
   for (const [a1, b1, a2, b2] of stages) {
     const r = root(a1, b1, a2, b2);
     if (r === null || !r.equals(ans)) return false;
   }
-  return final.equals(ans);
+  return true;
+}
+
+/** True if student-facing text contains a bare internal symbol (p, q, r, t, k). */
+function hasPlaceholder(text: string): boolean {
+  return /(?<![A-Za-z])[pqrtk](?![A-Za-z])/.test(text);
 }
 
 function explicitReveal(item: Record<string, Json>): boolean {
@@ -408,7 +455,9 @@ export function validate(item: Record<string, Json>): ValidationResult {
         const expected = m.wrong(red);
         add("distractor-value-matches-rule", expected !== null && expected.equals(F(d.value)), `${d.misconceptionId}`);
         add("distractor-rationale-matches", d.rationale === m.observableError, d.misconceptionId);
-        add("distractor-feedback-present", Boolean(m.feedback), d.misconceptionId);
+        const fb = m.feedback(red);
+        add("distractor-feedback-present", Boolean(fb), d.misconceptionId);
+        add("distractor-feedback-clean", !hasPlaceholder(fb), fb);
         add("distractor-not-answer", !F(d.value).equals(ans), `${d.value.num}/${d.value.den}`);
       }
     }
@@ -424,7 +473,14 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", versionFieldsPresent(item), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.0.0", checks };
+  return { status, validatorVersion: "1.0.1", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }
+
+/** Student-facing feedback strings for an item's MC distractors (for review packs/tests). */
+export function distractorFeedback(item: Record<string, Json>): string[] {
+  const red = reduced(item["params"] as unknown as Params);
+  const ds = (item["distractors"] as Array<{ misconceptionId: string }> | undefined) ?? [];
+  return ds.map((d) => MISCONCEPTIONS[d.misconceptionId]!.feedback(red));
+}

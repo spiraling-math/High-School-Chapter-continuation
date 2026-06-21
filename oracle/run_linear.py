@@ -30,7 +30,7 @@ def main() -> int:
     print("\nGolden items:")
     golden = []
     for s in GOLDEN_SEEDS:
-        item = lin.generate(s, {"answerType": "multiple-choice"})
+        item = lin.generate(s, {"interactionType": "multiple-choice"})
         result = lin.validate(item)
         golden.append({"seed": s, "serialized": lin.serialize(item), "validation": result["status"]})
         print("-" * 70)
@@ -43,8 +43,8 @@ def main() -> int:
 
     parity = []
     for s in range(1, PARITY_SEEDS + 1):
-        parity.append({"seed": s, "mode": "integer", "serialized": lin.serialize(lin.generate(s, {"answerType": "integer"}))})
-        parity.append({"seed": s, "mode": "multiple-choice", "serialized": lin.serialize(lin.generate(s, {"answerType": "multiple-choice"}))})
+        parity.append({"seed": s, "mode": "free-response", "serialized": lin.serialize(lin.generate(s, {"interactionType": "free-response"}))})
+        parity.append({"seed": s, "mode": "multiple-choice", "serialized": lin.serialize(lin.generate(s, {"interactionType": "multiple-choice"}))})
     with open(os.path.join(GOLDEN_DIR, "linear_equations.parity.json"), "w", encoding="utf-8") as fh:
         json.dump(parity, fh, indent=0)
     print(f"\nParity fixture: {len(parity)} entries written.")
@@ -55,15 +55,15 @@ def main() -> int:
     tasks: dict = {}
     bands: dict = {}
     for s in range(1, SWEEP + 1):
-        it = lin.generate(s, {"answerType": "integer"})
+        it = lin.generate(s, {"interactionType": "free-response"})
         if lin.validate(it)["status"] != "pass":
-            failing.append({"seed": s, "mode": "integer", "task": it["params"]["task"]})
+            failing.append({"seed": s, "mode": "free-response", "task": it["params"]["task"]})
         tasks[it["params"]["task"]] = tasks.get(it["params"]["task"], 0) + 1
         bands[it["difficulty"]["overallBand"]] = bands.get(it["difficulty"]["overallBand"], 0) + 1
-        im = lin.generate(s, {"answerType": "multiple-choice"})
+        im = lin.generate(s, {"interactionType": "multiple-choice"})
         if lin.validate(im)["status"] != "pass":
             failing.append({"seed": s, "mode": "multiple-choice", "task": im["params"]["task"]})
-        if s <= 200 and lin.serialize(lin.generate(s, {"answerType": "multiple-choice"})) != lin.serialize(im):
+        if s <= 200 and lin.serialize(lin.generate(s, {"interactionType": "multiple-choice"})) != lin.serialize(im):
             failing.append({"seed": s, "mode": "reproducibility"})
 
     print(f"  invalid items     : {len(failing)}")

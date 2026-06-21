@@ -30,11 +30,11 @@
     "domain": "linear-equations",
     "title": "Wrong sign moving a variable term",
     "description": "The student moves the variable term to the other side without flipping its sign.",
-    "observableError": "Moved the variable term with the wrong sign (used p + r instead of p - r).",
+    "observableError": "Moved the variable term to the other side without flipping its sign.",
     "typicalIncorrectMethod": "Treats the new variable coefficient as p + r instead of p - r.",
     "distractorRule": { "summary": "Use (t - q)/(p + r)", "expression": "(t - q)/(p + r)" },
     "validRange": { "levels": ["middle-school"] },
-    "feedback": "Subtract rx from both sides. The new variable coefficient is p - r, not p + r.",
+    "feedback": "Move the variable term to the other side by applying the opposite operation to both sides.",
     "reviewStatus": "proposed",
     "version": "1.0.0"
   },
@@ -112,7 +112,7 @@
     "typicalIncorrectMethod": "For px = t, writes x = p*t.",
     "distractorRule": { "summary": "Use p*t", "expression": "p * t" },
     "validRange": { "levels": ["middle-school"] },
-    "feedback": "To undo multiplication by p, divide both sides by p.",
+    "feedback": "To undo multiplication by the coefficient, divide both sides by it.",
     "reviewStatus": "proposed",
     "version": "1.0.0"
   },
@@ -125,7 +125,7 @@
     "typicalIncorrectMethod": "For px = t, writes x = p/t.",
     "distractorRule": { "summary": "Use p/t", "expression": "p / t" },
     "validRange": { "levels": ["middle-school"] },
-    "feedback": "The equation gives x = t/p, not p/t.",
+    "feedback": "Divide the constant by the coefficient, not the coefficient by the constant.",
     "reviewStatus": "proposed",
     "version": "1.0.0"
   },

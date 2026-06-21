@@ -5,10 +5,15 @@ Last updated: 2026-06-21.
 ## Linear equations pilot — IMPLEMENTED, awaiting curriculum review (2026-06-21)
 
 First non-sequence family, proving the SDK on new mathematics:
-**`gen.algebra.linear-equations` v1.0.0**, placed in the uploaded curriculum at
+**`gen.algebra.linear-equations` v1.0.1**, placed in the uploaded curriculum at
 **SPI-Math Middle School → Algebra → Linear equations in one variable** (Topic 12;
 aligned to IGCSE 0580 C2.5/E2.5 and Singapore Lower Secondary). Built from the
-owner's APPROVE-WITH-REVISIONS decision (`DECISION_LOG.md` #28).
+owner's APPROVE-WITH-REVISIONS decision (`DECISION_LOG.md` #28), then revised per the
+owner's curriculum-review REVISE as **v1.0.1** (`DECISION_LOG.md` #29; v1.0.0
+preserved): interactionType-first terminology, placeholder-free student feedback
+generated from the actual coefficients, the positive-coefficient solution strategy,
+integer-only `ONESTEP_ADD`, and a recalibrated complexity-factor difficulty model
+spreading brackets across bands 3–5.
 
 - Tasks: one-step (+/−), one-step (×, `ax=c`), two-step, variables-both-sides, one
   bracket; free-response + multiple-choice; integer + exact-rational answers.
@@ -21,13 +26,16 @@ owner's APPROVE-WITH-REVISIONS decision (`DECISION_LOG.md` #28).
 - 5 objectives (`SPI.MIDDLE.ALG.LINEQ.*`, `reviewStatus: proposed`) + misconception
   data; registered in the SDK registry and the Studio.
 
-Verified: typecheck clean; **137 TS tests** (incl. parity + 2000-seed stability gate
-+ linear a11y); **12 Python linear tests**; oracle **10,000-seed sweep 0 invalid**
-(all 5 tasks, bands 1–5); schema conformance (Python + Ajv); offline build
-`external references: none`; Studio browser-verified (all tasks render, MC, worked
-solution + substitution, validation PASS, no console errors). Review pack:
-`docs/review/linear_equations_review_pack.md` (50 items, all 11 MC rules, 0 collision
-violations). **Items start `machine-validated`; the generator/objectives/spec are
+Verified: typecheck clean; **142 TS tests** (parity + 2000-seed stability gate +
+linear a11y + back-compat + feedback-placeholder + band-coverage + interaction/
+answer-type consistency); Python linear tests; **linear 10,000-seed sweep 0 invalid**
+(all 5 tasks, bands 1–5); **arithmetic + geometric 10k regression sweeps 0 invalid
+with no fixture drift** (approved output unchanged); schema conformance (Python +
+Ajv); offline build `external references: none`; Studio browser-verified (positive-
+coefficient solution, substitution, validation PASS, live axe 0 violations, no
+console errors). Review pack: `docs/review/linear_equations_review_pack.md` (60
+items; every band per task; all 11 MC rules; 0 collision violations; placeholder-free
+feedback). **Items start `machine-validated`; the generator/objectives/spec are
 curriculum-approved only after the owner reviews the pack.** No third generator
 family started.
 

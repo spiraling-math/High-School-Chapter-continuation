@@ -21,14 +21,19 @@ Git tags identify the approved reference implementations:
 
 | Generator | Version | Status | Spec | Review pack |
 | --- | --- | --- | --- | --- |
-| `gen.algebra.linear-equations` | 1.0.0 | **implemented; awaiting curriculum review of the pack** | `GENERATOR_SPEC_linear_equations_proposal.md` (approved-with-revisions) | `docs/review/linear_equations_review_pack.md` |
+| `gen.algebra.linear-equations` | **1.0.1** | **implemented; awaiting curriculum review of the pack** | `GENERATOR_SPEC_linear_equations_proposal.md` (approved-with-revisions) | `docs/review/linear_equations_review_pack.md` |
+| `gen.algebra.linear-equations` | 1.0.0 | preserved in git history (superseded by 1.0.1 after curriculum-review REVISE) | — | — |
 
-The five `SPI.MIDDLE.ALG.LINEQ.*` objectives are `reviewStatus: proposed`. The
-generator, its objectives, and its spec become curriculum-approved **only after the
-owner reviews the completed review pack**. Items begin at `machine-validated`;
-nothing is auto-approved or published. Fixtures
+v1.0.1 applied the owner's curriculum-review REVISE (see `DECISION_LOG.md` #29):
+interactionType-first terminology, placeholder-free student feedback, the
+positive-coefficient solution strategy, integer-only `ONESTEP_ADD`, and a
+recalibrated difficulty model spreading brackets across bands 3–5. The five
+`SPI.MIDDLE.ALG.LINEQ.*` objectives are `reviewStatus: proposed`. The generator, its
+objectives, and its spec become curriculum-approved **only after the owner reviews
+the completed review pack**. Items begin at `machine-validated`; nothing is
+auto-approved or published. The linear fixtures
 (`oracle/golden/linear_equations.{golden,parity}.json`) become immutable once the
-version is approved.
+version is approved; arithmetic and geometric outputs are unchanged.
 
 ## Approved curriculum objectives
 

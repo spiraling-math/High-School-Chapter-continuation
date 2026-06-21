@@ -7,7 +7,15 @@ this section wherever they differ. Objectives and this spec become
 **curriculum-approved only after** the owner reviews the completed review pack;
 generated items begin at `machine-validated` and are never auto-approved/published.
 
-Generator id: `gen.algebra.linear-equations` · version `1.0.0`.
+Generator id: `gen.algebra.linear-equations` · version **`1.0.1`** (v1.0.0 preserved
+in git history). **v1.0.1 curriculum-review REVISE corrections** (`DECISION_LOG.md`
+#29): interactionType-first terminology in records/fixtures/pack/examples (legacy
+`answerType` accepted only at the compatibility boundary, conflicts rejected);
+student-facing feedback generated from the actual displayed coefficients with **no
+internal symbols** (p, q, r, t, k); the **positive-coefficient** solution strategy
+for variables-on-both-sides (validator updated to match); `ONESTEP_ADD` integer-only;
+a recalibrated **complexity-factor** difficulty model (displayed-coefficient
+magnitude + two-way bracket draw) spreading brackets across bands 3–5.
 
 ---
 

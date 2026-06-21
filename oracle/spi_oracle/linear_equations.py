@@ -19,12 +19,12 @@ from fractions import Fraction
 from typing import Any, Dict, List, Optional
 
 from .seeded_random import Mulberry32
-from .difficulty import round3, band_from_score
+from .difficulty import round3
 from .linexpr import LinExpr, normalize
 from .linear_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.algebra.linear-equations"
-GENERATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
 
 TASKS = ("one_step_add", "one_step_mul", "two_step", "both_sides", "brackets")
 
@@ -261,40 +261,57 @@ def generate_solution(params: Dict[str, Any]) -> Dict[str, Any]:
         steps.append(st)
         return n[0]
 
+    def _sub_term(coef):
+        return f"Subtract {_coef_term(coef)} from both sides" if coef > 0 else f"Add {_coef_term(-coef)} to both sides"
+
+    def _move_const(c):
+        return f"Subtract {_disp(c)} from both sides" if c > 0 else f"Add {_disp(-c)} to both sides"
+
     prev = None
     aL, bL, aR, bR = P, Q, R, T
     if params["task"] == "brackets":
         prev = add("Expand the brackets", _eq(P, Q, R, T),
                    rule=f"Multiply every term inside the bracket by {_disp(red['kMul'])}.")
-    # collect variable terms (only when variables appear on both sides)
+
+    # Collect variable terms (only when they appear on both sides), keeping the
+    # remaining coefficient POSITIVE: subtract the smaller variable term.
+    var_left = True
     if aR != 0:
-        new_aL = aL - aR
-        if aR > 0:
-            tr = f"Subtract {_coef_term(aR)} from both sides"
+        if aL > aR:
+            new_aL = aL - aR
+            prev = add(_sub_term(aR), _eq(new_aL, bL, Fraction(0), bR),
+                       explanation="Collect the variable terms on one side (keeping a positive coefficient).",
+                       depends=[prev] if prev else None)
+            aL, aR = new_aL, Fraction(0)
         else:
-            tr = f"Add {_coef_term(-aR)} to both sides"
-        prev = add(tr, _eq(new_aL, bL, Fraction(0), bR),
-                   explanation="Collect the variable terms on one side.", depends=[prev] if prev else None)
-        aL, aR = new_aL, Fraction(0)
-    # collect constants
-    if bL != 0:
-        new_bR = bR - bL
-        if bL > 0:
-            tr = f"Subtract {_disp(bL)} from both sides"
-        else:
-            tr = f"Add {_disp(-bL)} to both sides"
-        prev = add(tr, _eq(aL, Fraction(0), Fraction(0), new_bR),
-                   explanation="Collect the constants on the other side.", depends=[prev] if prev else None)
-        bL, bR = Fraction(0), new_bR
-    # divide by the coefficient of x
-    if aL != 1:
-        prev = add(f"Divide both sides by {_disp(aL)}", f"x = {sd}",
+            new_aR = aR - aL
+            prev = add(_sub_term(aL), _eq(Fraction(0), bL, new_aR, bR),
+                       explanation="Collect the variable terms on one side (keeping a positive coefficient).",
+                       depends=[prev] if prev else None)
+            aL, aR, var_left = Fraction(0), new_aR, False
+
+    # Collect constants on the side opposite the variable, then divide.
+    if var_left:
+        coef = aL
+        if bL != 0:
+            new_bR = bR - bL
+            prev = add(_move_const(bL), _eq(aL, Fraction(0), Fraction(0), new_bR),
+                       explanation="Collect the constants on the other side.", depends=[prev] if prev else None)
+            bL, bR = Fraction(0), new_bR
+    else:
+        coef = aR
+        if bR != 0:
+            new_bL = bL - bR
+            prev = add(_move_const(bR), _eq(Fraction(0), new_bL, aR, Fraction(0)),
+                       explanation="Collect the constants on the other side.", depends=[prev] if prev else None)
+            bL, bR = new_bL, Fraction(0)
+
+    if coef != 1:
+        prev = add(f"Divide both sides by {_disp(coef)}", f"x = {sd}",
                    explanation="Divide by the coefficient of x.", depends=[prev] if prev else None)
-    # state the exact solution
     prev = add("State the exact solution", f"x = {sd}", marks=1, depends=[prev] if prev else None)
-    # verify by substitution into the original equation
     lhs, rhs = _build_sides(params)
-    lv, rv = lhs.eval(s), rhs.eval(s)
+    lv = lhs.eval(s)
     add("Verify by substitution",
         f"Substitute x = {sd}: \\text{{LHS}} = {_disp(lv)} = \\text{{RHS}}, so x = {sd}.",
         explanation="Both sides are equal, confirming the solution.", depends=[prev])
@@ -302,34 +319,37 @@ def generate_solution(params: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # --------------------------------------------------------------------------- #
-def _W():
-    return {"numericalComplexity": 0.2, "reasoningSteps": 0.3, "algebraicComplexity": 0.35, "representation": 0.15}
-
-
 def _step_count(task: str) -> int:
     return {"one_step_add": 1, "one_step_mul": 1, "two_step": 2, "both_sides": 3, "brackets": 4}[task]
 
 
 def _difficulty(params: Dict[str, Any]) -> Dict[str, Any]:
+    """Multidimensional difficulty. The task sets the structural FLOOR and ceiling;
+    within that range the band rises with the number of complexity factors actually
+    present (negative values, rational/fractional values, large magnitude). Magnitude
+    uses the DISPLAYED coefficients, so a simple bracket like 2(x + 3) = 8 is not
+    inflated by the expansion, and one set of brackets does not force band 5."""
     red = _reduced(params)
     task = params["task"]
     s = solve(params)
-    coef_vals = [red["P"], red["Q"], red["R"], red["T"], s]
-    mag = max(abs(v.numerator) + (v.denominator - 1) for v in coef_vals)
+    disp = [_F(params[key]) for key in ("a", "b", "c", "d", "k", "p", "q") if key in params]
+    mag = max([abs(v.numerator) + (v.denominator - 1) for v in disp]
+              + [abs(s.numerator) + (s.denominator - 1)])
     numerical = min(1.0, mag / 12.0)
     reasoning = _step_count(task) / 4.0
-    frac_coef = any(_F(params[k]).denominator != 1 for k in ("a", "k", "p") if k in params)
-    base_alg = {"one_step_add": 0.1, "one_step_mul": 0.2, "two_step": 0.4, "both_sides": 0.65, "brackets": 0.85}[task]
-    algebraic = min(1.0, base_alg + (0.1 if frac_coef else 0.0))
-    negatives = any(v < 0 for v in (red["P"], red["Q"], red["R"], red["T"]))
+    frac_coef = any(v.denominator != 1 for v in disp)
+    both = red["R"] != 0  # variables on both sides (after expansion)
+    negatives = any(v < 0 for v in disp)
     rationy = s.denominator != 1 or frac_coef
+    base_alg = {"one_step_add": 0.1, "one_step_mul": 0.2, "two_step": 0.4, "both_sides": 0.65, "brackets": 0.85}[task]
+    algebraic = min(1.0, base_alg + (0.1 if frac_coef else 0.0) + (0.1 if both else 0.0))
     representation = min(1.0, (0.5 if negatives else 0.15) + (0.25 if rationy else 0.0))
     axes = {"numericalComplexity": round3(numerical), "reasoningSteps": round3(reasoning),
             "algebraicComplexity": round3(algebraic), "representation": round3(representation)}
-    w = _W()
-    derived = band_from_score(sum(w[k] * axes[k] for k in w))
+    # Integer factor count -> band within [lo, hi] (parity-safe; no float in the band).
+    factors = (1 if negatives else 0) + (1 if rationy else 0) + (1 if mag > 9 else 0)
     lo, hi = TASK_BANDS[task]
-    band = max(lo, min(hi, derived))
+    band = lo + min(factors, hi - lo)
     return {"overallBand": band, "axes": axes}
 
 
@@ -363,14 +383,25 @@ def _draw_params(rng: Mulberry32, explicit_task) -> Dict[str, Any]:
         b = rng.choice(NZ)
         d = m + b                          # s = (d-b)/(a-c) = m/(a-c)
         return {"task": task, "a": _J(a), "b": _J(b), "c": _J(c), "d": _J(d)}
-    # brackets: k(p x + q) = c x + d
-    k = rng.choice(K_POOL)
-    p = rng.choice(NZ)
-    q = rng.choice(NZ)
-    c = rng.next_int(-9, 9)
-    while k * p == c:
+    # brackets: k(p x + q) = c x + d. A two-way draw spreads complexity across the
+    # approved bands 3-5: a simpler small/integer-solution branch and a full-random one.
+    if rng.next_int(0, 1) == 0:
+        k = rng.choice([2, 3, -2, -3])
+        p = 1
+        q = rng.choice([1, 2, 3, -1, -2, -3])
+        c = rng.choice([0, 1, -1, 2, -2])
+        while k * p == c:
+            c = rng.choice([0, 1, -1, 2, -2])
+        j = rng.next_int(-4, 4)
+        m = (k * p - c) * j               # integer solution j
+    else:
+        k = rng.choice(K_POOL)
+        p = rng.choice(NZ)
+        q = rng.choice(NZ)
         c = rng.next_int(-9, 9)
-    m = rng.next_int(-9, 9)
+        while k * p == c:
+            c = rng.next_int(-9, 9)
+        m = rng.next_int(-9, 9)           # commonly a rational solution
     d = m + k * q                          # s = (d - k q)/(k p - c) = m/(k p - c)
     return {"task": task, "k": _J(k), "p": _J(p), "q": _J(q), "c": _J(c), "d": _J(d)}
 
@@ -409,9 +440,21 @@ def _acceptable(params: Dict[str, Any], answer_type: str) -> Optional[List[Dict[
     return []
 
 
+def _resolve_interaction(config: Dict[str, Any]) -> str:
+    """Canonical interactionType, accepting the legacy answerType at the boundary.
+    Accepts agreeing dual fields; rejects conflicting ones."""
+    it = config.get("interactionType")
+    at = config.get("answerType")
+    from_it = it if it in ("free-response", "multiple-choice") else None
+    from_at = "multiple-choice" if at == "multiple-choice" else ("free-response" if at == "integer" else None)
+    if from_it and from_at and from_it != from_at:
+        raise ValueError(f"conflicting configuration: interactionType={it} vs answerType={at}")
+    return from_it or from_at or "free-response"
+
+
 def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     config = config or {}
-    answer_type = config.get("answerType", "integer")  # "integer" == free-response selector
+    answer_type = "multiple-choice" if _resolve_interaction(config) == "multiple-choice" else "integer"
     explicit_task = config.get("task")
     if explicit_task is not None and explicit_task not in TASKS:
         raise ValueError(f"unknown task: {explicit_task}")
@@ -538,7 +581,9 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
                 add("distractor-value-matches-rule", expected is not None and Fraction(expected) == stored,
                     f"{mid}: {expected} vs {stored}")
                 add("distractor-rationale-matches", d.get("rationale") == m["observableError"], str(mid))
-                add("distractor-feedback-present", bool(m["feedback"]), str(mid))
+                fb = m["feedback"](red)
+                add("distractor-feedback-present", bool(fb), str(mid))
+                add("distractor-feedback-clean", not _has_placeholder(fb), fb)
                 add("distractor-not-answer", stored != ans, f"{stored} vs {ans}")
 
     if "options" in item:
@@ -553,37 +598,53 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "id + version")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.0.0", "checks": checks}
+    return {"status": status, "validatorVersion": "1.0.1", "checks": checks}
+
+
+def _has_placeholder(text: str) -> bool:
+    """True if student-facing text contains a bare internal symbol (p, q, r, t, k)."""
+    return re.search(r"(?<![A-Za-z])[pqrtk](?![A-Za-z])", text) is not None
 
 
 def _steps_preserve(red: Dict[str, Any], ans: Fraction) -> bool:
-    """Re-run the canonical equivalence-preserving operations; the root must be
-    constant and equal to ans at every stage."""
+    """Independently re-run the canonical equivalence-preserving operations (using the
+    positive-coefficient strategy); the root must be constant and equal to ans at
+    every stage."""
     aL, bL, aR, bR = red["P"], red["Q"], red["R"], red["T"]
 
-    def root(aL, bL, aR, bR):
-        if aL - aR == 0:
+    def root(a1, b1, a2, b2):
+        if a1 - a2 == 0:
             return None
-        return Fraction(bR - bL, aL - aR)
+        return Fraction(b2 - b1, a1 - a2)
 
     stages = [(aL, bL, aR, bR)]
+    var_left = True
     if aR != 0:
-        aL2 = aL - aR
-        stages.append((aL2, bL, Fraction(0), bR))
-        aL, aR = aL2, Fraction(0)
-    if bL != 0:
-        bR2 = bR - bL
-        stages.append((aL, Fraction(0), Fraction(0), bR2))
-        bL, bR = Fraction(0), bR2
-    # final isolation
-    if aL == 0:
+        if aL > aR:
+            aL2 = aL - aR
+            stages.append((aL2, bL, Fraction(0), bR))
+            aL, aR = aL2, Fraction(0)
+        else:
+            aR2 = aR - aL
+            stages.append((Fraction(0), bL, aR2, bR))
+            aL, aR, var_left = Fraction(0), aR2, False
+    if var_left:
+        coef = aL
+        if bL != 0:
+            nb = bR - bL
+            stages.append((aL, Fraction(0), Fraction(0), nb))
+    else:
+        coef = aR
+        if bR != 0:
+            nb = bL - bR
+            stages.append((Fraction(0), nb, aR, Fraction(0)))
+    if coef == 0:
         return False
-    final = Fraction(bR - bL, aL - aR)
     for (a1, b1, a2, b2) in stages:
         r = root(a1, b1, a2, b2)
         if r is None or r != ans:
             return False
-    return final == ans
+    return True
 
 
 def _explicit_reveal(item: Dict[str, Any]) -> bool:
