@@ -15,6 +15,7 @@ import { canonicalStringify, type Json } from "../../core/serialization/canonica
 import { Rational, rat } from "../../core/exact-math/rational.ts";
 import { round3, bandFromScore } from "../../core/difficulty/band.ts";
 import { resolveInteractionType } from "../../core/sdk/interaction.ts";
+import { assembleMultipleChoice } from "../../core/sdk/multiple-choice.ts";
 import { MISCONCEPTIONS, rulesFor } from "./geometric-misconceptions.ts";
 import { realRatioSolutions, termIndexSolutions } from "./geometric-uniqueness.ts";
 
@@ -307,20 +308,9 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
 
   if (answerType === "multiple-choice") {
     const ds = distractors ?? [];
-    item["distractors"] = ds.map((dd, i) => ({
-      id: `d${i + 1}`, value: dd.value.toJSON(), display: dd.value.toString(),
-      misconceptionId: dd.misconceptionId, rationale: dd.rationale,
-    }));
-    interface Opt { value: Rational; correct: boolean; misconceptionId: string | null; }
-    const pool: Opt[] = [{ value: ansR, correct: true, misconceptionId: null }];
-    for (const dd of ds) pool.push({ value: dd.value, correct: false, misconceptionId: dd.misconceptionId });
-    const shuffled = rng.shuffle(pool);
-    const labels = ["A", "B", "C", "D", "E"];
-    item["options"] = shuffled.map((o, i) => {
-      const opt: Record<string, Json> = { label: labels[i] as string, value: o.value.toJSON(), display: o.value.toString(), correct: o.correct };
-      if (o.misconceptionId) opt["misconceptionId"] = o.misconceptionId;
-      return opt;
-    });
+    const mc = assembleMultipleChoice(rng, ansR, ds, (v) => ({ value: v.toJSON(), display: v.toString() }));
+    item["distractors"] = mc.distractors;
+    item["options"] = mc.options;
   }
   return item;
 }

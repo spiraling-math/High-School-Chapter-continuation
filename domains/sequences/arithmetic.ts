@@ -17,6 +17,7 @@ import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
 import { round3, bandFromScore } from "../../core/difficulty/band.ts";
 import { resolveInteractionType } from "../../core/sdk/interaction.ts";
+import { assembleMultipleChoice } from "../../core/sdk/multiple-choice.ts";
 import { MISCONCEPTIONS, rulesFor } from "./misconceptions.ts";
 
 export const GENERATOR_ID = "gen.sequences.arithmetic";
@@ -259,20 +260,9 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
   if (answerType === "multiple-choice") {
     const ds = distractors ?? [];
     (item["answer"] as Record<string, Json>)["type"] = "multiple-choice";
-    item["distractors"] = ds.map((dd, i) => ({
-      id: `d${i + 1}`, value: dd.value, display: String(dd.value),
-      misconceptionId: dd.misconceptionId, rationale: dd.rationale,
-    }));
-    interface Opt { value: number; correct: boolean; misconceptionId: string | null; }
-    const pool: Opt[] = [{ value: answerValue, correct: true, misconceptionId: null }];
-    for (const dd of ds) pool.push({ value: dd.value, correct: false, misconceptionId: dd.misconceptionId });
-    const shuffled = rng.shuffle(pool);
-    const labels = ["A", "B", "C", "D", "E"];
-    item["options"] = shuffled.map((o, i) => {
-      const opt: Record<string, Json> = { label: labels[i] as string, value: o.value, display: String(o.value), correct: o.correct };
-      if (o.misconceptionId) opt["misconceptionId"] = o.misconceptionId;
-      return opt;
-    });
+    const mc = assembleMultipleChoice(rng, answerValue, ds, (v) => ({ value: v, display: String(v) }));
+    item["distractors"] = mc.distractors;
+    item["options"] = mc.options;
   }
   return item;
 }
