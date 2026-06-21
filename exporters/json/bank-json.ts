@@ -13,12 +13,14 @@ import { canonicalStringify, type Json } from "../../core/serialization/canonica
 import { generate, serialize } from "../../domains/sequences/arithmetic.ts";
 import { validate } from "../../domains/sequences/validate.ts";
 import { ensureInteractionType } from "../../core/bank/record.ts";
+import { assertValidItem, validateItem, formatErrors } from "../../core/schema/runtime-validate.ts";
 import type { BankRecord, Mode } from "../../core/bank/types.ts";
 
 const FORMAT = "spi-math-bank";
 const FORMAT_VERSION = "1.0.0";
 
 export function exportBankJson(records: BankRecord[]): string {
+  for (const r of records) assertValidItem(r.item, `bank export ${r.itemId}`);
   const doc = { format: FORMAT, version: FORMAT_VERSION, records };
   return canonicalStringify(doc as unknown as Json);
 }
@@ -51,6 +53,11 @@ export function importBankJson(text: string): ImportResult {
       errors.push(`record ${i}: missing required fields`);
       integrityOk = false;
       return;
+    }
+    const schemaErrs = validateItem(r.item);
+    if (schemaErrs.length > 0) {
+      errors.push(`record ${i} (${r.itemId}): schema ${formatErrors(schemaErrs)}`);
+      integrityOk = false;
     }
     const v = validate(r.item);
     if (v.status !== "pass") {

@@ -11,6 +11,7 @@
 
 import type { BankRecord, BankQuery, BankStore } from "./types.ts";
 import { ensureInteractionType } from "./record.ts";
+import { assertValidItem } from "../schema/runtime-validate.ts";
 
 const STORE = "items";
 
@@ -108,6 +109,8 @@ export class IndexedDBBankStore implements BankStore {
   }
 
   async put(rec: BankRecord): Promise<void> {
+    // Runtime schema gate: never store a structurally invalid item.
+    assertValidItem(rec.item, `bank put ${rec.itemId}`);
     const db = await this.db();
     const tx = db.transaction(STORE, "readwrite");
     tx.objectStore(STORE).put(rec);

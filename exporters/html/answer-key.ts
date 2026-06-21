@@ -6,11 +6,13 @@
  */
 
 import type { BankRecord } from "../../core/bank/types.ts";
+import { assertValidItem } from "../../core/schema/runtime-validate.ts";
 import { htmlDoc, escapeHtml } from "./doc.ts";
 
 export interface AnswerKeyOptions { title?: string; }
 
 export function answerKey(records: BankRecord[], opts: AnswerKeyOptions = {}): string {
+  for (const r of records) assertValidItem(r.item, `answer-key export ${r.itemId}`);
   const title = opts.title ?? "Answer key";
   const rows = records
     .map((r, i) => {

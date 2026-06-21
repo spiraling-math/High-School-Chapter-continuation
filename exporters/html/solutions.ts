@@ -9,11 +9,13 @@
 import type { BankRecord } from "../../core/bank/types.ts";
 import { displayItem } from "../../apps/generator-studio/wording.ts";
 import { renderQuestionStudent, renderSolution, type KatexLike } from "../../apps/generator-studio/render/katex-render.ts";
+import { assertValidItem } from "../../core/schema/runtime-validate.ts";
 import { htmlDoc, escapeHtml } from "./doc.ts";
 
 export interface SolutionsOptions { katex: KatexLike; katexCss: string; title?: string; }
 
 export function workedSolutions(records: BankRecord[], opts: SolutionsOptions): string {
+  for (const r of records) assertValidItem(r.item, `solutions export ${r.itemId}`);
   const title = opts.title ?? "Worked solutions";
   const items = records
     .map((r, i) => {

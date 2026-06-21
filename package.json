@@ -11,7 +11,8 @@
     "test": "node --test \"core/**/*.test.ts\" \"domains/**/*.test.ts\" \"apps/**/*.test.ts\" \"exporters/**/*.test.ts\"",
     "test:file": "node --test",
     "typecheck": "tsc --noEmit",
-    "build:studio": "node scripts/build-studio.mjs",
+    "build:schemas": "node scripts/compile-schemas.mjs",
+    "build:studio": "node scripts/compile-schemas.mjs && node scripts/build-studio.mjs",
     "build:samples": "node scripts/build-samples.mjs",
     "oracle:sweep": "python oracle/run_oracle.py",
     "oracle:test": "python oracle/tests/test_sequences.py"
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/katex": "0.16.8",
     "@types/node": "24.13.2",
+    "ajv": "8.17.1",
     "esbuild": "0.28.1",
     "fake-indexeddb": "6.2.5",
     "typescript": "5.9.3"
