@@ -25,6 +25,7 @@ SCHEMA_DIR = os.path.join(ROOT, "schemas")
 sys.path.insert(0, HERE)
 from spi_oracle import sequences as seq  # noqa: E402
 from spi_oracle import geometric as geo  # noqa: E402
+from spi_oracle import linear_equations as lin  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -145,10 +146,18 @@ def main() -> int:
         ok &= validate(geo.generate(seed, {"answerType": "multiple-choice"}), item_schema, registry, f"geometric item seed={seed} (MC)")
     ok &= validate(geo.generate(7, {"answerType": "integer"}), item_schema, registry, "geometric item seed=7 (free-response)")
 
+    # 4c. Live linear-equations items (integer + exact-rational answers, all tasks).
+    for seed in (1, 42, 123456789):
+        ok &= validate(lin.generate(seed, {"answerType": "multiple-choice"}), item_schema, registry, f"linear item seed={seed} (MC)")
+    ok &= validate(lin.generate(7, {"answerType": "integer"}), item_schema, registry, "linear item seed=7 (free-response)")
+    for task in ("one_step_add", "one_step_mul", "two_step", "both_sides", "brackets"):
+        ok &= validate(lin.generate(5, {"answerType": "multiple-choice", "task": task}), item_schema, registry, f"linear item task={task}")
+
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]
     ok &= validate(seq.describe(), gen_schema, registry, "gen.sequences.arithmetic describe()")
     ok &= validate(geo.describe(), gen_schema, registry, "gen.sequences.geometric describe()")
+    ok &= validate(lin.describe(), gen_schema, registry, "gen.algebra.linear-equations describe()")
 
     print("\n" + ("ALL CONFORMANCE CHECKS PASSED" if ok else "CONFORMANCE FAILURES PRESENT"))
     return 0 if ok else 1

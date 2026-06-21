@@ -27,9 +27,10 @@ for (const gen of GENERATORS) {
   });
 }
 
-test("both approved generators are registered", () => {
+test("the registered generators are the approved set", () => {
   assert.deepEqual(GENERATORS.map((g) => `${g.id}@${g.version}`), [
     "gen.sequences.arithmetic@1.1.0",
     "gen.sequences.geometric@1.1.0",
+    "gen.algebra.linear-equations@1.0.0",
   ]);
 });

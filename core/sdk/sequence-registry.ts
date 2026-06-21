@@ -12,6 +12,7 @@ import type { GeneratorModule } from "./generator-module.ts";
 import * as arithmetic from "../../domains/sequences/arithmetic.ts";
 import { validate as arithmeticValidate } from "../../domains/sequences/validate.ts";
 import * as geometric from "../../domains/sequences/geometric.ts";
+import * as linear from "../../domains/algebra/linear-equations.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -42,6 +43,21 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => geometric.generate(s, c as geometric.Config),
     validate: geometric.validate,
     serialize: geometric.serialize,
+  },
+  {
+    id: linear.GENERATOR_ID,
+    version: linear.GENERATOR_VERSION,
+    label: "Linear equations (one variable)",
+    tasks: [
+      { value: "one_step_add", label: "One-step (+/−)", mc: true },
+      { value: "one_step_mul", label: "One-step (×)", mc: true },
+      { value: "two_step", label: "Two-step (ax+b=c)", mc: true },
+      { value: "both_sides", label: "Variables on both sides", mc: true },
+      { value: "brackets", label: "One set of brackets", mc: true },
+    ],
+    generate: (s, c) => linear.generate(s, c as linear.Config),
+    validate: linear.validate,
+    serialize: linear.serialize,
   },
 ];
 

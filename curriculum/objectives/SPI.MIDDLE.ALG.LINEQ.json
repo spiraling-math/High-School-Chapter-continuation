@@ -1,0 +1,172 @@
+[
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "linear-equations-one-variable",
+    "topic": "linear equations in one variable",
+    "subtopic": "one-step additive equations",
+    "microSkill": "solve x + b = c using the same inverse operation on both sides",
+    "objectiveWording": "Solve a one-step linear equation of the form x + b = c, using the same inverse operation on both sides.",
+    "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01"],
+    "successCriteria": [
+      "Applies the inverse of the added/subtracted constant to both sides.",
+      "Keeps the equation balanced at every step.",
+      "States the exact solution and verifies it by substitution."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["equation", "balance", "inverse operation", "isolate", "solution"],
+    "notation": ["x for the unknown", "LHS/RHS for the two sides"],
+    "answerTypes": ["integer", "exact-rational", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 2 },
+    "commonMisconceptions": ["MISC.LINEQ.IGNORE_CONSTANT", "MISC.LINEQ.WRONG_INVERSE", "MISC.LINEQ.CONST_SIGN", "MISC.LINEQ.COMBINE_UNLIKE_AS_COEFFICIENT"],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01", "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01", "SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations in One Variable (sub-topics: golden rule, one-step equations)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "linear-equations-one-variable",
+    "topic": "linear equations in one variable",
+    "subtopic": "one-step multiplicative equations",
+    "microSkill": "solve ax = c by dividing both sides by the coefficient of x",
+    "objectiveWording": "Solve a one-step linear equation of the form ax = c, where a ≠ 0, by dividing both sides by the coefficient of x.",
+    "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01"],
+    "successCriteria": [
+      "Divides both sides by the coefficient of x.",
+      "Expresses the solution as an exact integer or rational.",
+      "Verifies the solution by substitution."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["equation", "coefficient", "inverse operation", "divide", "solution"],
+    "notation": ["x for the unknown", "a for the coefficient of x"],
+    "answerTypes": ["integer", "exact-rational", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 2 },
+    "commonMisconceptions": ["MISC.LINEQ.STOPS_BEFORE_DIVIDING", "MISC.LINEQ.MULTIPLY_INSTEAD_OF_DIVIDE", "MISC.LINEQ.REVERSES_DIVISION"],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01", "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01", "SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations in One Variable (sub-topic: one-step equations)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "linear-equations-one-variable",
+    "topic": "linear equations in one variable",
+    "subtopic": "two-step equations",
+    "microSkill": "solve ax + b = c by applying inverse operations in an appropriate order",
+    "objectiveWording": "Solve a two-step linear equation of the form ax + b = c by applying inverse operations in an appropriate order.",
+    "prerequisites": ["SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01", "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01"],
+    "successCriteria": [
+      "Undoes addition/subtraction before division (or an equivalent valid order).",
+      "Applies each operation to both sides.",
+      "States the exact solution and verifies it by substitution."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["equation", "coefficient", "constant", "inverse operation", "solution"],
+    "notation": ["x for the unknown", "a, b, c for coefficients and constants"],
+    "answerTypes": ["integer", "exact-rational", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.LINEQ.STOPS_BEFORE_DIVIDING", "MISC.LINEQ.WRONG_INVERSE", "MISC.LINEQ.DIVIDE_ONE_TERM", "MISC.LINEQ.DIVIDE_BY_CONSTANT", "MISC.LINEQ.COMBINE_UNLIKE_AS_COEFFICIENT"],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01", "SPI.MIDDLE.ALG.LINEQ.BRACKETS.01", "SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations in One Variable (sub-topic: two-step equations)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "linear-equations-one-variable",
+    "topic": "linear equations in one variable",
+    "subtopic": "variables on both sides",
+    "microSkill": "solve ax + b = cx + d by collecting variable terms on one side and constants on the other",
+    "objectiveWording": "Solve a linear equation of the form ax + b = cx + d, where a ≠ c, by collecting variable terms on one side and constants on the other.",
+    "prerequisites": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"],
+    "successCriteria": [
+      "Collects the variable terms on one side (subtracting the smaller coefficient).",
+      "Collects the constants on the other side.",
+      "Divides by the resulting coefficient and verifies by substitution."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["equation", "variable term", "constant", "collect like terms", "solution"],
+    "notation": ["x for the unknown", "a, b, c, d for coefficients and constants"],
+    "answerTypes": ["integer", "exact-rational", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 3, "max": 4 },
+    "commonMisconceptions": ["MISC.LINEQ.VAR_SIGN", "MISC.LINEQ.CONST_SIGN", "MISC.LINEQ.STOPS_BEFORE_DIVIDING", "MISC.LINEQ.WRONG_INVERSE", "MISC.LINEQ.DIVIDE_ONE_TERM", "MISC.LINEQ.DIVIDE_BY_CONSTANT", "MISC.LINEQ.COMBINE_UNLIKE_AS_COEFFICIENT"],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01", "SPI.MIDDLE.ALG.LINEQ.BRACKETS.01", "SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations in One Variable (sub-topic: x on both sides)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.ALG.LINEQ.BRACKETS.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "algebra",
+    "strand": "linear-equations-one-variable",
+    "topic": "linear equations in one variable",
+    "subtopic": "one set of brackets",
+    "microSkill": "solve a linear equation with one set of brackets by expanding, simplifying, then solving",
+    "objectiveWording": "Solve a linear equation containing one set of brackets by expanding, simplifying, and then solving the resulting linear equation.",
+    "prerequisites": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01", "SPI.MIDDLE.ALG.EXPAND_BRACKETS.01"],
+    "successCriteria": [
+      "Expands the bracket, multiplying every term by the factor outside.",
+      "Reduces to a linear equation and solves it.",
+      "Verifies the solution by substitution into the original equation."
+    ],
+    "allowedRepresentations": ["symbolic", "numeric"],
+    "vocabulary": ["equation", "expand", "brackets", "distribute", "solution"],
+    "notation": ["x for the unknown", "k for the bracket multiplier"],
+    "answerTypes": ["integer", "exact-rational", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 3, "max": 5 },
+    "commonMisconceptions": ["MISC.LINEQ.DISTRIBUTE_PARTIAL", "MISC.LINEQ.STOPS_BEFORE_DIVIDING", "MISC.LINEQ.WRONG_INVERSE", "MISC.LINEQ.VAR_SIGN", "MISC.LINEQ.CONST_SIGN", "MISC.LINEQ.DIVIDE_ONE_TERM", "MISC.LINEQ.COMBINE_UNLIKE_AS_COEFFICIENT"],
+    "relatedObjectives": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01", "SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01", "SPI.MIDDLE.ALG.SUBSTITUTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch12", "locator": "Middle School Topic 12: Linear Equations in One Variable (sub-topic: equations with brackets)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.5/E2.5", "label": "Solve linear equations in one unknown" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Linear equations in one variable" }
+    ],
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  }
+]
