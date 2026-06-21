@@ -28,6 +28,7 @@ from fractions import Fraction
 from typing import Any, Dict, List, Optional
 
 from .seeded_random import Mulberry32
+from .difficulty import round3, band_from_score
 from .misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.sequences.arithmetic"
@@ -250,21 +251,14 @@ def _given_integers(params: Dict[str, Any]) -> List[int]:
 _DIFFICULTY_WEIGHTS = {"numericalComplexity": 0.30, "reasoningSteps": 0.45, "abstraction": 0.25}
 
 
-def _round3(x: float):
-    v = math.floor(x * 1000 + 0.5) / 1000
-    return int(v) if v == int(v) else v
-
-
 def _difficulty(params: Dict[str, Any]) -> Dict[str, Any]:
     task, a1, d, n = params["task"], params["a1"], params["d"], params["n"]
     magnitude = (abs(a1) / A1_MAX + abs(d) / D_ABS_MAX + n / N_MAX) / 3.0
     numerical = min(1.0, magnitude + (0.1 if d < 0 else 0.0))
     steps = {"nth_term": 0.2, "sum_n": 0.5, "find_d": 0.7, "find_n_for_value": 0.7}[task]
     abstraction = 0.6 if task in REVERSE_TASKS else 0.1
-    axes = {"numericalComplexity": _round3(numerical), "reasoningSteps": steps, "abstraction": abstraction}
-    score = sum(_DIFFICULTY_WEIGHTS[k] * axes[k] for k in _DIFFICULTY_WEIGHTS)
-    score = max(0.0, min(1.0, score))
-    band = min(5, 1 + int(score * 5))
+    axes = {"numericalComplexity": round3(numerical), "reasoningSteps": steps, "abstraction": abstraction}
+    band = band_from_score(sum(_DIFFICULTY_WEIGHTS[k] * axes[k] for k in _DIFFICULTY_WEIGHTS))
     return {"overallBand": band, "axes": axes}
 
 

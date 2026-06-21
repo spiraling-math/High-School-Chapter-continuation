@@ -26,6 +26,7 @@ from fractions import Fraction
 from typing import Any, Dict, List, Optional, Tuple
 
 from .seeded_random import Mulberry32
+from .difficulty import round3, band_from_score
 from .geometric_misconceptions import MISCONCEPTIONS, rules_for
 from .geometric_uniqueness import real_ratio_solutions, term_index_solutions
 
@@ -302,12 +303,6 @@ def _given_ints(params: Dict[str, Any]) -> set:
 _W = {"numericalComplexity": 0.25, "reasoningSteps": 0.4, "abstraction": 0.2, "exactVsApproximate": 0.15}
 
 
-def _round3(x: float):
-    import math
-    v = math.floor(x * 1000 + 0.5) / 1000
-    return int(v) if v == int(v) else v
-
-
 def _difficulty(params: Dict[str, Any]) -> Dict[str, Any]:
     task, u1 = params["task"], params["u1"]
     r = _r_of(params)
@@ -317,9 +312,8 @@ def _difficulty(params: Dict[str, Any]) -> Dict[str, Any]:
     steps = {"nth_term": 0.25, "sum_n": 0.5, "find_r": 0.7, "find_n_for_value": 0.7, "sum_infinite": 0.6}[task]
     abstraction = 0.7 if task == "sum_infinite" else (0.5 if task in ("find_r", "find_n_for_value") else 0.15)
     exact = 0.7 if frac_ratio else 0.1
-    axes = {"numericalComplexity": _round3(numerical), "reasoningSteps": steps, "abstraction": abstraction, "exactVsApproximate": exact}
-    score = max(0.0, min(1.0, sum(_W[k] * axes[k] for k in _W)))
-    band = min(5, 1 + int(score * 5))
+    axes = {"numericalComplexity": round3(numerical), "reasoningSteps": steps, "abstraction": abstraction, "exactVsApproximate": exact}
+    band = band_from_score(sum(_W[k] * axes[k] for k in _W))
     return {"overallBand": band, "axes": axes}
 
 

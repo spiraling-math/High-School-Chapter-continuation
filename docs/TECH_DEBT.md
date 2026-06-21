@@ -5,8 +5,13 @@ output now.
 
 ## TD-1 — Legacy `answerType` config key (Generator SDK migration)
 
-**Status:** recorded (owner, 2026-06-20). Do **not** change approved v1.1.0
-output now.
+**Status:** in progress. Step 1 done (2026-06-21): both TS generators now accept
+`config.interactionType` and map the legacy `answerType` via
+`core/sdk/interaction.ts` `resolveInteractionType`. Verified **output-neutral** —
+`generate(seed, {interactionType})` is byte-for-byte identical to the legacy
+`generate(seed, {answerType})` for every seed (test:
+`domains/sequences/interaction-config.test.ts`), and all golden/parity fixtures are
+unchanged. Remaining steps (2–5 below) pending. Approved v1.1.0 output is unchanged.
 
 ### Problem
 
@@ -30,10 +35,11 @@ item.answer.type       : "integer" | "exact-rational" (already implemented)
 
 ### Migration plan (phased; back-compatible)
 
-1. **Add, don't replace.** Introduce `config.interactionType` as the preferred
-   key. Continue to accept `config.answerType` and map it:
-   `answerType "multiple-choice" -> interactionType "multiple-choice"`;
-   `answerType "integer" -> interactionType "free-response"`.
+1. **Add, don't replace.** ✅ **Done.** `config.interactionType` is accepted and
+   `config.answerType` is mapped via `resolveInteractionType`
+   (`answerType "multiple-choice" -> interactionType "multiple-choice"`;
+   `answerType "integer" -> interactionType "free-response"`), in both generators,
+   output-neutral.
 2. **Persisted records.** Keep reading the stored `genConfig.answerType` on bank
    records and golden/parity fixtures unchanged. When reading, normalize to
    `interactionType` in memory; when writing new records, write both keys during

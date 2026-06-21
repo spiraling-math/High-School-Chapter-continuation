@@ -14,6 +14,11 @@ Last updated: 2026-06-20.
 
 Output-neutral: all golden/parity fixtures and the two approved generators are unchanged (82 TS tests incl. harness + parity, both 10k sweeps 0 invalid, app browser-verified). Do not implement another sequence family, the sum-to-infinity MC variant, or a third generator family until directed.
 
+**SDK extraction increment (output-neutral, verified byte-for-byte):**
+- Centralized the difficulty band function into `core/difficulty/band.ts` (`round3`, `bandFromScore`) + oracle mirror `oracle/spi_oracle/difficulty.py`; both approved generators (TS + Python) now use it.
+- **TD-1 step 1**: both TS generators accept `config.interactionType` (mapping the legacy `answerType`) via `core/sdk/interaction.ts`; proven identical output (`domains/sequences/interaction-config.test.ts`).
+- Verification: 89 TS tests; oracle regeneration shows **no fixture drift**; TS parity against committed fixtures passes; conformance pass; app browser-verified (no console errors). No approved output changed.
+
 ## Generator Studio MVP (this session)
 
 A single self-contained offline browser app: generate (seed/random/mode/task/target band) → preview (Question/Answer/Solution/Validation, KaTeX) → edit (protected params vs editable wording, lifecycle) → bank (IndexedDB: save/search/filter/open/duplicate/archive/delete, tested migrations) → export (standalone worksheet, answer key, worked solutions; JSON round-trip with integrity). KaTeX is bundled locally (fonts inlined); no CDN, no secrets, works from file://. The Python oracle remains a dev/verification reference only. Full details, decisions, gates, and known limitations: `docs/GENERATOR_STUDIO_MVP.md`.

@@ -13,6 +13,8 @@
 import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
 import { Rational, rat } from "../../core/exact-math/rational.ts";
+import { round3, bandFromScore } from "../../core/difficulty/band.ts";
+import { resolveInteractionType } from "../../core/sdk/interaction.ts";
 import { MISCONCEPTIONS, rulesFor } from "./geometric-misconceptions.ts";
 import { realRatioSolutions, termIndexSolutions } from "./geometric-uniqueness.ts";
 
@@ -41,7 +43,7 @@ const OBJECTIVE_BY_TASK: Record<Task, string> = {
 };
 
 export interface Params { task: Task; u1: number; r: { num: number; den: number }; n?: number; k?: number; }
-export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; }
+export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; interactionType?: "free-response" | "multiple-choice"; }
 interface Cand { value: Rational; misconceptionId: string; rationale: string; }
 
 function rOf(p: Params): Rational { return new Rational(p.r.num, p.r.den); }
@@ -215,7 +217,6 @@ function givenInts(p: Params): Set<number> {
 }
 
 const W = { numericalComplexity: 0.25, reasoningSteps: 0.4, abstraction: 0.2, exactVsApproximate: 0.15 };
-function round3(x: number): number { return Math.floor(x * 1000 + 0.5) / 1000; }
 
 function difficulty(p: Params): Json {
   const u1 = p.u1, r = rOf(p);
@@ -227,8 +228,7 @@ function difficulty(p: Params): Json {
   const abstraction = p.task === "sum_infinite" ? 0.7 : (p.task === "find_r" || p.task === "find_n_for_value" ? 0.5 : 0.15);
   const exact = fracRatio ? 0.7 : 0.1;
   const axes = { numericalComplexity: round3(numerical), reasoningSteps: steps, abstraction, exactVsApproximate: exact };
-  const score = Math.max(0, Math.min(1, W.numericalComplexity * axes.numericalComplexity + W.reasoningSteps * axes.reasoningSteps + W.abstraction * axes.abstraction + W.exactVsApproximate * axes.exactVsApproximate));
-  const band = Math.min(5, 1 + Math.floor(score * 5));
+  const band = bandFromScore(W.numericalComplexity * axes.numericalComplexity + W.reasoningSteps * axes.reasoningSteps + W.abstraction * axes.abstraction + W.exactVsApproximate * axes.exactVsApproximate);
   return { overallBand: band, axes };
 }
 
@@ -255,7 +255,8 @@ function acceptable(p: Params, answerType: string): Cand[] | null {
 }
 
 export function generate(seed: number, config: Config = {}): Record<string, Json> {
-  const answerType = config.answerType ?? "integer";
+  // Accept the forward `interactionType` key and the legacy `answerType` (TD-1).
+  const answerType = resolveInteractionType(config) === "multiple-choice" ? "multiple-choice" : "integer";
   const explicitTask = config.task;
   if (explicitTask != null && !ALL_TASKS.includes(explicitTask)) throw new Error(`unknown task: ${explicitTask}`);
   if (answerType === "multiple-choice" && explicitTask != null && !FORWARD_MC_TASKS.includes(explicitTask)) {

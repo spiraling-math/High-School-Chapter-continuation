@@ -15,6 +15,8 @@
 
 import { Mulberry32 } from "../../core/seeded-random/mulberry32.ts";
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
+import { round3, bandFromScore } from "../../core/difficulty/band.ts";
+import { resolveInteractionType } from "../../core/sdk/interaction.ts";
 import { MISCONCEPTIONS, rulesFor } from "./misconceptions.ts";
 
 export const GENERATOR_ID = "gen.sequences.arithmetic";
@@ -40,7 +42,7 @@ const OBJECTIVE_BY_TASK: Record<Task, string> = {
 };
 
 export interface Params { task: Task; a1: number; d: number; n: number; }
-export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; }
+export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; interactionType?: "free-response" | "multiple-choice"; }
 interface Cand { value: number; misconceptionId: string; rationale: string; }
 
 // --------------------------------------------------------------------------- //
@@ -171,7 +173,6 @@ function promptBlocks(p: Params): { instruction: string; blocks: Json[]; spoken:
 }
 
 const DIFFICULTY_WEIGHTS = { numericalComplexity: 0.3, reasoningSteps: 0.45, abstraction: 0.25 };
-function round3(x: number): number { return Math.floor(x * 1000 + 0.5) / 1000; }
 
 function difficulty(p: Params): Json {
   const { task, a1, d, n } = p;
@@ -180,11 +181,10 @@ function difficulty(p: Params): Json {
   const steps = { nth_term: 0.2, sum_n: 0.5, find_d: 0.7, find_n_for_value: 0.7 }[task];
   const abstraction = REVERSE_TASKS.includes(task) ? 0.6 : 0.1;
   const axes = { numericalComplexity: round3(numerical), reasoningSteps: steps, abstraction };
-  const score = Math.max(0, Math.min(1,
+  const band = bandFromScore(
     DIFFICULTY_WEIGHTS.numericalComplexity * axes.numericalComplexity +
     DIFFICULTY_WEIGHTS.reasoningSteps * axes.reasoningSteps +
-    DIFFICULTY_WEIGHTS.abstraction * axes.abstraction));
-  const band = Math.min(5, 1 + Math.floor(score * 5));
+    DIFFICULTY_WEIGHTS.abstraction * axes.abstraction);
   return { overallBand: band, axes };
 }
 
@@ -207,7 +207,8 @@ function drawParams(rng: Mulberry32, explicitTask: Task | undefined, answerType:
 }
 
 export function generate(seed: number, config: Config = {}): Record<string, Json> {
-  const answerType = config.answerType ?? "integer";
+  // Accept the forward `interactionType` key and the legacy `answerType` (TD-1).
+  const answerType = resolveInteractionType(config) === "multiple-choice" ? "multiple-choice" : "integer";
   const explicitTask = config.task;
   if (explicitTask != null && !ALL_TASKS.includes(explicitTask)) throw new Error(`unknown task: ${explicitTask}`);
   if (answerType === "multiple-choice" && explicitTask != null && REVERSE_TASKS.includes(explicitTask)) {
