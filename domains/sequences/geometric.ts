@@ -16,6 +16,10 @@ import { Rational, rat } from "../../core/exact-math/rational.ts";
 import { round3, bandFromScore } from "../../core/difficulty/band.ts";
 import { resolveInteractionType } from "../../core/sdk/interaction.ts";
 import { assembleMultipleChoice } from "../../core/sdk/multiple-choice.ts";
+import {
+  answerSolutionAgrees, promptIntsAreGivens, exactlyOneCorrectByDisplay, wrongOptionsUniqueByDisplay,
+  spokenMathPresent, interactionTypeValid, answerTypeConsistent, provenanceComplete, versionFieldsPresent,
+} from "../../core/sdk/checks.ts";
 import { MISCONCEPTIONS, rulesFor } from "./geometric-misconceptions.ts";
 import { realRatioSolutions, termIndexSolutions } from "./geometric-uniqueness.ts";
 
@@ -328,10 +332,8 @@ export function validate(item: Record<string, Json>): ValidationResult {
   const ans = new Rational(ansF.canonical.num, ansF.canonical.den);
 
   add("params-in-domain", u1 !== 0 && u1 >= -9 && u1 <= 9 && !r.isZero() && !r.equals(rat(1)) && !r.equals(rat(-1)) && params.r.den >= 1, `u1=${u1}, r=${r.toString()}`);
-  add("answer-type-consistency",
-    (ansF.type === "integer" && ansF.canonical.den === 1) || (ansF.type === "exact-rational" && ansF.canonical.den >= 1),
-    `type=${ansF.type}, den=${ansF.canonical.den}`);
-  add("interaction-type", ["free-response", "multiple-choice"].includes(String(item["interactionType"])), String(item["interactionType"]));
+  add("answer-type-consistency", answerTypeConsistent(ansF.type, ansF.canonical), `type=${ansF.type}, den=${ansF.canonical.den}`);
+  add("interaction-type", interactionTypeValid(item["interactionType"]), String(item["interactionType"]));
 
   if (params.task === "nth_term") {
     let t = rat(u1); for (let i = 0; i < params.n! - 1; i++) t = t.mul(r);
@@ -357,12 +359,12 @@ export function validate(item: Record<string, Json>): ValidationResult {
   }
 
   const steps = (item["solution"] as { steps: Array<{ intermediateResult?: string }> }).steps;
-  add("answer-solution-agree", (steps[steps.length - 1]?.intermediateResult ?? "").includes(ansF.display), "");
+  add("answer-solution-agree", answerSolutionAgrees(steps[steps.length - 1]?.intermediateResult ?? "", ansF.display), "");
 
   const text = (item["prompt"] as { blocks: Array<{ text?: string }> }).blocks.map((b) => b.text ?? "").join(" ");
   const promptInts = (text.match(/-?\d+/g) ?? []).map(Number);
   const givens = givenInts(params);
-  add("no-answer-leakage", promptInts.every((i) => givens.has(i)), "");
+  add("no-answer-leakage", promptIntsAreGivens(promptInts, givens), "");
 
   const distractors = item["distractors"] as Array<{ value: { num: number; den: number }; misconceptionId: string; rationale?: string }> | undefined;
   if (distractors) {
@@ -382,13 +384,13 @@ export function validate(item: Record<string, Json>): ValidationResult {
   }
   const options = item["options"] as Array<{ display: string; correct: boolean }> | undefined;
   if (options) {
-    const correct = options.filter((o) => o.correct);
-    add("exactly-one-correct", correct.length === 1 && correct[0]!.display === ansF.display, "");
-    const wrong = options.filter((o) => !o.correct).map((o) => o.display);
-    add("distractors-unique", new Set(wrong).size === wrong.length, "");
+    add("exactly-one-correct", exactlyOneCorrectByDisplay(options, ansF.display), "");
+    add("distractors-unique", wrongOptionsUniqueByDisplay(options), "");
   }
 
-  add("a11y-fields-present", Boolean((item["accessibility"] as { spokenMath?: string } | undefined)?.spokenMath), "");
+  add("a11y-fields-present", spokenMathPresent(item), "");
+  add("provenance-complete", provenanceComplete(item), "");
+  add("version-fields-present", versionFieldsPresent(item), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
   return { status, validatorVersion: "1.1.0", checks };

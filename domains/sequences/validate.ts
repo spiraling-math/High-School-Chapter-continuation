@@ -9,6 +9,10 @@
  */
 
 import type { Json } from "../../core/serialization/canonical.ts";
+import {
+  answerSolutionAgrees, promptIntsAreGivens, exactlyOneCorrectByDisplay, wrongOptionsUniqueByDisplay,
+  spokenMathPresent, provenanceComplete, versionFieldsPresent,
+} from "../../core/sdk/checks.ts";
 import { MISCONCEPTIONS } from "./misconceptions.ts";
 
 export interface CheckResult { name: string; result: "pass" | "fail"; detail: string; }
@@ -72,13 +76,13 @@ export function validate(item: Record<string, Json>): ValidationResult {
 
   const steps = (item["solution"] as { steps: Array<{ intermediateResult?: string }> }).steps;
   const lastStep = steps[steps.length - 1]?.intermediateResult ?? "";
-  add("answer-solution-agree", lastStep.includes(String(answer)), `final step '${lastStep}'`);
+  add("answer-solution-agree", answerSolutionAgrees(lastStep, String(answer)), `final step '${lastStep}'`);
 
   const blocks = (item["prompt"] as { blocks: Array<{ text?: string }> }).blocks;
   const promptText = blocks.map((b) => b.text ?? "").join(" ");
   const promptInts = (promptText.match(/-?\d+/g) ?? []).map(Number);
   const givens = givenIntegers(task, a1, d, n);
-  add("no-answer-leakage", promptInts.every((i) => givens.has(i)),
+  add("no-answer-leakage", promptIntsAreGivens(promptInts, givens),
     `prompt ints ${JSON.stringify(promptInts)} subset of givens ${JSON.stringify([...givens])}`);
 
   // Distractor semantic agreement.
@@ -100,16 +104,17 @@ export function validate(item: Record<string, Json>): ValidationResult {
     }
   }
 
-  const options = item["options"] as Array<{ value: number; correct: boolean }> | undefined;
+  const options = item["options"] as Array<{ value: number; display: string; correct: boolean }> | undefined;
   if (options) {
     const correctVals = options.filter((o) => o.correct).map((o) => o.value);
-    add("exactly-one-correct", correctVals.length === 1 && correctVals[0] === answer, JSON.stringify(correctVals));
+    add("exactly-one-correct", exactlyOneCorrectByDisplay(options, String(answer)), JSON.stringify(correctVals));
     const wrong = options.filter((o) => !o.correct).map((o) => o.value);
-    add("distractors-unique", new Set(wrong).size === wrong.length, JSON.stringify(wrong));
+    add("distractors-unique", wrongOptionsUniqueByDisplay(options), JSON.stringify(wrong));
   }
 
-  const a11y = item["accessibility"] as { spokenMath?: string } | undefined;
-  add("a11y-fields-present", Boolean(a11y?.spokenMath), "spokenMath present");
+  add("a11y-fields-present", spokenMathPresent(item), "spokenMath present");
+  add("provenance-complete", provenanceComplete(item), "origin + rightsStatus present");
+  add("version-fields-present", versionFieldsPresent(item), "generatorId + version present");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
   return { status, validatorVersion: VALIDATOR_VERSION, checks };
