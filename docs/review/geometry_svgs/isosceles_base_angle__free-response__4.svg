@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: an isosceles triangle with the apex angle given and an unknown base angle x.">
+<title>Isosceles triangle</title>
+<desc>An isosceles triangle has an apex angle of 150 degrees and two equal sides marked with single tick marks; each base angle is equal, and one is the unknown x.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="120" y1="401" x2="880" y2="401"/>
+<line class="gl" x1="120" y1="401" x2="500" y2="299"/>
+<line class="gl" x1="880" y1="401" x2="500" y2="299"/>
+<path class="ga" d="M 432 317 A 70 70 0 0 1 568 317"/>
+<path class="ga" d="M 190 401 A 70 70 0 0 1 188 383"/>
+<line class="gt" x1="316" y1="371" x2="304" y2="329"/>
+<line class="gt" x1="696" y1="329" x2="684" y2="371"/>
+<text x="500" y="330" text-anchor="middle">150°</text>
+<text x="238" y="386" text-anchor="middle">x</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

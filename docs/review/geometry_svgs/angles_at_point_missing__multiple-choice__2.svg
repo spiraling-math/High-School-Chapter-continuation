@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: several angles meeting around a point, with an unknown angle x.">
+<title>Angles around a point</title>
+<desc>Angles of 110 degrees, 30 degrees, 11 degrees and an unknown angle x meet around a single point and together make a full turn of 360 degrees.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="393" y1="396" x2="719" y2="396"/>
+<line class="gl" x1="393" y1="396" x2="281" y2="90"/>
+<line class="gl" x1="393" y1="396" x2="639" y2="610"/>
+<line class="gl" x1="393" y1="396" x2="713" y2="458"/>
+<path class="ga" d="M 463 396 A 70 70 0 0 1 369 330"/>
+<path class="ga" d="M 369 330 A 70 70 0 0 0 446 442"/>
+<path class="ga" d="M 446 442 A 70 70 0 0 1 462 409"/>
+<path class="ga" d="M 462 409 A 70 70 0 0 1 463 396"/>
+<text x="433" y="340" text-anchor="middle">110°</text>
+<text x="418" y="379" text-anchor="middle">x</text>
+<text x="498" y="447" text-anchor="middle">30°</text>
+<text x="512" y="408" text-anchor="middle">11°</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

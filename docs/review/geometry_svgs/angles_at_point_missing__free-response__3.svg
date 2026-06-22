@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: several angles meeting around a point, with an unknown angle x.">
+<title>Angles around a point</title>
+<desc>Angles of 22 degrees, 150 degrees, 22 degrees and an unknown angle x meet around a single point and together make a full turn of 360 degrees.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="498" y1="375" x2="880" y2="375"/>
+<line class="gl" x1="498" y1="375" x2="852" y2="232"/>
+<line class="gl" x1="498" y1="375" x2="120" y2="322"/>
+<line class="gl" x1="498" y1="375" x2="128" y2="468"/>
+<path class="ga" d="M 568 375 A 70 70 0 0 1 563 349"/>
+<path class="ga" d="M 563 349 A 70 70 0 0 1 429 365"/>
+<path class="ga" d="M 429 365 A 70 70 0 0 1 430 392"/>
+<path class="ga" d="M 430 392 A 70 70 0 0 1 568 375"/>
+<text x="614" y="353" text-anchor="middle">22°</text>
+<text x="494" y="344" text-anchor="middle">150°</text>
+<text x="381" y="381" text-anchor="middle">22°</text>
+<text x="500" y="390" text-anchor="middle">x</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

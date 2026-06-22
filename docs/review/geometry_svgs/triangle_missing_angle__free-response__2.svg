@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: a triangle with two known angles and an unknown angle x.">
+<title>Triangle ABC</title>
+<desc>Triangle ABC has interior angles of 120 degrees at A and 23 degrees at B, and an unknown interior angle x at C.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="306" y1="511" x2="880" y2="511"/>
+<line class="gl" x1="306" y1="511" x2="120" y2="189"/>
+<line class="gl" x1="880" y1="511" x2="120" y2="189"/>
+<path class="ga" d="M 376 511 A 70 70 0 0 1 271 450"/>
+<path class="ga" d="M 816 484 A 70 70 0 0 1 810 511"/>
+<path class="ga" d="M 155 250 A 70 70 0 0 1 184 216"/>
+<text x="272" y="541" text-anchor="end">A</text>
+<text x="914" y="541" text-anchor="start">B</text>
+<text x="120" y="171" text-anchor="middle">C</text>
+<text x="336" y="459" text-anchor="middle">120°</text>
+<text x="765" y="488" text-anchor="middle">23°</text>
+<text x="205" y="265" text-anchor="middle">x</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

@@ -13,6 +13,7 @@ import assert from "node:assert/strict";
 import katex from "katex";
 import { generate } from "../domains/sequences/arithmetic.ts";
 import { validate } from "../domains/sequences/validate.ts";
+import * as geo from "../domains/geometry/angles.ts";
 import { makeRecord, duplicateRecord } from "../core/bank/record.ts";
 import type { BankRecord, Mode } from "../core/bank/types.ts";
 import type { KatexLike } from "../apps/generator-studio/render/katex-render.ts";
@@ -78,6 +79,45 @@ test("worked solutions embed KaTeX CSS, render math, and state the canonical ans
   for (const r of rs) {
     const a = r.item["answer"] as { display: string };
     assert.ok(html.includes(`<strong>Answer:</strong> ${a.display}`), "answer agrees");
+  }
+});
+
+function geoRecs(): BankRecord[] {
+  return (["straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle", "vertically_opposite_angle", "angles_at_point_missing"] as const)
+    .map((task, i) => {
+      const mode: Mode = task === "vertically_opposite_angle" ? "integer" : "multiple-choice";
+      const item = geo.generate(13 + i, { task, interactionType: mode === "integer" ? "free-response" : "multiple-choice" });
+      return makeRecord(item, geo.validate(item).status, { mode, genConfig: { answerType: mode, task } });
+    });
+}
+
+test("geometry exports embed the SVG diagram, stay offline, and hide the answer", () => {
+  const rs = geoRecs();
+  const ws = studentWorksheet(rs, { katex: kx, title: "Geometry WS" });
+  assertOffline(ws); // inline SVG (xmlns namespace URIs are not network fetches)
+  assert.equal((ws.match(/<svg /g) ?? []).length, rs.length, "one inline SVG per question");
+  assert.ok(ws.includes("NOT TO SCALE"), "figures marked not to scale");
+  assert.ok(ws.includes('role="img"') && ws.includes("aria-label="), "SVGs carry an accessible name");
+  assert.ok(!/Answer:/i.test(ws) && !/class="correct"/i.test(ws), "worksheet hides answers");
+  // No leakage: every figure renders its unknown as the label "x" (never its value).
+  // (The numeric value may legitimately appear as a GIVEN — e.g. vertically opposite
+  // angles are equal — but the unknown itself is always shown as x.)
+  assert.equal((ws.match(/>x<\/text>/g) ?? []).length, rs.length, "each figure draws exactly one unknown x");
+  const sol = workedSolutions(rs, { katex: kx, katexCss: "/*CSS*/", title: "Geometry sol" });
+  assertOffline(sol);
+  assert.ok((sol.match(/<svg /g) ?? []).length === rs.length, "solutions include the figures");
+});
+
+test("geometry JSON export/import round-trips the SVG byte-for-byte", () => {
+  const rs = geoRecs();
+  const out = exportBankJson(rs);
+  const imp = importBankJson(out);
+  assert.equal(imp.integrityOk, true, imp.errors.join("; "));
+  assert.equal(exportBankJson(imp.records), out, "re-export is byte-identical");
+  for (let i = 0; i < rs.length; i++) {
+    const before = (rs[i]!.item["media"] as Array<{ svg: string }>)[0]!.svg;
+    const after = (imp.records[i]!.item["media"] as Array<{ svg: string }>)[0]!.svg;
+    assert.equal(after, before, "SVG preserved exactly");
   }
 });
 

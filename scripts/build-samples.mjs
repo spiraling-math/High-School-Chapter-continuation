@@ -17,6 +17,7 @@ import { generate } from "../domains/sequences/arithmetic.ts";
 import { validate } from "../domains/sequences/validate.ts";
 import * as geometric from "../domains/sequences/geometric.ts";
 import * as linear from "../domains/algebra/linear-equations.ts";
+import * as geometryAngles from "../domains/geometry/angles.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -41,6 +42,11 @@ for (const [task, mode] of [["nth_term", "multiple-choice"], ["sum_n", "integer"
 for (const [task, mode] of [["one_step_add", "multiple-choice"], ["one_step_mul", "integer"], ["two_step", "multiple-choice"], ["both_sides", "integer"], ["brackets", "multiple-choice"]]) {
   const item = linear.generate(11, { task, answerType: mode });
   records.push(makeRecord(item, linear.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
+}
+// Include geometry (SVG diagram) items: all five tasks; vertically-opposite is free-response only.
+for (const [task, mode] of [["straight_line_missing_angle", "multiple-choice"], ["triangle_missing_angle", "multiple-choice"], ["isosceles_base_angle", "multiple-choice"], ["vertically_opposite_angle", "integer"], ["angles_at_point_missing", "multiple-choice"]]) {
+  const item = geometryAngles.generate(7, { task, answerType: mode });
+  records.push(makeRecord(item, geometryAngles.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
 }
 
 const katexCss = inlineKatexCss();

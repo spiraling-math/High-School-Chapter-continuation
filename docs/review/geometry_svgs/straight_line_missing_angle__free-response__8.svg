@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting on a straight line, with an unknown angle x.">
+<title>Angles on a straight line</title>
+<desc>Angles of 70 degrees and an unknown angle x lie along one side of a straight line and together make a straight angle of 180 degrees.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="880" y1="529" x2="120" y2="529"/>
+<line class="gl" x1="500" y1="529" x2="370" y2="171"/>
+<path class="ga" d="M 570 529 A 70 70 0 0 1 476 463"/>
+<path class="ga" d="M 476 463 A 70 70 0 0 1 430 529"/>
+<text x="540" y="473" text-anchor="middle">x</text>
+<text x="420" y="473" text-anchor="middle">70°</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

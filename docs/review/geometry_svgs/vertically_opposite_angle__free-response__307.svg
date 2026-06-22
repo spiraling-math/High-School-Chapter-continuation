@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: two straight lines crossing at a point, with a given angle and the angle x opposite it.">
+<title>Two intersecting straight lines</title>
+<desc>Two straight lines cross at a point. One angle is 10 degrees and the unknown angle x is the angle vertically opposite it.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="120" y1="350" x2="880" y2="350"/>
+<line class="gl" x1="126" y1="416" x2="874" y2="284"/>
+<path class="ga" d="M 570 350 A 70 70 0 0 1 569 338"/>
+<path class="ga" d="M 430 350 A 70 70 0 0 1 431 362"/>
+<text x="619" y="340" text-anchor="middle">10°</text>
+<text x="381" y="361" text-anchor="middle">x</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

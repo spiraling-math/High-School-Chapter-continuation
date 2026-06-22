@@ -10,8 +10,7 @@
  */
 
 import { canonicalStringify, type Json } from "../../core/serialization/canonical.ts";
-import { generate, serialize } from "../../domains/sequences/arithmetic.ts";
-import { validate } from "../../domains/sequences/validate.ts";
+import { GENERATORS } from "../../core/sdk/sequence-registry.ts";
 import { ensureInteractionType } from "../../core/bank/record.ts";
 import { assertValidItem, validateItem, formatErrors } from "../../core/schema/runtime-validate.ts";
 import type { BankRecord, Mode } from "../../core/bank/types.ts";
@@ -59,16 +58,24 @@ export function importBankJson(text: string): ImportResult {
       errors.push(`record ${i} (${r.itemId}): schema ${formatErrors(schemaErrs)}`);
       integrityOk = false;
     }
-    const v = validate(r.item);
+    // Resolve the generator by its stored id so every family (sequences, algebra,
+    // geometry) re-validates and regenerates with its own oracle-mirrored code.
+    const gen = GENERATORS.find((g) => g.id === r.item["generatorId"]);
+    if (!gen) {
+      errors.push(`record ${i} (${r.itemId}): unknown generator ${String(r.item["generatorId"])}`);
+      integrityOk = false;
+      return;
+    }
+    const v = gen.validate(r.item);
     if (v.status !== "pass") {
       errors.push(`record ${i} (${r.itemId}): item validation ${v.status}`);
       integrityOk = false;
     }
     try {
       const cfg = (r.genConfig ?? { answerType: r.mode }) as { answerType: Mode; task?: string };
-      const regen = generate(r.seed, cfg as { answerType: Mode });
+      const regen = gen.generate(r.seed, cfg);
       const fixed = { ...regen, itemId: r.item["itemId"] as Json };
-      if (serialize(fixed) !== serialize(r.item)) {
+      if (gen.serialize(fixed) !== gen.serialize(r.item)) {
         errors.push(`record ${i} (${r.itemId}): does not reproduce from seed + config`);
         integrityOk = false;
       }

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: several angles meeting around a point, with an unknown angle x.">
+<title>Angles around a point</title>
+<desc>Angles of 79 degrees, 72 degrees and an unknown angle x meet around a single point and together make a full turn of 360 degrees.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="475" y1="157" x2="880" y2="157"/>
+<line class="gl" x1="475" y1="157" x2="120" y2="354"/>
+<line class="gl" x1="475" y1="157" x2="600" y2="543"/>
+<path class="ga" d="M 545 157 A 70 70 0 0 0 414 191"/>
+<path class="ga" d="M 414 191 A 70 70 0 0 1 497 224"/>
+<path class="ga" d="M 497 224 A 70 70 0 0 1 545 157"/>
+<text x="483" y="186" text-anchor="middle">x</text>
+<text x="441" y="243" text-anchor="middle">79°</text>
+<text x="554" y="214" text-anchor="middle">72°</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>
