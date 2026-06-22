@@ -1,0 +1,262 @@
+[
+  {
+    "misconceptionId": "MISC.GEOM.LINE.USES_360",
+    "domain": "geometry",
+    "title": "Uses 360 on a straight line",
+    "description": "Uses 360 on a straight line — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Subtracted from 360 instead of 180.",
+    "typicalIncorrectMethod": "Applies the rule 360 - sum(givens) to the given angles.",
+    "distractorRule": {
+      "summary": "Uses 360 on a straight line",
+      "expression": "360 - sum(givens)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Angles on a straight line sum to 180 degrees, not 360. Subtract the given angles from 180.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.LINE.RETURNS_SUM_GIVENS",
+    "domain": "geometry",
+    "title": "Returns the sum of the givens",
+    "description": "Returns the sum of the givens — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Gave the sum of the given angles.",
+    "typicalIncorrectMethod": "Applies the rule sum(givens) to the given angles.",
+    "distractorRule": {
+      "summary": "Returns the sum of the givens",
+      "expression": "sum(givens)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "You added the given angles. Subtract their total from 180 to find the unknown.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.LINE.FORGOT_ONE_GIVEN",
+    "domain": "geometry",
+    "title": "Forgot one given angle",
+    "description": "Forgot one given angle — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Left out one of the given angles.",
+    "typicalIncorrectMethod": "Applies the rule 180 - sum(all but one given) to the given angles.",
+    "distractorRule": {
+      "summary": "Forgot one given angle",
+      "expression": "180 - sum(all but one given)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Include every given angle. Subtract the total of all of them from 180.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.TRI.USES_360",
+    "domain": "geometry",
+    "title": "Uses 360 for a triangle",
+    "description": "Uses 360 for a triangle — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Used a 360-degree sum for a triangle.",
+    "typicalIncorrectMethod": "Applies the rule 360 - A - B to the given angles.",
+    "distractorRule": {
+      "summary": "Uses 360 for a triangle",
+      "expression": "360 - A - B"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "The interior angles of a triangle sum to 180 degrees, not 360.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.TRI.RETURNS_SUM_GIVENS",
+    "domain": "geometry",
+    "title": "Returns the sum of the givens",
+    "description": "Returns the sum of the givens — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Gave the sum of the two known angles.",
+    "typicalIncorrectMethod": "Applies the rule A + B to the given angles.",
+    "distractorRule": {
+      "summary": "Returns the sum of the givens",
+      "expression": "A + B"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "You added the two known angles. Subtract their total from 180.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.TRI.SUBTRACTS_ONLY_ONE_GIVEN",
+    "domain": "geometry",
+    "title": "Subtracts only one given",
+    "description": "Subtracts only one given — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Subtracted only one known angle from 180.",
+    "typicalIncorrectMethod": "Applies the rule 180 - A to the given angles.",
+    "distractorRule": {
+      "summary": "Subtracts only one given",
+      "expression": "180 - A"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Subtract both known angles from 180, not just one.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.ISO.FORGOT_TO_HALVE",
+    "domain": "geometry",
+    "title": "Forgot to halve",
+    "description": "Forgot to halve — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Did not halve after subtracting the apex.",
+    "typicalIncorrectMethod": "Applies the rule 180 - apex to the given angles.",
+    "distractorRule": {
+      "summary": "Forgot to halve",
+      "expression": "180 - apex"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "After subtracting the apex from 180, share the result equally between the two base angles (divide by 2).",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.ISO.HALVES_180_ONLY",
+    "domain": "geometry",
+    "title": "Halved 180 instead of (180 - apex)",
+    "description": "Halved 180 instead of (180 - apex) — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Used 90 - apex instead of (180 - apex) divided by 2.",
+    "typicalIncorrectMethod": "Applies the rule 90 - apex to the given angles.",
+    "distractorRule": {
+      "summary": "Halved 180 instead of (180 - apex)",
+      "expression": "90 - apex"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Subtract the apex from 180 first, then divide by 2.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.ISO.APEX_EQUALS_BASE",
+    "domain": "geometry",
+    "title": "Base equals apex",
+    "description": "Base equals apex — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Took the base angle to equal the apex.",
+    "typicalIncorrectMethod": "Applies the rule apex to the given angles.",
+    "distractorRule": {
+      "summary": "Base equals apex",
+      "expression": "apex"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "The base angles are not equal to the apex; use base = (180 - apex) divided by 2.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.POINT.USES_180",
+    "domain": "geometry",
+    "title": "Uses 180 around a point",
+    "description": "Uses 180 around a point — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Used a 180-degree sum instead of 360.",
+    "typicalIncorrectMethod": "Applies the rule 180 - sum(givens) to the given angles.",
+    "distractorRule": {
+      "summary": "Uses 180 around a point",
+      "expression": "180 - sum(givens)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Angles around a point sum to 360 degrees, not 180.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.POINT.RETURNS_SUM_GIVENS",
+    "domain": "geometry",
+    "title": "Returns the sum of the givens",
+    "description": "Returns the sum of the givens — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Gave the sum of the given angles.",
+    "typicalIncorrectMethod": "Applies the rule sum(givens) to the given angles.",
+    "distractorRule": {
+      "summary": "Returns the sum of the givens",
+      "expression": "sum(givens)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "You added the given angles. Subtract their total from 360.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.POINT.FORGOT_ONE_GIVEN",
+    "domain": "geometry",
+    "title": "Forgot one given angle",
+    "description": "Forgot one given angle — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Left out one of the given angles.",
+    "typicalIncorrectMethod": "Applies the rule 360 - sum(all but one given) to the given angles.",
+    "distractorRule": {
+      "summary": "Forgot one given angle",
+      "expression": "360 - sum(all but one given)"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Include every given angle; subtract their total from 360.",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.GEOM.VO.USES_SUPPLEMENTARY",
+    "domain": "geometry",
+    "title": "Uses the supplementary angle",
+    "description": "Uses the supplementary angle — a wrong angle-reasoning pathway computed from the displayed givens.",
+    "observableError": "Used the supplementary angle (180 - given) instead of the equal vertically opposite angle.",
+    "typicalIncorrectMethod": "Applies the rule 180 - theta to the given angles.",
+    "distractorRule": {
+      "summary": "Uses the supplementary angle",
+      "expression": "180 - theta"
+    },
+    "validRange": {
+      "levels": [
+        "middle-school"
+      ]
+    },
+    "feedback": "Vertically opposite angles are equal, so the answer equals the given angle (do not use 180 minus the angle).",
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  }
+]

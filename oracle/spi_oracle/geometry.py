@@ -232,6 +232,52 @@ def _label_pos(v: Tuple[int, int], a1: int, a2: int) -> Tuple[int, int]:
     return _mid(p1, p2)
 
 
+def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) -> List[Tuple[int, int, str, str]]:
+    """The value/point labels as (x, y, anchor, text), in SVG emission order.
+
+    The single source for both canonical_svg's <text> elements AND the label-overlap
+    guard, so the overlap boxes always match the actually-rendered label positions.
+    The NOT TO SCALE caption is structural (fixed bottom position) and excluded.
+    """
+    out: List[Tuple[int, int, str, str]] = []
+    for (name, ox, oy, text, anchor) in fig["plabels"]:
+        p = P[name]
+        out.append((p[0] + ox, p[1] + oy, anchor, text))
+    for (vn, a1, a2, text) in fig["alabels"]:
+        lp = _label_pos(P[vn], a1, a2)
+        out.append((lp[0], lp[1], "middle", text))
+    return out
+
+
+# Integer label-box model (30px sans-serif): per-char advance, ascent, descent.
+LBL_CHARW = {"x": 16, "°": 11}
+LBL_ASC, LBL_DESC = 22, 8
+
+
+def _label_box(x: int, y: int, anchor: str, text: str) -> Tuple[int, int, int, int]:
+    w = sum(LBL_CHARW.get(c, 17) for c in text)
+    if anchor == "middle":
+        left = x - w // 2
+    elif anchor == "end":
+        left = x - w
+    else:
+        left = x
+    return (left, y - LBL_ASC, left + w, y + LBL_DESC)
+
+
+def _labels_ok(params: Dict[str, Any]) -> bool:
+    """No two value/point label boxes overlap (touching edges are allowed)."""
+    fig = _build_figure(params)
+    P = _layout(fig["points"])
+    boxes = [_label_box(x, y, anc, t) for (x, y, anc, t) in _text_label_positions(P, fig)]
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            a, b = boxes[i], boxes[j]
+            if not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1]):
+                return False
+    return True
+
+
 def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
     P = _layout(fig["points"])
     out: List[str] = []
@@ -247,12 +293,8 @@ def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
         m = _mid(P[a], P[b])
         d = (grid_round(DIR[(ang + 90) % 360][0] * TICK, R), -grid_round(DIR[(ang + 90) % 360][1] * TICK, R))
         out.append(f'<line class="gt" x1="{m[0] - d[0]}" y1="{m[1] - d[1]}" x2="{m[0] + d[0]}" y2="{m[1] + d[1]}"/>')
-    for (name, ox, oy, text, anchor) in fig["plabels"]:
-        p = P[name]
-        out.append(f'<text x="{p[0] + ox}" y="{p[1] + oy}" text-anchor="{anchor}">{_esc(text)}</text>')
-    for (vn, a1, a2, text) in fig["alabels"]:
-        lp = _label_pos(P[vn], a1, a2)
-        out.append(f'<text x="{lp[0]}" y="{lp[1]}" text-anchor="middle">{_esc(text)}</text>')
+    for (x, y, anchor, text) in _text_label_positions(P, fig):
+        out.append(f'<text x="{x}" y="{y}" text-anchor="{anchor}">{_esc(text)}</text>')
     out.append('<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>')
     out.append("</svg>")
     return "\n".join(out)
@@ -453,6 +495,8 @@ def _guards_ok(params: Dict[str, Any]) -> bool:
     if task in ("straight_line_missing_angle", "angles_at_point_missing"):
         if sum(params["regions"]) != (180 if task == "straight_line_missing_angle" else 360):
             return False
+    if not _labels_ok(params):  # realisability: angle/vertex labels must not collide
+        return False
     return True
 
 
@@ -634,6 +678,7 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("svg-realises-data", rebuilt == stored_svg, "recomputed SVG matches stored SVG byte-for-byte")
     add("media-present", bool(item.get("media")) and item["media"][0]["kind"] == "svg", "one svg media asset")
     add("not-to-scale", item["media"][0].get("toScale") is False and "NOT TO SCALE" in stored_svg, "toScale false + label")
+    add("labels-non-overlapping", _labels_ok(params), "angle/vertex label boxes do not collide")
 
     # The unknown region is labelled 'x' (not its value); only the givens are drawn.
     numeric = sorted(int(t[:-1]) for (_, _, _, t) in fig["alabels"] if t.endswith("°"))

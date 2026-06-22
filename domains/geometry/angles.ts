@@ -186,6 +186,34 @@ function labelPos(v: Pt, a1: number, a2: number): Pt {
   return mid(p1, p2);
 }
 
+type TextLabel = [number, number, string, string]; // x, y, anchor, text
+function textLabelPositions(P: Record<string, Pt>, fig: Figure): TextLabel[] {
+  // Single source for canonicalSvg's <text> AND the overlap guard, so the boxes
+  // always match the rendered label positions. NOT TO SCALE is structural (excluded).
+  const out: TextLabel[] = [];
+  for (const [name, ox, oy, text, anchor] of fig.plabels) { const p = P[name]!; out.push([p[0] + ox, p[1] + oy, anchor, text]); }
+  for (const [vn, a1, a2, text] of fig.alabels) { const lp = labelPos(P[vn]!, a1, a2); out.push([lp[0], lp[1], "middle", text]); }
+  return out;
+}
+
+const LBL_CHARW: Record<string, number> = { x: 16, "°": 11 };
+const LBL_ASC = 22, LBL_DESC = 8;
+function labelBox(x: number, y: number, anchor: string, text: string): [number, number, number, number] {
+  const w = [...text].reduce((a, c) => a + (LBL_CHARW[c] ?? 17), 0);
+  const left = anchor === "middle" ? x - Math.floor(w / 2) : anchor === "end" ? x - w : x;
+  return [left, y - LBL_ASC, left + w, y + LBL_DESC];
+}
+function labelsOk(p: Params): boolean {
+  const fig = buildFigure(p);
+  const P = layout(fig.points);
+  const boxes = textLabelPositions(P, fig).map(([x, y, anc, t]) => labelBox(x, y, anc, t));
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i]!, b = boxes[j]!;
+    if (!(a[2] <= b[0] || b[2] <= a[0] || a[3] <= b[1] || b[3] <= a[1])) return false;
+  }
+  return true;
+}
+
 function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): string {
   const P = layout(fig.points);
   const out: string[] = [];
@@ -200,13 +228,8 @@ function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): st
     const d: Pt = [gridRound(dirAt(ang + 90)[0] * TICK, R), -gridRound(dirAt(ang + 90)[1] * TICK, R)];
     out.push(`<line class="gt" x1="${m[0] - d[0]}" y1="${m[1] - d[1]}" x2="${m[0] + d[0]}" y2="${m[1] + d[1]}"/>`);
   }
-  for (const [name, ox, oy, text, anchor] of fig.plabels) {
-    const p = P[name]!;
-    out.push(`<text x="${p[0] + ox}" y="${p[1] + oy}" text-anchor="${anchor}">${esc(text)}</text>`);
-  }
-  for (const [vn, a1, a2, text] of fig.alabels) {
-    const lp = labelPos(P[vn]!, a1, a2);
-    out.push(`<text x="${lp[0]}" y="${lp[1]}" text-anchor="middle">${esc(text)}</text>`);
+  for (const [x, y, anchor, text] of textLabelPositions(P, fig)) {
+    out.push(`<text x="${x}" y="${y}" text-anchor="${anchor}">${esc(text)}</text>`);
   }
   out.push('<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>');
   out.push("</svg>");
@@ -377,6 +400,7 @@ function guardsOk(p: Params): boolean {
   if (task === "straight_line_missing_angle" || task === "angles_at_point_missing") {
     if (sum(p["regions"] as number[]) !== (task === "straight_line_missing_angle" ? 180 : 360)) return false;
   }
+  if (!labelsOk(p)) return false; // realisability: angle/vertex labels must not collide
   return true;
 }
 
@@ -482,6 +506,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("svg-realises-data", rebuilt === storedSvg, "recomputed SVG matches stored SVG byte-for-byte");
   add("media-present", Boolean(media && media[0] && media[0].kind === "svg"), "one svg media asset");
   add("not-to-scale", Boolean(media && media[0] && media[0].toScale === false) && storedSvg.includes("NOT TO SCALE"), "toScale false + label");
+  add("labels-non-overlapping", labelsOk(params), "angle/vertex label boxes do not collide");
 
   const numeric = fig.alabels.filter(([, , , t]) => t.endsWith("°")).map(([, , , t]) => parseInt(t, 10)).sort((a, b) => a - b);
   const xCount = fig.alabels.filter(([, , , t]) => t === "x").length;

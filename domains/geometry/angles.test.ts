@@ -99,6 +99,36 @@ test("validator catches a tampered SVG (diagram-to-data)", () => {
   assert.ok(v.checks.some((c) => c.name === "svg-realises-data" && c.result === "fail"));
 });
 
+test("no two rendered angle/vertex labels overlap (parsed from the SVG)", () => {
+  const CHARW = (c: string): number => (c === "x" ? 16 : c === "°" ? 11 : 17);
+  const box = (x: number, y: number, anc: string, t: string): [number, number, number, number] => {
+    const w = [...t].reduce((a, c) => a + CHARW(c), 0);
+    const left = anc === "middle" ? x - Math.floor(w / 2) : anc === "end" ? x - w : x;
+    return [left, y - 22, left + w, y + 8];
+  };
+  const ov = (a: number[], b: number[]): boolean => !(a[2]! <= b[0]! || b[2]! <= a[0]! || a[3]! <= b[1]! || b[3]! <= a[1]!);
+  const re = /<text([^>]*)>([^<]*)<\/text>/g;
+  for (let s = 1; s <= 300; s++) {
+    for (const mode of ["free-response", "multiple-choice"] as const) {
+      const svg = (generate(s, { interactionType: mode })["media"] as Array<{ svg: string }>)[0]!.svg;
+      const boxes: number[][] = [];
+      let m: RegExpExecArray | null;
+      re.lastIndex = 0;
+      while ((m = re.exec(svg))) {
+        const attrs = m[1]!, text = m[2]!;
+        if (attrs.includes('class="gn"')) continue; // NOT TO SCALE
+        const x = Number(/x="(-?\d+)"/.exec(attrs)![1]);
+        const y = Number(/y="(-?\d+)"/.exec(attrs)![1]);
+        const anc = /text-anchor="(\w+)"/.exec(attrs)?.[1] ?? "start";
+        boxes.push(box(x, y, anc, text));
+      }
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        assert.ok(!ov(boxes[i]!, boxes[j]!), `seed ${s} ${mode}: labels overlap`);
+      }
+    }
+  }
+});
+
 test("solve gives the integer-degree closure answers", () => {
   assert.equal(solve({ task: "triangle_missing_angle", A: 50, B: 60 } as unknown as Params), 70);
   assert.equal(solve({ task: "isosceles_base_angle", apex: 40 } as unknown as Params), 70);

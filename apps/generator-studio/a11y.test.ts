@@ -29,6 +29,7 @@ import "fake-indexeddb/auto";
 import { generate as genArith } from "../../domains/sequences/arithmetic.ts";
 import { validate } from "../../domains/sequences/validate.ts";
 import { generate as genLinear, validate as validateLinear } from "../../domains/algebra/linear-equations.ts";
+import { generate as genGeo, validate as validateGeo } from "../../domains/geometry/angles.ts";
 import { makeRecord } from "../../core/bank/record.ts";
 import { renderQuestionTeacher, renderSolution, renderValidation, type KatexLike } from "./render/katex-render.ts";
 import { studentWorksheet } from "../../exporters/html/worksheet.ts";
@@ -74,6 +75,12 @@ const rec = makeRecord(item, validate(item).status, { mode: "multiple-choice", g
 
 const linItem = genLinear(7, { task: "brackets", answerType: "multiple-choice" });
 const linRec = makeRecord(linItem, validateLinear(linItem).status, { mode: "multiple-choice", genConfig: { answerType: "multiple-choice", task: "brackets" } });
+
+const geoItem = genGeo(7, { task: "triangle_missing_angle", interactionType: "multiple-choice" });
+const geoRec = makeRecord(geoItem, validateGeo(geoItem).status, { mode: "multiple-choice", genConfig: { answerType: "multiple-choice", task: "triangle_missing_angle" } });
+// several DISTINCT geometry items (one per task) for the multi-item export test
+const geoRecs = (["straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle", "vertically_opposite_angle", "angles_at_point_missing"] as const)
+  .map((t, i) => { const it = genGeo(11 + i, { task: t, interactionType: t === "vertically_opposite_angle" ? "free-response" : "multiple-choice" }); return makeRecord(it, validateGeo(it).status, { mode: t === "vertically_opposite_angle" ? "integer" : "multiple-choice", genConfig: { answerType: t === "vertically_opposite_angle" ? "integer" : "multiple-choice", task: t } }); });
 
 // --- WCAG contrast guard (the color-contrast rule cannot run in jsdom) --------- //
 function relLum(hex: string): number {
@@ -132,6 +139,37 @@ test("a11y: linear-equations views and exports — no critical/serious violation
   noViolations(await seriousViolations(studentWorksheet([linRec], { katex: kx, title: "Linear worksheet" })));
   noViolations(await seriousViolations(answerKey([linRec], { title: "Linear answer key" })));
   noViolations(await seriousViolations(workedSolutions([linRec], { katex: kx, katexCss: "", title: "Linear solutions" })));
+});
+
+test("a11y: geometry (SVG) views and exports — no critical/serious violations", async () => {
+  noViolations(await seriousViolations(page("Geometry preview", renderQuestionTeacher(geoItem, kx))));
+  noViolations(await seriousViolations(page("Geometry solution", renderSolution(geoItem, kx))));
+  noViolations(await seriousViolations(studentWorksheet([geoRec], { katex: kx, title: "Geometry worksheet" })));
+  noViolations(await seriousViolations(workedSolutions([geoRec], { katex: kx, katexCss: "", title: "Geometry solutions" })));
+});
+
+test("a11y: a multi-item geometry worksheet has unique IDs, named SVGs, and no answer leakage", async () => {
+  const html = studentWorksheet(geoRecs, { katex: kx, title: "Mixed geometry worksheet" });
+  noViolations(await seriousViolations(html));
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  // No duplicate DOM ids anywhere (multiple inline SVGs in one document).
+  const ids = [...doc.querySelectorAll("[id]")].map((el) => el.getAttribute("id"));
+  assert.equal(ids.length, new Set(ids).size, `duplicate ids: ${ids.filter((v, i) => ids.indexOf(v) !== i)}`);
+  const svgs = [...doc.querySelectorAll("svg")];
+  assert.equal(svgs.length, geoRecs.length, "one inline SVG per question");
+  for (let i = 0; i < svgs.length; i++) {
+    const svg = svgs[i]!;
+    // Every SVG has an accessible name (role=img + aria-label) and a title/desc.
+    assert.equal(svg.getAttribute("role"), "img");
+    assert.ok((svg.getAttribute("aria-label") ?? "").length > 0, "svg has aria-label");
+    assert.ok(svg.querySelector("title") && svg.querySelector("desc"), "svg has title + desc");
+    // The answer must NOT appear in the diagram's accessibility text or labels.
+    const ans = (geoRecs[i]!.item["answer"] as { display: string }).display;
+    const accText = (svg.getAttribute("aria-label") ?? "") + " " + (svg.querySelector("desc")?.textContent ?? "");
+    assert.ok(!accText.includes(ans), `answer ${ans} leaked into accessibility text`);
+    assert.ok([...svg.querySelectorAll("text")].some((t) => t.textContent === "x"), "unknown drawn as x");
+  }
 });
 
 test("a11y: Generator Studio shell + question-bank table — no critical/serious violations", async () => {
