@@ -125,16 +125,29 @@ test("validator (TS) catches a tampered stored accessibility description", () =>
   assert.ok(names.includes("a11y-text-canonical"), "stored-text tamper caught");
 });
 
-test("vertically opposite uses a neutral leader, not a matching arc", () => {
+test("vertically opposite marks x neutrally (no matching arc); narrow sectors get a leader", () => {
   for (let s = 1; s <= 60; s++) {
     const it = generate(s, { task: "vertically_opposite_angle", interactionType: "free-response" });
     const svg = (it["media"] as Array<{ svg: string }>)[0]!.svg;
     assert.equal((svg.match(/<path class="ga"/g) ?? []).length, 1, "only the given angle has an arc");
     assert.equal((svg.match(/class="gt"/g) ?? []).length, 0, "no congruence ticks");
-    assert.equal((svg.match(/class="gx"/g) ?? []).length, 1, "one neutral leader");
+    assert.ok((svg.match(/class="gx"/g) ?? []).length <= 2, "at most the two angle-label leaders");
     const v = validate(it);
     assert.ok(v.checks.find((c) => c.name === "no-theorem-revealing-markers")?.result === "pass");
     assert.ok(v.checks.find((c) => c.name === "target-region-unambiguous")?.result === "pass");
+  }
+});
+
+test("adaptive placement: every clearance check passes; narrow sectors are attributable", () => {
+  for (let s = 1; s <= 250; s++) {
+    for (const mode of ["free-response", "multiple-choice"] as const) {
+      const v = validate(generate(s, { interactionType: mode }));
+      for (const name of ["labels-within-canvas", "label-label-clearance", "label-ray-clearance",
+        "label-arc-clearance", "label-vertex-clearance", "leader-does-not-cross-label",
+        "small-sector-label-unambiguous", "label-placement-feasible"]) {
+        assert.equal(v.checks.find((c) => c.name === name)?.result, "pass", `${name} seed ${s} ${mode}`);
+      }
+    }
   }
 });
 

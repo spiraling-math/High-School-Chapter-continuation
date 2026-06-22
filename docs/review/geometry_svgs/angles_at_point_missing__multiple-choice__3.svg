@@ -10,9 +10,9 @@
 <path class="ga" d="M 363 356 A 64 64 0 1 0 437 453"/>
 <path class="ga" d="M 454 464 A 84 84 0 0 0 466 436"/>
 <path class="ga" d="M 485 440 A 104 104 0 0 0 488 417"/>
-<text x="427" y="357" text-anchor="middle">109°</text>
-<text x="309" y="474" text-anchor="middle">x</text>
-<text x="488" y="463" text-anchor="middle">21°</text>
-<text x="517" y="433" text-anchor="middle">13°</text>
+<text x="431" y="352" text-anchor="middle">109°</text>
+<text x="304" y="477" text-anchor="middle">x</text>
+<text x="571" y="500" text-anchor="middle">21°</text>
+<text x="670" y="452" text-anchor="middle">13°</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

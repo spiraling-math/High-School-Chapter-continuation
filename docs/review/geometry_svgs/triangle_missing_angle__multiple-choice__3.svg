@@ -8,11 +8,12 @@
 <path class="ga" d="M 248 424 A 50 50 0 0 0 175 380"/>
 <path class="ga" d="M 825 413 A 56 56 0 0 0 824 424"/>
 <path class="ga" d="M 143 320 A 50 50 0 0 0 169 286"/>
+<line class="gx" x1="816" y1="417" x2="801" y2="440"/>
 <text x="164" y="454" text-anchor="end">A</text>
 <text x="914" y="454" text-anchor="start">B</text>
 <text x="120" y="258" text-anchor="middle">C</text>
-<text x="239" y="355" text-anchor="middle">118°</text>
-<text x="794" y="415" text-anchor="middle">11°</text>
-<text x="184" y="324" text-anchor="middle">x</text>
+<text x="242" y="350" text-anchor="middle">118°</text>
+<text x="783" y="470" text-anchor="middle">11°</text>
+<text x="189" y="328" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

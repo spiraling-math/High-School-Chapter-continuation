@@ -120,19 +120,22 @@ class TestToScaleDiagnostic(unittest.TestCase):
 
 
 class TestLabels(unittest.TestCase):
-    def test_label_boxes_match_rendered_text_and_never_overlap(self):
+    def test_label_boxes_match_rendered_text_and_clear(self):
         for s in range(1, 500):
             for mode in ("free-response", "multiple-choice"):
                 item = geo.generate(s, {"interactionType": mode})
                 svg = item["media"][0]["svg"]
                 fig = geo._build_figure(item["params"])
                 P = geo._layout(fig["points"])
-                # the internal positions equal what is actually rendered as <text>
-                internal = geo._text_label_positions(P, fig)
-                rendered = parse_texts(svg)
-                self.assertEqual(internal, rendered, f"seed {s} {mode}")
-                # and the guard guarantees no overlap
-                self.assertTrue(geo._labels_ok(item["params"]))
+                # the internal placement equals what is actually rendered as <text>
+                texts, _leaders = geo._text_elements(P, fig)
+                self.assertEqual(texts, parse_texts(svg), f"seed {s} {mode}")
+                # every clearance check passes for the rendered figure
+                ok = {c["name"]: c["result"] for c in geo.validate(item)["checks"]}
+                for chk in ("labels-within-canvas", "label-label-clearance", "label-ray-clearance",
+                            "label-arc-clearance", "label-vertex-clearance", "leader-does-not-cross-label",
+                            "small-sector-label-unambiguous", "label-inside-intended-region"):
+                    self.assertEqual(ok.get(chk), "pass", f"{chk} seed {s} {mode}")
 
     def test_minimum_visible_region(self):
         for s in range(1, 800):
@@ -335,14 +338,81 @@ class TestReflexAndArcSemantics(unittest.TestCase):
                 self.assertEqual(ok.get("reflex-region-rendered-correctly"), "pass")
 
 
+class TestVisualClearance(unittest.TestCase):
+    CLEAR_CHECKS = ("labels-within-canvas", "label-label-clearance", "label-ray-clearance",
+                    "label-arc-clearance", "label-vertex-clearance", "leader-does-not-cross-label",
+                    "small-sector-label-unambiguous", "labels-non-overlapping", "label-placement-feasible")
+
+    def _assert_clear(self, item, ctx=""):
+        ok = {c["name"]: c["result"] for c in geo.validate(item)["checks"]}
+        for chk in self.CLEAR_CHECKS:
+            self.assertEqual(ok.get(chk), "pass", f"{chk} {ctx}")
+
+    def test_owner_named_regression_seeds(self):
+        # seed 98 (10-degree unknown), seed 26 (248/52/10/x), seed 13322 (327 reflex + 12/21)
+        for seed in (98, 26, 13322):
+            for mode in ("free-response", "multiple-choice"):
+                it = geo.generate(seed, {"task": "angles_at_point_missing", "interactionType": mode})
+                self.assertEqual(geo.validate(it)["status"], "pass", f"seed {seed} {mode}")
+                self._assert_clear(it, f"seed {seed} {mode}")
+
+    def test_narrow_sectors_place_cleanly(self):
+        # narrow given/unknown sectors of 10, 11, 12, 15, 20 degrees must render with full clearance.
+        wanted = {10, 11, 12, 15, 20}
+        seen_unknown, seen_given = set(), set()
+        for s in range(1, 12000):
+            it = geo.generate(s, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+            g = geo._ctx(it["params"])
+            u = geo.solve(it["params"])
+            if u in wanted and u not in seen_unknown:
+                seen_unknown.add(u)
+                self._assert_clear(it, f"unknown {u} seed {s}")
+            for gv in g["givens"]:
+                if gv in wanted and gv not in seen_given:
+                    seen_given.add(gv)
+                    self._assert_clear(it, f"given {gv} seed {s}")
+            if wanted <= seen_unknown and wanted <= seen_given:
+                break
+        self.assertEqual(seen_unknown, wanted, "all narrow unknowns exercised")
+        self.assertEqual(seen_given, wanted, "all narrow givens exercised")
+
+    def test_three_and_four_region_diagrams_clear(self):
+        seen = set()
+        for s in range(1, 4000):
+            it = geo.generate(s, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+            m = len(it["params"]["regions"])
+            if m in (3, 4) and m not in seen:
+                seen.add(m)
+                self._assert_clear(it, f"{m}-region seed {s}")
+            if seen == {3, 4}:
+                break
+        self.assertEqual(seen, {3, 4})
+
+    def test_narrow_sector_label_has_attribution(self):
+        # every sector below NARROW_DEG is either inside its wedge or has a leader into it.
+        for s in range(1, 800):
+            for mode in ("free-response", "multiple-choice"):
+                it = geo.generate(s, {"interactionType": mode})
+                fig = geo._build_figure(it["params"])
+                P = geo._layout(fig["points"])
+                placements, leaders = geo._place_labels(P, fig)
+                for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
+                    if measure < geo.NARROW_DEG:
+                        box = geo._box_make(placements[k][0], placements[k][1], geo._text_w(text))
+                        inside = geo._box_inside_wedge(box, P[vn], start, measure)
+                        led = leaders[k] is not None and geo._in_ccw_wedge(start, measure, P[vn], leaders[k][0])
+                        self.assertTrue(inside or led, f"seed {s} {mode} sector {measure} unattributed")
+
+
 class TestVerticallyOppositeMarking(unittest.TestCase):
-    def test_neutral_leader_no_matching_arc(self):
+    def test_neutral_target_no_matching_arc(self):
         for s in range(1, 400):
             it = geo.generate(s, {"task": "vertically_opposite_angle", "interactionType": "free-response"})
             svg = it["media"][0]["svg"]
             self.assertEqual(svg.count('<path class="ga"'), 1, "only the given angle has an arc")
             self.assertEqual(svg.count('class="gt"'), 0, "no congruence tick marks")
-            self.assertEqual(svg.count('class="gx"'), 1, "exactly one neutral target leader")
+            # the x is a label in the opposite region (+ a leader only when that sector is narrow)
+            self.assertLessEqual(svg.count('class="gx"'), 2, "at most the two angle-label leaders")
             ok = {c["name"]: c["result"] for c in geo.validate(it)["checks"]}
             self.assertEqual(ok.get("no-theorem-revealing-markers"), "pass", f"s{s}")
             self.assertEqual(ok.get("target-region-unambiguous"), "pass", f"s{s}")

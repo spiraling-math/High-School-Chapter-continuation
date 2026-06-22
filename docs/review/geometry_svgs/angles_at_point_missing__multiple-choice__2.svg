@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
 <title>Angles around a point</title>
-<desc>Angles of 12 degrees, 29 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
+<desc>Angles of 11 degrees, 37 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
 <style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
-<line class="gl" x1="125" y1="246" x2="875" y2="246"/>
-<line class="gl" x1="125" y1="246" x2="859" y2="90"/>
-<line class="gl" x1="125" y1="246" x2="781" y2="610"/>
-<path class="ga" d="M 169 246 A 44 44 0 0 0 168 237"/>
-<path class="ga" d="M 188 233 A 64 64 0 1 0 181 277"/>
-<path class="ga" d="M 198 287 A 84 84 0 0 0 209 246"/>
-<text x="199" y="238" text-anchor="middle">12°</text>
-<text x="32" y="231" text-anchor="middle">x</text>
-<text x="235" y="276" text-anchor="middle">29°</text>
+<line class="gl" x1="150" y1="90" x2="850" y2="90"/>
+<line class="gl" x1="150" y1="90" x2="618" y2="610"/>
+<line class="gl" x1="150" y1="90" x2="709" y2="511"/>
+<path class="ga" d="M 194 90 A 44 44 0 1 0 179 123"/>
+<path class="ga" d="M 193 138 A 64 64 0 0 0 201 129"/>
+<path class="ga" d="M 217 141 A 84 84 0 0 0 234 90"/>
+<line class="gx" x1="203" y1="139" x2="194" y2="166"/>
+<text x="77" y="57" text-anchor="middle">x</text>
+<text x="185" y="199" text-anchor="middle">11°</text>
+<text x="263" y="129" text-anchor="middle">37°</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

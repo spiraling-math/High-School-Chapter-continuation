@@ -31,7 +31,7 @@ from .difficulty import round3
 from .geometry_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.geometry.angles-figures"
-GENERATOR_VERSION = "1.2.0"
+GENERATOR_VERSION = "1.2.1"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _TABLE = json.load(open(os.path.join(_HERE, "..", "..", "core", "geometry", "dir-table.json"), encoding="utf-8"))
@@ -41,7 +41,7 @@ DIR: List[List[int]] = _TABLE["dir"]
 TASKS = ("straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle",
          "vertically_opposite_angle", "angles_at_point_missing")
 MC_TASKS = ("straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle",
-            "angles_at_point_missing")  # vertically_opposite is free-response only in v1.0.0
+            "angles_at_point_missing")  # vertically_opposite is free-response only in the current approved scope
 
 OBJECTIVE_BY_TASK = {
     "straight_line_missing_angle": "SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01",
@@ -178,11 +178,11 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
         pts["Et"] = _ray(O, theta, RAW_LEN)
         pts["Et2"] = _ray(O, theta + 180, RAW_LEN)
         segs += [("E180", "E0", "gl"), ("Et2", "Et", "gl")]       # two full straight lines
-        # ONLY the given angle gets an arc. The target (x) is marked by a NEUTRAL leader in
-        # the directly-opposite region — no matching arc that would announce the equality.
+        # ONLY the given angle gets an arc. The target (x) is a label in the directly-
+        # opposite region (no matching arc that would announce the equality); the adaptive
+        # label placer adds a neutral leader if that sector is too narrow for the label.
         arcs += [("O", 0, theta)]
         alabels += [("O", 0, theta, f"{theta}°"), ("O", 180, theta, "x")]
-        leaders += [("O", (180 + theta // 2) % 360, LEADER_R1, LEADER_R2)]
 
     elif task == "angles_at_point_missing":
         regions = params["regions"]
@@ -292,57 +292,215 @@ def _arc_path(v: Tuple[int, int], start: int, measure: int, radius: int) -> str:
     return f"M {e1[0]} {e1[1]} A {radius} {radius} 0 {large} 0 {e2[0]} {e2[1]}"
 
 
-def _label_pos(v: Tuple[int, int], start: int, measure: int, radius: int) -> Tuple[int, int]:
-    """Label point on the sector bisector (start + measure//2), just beyond its own
-    arc, so it sits INSIDE the intended sector for both minor and reflex regions."""
-    return _ray_at(v, start + measure // 2, radius)
-
-
-def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) -> List[Tuple[int, int, str, str]]:
-    """The value/point labels as (x, y, anchor, text), in SVG emission order.
-
-    The single source for both canonical_svg's <text> elements AND the label-overlap
-    guard, so the overlap boxes always match the actually-rendered label positions.
-    The NOT TO SCALE caption is structural (fixed bottom position) and excluded.
-    """
-    out: List[Tuple[int, int, str, str]] = []
-    for (name, ox, oy, text, anchor) in fig["plabels"]:
-        p = P[name]
-        out.append((p[0] + ox, p[1] + oy, anchor, text))
-    lab_radii = _label_radii(fig, _arc_radii(fig, P))
-    for (vn, start, measure, text), lr in zip(fig["alabels"], lab_radii):
-        lp = _label_pos(P[vn], start, measure, lr)
-        out.append((lp[0], lp[1], "middle", text))
-    return out
-
-
+# --- Adaptive label placement (v1.2.1) ------------------------------------- #
 # Integer label-box model (30px sans-serif): per-char advance, ascent, descent.
 LBL_CHARW = {"x": 16, "°": 11}
 LBL_ASC, LBL_DESC = 22, 8
+LBL_CLEAR = 8        # minimum px clearance: label box to any ray / arc / vertex / label / leader
+CANVAS_M = 12        # keep label boxes this far inside the viewBox
+CAPTION_TOP = 666    # labels stay above the NOT TO SCALE caption (y=685)
+LBL_R0_GAP = 36      # a label starts this far beyond its own arc
+LBL_STEP = 16        # radial search step
+LEAD_IN = 8          # leader inner endpoint sits this far beyond the arc, inside the sector
+LEAD_BACK = 12       # leader stops this far short of the label box
+ARC_SAMPLES = 8      # arc is sampled at this many points for label-arc clearance
+NARROW_DEG = 30      # sectors below this need an inside-fit OR a leader (unambiguous attribution)
+PERP_LIST = (28, -28, 56, -56, 84, -84, 112, -112, 140, -140)
 
 
-def _label_box(x: int, y: int, anchor: str, text: str) -> Tuple[int, int, int, int]:
-    w = sum(LBL_CHARW.get(c, 17) for c in text)
-    if anchor == "middle":
-        left = x - w // 2
-    elif anchor == "end":
-        left = x - w
-    else:
-        left = x
-    return (left, y - LBL_ASC, left + w, y + LBL_DESC)
+def _text_w(text: str) -> int:
+    return sum(LBL_CHARW.get(c, 17) for c in text)
+
+
+def _box_make(x: int, y: int, w: int) -> Tuple[int, int, int, int]:
+    return (x - w // 2, y - LBL_ASC, x + (w - w // 2), y + LBL_DESC)
+
+
+def _box_in_canvas(b: Tuple[int, int, int, int]) -> bool:
+    return b[0] >= CANVAS_M and b[2] <= VIEW_W - CANVAS_M and b[1] >= CANVAS_M and b[3] <= CAPTION_TOP
+
+
+def _boxes_clear(a: Tuple[int, int, int, int], b: Tuple[int, int, int, int], c: int) -> bool:
+    return a[2] + c <= b[0] or b[2] + c <= a[0] or a[3] + c <= b[1] or b[3] + c <= a[1]
+
+
+def _pt_box_d2(px: int, py: int, b: Tuple[int, int, int, int]) -> int:
+    dx = max(b[0] - px, 0, px - b[2])
+    dy = max(b[1] - py, 0, py - b[3])
+    return dx * dx + dy * dy
+
+
+def _orient(ax: int, ay: int, bx: int, by: int, cx: int, cy: int) -> int:
+    return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
+
+
+def _on_seg(ax: int, ay: int, bx: int, by: int, cx: int, cy: int) -> bool:
+    return min(ax, bx) <= cx <= max(ax, bx) and min(ay, by) <= cy <= max(ay, by)
+
+
+def _seg_intersect(ax, ay, bx, by, cx, cy, dx, dy) -> bool:
+    d1, d2 = _orient(cx, cy, dx, dy, ax, ay), _orient(cx, cy, dx, dy, bx, by)
+    d3, d4 = _orient(ax, ay, bx, by, cx, cy), _orient(ax, ay, bx, by, dx, dy)
+    if (d1 > 0) != (d2 > 0) and (d3 > 0) != (d4 > 0):
+        return True
+    if d1 == 0 and _on_seg(cx, cy, dx, dy, ax, ay):
+        return True
+    if d2 == 0 and _on_seg(cx, cy, dx, dy, bx, by):
+        return True
+    if d3 == 0 and _on_seg(ax, ay, bx, by, cx, cy):
+        return True
+    if d4 == 0 and _on_seg(ax, ay, bx, by, dx, dy):
+        return True
+    return False
+
+
+def _seg_clear_box(ax, ay, bx, by, box, c) -> bool:
+    """Segment AB stays at least c px away from the box (box inflated by c, no contact)."""
+    L = (box[0] - c, box[1] - c, box[2] + c, box[3] + c)
+    if L[0] <= ax <= L[2] and L[1] <= ay <= L[3]:
+        return False
+    if L[0] <= bx <= L[2] and L[1] <= by <= L[3]:
+        return False
+    corners = [(L[0], L[1]), (L[2], L[1]), (L[2], L[3]), (L[0], L[3])]
+    for i in range(4):
+        cx, cy = corners[i]
+        ex, ey = corners[(i + 1) % 4]
+        if _seg_intersect(ax, ay, bx, by, cx, cy, ex, ey):
+            return False
+    return True
+
+
+def _arc_clear_box(box, v, ar, start, measure, c) -> bool:
+    cc = c * c
+    for i in range(ARC_SAMPLES + 1):
+        ang = start + (measure * i) // ARC_SAMPLES
+        pt = _ray_at(v, ang, ar)
+        if _pt_box_d2(pt[0], pt[1], box) < cc:
+            return False
+    return True
+
+
+def _point_along(ax, ay, bx, by, back) -> Tuple[int, int]:
+    """Point on segment A->B that stops `back` px short of B (integer, floor div)."""
+    length = _isqrt((bx - ax) ** 2 + (by - ay) ** 2)
+    if length <= back:
+        return (ax, ay)
+    t = length - back
+    return (ax + (bx - ax) * t // length, ay + (by - ay) * t // length)
+
+
+def _box_inside_wedge(box, v, start, measure) -> bool:
+    return all(_in_ccw_wedge(start, measure, v, (cx, cy)) for cx in (box[0], box[2]) for cy in (box[1], box[3]))
+
+
+def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
+    """Adaptively place each angle label and return (placements, leaders).
+
+    placements[k] = (x, y, "middle", text) aligned with fig['alabels']; leaders[k] is a
+    ((ix,iy),(ox,oy)) neutral leader or None. A label is placed INSIDE its sector when its
+    full bounding box fits with clearance; otherwise it is a callout in clear space joined
+    to the sector by a short neutral leader. Returns None if any label cannot be placed
+    (the figure is then rejected and re-drawn). Deterministic integer geometry.
+    """
+    arc_radii = _arc_radii(fig, P)
+    rmap = {(vn, s, m): r for (vn, s, m), r in zip(fig["arcs"], arc_radii)}
+    seg_lines = [(P[a], P[b]) for (a, b, _c) in fig["segs"]]
+    arcs = [(P[vn], r, s, m) for (vn, s, m), r in zip(fig["arcs"], arc_radii)]
+    vertices = list(fig["points"].values())
+    placed = []  # obstacle boxes (vertex letters, then placed angle labels)
+    for (name, ox, oy, text, anchor) in fig["plabels"]:
+        p = P[name]
+        w = _text_w(text)
+        left = p[0] + ox - (w // 2 if anchor == "middle" else (w if anchor == "end" else 0))
+        placed.append((left, p[1] + oy - LBL_ASC, left + w, p[1] + oy + LBL_DESC))
+
+    def ok(box, leader=None) -> bool:
+        if not _box_in_canvas(box):
+            return False
+        if any(not _seg_clear_box(A[0], A[1], B[0], B[1], box, LBL_CLEAR) for (A, B) in seg_lines):
+            return False
+        if any(not _arc_clear_box(box, av, r, s, m, LBL_CLEAR) for (av, r, s, m) in arcs):
+            return False
+        if any(_pt_box_d2(vx, vy, box) < LBL_CLEAR * LBL_CLEAR for (vx, vy) in vertices):
+            return False
+        if any(not _boxes_clear(box, pb, LBL_CLEAR) for pb in placed):
+            return False
+        if leader is not None and any(
+                not _seg_clear_box(leader[0][0], leader[0][1], leader[1][0], leader[1][1], pb, LBL_CLEAR) for pb in placed):
+            return False
+        return True
+
+    placements, leaders = [], []
+    for (vn, start, measure, text) in fig["alabels"]:
+        v = P[vn]
+        w = _text_w(text)
+        bis = (start + measure // 2) % 360
+        ar = rmap.get((vn, start, measure), ARC_DEFAULT)
+        s = DIR[(measure // 2) % 360][1]                       # R*sin(measure/2)
+        r_fit = ((w // 2 + LBL_CLEAR) * R + s - 1) // s if s > 0 else 10 ** 9
+        chosen = None
+        leader_seg = None
+        # 1) INSIDE the sector (no leader) when the whole box fits with clearance.
+        r_in = max(ar + LBL_R0_GAP, r_fit)
+        for i in range(4):
+            pos = _ray_at(v, bis, r_in + i * LBL_STEP)
+            box = _box_make(pos[0], pos[1], w)
+            if _box_inside_wedge(box, v, start, measure) and ok(box):
+                chosen = pos
+                break
+        # 2) CALLOUT in clear space, joined to the sector by a neutral leader.
+        if chosen is None:
+            inner = _ray_at(v, bis, ar + LEAD_IN)
+            if _in_ccw_wedge(start, measure, v, inner):
+                for ri in range(7):
+                    base = _ray_at(v, bis, ar + LBL_R0_GAP + ri * LBL_STEP)
+                    for perp in PERP_LIST:
+                        sx = base[0] + grid_round(DIR[(bis + 90) % 360][0] * perp, R)
+                        sy = base[1] - grid_round(DIR[(bis + 90) % 360][1] * perp, R)
+                        box = _box_make(sx, sy, w)
+                        end = _point_along(inner[0], inner[1], sx, sy, w // 2 + LEAD_BACK)
+                        seg = (inner, end)
+                        if ok(box, seg):
+                            chosen, leader_seg = (sx, sy), seg
+                            break
+                    if chosen is not None:
+                        break
+        if chosen is None:
+            return None
+        placements.append((chosen[0], chosen[1], "middle", text))
+        leaders.append(leader_seg)
+        placed.append(_box_make(chosen[0], chosen[1], w))
+    # Final pass: no leader may cross ANY other label box (incl. later-placed ones).
+    n_pl = len(fig["plabels"])
+    for k, seg in enumerate(leaders):
+        if seg is None:
+            continue
+        for idx, b in enumerate(placed):
+            if idx == n_pl + k:
+                continue
+            if not _seg_clear_box(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR):
+                return None
+    return placements, leaders
+
+
+def _text_elements(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
+    """All text labels (plabels then placed alabels) and the label leaders, or None."""
+    placed = _place_labels(P, fig)
+    if placed is None:
+        return None
+    placements, leaders = placed
+    texts: List[Tuple[int, int, str, str]] = []
+    for (name, ox, oy, text, anchor) in fig["plabels"]:
+        p = P[name]
+        texts.append((p[0] + ox, p[1] + oy, anchor, text))
+    texts.extend(placements)
+    return texts, leaders
 
 
 def _labels_ok(params: Dict[str, Any]) -> bool:
-    """No two value/point label boxes overlap (touching edges are allowed)."""
+    """Every angle label can be placed with full clearance (else reject + re-draw)."""
     fig = _build_figure(params)
-    P = _layout(fig["points"])
-    boxes = [_label_box(x, y, anc, t) for (x, y, anc, t) in _text_label_positions(P, fig)]
-    for i in range(len(boxes)):
-        for j in range(i + 1, len(boxes)):
-            a, b = boxes[i], boxes[j]
-            if not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1]):
-                return False
-    return True
+    return _place_labels(_layout(fig["points"]), fig) is not None
 
 
 def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
@@ -354,17 +512,17 @@ def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
     out.append(f"<style>{STYLE}</style>")
     for (a, b, cls) in fig["segs"]:
         out.append(f'<line class="{cls}" x1="{P[a][0]}" y1="{P[a][1]}" x2="{P[b][0]}" y2="{P[b][1]}"/>')
-    arc_radii = _arc_radii(fig, P)
-    for (vn, start, measure), radius in zip(fig["arcs"], arc_radii):
+    for (vn, start, measure), radius in zip(fig["arcs"], _arc_radii(fig, P)):
         out.append(f'<path class="ga" d="{_arc_path(P[vn], start, measure, radius)}"/>')
-    for (vn, d, r1, r2) in fig.get("leaders", []):
-        p1, p2 = _ray_at(P[vn], d, r1), _ray_at(P[vn], d, r2)
-        out.append(f'<line class="gx" x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}"/>')
     for (a, b, ang) in fig["ticks"]:
         m = _mid(P[a], P[b])
         d = (grid_round(DIR[(ang + 90) % 360][0] * TICK, R), -grid_round(DIR[(ang + 90) % 360][1] * TICK, R))
         out.append(f'<line class="gt" x1="{m[0] - d[0]}" y1="{m[1] - d[1]}" x2="{m[0] + d[0]}" y2="{m[1] + d[1]}"/>')
-    for (x, y, anchor, text) in _text_label_positions(P, fig):
+    texts, leaders = _text_elements(P, fig)
+    for seg in leaders:
+        if seg is not None:
+            out.append(f'<line class="gx" x1="{seg[0][0]}" y1="{seg[0][1]}" x2="{seg[1][0]}" y2="{seg[1][1]}"/>')
+    for (x, y, anchor, text) in texts:
         out.append(f'<text x="{x}" y="{y}" text-anchor="{anchor}">{_esc(text)}</text>')
     out.append('<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>')
     out.append("</svg>")
@@ -624,7 +782,7 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
     if explicit_task is not None and explicit_task not in TASKS:
         raise ValueError(f"unknown task: {explicit_task}")
     if answer_type == "multiple-choice" and explicit_task is not None and explicit_task not in MC_TASKS:
-        raise ValueError("vertically_opposite_angle is free-response only in v1.0.0")
+        raise ValueError("vertically_opposite_angle is free-response only in geometry v1.2.x (current approved scope)")
 
     rng = Mulberry32(seed)
     params: Dict[str, Any] = {}
@@ -802,7 +960,6 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     # nature (this is what catches a reflex region drawn with its minor arc).
     P = _layout(fig["points"])
     arc_radii = _arc_radii(fig, P)
-    lab_radii = _label_radii(fig, arc_radii)
     arc_cmds = re.findall(r'<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"/>', stored_svg)
     region_ok = (len(arc_cmds) == len(fig["arcs"]))
     large_ok = sweep_ok = region_ok
@@ -826,40 +983,74 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             chain = chain and (fig["arcs"][k][1] + fig["arcs"][k][2]) % 360 == fig["arcs"][k + 1][1] % 360
         add("arc-matches-cyclic-region", bool(chain), "arcs tile the angle consecutively")
 
-    # Each angle label sits INSIDE its intended sector (parsed from the SVG text).
-    all_text = re.findall(r'<text(?: class="gn")? x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)</text>', stored_svg)
-    non_gn = [(int(x), int(y), t) for (x, y, t) in all_text if t != "NOT TO SCALE"]
-    alabel_pts = non_gn[len(fig["plabels"]):]
-    label_in = len(alabel_pts) == len(fig["alabels"])
-    reflex_ok = label_in
-    for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
-        if k >= len(alabel_pts):
-            break
-        pt = (alabel_pts[k][0], alabel_pts[k][1])
-        inside = _in_ccw_wedge(start, measure, P[vn], pt) and alabel_pts[k][2] == text
-        label_in = label_in and inside
-        if measure > 180:
-            reflex_ok = reflex_ok and inside
-    add("label-inside-intended-region", bool(label_in), "every angle label lies in its own sector")
-    add("reflex-region-rendered-correctly", bool(reflex_ok and large_ok), "regions > 180 use the reflex arc with the label inside it")
+    # --- Adaptive label-placement clearances. Recompute the placement (svg-realises-data
+    # ties it to the stored SVG) and test the COMPLETE label bounding boxes against every
+    # ray, arc, vertex, label, and leader, with a documented minimum clearance (LBL_CLEAR).
+    placed = _place_labels(P, fig)
+    add("label-placement-feasible", placed is not None, f"all labels placed with >= {LBL_CLEAR}px clearance")
+    if placed is not None:
+        placements, lleaders = placed
+        plabel_boxes = []
+        for (name, ox, oy, t, anchor) in fig["plabels"]:
+            wl = _text_w(t)
+            left = P[name][0] + ox - (wl // 2 if anchor == "middle" else (wl if anchor == "end" else 0))
+            plabel_boxes.append((left, P[name][1] + oy - LBL_ASC, left + wl, P[name][1] + oy + LBL_DESC))
+        alabel_boxes = [_box_make(x, y, _text_w(t)) for (x, y, _a, t) in placements]
+        all_boxes = plabel_boxes + alabel_boxes
+        seg_lines = [(P[a], P[b]) for (a, b, _c) in fig["segs"]]
+        vertices = list(fig["points"].values())
 
-    # Vertically opposite must not reveal the equality: the target (x) is a neutral
-    # leader, not a second matching arc, and points unambiguously at the opposite region.
+        add("labels-within-canvas", all(_box_in_canvas(b) for b in alabel_boxes), f"boxes inside [{CANVAS_M}, {VIEW_W - CANVAS_M}] x [{CANVAS_M}, {CAPTION_TOP}]")
+        add("label-label-clearance",
+            all(_boxes_clear(all_boxes[i], all_boxes[j], LBL_CLEAR) for i in range(len(all_boxes)) for j in range(i + 1, len(all_boxes))),
+            f"label boxes clear each other by >= {LBL_CLEAR}px")
+        add("label-ray-clearance",
+            all(_seg_clear_box(A[0], A[1], B[0], B[1], b, LBL_CLEAR) for b in alabel_boxes for (A, B) in seg_lines),
+            f"labels clear every drawn line by >= {LBL_CLEAR}px")
+        add("label-arc-clearance",
+            all(_arc_clear_box(b, P[vn], rr, s, m, LBL_CLEAR) for b in alabel_boxes for (vn, s, m), rr in zip(fig["arcs"], arc_radii)),
+            f"labels clear every arc by >= {LBL_CLEAR}px")
+        add("label-vertex-clearance",
+            all(_pt_box_d2(vx, vy, b) >= LBL_CLEAR * LBL_CLEAR for b in alabel_boxes for (vx, vy) in vertices),
+            f"labels clear every vertex by >= {LBL_CLEAR}px")
+        lead_ok = True
+        for k, seg in enumerate(lleaders):
+            if seg is None:
+                continue
+            others = plabel_boxes + [b for j, b in enumerate(alabel_boxes) if j != k]
+            if any(not _seg_clear_box(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR) for b in others):
+                lead_ok = False
+        add("leader-does-not-cross-label", lead_ok, "no leader crosses another label box")
+
+        attrib_ok = small_ok = reflex_ok = True
+        for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
+            attributable = _box_inside_wedge(alabel_boxes[k], P[vn], start, measure) or (
+                lleaders[k] is not None and _in_ccw_wedge(start, measure, P[vn], lleaders[k][0]))
+            attrib_ok = attrib_ok and attributable
+            if measure < NARROW_DEG:
+                small_ok = small_ok and attributable
+            if measure > 180:
+                reflex_ok = reflex_ok and attributable
+        add("label-inside-intended-region", attrib_ok, "every label is inside its sector or led into it")
+        add("small-sector-label-unambiguous", small_ok, f"narrow (< {NARROW_DEG} deg) labels are inside or led into their sector")
+        add("reflex-region-rendered-correctly", bool(reflex_ok and large_ok), "regions > 180 use the reflex arc with an attributable label")
+
+    # Vertically opposite must not reveal the equality: the target (x) is a label in the
+    # opposite region (with a leader if narrow); only the given angle carries an arc.
     if task == "vertically_opposite_angle":
         ga = stored_svg.count('<path class="ga"')
         gt = stored_svg.count('class="gt"')
-        leaders = re.findall(r'<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"/>', stored_svg)
-        add("no-theorem-revealing-markers", ga == 1 and gt == 0 and len(leaders) == 1, f"ga={ga} gt={gt} leaders={len(leaders)}")
-        ok_target = len(leaders) == 1
-        if ok_target:
-            lx1, ly1, lx2, ly2 = (int(t) for t in leaders[0])
-            mid = (grid_round(lx1 + lx2, 2), grid_round(ly1 + ly2, 2))
+        add("no-theorem-revealing-markers", ga == 1 and gt == 0, f"ga={ga} gt={gt}")
+        ok_target = placed is not None
+        if placed is not None:
             theta = params["theta"]
-            ok_target = _in_ccw_wedge(180, theta, P["O"], mid)
+            placements, lleaders = placed
             for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
                 if text == "x":
-                    ok_target = ok_target and _in_ccw_wedge(180, theta, P["O"], _label_pos(P[vn], start, measure, lab_radii[k]))
-        add("target-region-unambiguous", bool(ok_target), "the x leader and label lie in the opposite region")
+                    box = _box_make(placements[k][0], placements[k][1], _text_w("x"))
+                    led = lleaders[k] is not None and _in_ccw_wedge(180, theta, P["O"], lleaders[k][0])
+                    ok_target = _box_inside_wedge(box, P["O"], 180, theta) or led
+        add("target-region-unambiguous", bool(ok_target), "the x label (or its leader) lies in the opposite region")
 
     add("a11y-equivalent-information", _a11y_equivalent_ok(params, acc), "accessible text is equivalent, not easier (no theorem/answer)")
     # Harden against a TAMPERED stored description: the stored accessibility text and the
@@ -913,4 +1104,4 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.2.0", "checks": checks}
+    return {"status": status, "validatorVersion": "1.2.1", "checks": checks}

@@ -8,8 +8,9 @@
 <path class="ga" d="M 216 418 A 44 44 0 0 0 210 396"/>
 <path class="ga" d="M 227 386 A 64 64 0 1 0 233 437"/>
 <path class="ga" d="M 252 443 A 84 84 0 0 0 256 418"/>
-<text x="243" y="399" text-anchor="middle">30°</text>
-<text x="79" y="428" text-anchor="middle">313°</text>
-<text x="285" y="436" text-anchor="middle">x</text>
+<line class="gx" x1="263" y1="432" x2="275" y2="472"/>
+<text x="330" y="376" text-anchor="middle">30°</text>
+<text x="57" y="430" text-anchor="middle">313°</text>
+<text x="282" y="492" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

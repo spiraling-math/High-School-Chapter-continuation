@@ -6,7 +6,7 @@
 <line class="gl" x1="500" y1="529" x2="370" y2="171"/>
 <path class="ga" d="M 544 529 A 44 44 0 0 0 485 488"/>
 <path class="ga" d="M 478 469 A 64 64 0 0 0 436 529"/>
-<text x="542" y="468" text-anchor="middle">x</text>
-<text x="423" y="475" text-anchor="middle">70°</text>
+<text x="546" y="463" text-anchor="middle">x</text>
+<text x="418" y="472" text-anchor="middle">70°</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -59,16 +60,15 @@ def _region_card(label, role, measure, seed, it):
         idx = 0
     a = arcs[idx] if idx < len(arcs) else ("?",) * 8
     large, sweep = (a[4], a[5]) if len(a) >= 6 else ("?", "?")
-    arc_radius = a[2] if len(a) >= 3 else "?"
-    # label anchor for that region
-    lab = fig["alabels"][idx]
-    lab_radii = geo._label_radii(fig, geo._arc_radii(fig, P))
-    lp = geo._label_pos(P[lab[0]], lab[1], lab[2], lab_radii[idx])
+    # label anchor for that region (from the adaptive placer)
+    placements, leaders = geo._place_labels(P, fig)
+    lp = (placements[idx][0], placements[idx][1])
+    led = "yes (callout leader)" if leaders[idx] is not None else "no (inside sector)"
     v = geo.validate(it)
     checks = {c["name"]: c["result"] for c in v["checks"]}
     key = ("svg-realises-data", "arc-large-flag-correct", "arc-sweep-correct",
-           "label-inside-intended-region", "reflex-region-rendered-correctly",
-           "a11y-equivalent-information")
+           "labels-within-canvas", "label-ray-clearance", "label-label-clearance",
+           "small-sector-label-unambiguous", "reflex-region-rendered-correctly")
     chips = " ".join(f'<span class="chk {checks.get(k,"na")}">{k}={checks.get(k,"n/a")}</span>' for k in key)
     reflex = " REFLEX" if measure > 180 else (" straight" if measure == 180 else "")
     return f"""
@@ -79,7 +79,7 @@ def _region_card(label, role, measure, seed, it):
     <li><b>Intended region index:</b> {idx} &nbsp; <b>measure:</b> {measure}&deg;</li>
     <li><b>SVG arc flags for that region:</b> large-arc=<b>{large}</b>, sweep=<b>{sweep}</b>
         (policy: large-arc=1 iff measure&gt;180; sweep=0 always)</li>
-    <li><b>Label anchor (laid-out px):</b> ({lp[0]}, {lp[1]}), text-anchor=middle</li>
+    <li><b>Label anchor (laid-out px):</b> ({lp[0]}, {lp[1]}), text-anchor=middle &nbsp; <b>leader:</b> {led}</li>
     <li><b>Validation:</b> <b class="{v['status']}">{v['status']}</b></li>
   </ul>
   <div class="checks">{chips}</div>
@@ -109,8 +109,60 @@ def _task_card(label, task, mode="free-response"):
 </section>"""
 
 
+def _load_prev():
+    """Load the superseded v1.2.0 generator (for before/after) from its git tag."""
+    try:
+        src = subprocess.check_output(
+            ["git", "show", "geometry-v1.2.0-superseded:oracle/spi_oracle/geometry.py"],
+            cwd=ROOT, text=True, encoding="utf-8")
+    except Exception:
+        return None, None
+    path = os.path.join(HERE, "spi_oracle", "_geom_prev.py")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(src)
+    import importlib
+    import spi_oracle._geom_prev as prev  # noqa
+    importlib.reload(prev)
+    return prev, path
+
+
+def _before_after_cards():
+    """Render the three owner-named regression seeds with BOTH the v1.2.0 (before) and
+    v1.2.1 (after) label engines on the IDENTICAL parameters, side by side."""
+    prev, path = _load_prev()
+    cards = ['<h2>Before / after — owner-named regression seeds (identical parameters; v1.2.0 vs v1.2.1)</h2>']
+    seeds = [(98, "10-degree unknown"), (26, "248 / 52 / 10 / x"), (13322, "327 reflex with 12 and 21 adjacent")]
+    for seed, note in seeds:
+        after = geo.generate(seed, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+        params = after["params"]
+        after_svg = after["media"][0]["svg"]
+        v = geo.validate(after)
+        if prev is not None:
+            try:
+                pfig = prev._build_figure(params)
+                pacc = prev._accessibility(params)
+                before_svg = prev.canonical_svg(pfig, pacc["alt"], pacc["title"], pacc["desc"])
+            except Exception as exc:  # pragma: no cover
+                before_svg = f"<p>could not render v1.2.0: {exc}</p>"
+        else:
+            before_svg = "<p>v1.2.0 tag unavailable</p>"
+        cards.append(f"""
+<section class="card wide">
+  <h3>seed {seed} &mdash; {note} <small>(regions {params.get('regions')}, unknown {geo.solve(params)})</small></h3>
+  <p><b>v1.2.1 validation:</b> <b class="{v['status']}">{v['status']}</b></p>
+  <div class="ba">
+    <figure><figcaption>Before (v1.2.0)</figcaption>{before_svg}</figure>
+    <figure><figcaption>After (v1.2.1)</figcaption>{after_svg}</figure>
+  </div>
+</section>""")
+    if path is not None and os.path.exists(path):
+        os.remove(path)
+        sys.modules.pop("spi_oracle._geom_prev", None)
+    return cards
+
+
 def build():
-    cards = []
+    cards = _before_after_cards()
     # Representative measures (owner list) as the UNKNOWN region.
     for measure in (10, 90, 179, 180, 181, 209, 248, 263):
         s, it = _angles_at_point_with_unknown(measure)
@@ -145,6 +197,12 @@ def build():
   h1 {{ font-size: 20px; }}
   .note {{ background: #f4f4f4; padding: 10px 14px; border-left: 4px solid #444; max-width: 60em; }}
   .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 18px; margin-top: 18px; }}
+  .grid h2 {{ grid-column: 1 / -1; font-size: 17px; margin: 8px 0 0; border-top: 2px solid #ccc; padding-top: 14px; }}
+  .card.wide {{ grid-column: 1 / -1; }}
+  .ba {{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }}
+  .ba figure {{ margin: 0; }}
+  .ba figcaption {{ font-weight: bold; font-size: 13px; margin-bottom: 4px; }}
+  .ba svg {{ width: 100%; height: auto; border: 1px solid #eee; background: #fff; }}
   .card {{ border: 1px solid #bbb; border-radius: 8px; padding: 12px; break-inside: avoid; }}
   .card h3 {{ font-size: 15px; margin: 0 0 8px; }}
   .card small {{ color: #555; font-weight: normal; }}

@@ -20,7 +20,7 @@ import { DIR, R } from "../../core/geometry/dir-table.ts";
 import { MISCONCEPTIONS, rulesFor, type GeoCtx } from "./geometry-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.geometry.angles-figures";
-export const GENERATOR_VERSION = "1.2.0";
+export const GENERATOR_VERSION = "1.2.1";
 
 export type Task = "straight_line_missing_angle" | "triangle_missing_angle" | "isosceles_base_angle"
   | "vertically_opposite_angle" | "angles_at_point_missing";
@@ -45,12 +45,15 @@ const MAX_PARAM_ATTEMPTS = 400;
 const MIN_ANGLE = 10;
 const VIEW_W = 1000, VIEW_H = 700, RAW_LEN = 1000, RAW_BASE = 1200;
 const CX = 500, CY = 350, SPAN_X = 760, SPAN_Y = 520;
-const ARC_R = 70, LBL_R = 120, TICK = 22;
+const ARC_R = 70, TICK = 22;
 // Per-angle arc radii (v1.2.0): distinct radii so each angle's arc is identifiable.
 const ARC_BASE = 44, ARC_STEP = 20;
 const ARC_TRI_MAX = 56, ARC_TRI_NUM = 30, ARC_TRI_DEN = 100;
-const ARC_DEFAULT = 62, LBL_GAP = 30;
-const LEADER_R1 = 46, LEADER_R2 = 96;
+const ARC_DEFAULT = 62;
+// Adaptive label placement (v1.2.1).
+const LBL_CLEAR = 8, CANVAS_M = 12, CAPTION_TOP = 666, LBL_R0_GAP = 36, LBL_STEP = 16;
+const LEAD_IN = 8, LEAD_BACK = 12, ARC_SAMPLES = 8, NARROW_DEG = 30;
+const PERP_LIST = [28, -28, 56, -56, 84, -84, 112, -112, 140, -140];
 const STYLE = ".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
   + ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
   + ".gn{font-size:22px;fill:#444;letter-spacing:1px}";
@@ -137,11 +140,10 @@ function buildFigure(p: Params): Figure {
     points["O"] = O; points["E0"] = ray(O, 0, RAW_LEN); points["E180"] = ray(O, 180, RAW_LEN);
     points["Et"] = ray(O, theta, RAW_LEN); points["Et2"] = ray(O, theta + 180, RAW_LEN);
     segs.push(["E180", "E0", "gl"], ["Et2", "Et", "gl"]);
-    // ONLY the given angle gets an arc; the target (x) is a NEUTRAL leader in the
-    // directly-opposite region — no matching arc that would announce the equality.
+    // ONLY the given angle gets an arc; the target (x) is a label in the directly-opposite
+    // region (the placer adds a neutral leader if that sector is too narrow for the label).
     arcs.push(["O", 0, theta]);
     alabels.push(["O", 0, theta, `${theta}°`], ["O", 180, theta, "x"]);
-    leaders.push(["O", (180 + Math.floor(theta / 2)) % 360, LEADER_R1, LEADER_R2]);
   } else {
     const regions = p["regions"] as number[], uidx = p["unknownIndex"] as number;
     const bounds = cum(regions);
@@ -205,11 +207,6 @@ function arcRadii(fig: Figure, P: Record<string, Pt>): number[] {
     return inc.length ? Math.min(ARC_TRI_MAX, Math.floor((Math.min(...inc) * ARC_TRI_NUM) / ARC_TRI_DEN)) : ARC_DEFAULT;
   });
 }
-function labelRadii(fig: Figure, ar: number[]): number[] {
-  const m = new Map(fig.arcs.map(([vn, s, me], i) => [`${vn}|${s}|${me}`, ar[i]!]));
-  return fig.alabels.map(([vn, s, me]) => (m.get(`${vn}|${s}|${me}`) ?? ARC_DEFAULT) + LBL_GAP);
-}
-
 // Arc of the CCW sector [start, start+measure]. Reflex-correct: large-arc-flag = 1 iff
 // measure > 180 (exactly 180 -> 0); sweep-flag is always 0 (the intended interior sector).
 function arcPath(v: Pt, start: number, measure: number, radius: number): string {
@@ -217,40 +214,130 @@ function arcPath(v: Pt, start: number, measure: number, radius: number): string 
   const large = measure > 180 ? 1 : 0;
   return `M ${e1[0]} ${e1[1]} A ${radius} ${radius} 0 ${large} 0 ${e2[0]} ${e2[1]}`;
 }
-// Label on the sector bisector (start + measure//2), just beyond its own arc, inside the
-// intended sector for both minor and reflex regions.
-function labelPos(v: Pt, start: number, measure: number, radius: number): Pt {
-  return rayAt(v, start + Math.floor(measure / 2), radius);
-}
 
+// --- Adaptive label placement (v1.2.1) -------------------------------------- //
 type TextLabel = [number, number, string, string]; // x, y, anchor, text
-function textLabelPositions(P: Record<string, Pt>, fig: Figure): TextLabel[] {
-  // Single source for canonicalSvg's <text> AND the overlap guard, so the boxes
-  // always match the rendered label positions. NOT TO SCALE is structural (excluded).
-  const out: TextLabel[] = [];
-  for (const [name, ox, oy, text, anchor] of fig.plabels) { const p = P[name]!; out.push([p[0] + ox, p[1] + oy, anchor, text]); }
-  const lr = labelRadii(fig, arcRadii(fig, P));
-  fig.alabels.forEach(([vn, a1, a2, text], k) => { const lp = labelPos(P[vn]!, a1, a2, lr[k]!); out.push([lp[0], lp[1], "middle", text]); });
-  return out;
-}
-
+type Box = [number, number, number, number];
+type Leader = readonly [Pt, Pt];
 const LBL_CHARW: Record<string, number> = { x: 16, "°": 11 };
 const LBL_ASC = 22, LBL_DESC = 8;
-function labelBox(x: number, y: number, anchor: string, text: string): [number, number, number, number] {
-  const w = [...text].reduce((a, c) => a + (LBL_CHARW[c] ?? 17), 0);
-  const left = anchor === "middle" ? x - Math.floor(w / 2) : anchor === "end" ? x - w : x;
-  return [left, y - LBL_ASC, left + w, y + LBL_DESC];
+const textW = (t: string): number => [...t].reduce((a, c) => a + (LBL_CHARW[c] ?? 17), 0);
+const boxMake = (x: number, y: number, w: number): Box => [x - Math.floor(w / 2), y - LBL_ASC, x + (w - Math.floor(w / 2)), y + LBL_DESC];
+const boxInCanvas = (b: Box): boolean => b[0] >= CANVAS_M && b[2] <= VIEW_W - CANVAS_M && b[1] >= CANVAS_M && b[3] <= CAPTION_TOP;
+const boxesClear = (a: Box, b: Box, c: number): boolean => a[2] + c <= b[0] || b[2] + c <= a[0] || a[3] + c <= b[1] || b[3] + c <= a[1];
+const ptBoxD2 = (px: number, py: number, b: Box): number => { const dx = Math.max(b[0] - px, 0, px - b[2]), dy = Math.max(b[1] - py, 0, py - b[3]); return dx * dx + dy * dy; };
+const orient = (ax: number, ay: number, bx: number, by: number, cx: number, cy: number): number => (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
+const onSeg = (ax: number, ay: number, bx: number, by: number, cx: number, cy: number): boolean =>
+  Math.min(ax, bx) <= cx && cx <= Math.max(ax, bx) && Math.min(ay, by) <= cy && cy <= Math.max(ay, by);
+function segIntersect(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number): boolean {
+  const d1 = orient(cx, cy, dx, dy, ax, ay), d2 = orient(cx, cy, dx, dy, bx, by), d3 = orient(ax, ay, bx, by, cx, cy), d4 = orient(ax, ay, bx, by, dx, dy);
+  if ((d1 > 0) !== (d2 > 0) && (d3 > 0) !== (d4 > 0)) return true;
+  if (d1 === 0 && onSeg(cx, cy, dx, dy, ax, ay)) return true;
+  if (d2 === 0 && onSeg(cx, cy, dx, dy, bx, by)) return true;
+  if (d3 === 0 && onSeg(ax, ay, bx, by, cx, cy)) return true;
+  if (d4 === 0 && onSeg(ax, ay, bx, by, dx, dy)) return true;
+  return false;
 }
-function labelsOk(p: Params): boolean {
-  const fig = buildFigure(p);
-  const P = layout(fig.points);
-  const boxes = textLabelPositions(P, fig).map(([x, y, anc, t]) => labelBox(x, y, anc, t));
-  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
-    const a = boxes[i]!, b = boxes[j]!;
-    if (!(a[2] <= b[0] || b[2] <= a[0] || a[3] <= b[1] || b[3] <= a[1])) return false;
-  }
+function segClearBox(ax: number, ay: number, bx: number, by: number, box: Box, c: number): boolean {
+  const L: Box = [box[0] - c, box[1] - c, box[2] + c, box[3] + c];
+  if (L[0] <= ax && ax <= L[2] && L[1] <= ay && ay <= L[3]) return false;
+  if (L[0] <= bx && bx <= L[2] && L[1] <= by && by <= L[3]) return false;
+  const cor: Pt[] = [[L[0], L[1]], [L[2], L[1]], [L[2], L[3]], [L[0], L[3]]];
+  for (let i = 0; i < 4; i++) { const a = cor[i]!, e = cor[(i + 1) % 4]!; if (segIntersect(ax, ay, bx, by, a[0], a[1], e[0], e[1])) return false; }
   return true;
 }
+function arcClearBox(box: Box, v: Pt, ar: number, start: number, measure: number, c: number): boolean {
+  const cc = c * c;
+  for (let i = 0; i <= ARC_SAMPLES; i++) { const ang = start + Math.floor((measure * i) / ARC_SAMPLES); const pt = rayAt(v, ang, ar); if (ptBoxD2(pt[0], pt[1], box) < cc) return false; }
+  return true;
+}
+function pointAlong(ax: number, ay: number, bx: number, by: number, back: number): Pt {
+  const len = isqrt((bx - ax) ** 2 + (by - ay) ** 2);
+  if (len <= back) return [ax, ay];
+  const t = len - back;
+  return [ax + Math.floor((bx - ax) * t / len), ay + Math.floor((by - ay) * t / len)];
+}
+function boxInsideWedge(box: Box, v: Pt, start: number, measure: number): boolean {
+  for (const cx of [box[0], box[2]]) for (const cy of [box[1], box[3]]) if (!inCcwWedge(start, measure, v, [cx, cy])) return false;
+  return true;
+}
+
+interface Placed { placements: TextLabel[]; leaders: (Leader | null)[]; }
+function placeLabels(P: Record<string, Pt>, fig: Figure): Placed | null {
+  const ar = arcRadii(fig, P);
+  const rmap = new Map(fig.arcs.map(([vn, s, m], i) => [`${vn}|${s}|${m}`, ar[i]!]));
+  const segLines = fig.segs.map(([a, b]) => [P[a]!, P[b]!] as [Pt, Pt]);
+  const arcsObs = fig.arcs.map(([vn, s, m], i) => [P[vn]!, ar[i]!, s, m] as [Pt, number, number, number]);
+  const vertices = Object.values(fig.points);
+  const placed: Box[] = [];
+  for (const [name, ox, oy, text, anchor] of fig.plabels) {
+    const w = textW(text), p = P[name]!;
+    const left = p[0] + ox - (anchor === "middle" ? Math.floor(w / 2) : anchor === "end" ? w : 0);
+    placed.push([left, p[1] + oy - LBL_ASC, left + w, p[1] + oy + LBL_DESC]);
+  }
+  const ok = (box: Box, leader: Leader | null = null): boolean => {
+    if (!boxInCanvas(box)) return false;
+    for (const [A, B] of segLines) if (!segClearBox(A[0], A[1], B[0], B[1], box, LBL_CLEAR)) return false;
+    for (const [av, r, s, m] of arcsObs) if (!arcClearBox(box, av, r, s, m, LBL_CLEAR)) return false;
+    for (const vtx of vertices) if (ptBoxD2(vtx[0], vtx[1], box) < LBL_CLEAR * LBL_CLEAR) return false;
+    for (const pb of placed) if (!boxesClear(box, pb, LBL_CLEAR)) return false;
+    if (leader) for (const pb of placed) if (!segClearBox(leader[0][0], leader[0][1], leader[1][0], leader[1][1], pb, LBL_CLEAR)) return false;
+    return true;
+  };
+  const placements: TextLabel[] = [], leaders: (Leader | null)[] = [];
+  for (const [vn, start, measure, text] of fig.alabels) {
+    const v = P[vn]!, w = textW(text), bis = (((start + Math.floor(measure / 2)) % 360) + 360) % 360;
+    const arad = rmap.get(`${vn}|${start}|${measure}`) ?? ARC_DEFAULT;
+    const s = dirAt(Math.floor(measure / 2))[1];
+    const rFit = s > 0 ? Math.floor(((Math.floor(w / 2) + LBL_CLEAR) * R + s - 1) / s) : 1000000000;
+    let chosen: Pt | null = null, leaderSeg: Leader | null = null;
+    const rIn = Math.max(arad + LBL_R0_GAP, rFit);
+    for (let i = 0; i < 4; i++) {
+      const pos = rayAt(v, bis, rIn + i * LBL_STEP), box = boxMake(pos[0], pos[1], w);
+      if (boxInsideWedge(box, v, start, measure) && ok(box)) { chosen = pos; break; }
+    }
+    if (chosen === null) {
+      const inner = rayAt(v, bis, arad + LEAD_IN);
+      if (inCcwWedge(start, measure, v, inner)) {
+        outer: for (let ri = 0; ri < 7; ri++) {
+          const base = rayAt(v, bis, arad + LBL_R0_GAP + ri * LBL_STEP);
+          for (const perp of PERP_LIST) {
+            const sx = base[0] + gridRound(dirAt(bis + 90)[0] * perp, R);
+            const sy = base[1] - gridRound(dirAt(bis + 90)[1] * perp, R);
+            const box = boxMake(sx, sy, w);
+            const end = pointAlong(inner[0], inner[1], sx, sy, Math.floor(w / 2) + LEAD_BACK);
+            const seg: Leader = [inner, end];
+            if (ok(box, seg)) { chosen = [sx, sy]; leaderSeg = seg; break outer; }
+          }
+        }
+      }
+    }
+    if (chosen === null) return null;
+    placements.push([chosen[0], chosen[1], "middle", text]);
+    leaders.push(leaderSeg);
+    placed.push(boxMake(chosen[0], chosen[1], w));
+  }
+  const nPl = fig.plabels.length;
+  for (let k = 0; k < leaders.length; k++) {
+    const seg = leaders[k]; if (!seg) continue;
+    for (let idx = 0; idx < placed.length; idx++) {
+      if (idx === nPl + k) continue;
+      if (!segClearBox(seg[0][0], seg[0][1], seg[1][0], seg[1][1], placed[idx]!, LBL_CLEAR)) return null;
+    }
+  }
+  return { placements, leaders };
+}
+
+function textElements(P: Record<string, Pt>, fig: Figure): { texts: TextLabel[]; leaders: (Leader | null)[] } | null {
+  const placed = placeLabels(P, fig);
+  if (!placed) return null;
+  const texts: TextLabel[] = [];
+  for (const [name, ox, oy, text, anchor] of fig.plabels) { const p = P[name]!; texts.push([p[0] + ox, p[1] + oy, anchor, text]); }
+  texts.push(...placed.placements);
+  return { texts, leaders: placed.leaders };
+}
+
+function labelsOk(p: Params): boolean { const fig = buildFigure(p); return placeLabels(layout(fig.points), fig) !== null; }
 
 function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): string {
   const P = layout(fig.points);
@@ -262,18 +349,14 @@ function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): st
   for (const [a, b, cls] of fig.segs) out.push(`<line class="${cls}" x1="${P[a]![0]}" y1="${P[a]![1]}" x2="${P[b]![0]}" y2="${P[b]![1]}"/>`);
   const arcR = arcRadii(fig, P);
   fig.arcs.forEach(([vn, start, measure], k) => out.push(`<path class="ga" d="${arcPath(P[vn]!, start, measure, arcR[k]!)}"/>`));
-  for (const [vn, d, r1, r2] of fig.leaders) {
-    const p1 = rayAt(P[vn]!, d, r1), p2 = rayAt(P[vn]!, d, r2);
-    out.push(`<line class="gx" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}"/>`);
-  }
   for (const [a, b, ang] of fig.ticks) {
     const m = mid(P[a]!, P[b]!);
     const d: Pt = [gridRound(dirAt(ang + 90)[0] * TICK, R), -gridRound(dirAt(ang + 90)[1] * TICK, R)];
     out.push(`<line class="gt" x1="${m[0] - d[0]}" y1="${m[1] - d[1]}" x2="${m[0] + d[0]}" y2="${m[1] + d[1]}"/>`);
   }
-  for (const [x, y, anchor, text] of textLabelPositions(P, fig)) {
-    out.push(`<text x="${x}" y="${y}" text-anchor="${anchor}">${esc(text)}</text>`);
-  }
+  const te = textElements(P, fig)!;
+  for (const seg of te.leaders) if (seg) out.push(`<line class="gx" x1="${seg[0][0]}" y1="${seg[0][1]}" x2="${seg[1][0]}" y2="${seg[1][1]}"/>`);
+  for (const [x, y, anchor, text] of te.texts) out.push(`<text x="${x}" y="${y}" text-anchor="${anchor}">${esc(text)}</text>`);
   out.push('<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>');
   out.push("</svg>");
   return out.join("\n");
@@ -494,7 +577,7 @@ export function generate(seed: number, config: Config = {}): Record<string, Json
   const explicitTask = config.task;
   if (explicitTask != null && !TASKS.includes(explicitTask)) throw new Error(`unknown task: ${explicitTask}`);
   if (answerType === "multiple-choice" && explicitTask != null && !MC_TASKS.includes(explicitTask)) {
-    throw new Error("vertically_opposite_angle is free-response only in v1.0.0");
+    throw new Error("vertically_opposite_angle is free-response only in geometry v1.2.x (current approved scope)");
   }
   const rng = new Mulberry32(seed);
   let params!: Params;
@@ -589,7 +672,6 @@ export function validate(item: Record<string, Json>): ValidationResult {
   // region drawn with its minor arc).
   const P = layout(fig.points);
   const arcR = arcRadii(fig, P);
-  const labR = labelRadii(fig, arcR);
   const arcCmds = [...storedSvg.matchAll(/<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"\/>/g)]
     .map((m) => m.slice(1, 9).map(Number));
   let regionOk = arcCmds.length === fig.arcs.length;
@@ -614,36 +696,69 @@ export function validate(item: Record<string, Json>): ValidationResult {
     add("arc-matches-cyclic-region", chain, "arcs tile the angle consecutively");
   }
 
-  const allText = [...storedSvg.matchAll(/<text(?: class="gn")? x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)<\/text>/g)];
-  const nonGn = allText.filter((m) => m[3] !== "NOT TO SCALE").map((m) => [Number(m[1]), Number(m[2]), m[3]] as [number, number, string]);
-  const alabelPts = nonGn.slice(fig.plabels.length);
-  let labelIn = alabelPts.length === fig.alabels.length;
-  let reflexOk = labelIn;
-  fig.alabels.forEach(([vn, start, measure, text], k) => {
-    const lp = alabelPts[k]; if (!lp) { labelIn = false; return; }
-    const inside = inCcwWedge(start, measure, P[vn]!, [lp[0], lp[1]]) && lp[2] === text;
-    labelIn = labelIn && inside;
-    if (measure > 180) reflexOk = reflexOk && inside;
-  });
-  add("label-inside-intended-region", labelIn, "every angle label lies in its own sector");
-  add("reflex-region-rendered-correctly", reflexOk && largeOk, "regions > 180 use the reflex arc with the label inside it");
+  // --- Adaptive label-placement clearances. Recompute the placement (svg-realises-data
+  // ties it to the stored SVG) and test the COMPLETE label bounding boxes against every
+  // ray, arc, vertex, label, and leader, with a documented minimum clearance (LBL_CLEAR).
+  const placed = placeLabels(P, fig);
+  add("label-placement-feasible", placed !== null, `all labels placed with >= ${LBL_CLEAR}px clearance`);
+  if (placed !== null) {
+    const { placements, leaders } = placed;
+    const plabelBoxes: Box[] = fig.plabels.map(([name, ox, oy, t, anchor]) => {
+      const wl = textW(t), p = P[name]!;
+      const left = p[0] + ox - (anchor === "middle" ? Math.floor(wl / 2) : anchor === "end" ? wl : 0);
+      return [left, p[1] + oy - LBL_ASC, left + wl, p[1] + oy + LBL_DESC] as Box;
+    });
+    const alabelBoxes: Box[] = placements.map(([x, y, , t]) => boxMake(x, y, textW(t)));
+    const allBoxes = [...plabelBoxes, ...alabelBoxes];
+    const segLines = fig.segs.map(([a, b]) => [P[a]!, P[b]!] as [Pt, Pt]);
+    const vertices = Object.values(fig.points);
+
+    add("labels-within-canvas", alabelBoxes.every(boxInCanvas), `boxes inside [${CANVAS_M}, ${VIEW_W - CANVAS_M}] x [${CANVAS_M}, ${CAPTION_TOP}]`);
+    let ll = true;
+    for (let i = 0; i < allBoxes.length; i++) for (let j = i + 1; j < allBoxes.length; j++) if (!boxesClear(allBoxes[i]!, allBoxes[j]!, LBL_CLEAR)) ll = false;
+    add("label-label-clearance", ll, `label boxes clear each other by >= ${LBL_CLEAR}px`);
+    add("label-ray-clearance", alabelBoxes.every((b) => segLines.every(([A, B]) => segClearBox(A[0], A[1], B[0], B[1], b, LBL_CLEAR))), `labels clear every drawn line by >= ${LBL_CLEAR}px`);
+    add("label-arc-clearance", alabelBoxes.every((b) => fig.arcs.every(([vn, s, m], i) => arcClearBox(b, P[vn]!, arcR[i]!, s, m, LBL_CLEAR))), `labels clear every arc by >= ${LBL_CLEAR}px`);
+    add("label-vertex-clearance", alabelBoxes.every((b) => vertices.every((vtx) => ptBoxD2(vtx[0], vtx[1], b) >= LBL_CLEAR * LBL_CLEAR)), `labels clear every vertex by >= ${LBL_CLEAR}px`);
+    let leadOk = true;
+    leaders.forEach((seg, k) => {
+      if (!seg) return;
+      const others = [...plabelBoxes, ...alabelBoxes.filter((_, j) => j !== k)];
+      if (!others.every((b) => segClearBox(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR))) leadOk = false;
+    });
+    add("leader-does-not-cross-label", leadOk, "no leader crosses another label box");
+
+    let attribOk = true, smallOk = true, reflexOk = true;
+    fig.alabels.forEach(([vn, start, measure], k) => {
+      const attributable = boxInsideWedge(alabelBoxes[k]!, P[vn]!, start, measure)
+        || (leaders[k] !== null && inCcwWedge(start, measure, P[vn]!, leaders[k]![0]));
+      attribOk = attribOk && attributable;
+      if (measure < NARROW_DEG) smallOk = smallOk && attributable;
+      if (measure > 180) reflexOk = reflexOk && attributable;
+    });
+    add("label-inside-intended-region", attribOk, "every label is inside its sector or led into it");
+    add("small-sector-label-unambiguous", smallOk, `narrow (< ${NARROW_DEG} deg) labels are inside or led into their sector`);
+    add("reflex-region-rendered-correctly", reflexOk && largeOk, "regions > 180 use the reflex arc with an attributable label");
+  }
 
   if (task === "vertically_opposite_angle") {
     const ga = (storedSvg.match(/<path class="ga"/g) ?? []).length;
     const gt = (storedSvg.match(/class="gt"/g) ?? []).length;
-    const leaders = [...storedSvg.matchAll(/<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"\/>/g)];
-    add("no-theorem-revealing-markers", ga === 1 && gt === 0 && leaders.length === 1, `ga=${ga} gt=${gt} leaders=${leaders.length}`);
-    let okTarget = leaders.length === 1;
-    if (okTarget) {
-      const [lx1, ly1, lx2, ly2] = leaders[0]!.slice(1, 5).map(Number);
-      const m: Pt = [gridRound(lx1! + lx2!, 2), gridRound(ly1! + ly2!, 2)];
+    add("no-theorem-revealing-markers", ga === 1 && gt === 0, `ga=${ga} gt=${gt}`);
+    let okTarget = placed !== null;
+    if (placed !== null) {
       const theta = params["theta"] as number;
-      okTarget = inCcwWedge(180, theta, P["O"]!, m);
-      fig.alabels.forEach(([vn, start, measure, text], k) => {
-        if (text === "x") okTarget = okTarget && inCcwWedge(180, theta, P["O"]!, labelPos(P[vn]!, start, measure, labR[k]!));
+      const { placements, leaders } = placed;
+      fig.alabels.forEach(([, start2, measure2, text], k) => {
+        void start2; void measure2;
+        if (text === "x") {
+          const box = boxMake(placements[k]![0], placements[k]![1], textW("x"));
+          const led = leaders[k] !== null && inCcwWedge(180, theta, P["O"]!, leaders[k]![0]);
+          okTarget = boxInsideWedge(box, P["O"]!, 180, theta) || led;
+        }
       });
     }
-    add("target-region-unambiguous", okTarget, "the x leader and label lie in the opposite region");
+    add("target-region-unambiguous", okTarget, "the x label (or its leader) lies in the opposite region");
   }
 
   add("a11y-equivalent-information", a11yEquivalentOk(params, acc), "accessible text is equivalent, not easier (no theorem/answer)");
@@ -698,7 +813,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", Boolean(item["generatorId"]) && Boolean(item["generatorVersion"]), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.2.0", checks };
+  return { status, validatorVersion: "1.2.1", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }

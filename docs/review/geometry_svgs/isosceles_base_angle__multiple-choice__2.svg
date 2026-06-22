@@ -9,7 +9,7 @@
 <path class="ga" d="M 218 610 A 56 56 0 0 0 192 563"/>
 <line class="gt" x1="349" y1="362" x2="313" y2="338"/>
 <line class="gt" x1="687" y1="338" x2="651" y2="362"/>
-<text x="500" y="176" text-anchor="middle">66°</text>
-<text x="238" y="570" text-anchor="middle">x</text>
+<text x="500" y="182" text-anchor="middle">66°</text>
+<text x="243" y="567" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

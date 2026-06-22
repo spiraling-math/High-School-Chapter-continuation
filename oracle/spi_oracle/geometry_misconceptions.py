@@ -123,7 +123,7 @@ _ELIGIBILITY = {
     "straight_line_missing_angle": ["MISC.GEOM.LINE.USES_360", "MISC.GEOM.LINE.RETURNS_SUM_GIVENS", "MISC.GEOM.LINE.FORGOT_ONE_GIVEN"],
     "triangle_missing_angle": ["MISC.GEOM.TRI.USES_360", "MISC.GEOM.TRI.RETURNS_SUM_GIVENS", "MISC.GEOM.TRI.SUBTRACTS_ONLY_ONE_GIVEN"],
     "isosceles_base_angle": ["MISC.GEOM.ISO.FORGOT_TO_HALVE", "MISC.GEOM.ISO.HALVES_180_ONLY", "MISC.GEOM.ISO.APEX_EQUALS_BASE"],
-    "vertically_opposite_angle": [],  # free-response only in v1.0.0
+    "vertically_opposite_angle": [],  # free-response only in the current approved scope
     "angles_at_point_missing": ["MISC.GEOM.POINT.USES_180", "MISC.GEOM.POINT.RETURNS_SUM_GIVENS", "MISC.GEOM.POINT.FORGOT_ONE_GIVEN"],
 }
 

@@ -11,8 +11,8 @@
 <text x="86" y="520" text-anchor="end">A</text>
 <text x="914" y="520" text-anchor="start">B</text>
 <text x="282" y="192" text-anchor="middle">C</text>
-<text x="194" y="447" text-anchor="middle">60°</text>
-<text x="796" y="471" text-anchor="middle">25°</text>
-<text x="307" y="292" text-anchor="middle">x</text>
+<text x="200" y="444" text-anchor="middle">60°</text>
+<text x="692" y="447" text-anchor="middle">25°</text>
+<text x="309" y="298" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

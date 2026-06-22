@@ -5,8 +5,7 @@
 <line class="gl" x1="120" y1="350" x2="880" y2="350"/>
 <line class="gl" x1="189" y1="568" x2="811" y2="132"/>
 <path class="ga" d="M 562 350 A 62 62 0 0 0 551 314"/>
-<line class="gx" x1="456" y1="363" x2="408" y2="378"/>
-<text x="588" y="323" text-anchor="middle">35°</text>
-<text x="412" y="377" text-anchor="middle">x</text>
+<text x="629" y="311" text-anchor="middle">35°</text>
+<text x="391" y="383" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

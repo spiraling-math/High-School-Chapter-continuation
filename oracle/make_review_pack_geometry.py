@@ -240,7 +240,7 @@ def build() -> None:
          "| Task | Family | Objective | MC? |",
          "| --- | --- | --- | --- |"]
     for t in geo.TASKS:
-        L.append(f"| {t} | {geo.FAMILY_BY_TASK[t]} | `{geo.OBJECTIVE_BY_TASK[t]}` | {'yes' if t in geo.MC_TASKS else 'no (free-response only in v1.0.0)'} |")
+        L.append(f"| {t} | {geo.FAMILY_BY_TASK[t]} | `{geo.OBJECTIVE_BY_TASK[t]}` | {'yes' if t in geo.MC_TASKS else 'no (free-response only in the current approved scope)'} |")
     L += ["",
           "## Platform-gate summaries", "",
           f"- **Distractor collision / deterministic regeneration:** over a {ci['sweep']:,}-seed MC sweep, "
