@@ -2,7 +2,21 @@
 
 Last updated: 2026-06-22.
 
-## Geometry SVG pilot — v1.2.1 REVISED, awaiting final APPROVE/REJECT (2026-06-22)
+## Geometry SVG pilot — REJECTED by the owner at v1.2.1 (2026-06-22)
+
+**Owner final decision (`DECISION_LOG.md` #37): REJECT `gen.geometry.angles-figures` v1.2.1.**
+The geometry generator and its SVG-diagram rendering are **not approved** and must not be
+used to produce or publish items. All geometry versions remain `machine-validated` only.
+Nothing was deleted — v1.2.1 is preserved (tag `geometry-v1.2.1-rejected`). The five
+`SPI.MIDDLE.GEO.*.01` objective **definitions stay curriculum-approved** (the rejection is
+of the generator/rendering, not the definitions, pending owner confirmation). **Awaiting
+owner direction** on whether to leave the rejected generator dormant or unregister it from
+the SDK/Studio/exporters, and on the next step. No geometry rework and no new generator
+family will start without direction.
+
+The remainder of this section is the development record of the now-rejected pilot.
+
+### (Historical) v1.2.1 revision detail
 
 **Owner decisions (`DECISION_LOG.md` #34, #35, #36):** the five `SPI.MIDDLE.GEO.*.01`
 objective **definitions are curriculum-approved**; the generator was **revised to v1.1.0**

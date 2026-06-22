@@ -68,11 +68,22 @@ The five `SPI.MIDDLE.GEO.*.01` objective **definitions** (IDs, wording, one-to-o
 mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their **generator**
 (`gen.geometry.angles-figures`) is NOT yet approved — see the pending section below.
 
-## Implemented but NOT yet curriculum-approved (pending final review)
+## REJECTED (owner final decision)
 
-| Generator | Version | Status | Review artifacts |
+| Generator | Version | Status | Reference |
 | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.1 | **machine-validated — awaiting owner final APPROVE/REJECT** | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
+| `gen.geometry.angles-figures` | 1.2.1 | **REJECTED (owner, 2026-06-22; `DECISION_LOG.md` #37)** — not approved; not for use/publication | tag `geometry-v1.2.1-rejected` |
+
+The geometry generator and its SVG-diagram rendering are **rejected**. All geometry
+versions remain `machine-validated` only and produce **no approved/published** items.
+Code and fixtures are preserved in history (nothing deleted). The five
+`SPI.MIDDLE.GEO.*.01` objective **definitions remain curriculum-approved** (`DECISION_LOG.md`
+#34); the rejection is of the generator/rendering, not the objective definitions.
+Forward handling (leave dormant vs. unregister from the platform) is awaiting owner
+direction. The earlier geometry versions are below for history only.
+
+| Generator | Version | Status | Reference |
+| --- | --- | --- | --- |
 | `gen.geometry.angles-figures` | 1.2.0 | preserved (superseded by 1.2.1, never approved) | tag `geometry-v1.2.0-superseded` |
 | `gen.geometry.angles-figures` | 1.1.0 | preserved (superseded by 1.2.0, never approved) | tag `geometry-v1.1.0-superseded` |
 | `gen.geometry.angles-figures` | 1.0.0 | preserved (superseded by 1.1.0, never approved) | tag `geometry-v1.0.0-superseded` |
