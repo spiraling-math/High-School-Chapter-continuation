@@ -10,7 +10,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { GENERATORS } from "./sequence-registry.ts";
+import { GENERATORS, generatorsForMode, approvedGenerators } from "./sequence-registry.ts";
+import { approvalStatusOf } from "./generator-module.ts";
 import { runStabilityGate } from "./harness.ts";
 
 const SEEDS = 2000;
@@ -27,11 +28,28 @@ for (const gen of GENERATORS) {
   });
 }
 
-test("the registered generators are the approved set", () => {
+test("the registered generators are the expected set", () => {
   assert.deepEqual(GENERATORS.map((g) => `${g.id}@${g.version}`), [
     "gen.sequences.arithmetic@1.1.0",
     "gen.sequences.geometric@1.1.0",
     "gen.algebra.linear-equations@1.0.1",
-    "gen.geometry.angles-figures@1.2.1",
+    "gen.geometry.angles-figures@1.2.2",
   ]);
+});
+
+test("approval lifecycle gates visibility: geometry is pending-review, the rest approved", () => {
+  // The three curriculum-approved families are "approved"; the geometry pilot is
+  // "pending-review" (v1.2.1 was rejected; v1.2.2 is the pending continuation).
+  assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === "gen.geometry.angles-figures")!), "pending-review");
+  for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations"]) {
+    assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === id)!), "approved");
+  }
+  // Normal users (and production exports/samples) never see geometry; review mode does.
+  const normal = generatorsForMode("normal").map((g) => g.id);
+  const review = generatorsForMode("review").map((g) => g.id);
+  assert.ok(!normal.includes("gen.geometry.angles-figures"), "geometry hidden in normal mode");
+  assert.ok(review.includes("gen.geometry.angles-figures"), "geometry visible in review mode");
+  assert.deepEqual(approvedGenerators().map((g) => g.id), normal, "approved set == normal-mode set");
+  assert.equal(normal.length, 3);
+  assert.equal(review.length, 4);
 });

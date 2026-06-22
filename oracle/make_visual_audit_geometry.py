@@ -152,7 +152,7 @@ def _before_after_cards():
   <p><b>v1.2.1 validation:</b> <b class="{v['status']}">{v['status']}</b></p>
   <div class="ba">
     <figure><figcaption>Before (v1.2.0)</figcaption>{before_svg}</figure>
-    <figure><figcaption>After (v1.2.1)</figcaption>{after_svg}</figure>
+    <figure><figcaption>After (v{geo.GENERATOR_VERSION})</figcaption>{after_svg}</figure>
   </div>
 </section>""")
     if path is not None and os.path.exists(path):

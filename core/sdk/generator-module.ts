@@ -27,6 +27,18 @@ export interface GeneratorTaskInfo {
   mc: boolean;
 }
 
+/**
+ * Curriculum-approval lifecycle for a registered generator version.
+ * - "approved"       : curriculum-approved; selectable by normal users and in production
+ *                      exports/samples.
+ * - "pending-review" : machine-validated but NOT yet curriculum-approved; available only
+ *                      in the Studio's review/developer mode, never to normal users or in
+ *                      production exports/samples.
+ * - "rejected"       : a rejected version; never selectable anywhere (kept for history).
+ * Omitted defaults to "approved".
+ */
+export type ApprovalStatus = "approved" | "pending-review" | "rejected";
+
 /** Configuration accepted by generate(). `answerType` is the legacy selector
  *  (see TD-1); `interactionType` is the forward key. */
 export interface GenConfig {
@@ -46,10 +58,16 @@ export interface GeneratorModule {
   readonly version: string;
   readonly label: string;
   readonly tasks: GeneratorTaskInfo[];
+  /** Approval lifecycle (defaults to "approved" when omitted). Controls visibility to
+   *  normal users vs. review/developer mode; rejected versions are never selectable. */
+  readonly approvalStatus?: ApprovalStatus;
   generate(seed: number, config: GenConfig): Item;
   validate(item: Item): GenValidationResult;
   serialize(item: Item): string;
 }
+
+export type StudioMode = "normal" | "review";
+export const approvalStatusOf = (gen: GeneratorModule): ApprovalStatus => gen.approvalStatus ?? "approved";
 
 /** The interaction modes a generator can be swept in, derived from its tasks. */
 export function interactionModesFor(gen: GeneratorModule): InteractionType[] {

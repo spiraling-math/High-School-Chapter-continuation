@@ -8,7 +8,8 @@
  * (output-neutral).
  */
 
-import type { GeneratorModule } from "./generator-module.ts";
+import type { GeneratorModule, StudioMode } from "./generator-module.ts";
+import { approvalStatusOf } from "./generator-module.ts";
 import * as arithmetic from "../../domains/sequences/arithmetic.ts";
 import { validate as arithmeticValidate } from "../../domains/sequences/validate.ts";
 import * as geometric from "../../domains/sequences/geometric.ts";
@@ -64,6 +65,10 @@ export const GENERATORS: GeneratorModule[] = [
     id: geometryAngles.GENERATOR_ID,
     version: geometryAngles.GENERATOR_VERSION,
     label: "Geometry — angles (SVG)",
+    // Machine-validated but NOT curriculum-approved (v1.2.1 was rejected; v1.2.2 is the
+    // current pending candidate). Kept registered for development; shown only in the
+    // Studio's review/developer mode and excluded from production exports/samples.
+    approvalStatus: "pending-review",
     tasks: [
       { value: "straight_line_missing_angle", label: "Angles on a straight line", mc: true },
       { value: "triangle_missing_angle", label: "Triangle angle sum", mc: true },
@@ -79,6 +84,23 @@ export const GENERATORS: GeneratorModule[] = [
 
 export function getGenerator(id: string): GeneratorModule {
   return GENERATORS.find((g) => g.id === id) ?? GENERATORS[0]!;
+}
+
+/** Generators selectable in a given Studio mode. Normal users see only "approved"
+ *  generators; review/developer mode additionally sees "pending-review" ones; "rejected"
+ *  versions are never returned. */
+export function generatorsForMode(mode: StudioMode): GeneratorModule[] {
+  return GENERATORS.filter((g) => {
+    const s = approvalStatusOf(g);
+    if (s === "rejected") return false;
+    if (s === "pending-review") return mode === "review";
+    return true;
+  });
+}
+
+/** Curriculum-approved generators only (used by production exports/samples). */
+export function approvedGenerators(): GeneratorModule[] {
+  return GENERATORS.filter((g) => approvalStatusOf(g) === "approved");
 }
 
 export function taskIsMc(gen: GeneratorModule, task: string | undefined): boolean {

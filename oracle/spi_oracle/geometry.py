@@ -31,7 +31,7 @@ from .difficulty import round3
 from .geometry_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.geometry.angles-figures"
-GENERATOR_VERSION = "1.2.1"
+GENERATOR_VERSION = "1.2.2"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _TABLE = json.load(open(os.path.join(_HERE, "..", "..", "core", "geometry", "dir-table.json"), encoding="utf-8"))
@@ -1104,4 +1104,4 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.2.1", "checks": checks}
+    return {"status": status, "validatorVersion": "1.2.2", "checks": checks}

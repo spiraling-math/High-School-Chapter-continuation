@@ -3,7 +3,7 @@
 import { el, announce } from "./dom.ts";
 import type { Studio } from "./context.ts";
 import { setWorkspace } from "./context.ts";
-import { GENERATORS, getGenerator, taskIsMc } from "./generators.ts";
+import { getGenerator, taskIsMc, generatorsForMode, approvalStatusOf, studioMode } from "./generators.ts";
 import type { Mode } from "../../core/bank/types.ts";
 
 function randomSeed(): number {
@@ -72,12 +72,22 @@ export function controlsPanel(studio: Studio): HTMLElement {
   const panel = el("section", { class: "panel controls", "aria-label": "Generation controls" });
   panel.append(el("h2", {}, "Generate"));
 
+  const mode0 = studioMode();
+  const visible = generatorsForMode(mode0);
+  // A pending generator must never be the default selection for normal users.
+  if (!visible.some((g) => g.id === studio.generatorId)) studio.generatorId = visible[0]!.id;
   const genField = el("div", { class: "field" });
   genField.append(el("label", { for: "generator" }, "Generator"));
   const generator = el("select", { id: "generator" });
-  for (const g of GENERATORS) generator.append(new Option(`${g.label} (v${g.version})`, g.id));
+  for (const g of visible) {
+    const pending = approvalStatusOf(g) === "pending-review";
+    generator.append(new Option(pending ? `${g.label} (v${g.version}) — machine-validated, pending curriculum approval` : `${g.label} (v${g.version})`, g.id));
+  }
   generator.value = studio.generatorId;
   genField.append(generator);
+  if (mode0 === "review") {
+    genField.append(el("div", { class: "hint" }, "Review/developer mode: pending-approval generators are shown for inspection only and are not exposed to normal users or production exports."));
+  }
 
   const seedField = el("div", { class: "field" });
   seedField.append(el("label", { for: "seed" }, "Seed"));

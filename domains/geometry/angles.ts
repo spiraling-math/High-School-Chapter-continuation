@@ -20,7 +20,7 @@ import { DIR, R } from "../../core/geometry/dir-table.ts";
 import { MISCONCEPTIONS, rulesFor, type GeoCtx } from "./geometry-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.geometry.angles-figures";
-export const GENERATOR_VERSION = "1.2.1";
+export const GENERATOR_VERSION = "1.2.2"; // v1.2.1 rejected (owner); v1.2.2 = pending-review continuation, same diagrams
 
 export type Task = "straight_line_missing_angle" | "triangle_missing_angle" | "isosceles_base_angle"
   | "vertically_opposite_angle" | "angles_at_point_missing";
@@ -813,7 +813,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", Boolean(item["generatorId"]) && Boolean(item["generatorVersion"]), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.2.1", checks };
+  return { status, validatorVersion: "1.2.2", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }
