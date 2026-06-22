@@ -2,13 +2,37 @@
 
 Last updated: 2026-06-22.
 
-## Geometry SVG pilot — DELIVERED, awaiting curriculum review (v1.0.0, 2026-06-21)
+## Geometry SVG pilot — v1.1.0 REVISED, awaiting final curriculum approval (2026-06-22)
 
-The first **diagram-bearing** family: **`gen.geometry.angles-figures` v1.0.0**, placed
-at **SPI-Math Middle School → Geometry → Ch.21 (Angles, Lines, Triangles)**. Built from
-the owner's APPROVE-WITH-REQUIRED-REVISIONS (`DECISION_LOG.md` #32); all 12 revisions
-applied. **The diagram IS the question** — every figure is computed from the same
-parameters as the prompt and answer.
+**Owner decision (`DECISION_LOG.md` #34):** the five `SPI.MIDDLE.GEO.*.01` objective
+**definitions are curriculum-approved**; the generator was **revised to v1.1.0** to fix
+the diagram/accessibility issues the owner raised. v1.0.0 is preserved unchanged (tag
+`geometry-v1.0.0-superseded`). The corrected revisions:
+
+- **Reflex-correct arcs.** Arc rendering is now `(vertex, startDir, measure)` with
+  large-arc-flag = 1 iff measure > 180 (exactly 180 → 0, a documented semicircle policy)
+  and sweep-flag = 0 (the CCW interior sector). This fixes reflex regions (e.g. a 263°
+  unknown / 248° given that previously drew the minor complement) AND the triangle /
+  isosceles interior arcs, which previously bulged **outside** the angle. The SVG arc
+  convention was pinned down empirically and browser-confirmed (arc lengths match the
+  measures: 263°→321px, 331°→404px, 248°→303px). Labels sit on the sector bisector,
+  inside the intended sector for minor and reflex alike.
+- **Neutral vertically-opposite target.** The opposite (x) region is marked by a neutral
+  leader, not a matching arc; the diagram no longer announces the equality.
+- **Equivalent-not-easier accessibility.** Descriptions convey the same givens and
+  configuration as the figure but state no theorem, calculation, or answer.
+- **Nine new SEMANTIC validator checks** that PARSE the SVG arc commands and verify them
+  against the FigureModel (arc-large-flag-correct, arc-sweep-correct,
+  reflex-region-rendered-correctly, label-inside-intended-region,
+  no-theorem-revealing-markers, target-region-unambiguous, a11y-equivalent-information,
+  …); tamper tests prove they catch a wrong flag or leaked theorem.
+- **Visual edge-case audit** `docs/review/geometry_visual_audit.html` (10°…near-max,
+  reflex unknown + given, every task family, monochrome print) — **human inspection
+  required** before final approval.
+
+The first **diagram-bearing** family, placed at **SPI-Math Middle School → Geometry →
+Ch.21 (Angles, Lines, Triangles)**. **The diagram IS the question** — every figure is
+computed from the same parameters as the prompt and answer.
 
 - Five tasks one-to-one with five `SPI.MIDDLE.GEO.*.01` objectives: angles on a straight
   line, triangle angle sum, isosceles base angle, vertically opposite (free-response
@@ -30,21 +54,25 @@ parameters as the prompt and answer.
   answer in any accessibility text. Monochrome (#111/#444 only). SVGs inline into the
   Studio preview and the worksheet/solutions exports with no external/script refs.
 
-Verified: typecheck clean; **158 TS tests** (SVG byte-parity, 2000-seed stability gate,
-geometry a11y + multi-item export, SVG-overlap, JSON round-trip) + **15 geometry oracle
-tests** (DIR-table audit, round-half-up, exact isosceles legs, the non-blocking ±0.5°
-to-scale diagnostic, monochrome, no-reveal/no-leakage, tamper); **geometry 10,000-seed
-sweep 0 invalid** (all 5 tasks, bands 1–4); **arithmetic + geometric + linear 10k
-regression sweeps 0 invalid with no fixture drift**; schema conformance (Python + Ajv);
-offline build OK; Studio browser-verified (live SVG renders accessible + monochrome +
-NOT TO SCALE, validation PASS with the diagram checks, no console errors). Review pack:
-`docs/review/geometry_angles_review_pack.md` (47 items + 47 saved `.svg`; all five
-objectives/tasks; FR + MC; every band; two-/multi-given lines; general + isosceles
-triangles; min/max + non-multiple-of-5 angles; 12/13 misconceptions exemplified — the
-13th is diagnostic-only; 0 collision violations; worst to-scale 0.12°; monochrome).
+Verified: typecheck clean; **161 TS tests** (SVG byte-parity, 2000-seed stability gate,
+reflex-flag + sweep tamper, VO-leader, geometry a11y + multi-item export, SVG-overlap,
+JSON round-trip) + **25 geometry oracle tests** (DIR-table audit, round-half-up, exact
+isosceles legs, reflex large/sweep flags across 1500 seeds, the ±0.5° + arc-sector
+coverage diagnostics, boundary 179/180/181, a11y-equivalence positive+negative, VO
+neutral leader, tamper); **geometry 10,000-seed sweep 0 invalid** (all 5 tasks, bands
+1–4); **arithmetic + geometric + linear 10k regression sweeps 0 invalid with byte-for-
+byte unchanged fixtures**; schema conformance (Python + Ajv); offline build OK; Studio
+browser-verified on the visual audit (reflex arc lengths match measures: 263°→321px,
+331°→404px, 248°→303px; VO neutral leader; 0 failing chips across all 16 cards). Review
+pack: `docs/review/geometry_angles_review_pack.md` (45 items + 45 `.svg`; all five
+objectives/tasks; FR + MC; every band; two-/multi-given lines; general + isosceles;
+min/max + reflex + non-multiple-of-5 angles; 12/13 misconceptions exemplified; 0
+collision violations; monochrome). Visual edge-case audit:
+`docs/review/geometry_visual_audit.html`.
 
-**Status:** implemented and **machine-validated**; the **five objective definitions are
-approved-for-implementation only** and the **generator spec is pending pack review**.
+**Status:** revised to **v1.1.0** and **machine-validated**; the **five objective
+definitions are curriculum-approved**; the **generator, SVG rendering contract, and
+golden exemplars are pending the owner's final review** of the v1.1.0 pack + visual audit.
 Awaiting the owner's final geometry curriculum decision (see "Precise curriculum
 decision awaiting the owner" at the end). Nothing here is approved or published.
 

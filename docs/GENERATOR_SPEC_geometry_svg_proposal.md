@@ -1,14 +1,18 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
-> **STATUS UPDATE (2026-06-21): IMPLEMENTED as `gen.geometry.angles-figures` v1.0.0 — PENDING PACK REVIEW.**
-> The owner issued APPROVE-WITH-REQUIRED-REVISIONS authorizing full implementation through review-pack
-> production (`DECISION_LOG.md` #32). All 12 required revisions were applied; the family was split into the
-> **five** `SPI.MIDDLE.GEO.*.01` micro-objectives (definitions approved-for-implementation). The code, fixtures,
-> tests, and the review pack (`docs/review/geometry_angles_review_pack.md`) are complete and all gates pass.
-> **This specification is now "implemented — pending pack review"; it becomes curriculum-approved only on the
-> owner's final geometry decision.** The "PROPOSAL / NOT implemented" wording below is preserved as the
-> historical pre-implementation record; where the proposal and the applied revisions differ, the 12 revisions in
-> `DECISION_LOG.md` #32 and the review pack govern.
+> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.1.0 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL REVIEW.**
+> History: the owner first issued APPROVE-WITH-REQUIRED-REVISIONS (`DECISION_LOG.md` #32) and the family was
+> implemented as v1.0.0 with all 12 revisions, split into the **five** `SPI.MIDDLE.GEO.*.01` micro-objectives.
+> On review (`DECISION_LOG.md` #34) the owner **curriculum-approved the five objective definitions** but required
+> generator corrections (reflex-arc rendering, a neutral vertically-opposite target, and equivalent-not-easier
+> accessibility) plus a visual edge-case audit. These were applied as **v1.1.0** (v1.0.0 preserved, tag
+> `geometry-v1.0.0-superseded`): the arc renderer is reflex-correct (large-arc-flag = 1 iff measure > 180,
+> sweep-flag = 0), nine new SEMANTIC validators parse the SVG arcs against the FigureModel, and the review pack +
+> `docs/review/geometry_visual_audit.html` were regenerated. **The objective definitions are curriculum-approved;
+> the generator, its SVG rendering contract, and the golden exemplars become approved only on the owner's final
+> review of the v1.1.0 pack + visual audit.** The "PROPOSAL / NOT implemented" wording below is the historical
+> pre-implementation record; where it differs from the applied revisions, `DECISION_LOG.md` #32 + #34 and the
+> review pack govern.
 
 **Status: PROPOSAL — awaiting owner approval. NOT implemented.** Prepared at the owner's request as the
 next architecture-proving pilot (a geometry generator using mathematically generated SVG diagrams). It was

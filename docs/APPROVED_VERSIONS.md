@@ -58,19 +58,32 @@ The three `SPI.MIDDLE.{NUM,ALG}.*` prerequisite objectives were curriculum-appro
 attached in the curriculum graph where genuine (e.g. of the linear-equations
 objectives); they are not themselves bound to a generated task in this version.
 
-## Implemented but NOT yet curriculum-approved (pending pack review)
+| `SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01` | geometry straight_line_missing_angle | — | approved (definition) |
+| `SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01` | geometry triangle_missing_angle | — | approved (definition) |
+| `SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01` | geometry isosceles_base_angle | — | approved (definition) |
+| `SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01` | geometry vertically_opposite_angle | — | approved (definition) |
+| `SPI.MIDDLE.GEO.ANGLES_AT_POINT.01` | geometry angles_at_point_missing | — | approved (definition) |
 
-| Generator | Version | Status | Review pack |
+The five `SPI.MIDDLE.GEO.*.01` objective **definitions** (IDs, wording, one-to-one task
+mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their **generator**
+(`gen.geometry.angles-figures`) is NOT yet approved — see the pending section below.
+
+## Implemented but NOT yet curriculum-approved (pending final review)
+
+| Generator | Version | Status | Review artifacts |
 | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.0.0 | **machine-validated — awaiting owner review** | `docs/review/geometry_angles_review_pack.md` |
+| `gen.geometry.angles-figures` | 1.1.0 | **machine-validated — awaiting owner final review** | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
+| `gen.geometry.angles-figures` | 1.0.0 | preserved (superseded by 1.1.0, never approved) | tag `geometry-v1.0.0-superseded` |
 
-The geometry SVG pilot (`DECISION_LOG.md` #32) is fully implemented and self-verifying
-(byte-identical Python/TypeScript SVG parity; 10,000-seed sweep 0 invalid; schema +
-a11y gates pass). Its **five `SPI.MIDDLE.GEO.*.01` objective definitions are
-approved-for-implementation only**, and the **generator spec is pending pack review**.
-Nothing here is curriculum-approved or published; all generated items remain
-`machine-validated`. This section moves into "Approved generators" only on the owner's
-final geometry decision.
+The geometry SVG pilot was revised to **v1.1.0** (`DECISION_LOG.md` #34) after the owner
+approved the objective definitions but required reflex-arc, vertically-opposite-marker,
+and accessibility-equivalence corrections. It is self-verifying (byte-identical
+Python/TypeScript SVG parity; semantic arc validators; 10,000-seed sweep 0 invalid;
+schema + a11y gates pass). The **generator, its SVG rendering contract, the v1.1.0
+representative items, and golden exemplars remain pending** the owner's review of the
+revised review pack + the visual edge-case audit. All generated items remain
+`machine-validated`. This section moves into "Approved generators" only on that final
+decision.
 
 ## Golden exemplars (curriculum-reviewed and approved)
 
