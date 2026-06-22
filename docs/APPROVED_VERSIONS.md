@@ -49,6 +49,28 @@ explicitly supported in a later version.
 | `SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01` | linear two_step | 1.0.1 | approved |
 | `SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01` | linear both_sides | 1.0.1 | approved |
 | `SPI.MIDDLE.ALG.LINEQ.BRACKETS.01` | linear brackets | 1.0.1 | approved |
+| `SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01` | prerequisite (signed/rational arithmetic) | — | approved |
+| `SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01` | prerequisite (inverse operations) | — | approved |
+| `SPI.MIDDLE.ALG.EXPAND_BRACKETS.01` | prerequisite (expand `a(bx+c)`) | — | approved |
+
+The three `SPI.MIDDLE.{NUM,ALG}.*` prerequisite objectives were curriculum-approved on
+2026-06-21 (`DECISION_LOG.md` #31) with final wording — foundational prerequisites
+attached in the curriculum graph where genuine (e.g. of the linear-equations
+objectives); they are not themselves bound to a generated task in this version.
+
+## Implemented but NOT yet curriculum-approved (pending pack review)
+
+| Generator | Version | Status | Review pack |
+| --- | --- | --- | --- |
+| `gen.geometry.angles-figures` | 1.0.0 | **machine-validated — awaiting owner review** | `docs/review/geometry_angles_review_pack.md` |
+
+The geometry SVG pilot (`DECISION_LOG.md` #32) is fully implemented and self-verifying
+(byte-identical Python/TypeScript SVG parity; 10,000-seed sweep 0 invalid; schema +
+a11y gates pass). Its **five `SPI.MIDDLE.GEO.*.01` objective definitions are
+approved-for-implementation only**, and the **generator spec is pending pack review**.
+Nothing here is curriculum-approved or published; all generated items remain
+`machine-validated`. This section moves into "Approved generators" only on the owner's
+final geometry decision.
 
 ## Golden exemplars (curriculum-reviewed and approved)
 

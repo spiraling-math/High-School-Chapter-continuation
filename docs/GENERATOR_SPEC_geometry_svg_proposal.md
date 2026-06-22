@@ -1,5 +1,15 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
+> **STATUS UPDATE (2026-06-21): IMPLEMENTED as `gen.geometry.angles-figures` v1.0.0 — PENDING PACK REVIEW.**
+> The owner issued APPROVE-WITH-REQUIRED-REVISIONS authorizing full implementation through review-pack
+> production (`DECISION_LOG.md` #32). All 12 required revisions were applied; the family was split into the
+> **five** `SPI.MIDDLE.GEO.*.01` micro-objectives (definitions approved-for-implementation). The code, fixtures,
+> tests, and the review pack (`docs/review/geometry_angles_review_pack.md`) are complete and all gates pass.
+> **This specification is now "implemented — pending pack review"; it becomes curriculum-approved only on the
+> owner's final geometry decision.** The "PROPOSAL / NOT implemented" wording below is preserved as the
+> historical pre-implementation record; where the proposal and the applied revisions differ, the 12 revisions in
+> `DECISION_LOG.md` #32 and the review pack govern.
+
 **Status: PROPOSAL — awaiting owner approval. NOT implemented.** Prepared at the owner's request as the
 next architecture-proving pilot (a geometry generator using mathematically generated SVG diagrams). It was
 produced by an orchestrated design pass (parallel section designers + an adversarial feasibility review +

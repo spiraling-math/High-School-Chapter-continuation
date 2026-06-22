@@ -1,6 +1,52 @@
 # Current State
 
-Last updated: 2026-06-21.
+Last updated: 2026-06-22.
+
+## Geometry SVG pilot — DELIVERED, awaiting curriculum review (v1.0.0, 2026-06-21)
+
+The first **diagram-bearing** family: **`gen.geometry.angles-figures` v1.0.0**, placed
+at **SPI-Math Middle School → Geometry → Ch.21 (Angles, Lines, Triangles)**. Built from
+the owner's APPROVE-WITH-REQUIRED-REVISIONS (`DECISION_LOG.md` #32); all 12 revisions
+applied. **The diagram IS the question** — every figure is computed from the same
+parameters as the prompt and answer.
+
+- Five tasks one-to-one with five `SPI.MIDDLE.GEO.*.01` objectives: angles on a straight
+  line, triangle angle sum, isosceles base angle, vertically opposite (free-response
+  only), angles around a point. MC (3 distinct formula-backed distractors) for the other
+  four. Integer-degree answers only.
+- **No runtime trigonometry**: ray directions come from a committed integer direction
+  table (`core/geometry/dir-table.{json,ts}`; offline atan2 audit, worst 0.003°);
+  coordinates use one round-half-up rule (BigInt in TS); the SVG is hand-serialized
+  canonically. The Python oracle and the TypeScript app produce **byte-identical SVG**
+  (golden + 300-entry parity fixture). All figures `toScale:false` with a visible
+  **NOT TO SCALE**; the blocking validator rebuilds the figure and asserts the SVG
+  byte-for-byte (diagram-to-data consistency, no atan2).
+- Realisability guards: every region ≥10°; isosceles apex even 20–160 with **exactly
+  equal squared legs**; an integer **label-overlap guard** (0 overlaps / 8,000 items);
+  unique answers. Vertically-opposite shows no equality marks (no theorem reveal); the
+  unknown is always rendered as `x` (no diagram leakage).
+- Accessibility: `role="img"` + `aria-label` + `<title>`/`<desc>` + a data-table
+  fallback, **no hard-coded IDs** → multi-item exports have no duplicate DOM ids and no
+  answer in any accessibility text. Monochrome (#111/#444 only). SVGs inline into the
+  Studio preview and the worksheet/solutions exports with no external/script refs.
+
+Verified: typecheck clean; **158 TS tests** (SVG byte-parity, 2000-seed stability gate,
+geometry a11y + multi-item export, SVG-overlap, JSON round-trip) + **15 geometry oracle
+tests** (DIR-table audit, round-half-up, exact isosceles legs, the non-blocking ±0.5°
+to-scale diagnostic, monochrome, no-reveal/no-leakage, tamper); **geometry 10,000-seed
+sweep 0 invalid** (all 5 tasks, bands 1–4); **arithmetic + geometric + linear 10k
+regression sweeps 0 invalid with no fixture drift**; schema conformance (Python + Ajv);
+offline build OK; Studio browser-verified (live SVG renders accessible + monochrome +
+NOT TO SCALE, validation PASS with the diagram checks, no console errors). Review pack:
+`docs/review/geometry_angles_review_pack.md` (47 items + 47 saved `.svg`; all five
+objectives/tasks; FR + MC; every band; two-/multi-given lines; general + isosceles
+triangles; min/max + non-multiple-of-5 angles; 12/13 misconceptions exemplified — the
+13th is diagnostic-only; 0 collision violations; worst to-scale 0.12°; monochrome).
+
+**Status:** implemented and **machine-validated**; the **five objective definitions are
+approved-for-implementation only** and the **generator spec is pending pack review**.
+Awaiting the owner's final geometry curriculum decision (see "Precise curriculum
+decision awaiting the owner" at the end). Nothing here is approved or published.
 
 ## Linear equations pilot — CURRICULUM-APPROVED v1.0.1 (2026-06-21)
 
