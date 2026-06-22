@@ -2,13 +2,25 @@
 
 Last updated: 2026-06-22.
 
-## Geometry SVG pilot — v1.2.0 REVISED, awaiting final curriculum approval (2026-06-22)
+## Geometry SVG pilot — v1.2.1 REVISED, awaiting final APPROVE/REJECT (2026-06-22)
 
-**Owner decisions (`DECISION_LOG.md` #34, #35):** the five `SPI.MIDDLE.GEO.*.01` objective
-**definitions are curriculum-approved**; the generator was **revised to v1.1.0** (reflex
-arcs / VO marker / accessibility) and then **v1.2.0** (figure clarity). v1.0.0 and v1.1.0
-are preserved (tags `geometry-v1.0.0-superseded`, `geometry-v1.1.0-superseded`). The
-corrected revisions:
+**Owner decisions (`DECISION_LOG.md` #34, #35, #36):** the five `SPI.MIDDLE.GEO.*.01`
+objective **definitions are curriculum-approved**; the generator was **revised to v1.1.0**
+(reflex arcs / VO marker / accessibility), **v1.2.0** (per-angle arc radii), and **v1.2.1**
+(visual-layout-only: adaptive small-sector label placement). v1.0.0/v1.1.0/v1.2.0 are
+preserved (tags `geometry-v1.{0,1,2}.0-superseded`). The latest revision:
+
+- **Adaptive label placement (v1.2.1).** Each angle label is placed INSIDE its sector when
+  its full bounding box fits with clearance (radius from the sector half-angle via the
+  DIR table), otherwise a CALLOUT in clear space joined by a short neutral leader (found
+  by a deterministic integer radius×perpendicular search). 10-degree questions are kept.
+  **Nine blocking visual-clearance checks** on the COMPLETE label boxes (min clearance
+  8px): label-placement-feasible, labels-within-canvas, label-{label,ray,arc,vertex}-
+  clearance, leader-does-not-cross-label, small-sector-label-unambiguous,
+  label-inside-intended-region. Browser before/after (seeds 98/26/13322) confirms the
+  crowded 10°/x labels now separate cleanly with leaders.
+
+The earlier corrected revisions:
 
 - **Per-angle arc radii (v1.2.0).** Arcs that share a vertex (angles on a line / around a
   point) use GRADUATED radii (44, 64, 84, …) so each angle reads as a distinct ring, not
@@ -65,9 +77,10 @@ computed from the same parameters as the prompt and answer.
   answer in any accessibility text. Monochrome (#111/#444 only). SVGs inline into the
   Studio preview and the worksheet/solutions exports with no external/script refs.
 
-Verified: typecheck clean; **162 TS tests** (SVG byte-parity, 2000-seed stability gate,
-reflex-flag + sweep + a11y-text tamper, distinct arc radii, VO-leader, geometry a11y +
-multi-item export, SVG-overlap, JSON round-trip) + **26 geometry oracle tests** (DIR-table audit, round-half-up, exact
+Verified: typecheck clean; **163 TS tests** (SVG byte-parity, 2000-seed stability gate,
+reflex/sweep/a11y-text tamper, adaptive-placement clearances, VO marker, geometry a11y +
+multi-item export, JSON round-trip) + **30 geometry oracle tests** (incl. owner seeds
+98/26/13322, narrow 10/11/12/15/20, 3- and 4-region, all visual-clearance checks) (DIR-table audit, round-half-up, exact
 isosceles legs, reflex large/sweep flags across 1500 seeds, the ±0.5° + arc-sector
 coverage diagnostics, boundary 179/180/181, a11y-equivalence positive+negative, VO
 neutral leader, tamper); **geometry 10,000-seed sweep 0 invalid** (all 5 tasks, bands
@@ -81,9 +94,10 @@ min/max + reflex + non-multiple-of-5 angles; 12/13 misconceptions exemplified; 0
 collision violations; monochrome). Visual edge-case audit:
 `docs/review/geometry_visual_audit.html`.
 
-**Status:** revised to **v1.2.0** and **machine-validated**; the **five objective
+**Status:** revised to **v1.2.1** and **machine-validated**; the **five objective
 definitions are curriculum-approved**; the **generator, SVG rendering contract, and
-golden exemplars are pending the owner's final review** of the v1.2.0 pack + visual audit.
+golden exemplars are pending the owner's final APPROVE/REJECT** of the v1.2.1 pack +
+visual audit (the next decision is APPROVE or REJECT only, not another broad review).
 Awaiting the owner's final geometry curriculum decision (see "Precise curriculum
 decision awaiting the owner" at the end). Nothing here is approved or published.
 

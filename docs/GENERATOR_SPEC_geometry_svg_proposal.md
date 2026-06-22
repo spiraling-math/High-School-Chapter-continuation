@@ -1,10 +1,13 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
-> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.2.0 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL REVIEW.**
-> v1.2.0 adds, on top of the v1.1.0 reflex/VO/a11y fixes below, **per-angle arc radii** (graduated at a shared
-> vertex; scaled to the shortest adjacent side in triangles) so angles are individually identifiable and never
-> crowd, plus an `a11y-text-canonical` validator guard. v1.1.0 preserved (tag `geometry-v1.1.0-superseded`). The
-> remainder of this banner documents the v1.1.0 revision history.
+> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.2.1 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL APPROVE/REJECT.**
+> v1.2.1 is a **visual-layout-only** revision (owner REVISE): the mathematics, SVG arc semantics, reflex
+> handling, accessibility model, difficulty, worked solutions, misconceptions, validation architecture, and the
+> free-response-only VO scope are accepted UNCHANGED. It adds **adaptive small-sector label placement** (labels
+> sit inside their sector when they fit, else become a callout in clear space joined by a neutral leader) and
+> **nine blocking visual-clearance checks** on the complete label bounding boxes (min clearance 8px). v1.2.0
+> (per-angle arc radii + a11y-text guard) and v1.1.0 (reflex/VO/a11y) are preserved as superseded tags. The
+> remainder of this banner documents the earlier revision history.
 > History: the owner first issued APPROVE-WITH-REQUIRED-REVISIONS (`DECISION_LOG.md` #32) and the family was
 > implemented as v1.0.0 with all 12 revisions, split into the **five** `SPI.MIDDLE.GEO.*.01` micro-objectives.
 > On review (`DECISION_LOG.md` #34) the owner **curriculum-approved the five objective definitions** but required

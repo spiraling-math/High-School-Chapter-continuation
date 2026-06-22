@@ -72,14 +72,16 @@ mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their 
 
 | Generator | Version | Status | Review artifacts |
 | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.0 | **machine-validated — awaiting owner final review** | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
+| `gen.geometry.angles-figures` | 1.2.1 | **machine-validated — awaiting owner final APPROVE/REJECT** | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
+| `gen.geometry.angles-figures` | 1.2.0 | preserved (superseded by 1.2.1, never approved) | tag `geometry-v1.2.0-superseded` |
 | `gen.geometry.angles-figures` | 1.1.0 | preserved (superseded by 1.2.0, never approved) | tag `geometry-v1.1.0-superseded` |
 | `gen.geometry.angles-figures` | 1.0.0 | preserved (superseded by 1.1.0, never approved) | tag `geometry-v1.0.0-superseded` |
 
-The geometry SVG pilot was revised to **v1.1.0** (`DECISION_LOG.md` #34) after the owner
-approved the objective definitions but required reflex-arc, vertically-opposite-marker,
-and accessibility-equivalence corrections, then to **v1.2.0** (`DECISION_LOG.md` #35) for
-per-angle arc radii (figure clarity) and an a11y-text tamper guard. It is self-verifying (byte-identical
+The geometry SVG pilot was revised to **v1.1.0** (`DECISION_LOG.md` #34: reflex-arc,
+vertically-opposite-marker, accessibility-equivalence), then **v1.2.0** (#35: per-angle
+arc radii + a11y-text tamper guard), then **v1.2.1** (#36: visual-layout-only — adaptive
+small-sector label placement with leaders + nine blocking visual-clearance checks). Each
+revision preserved its predecessor; only the latest is the pending candidate. It is self-verifying (byte-identical
 Python/TypeScript SVG parity; semantic arc validators; 10,000-seed sweep 0 invalid;
 schema + a11y gates pass). The **generator, its SVG rendering contract, the v1.1.0
 representative items, and golden exemplars remain pending** the owner's review of the
