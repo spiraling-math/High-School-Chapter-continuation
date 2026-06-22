@@ -2,12 +2,23 @@
 
 Last updated: 2026-06-22.
 
-## Geometry SVG pilot — v1.1.0 REVISED, awaiting final curriculum approval (2026-06-22)
+## Geometry SVG pilot — v1.2.0 REVISED, awaiting final curriculum approval (2026-06-22)
 
-**Owner decision (`DECISION_LOG.md` #34):** the five `SPI.MIDDLE.GEO.*.01` objective
-**definitions are curriculum-approved**; the generator was **revised to v1.1.0** to fix
-the diagram/accessibility issues the owner raised. v1.0.0 is preserved unchanged (tag
-`geometry-v1.0.0-superseded`). The corrected revisions:
+**Owner decisions (`DECISION_LOG.md` #34, #35):** the five `SPI.MIDDLE.GEO.*.01` objective
+**definitions are curriculum-approved**; the generator was **revised to v1.1.0** (reflex
+arcs / VO marker / accessibility) and then **v1.2.0** (figure clarity). v1.0.0 and v1.1.0
+are preserved (tags `geometry-v1.0.0-superseded`, `geometry-v1.1.0-superseded`). The
+corrected revisions:
+
+- **Per-angle arc radii (v1.2.0).** Arcs that share a vertex (angles on a line / around a
+  point) use GRADUATED radii (44, 64, 84, …) so each angle reads as a distinct ring, not
+  one continuous circle; triangle/isosceles vertex arcs are scaled to ≤ 30% of the
+  shortest adjacent side (capped at 56) so arcs never reach the opposite side or meet.
+  Exact-integer radii (pure-integer isqrt); browser-confirmed distinct/bounded.
+- **a11y-text-canonical validator (v1.2.0).** The stored accessibility + media long
+  description must equal the canonical recomputed text byte-for-byte (catches a tampered
+  stored description). A 6-agent adversarial-verification workflow returned **GO**, with
+  all six correctness claims holding under exhaustive scrutiny.
 
 - **Reflex-correct arcs.** Arc rendering is now `(vertex, startDir, measure)` with
   large-arc-flag = 1 iff measure > 180 (exactly 180 → 0, a documented semicircle policy)
@@ -54,9 +65,9 @@ computed from the same parameters as the prompt and answer.
   answer in any accessibility text. Monochrome (#111/#444 only). SVGs inline into the
   Studio preview and the worksheet/solutions exports with no external/script refs.
 
-Verified: typecheck clean; **161 TS tests** (SVG byte-parity, 2000-seed stability gate,
-reflex-flag + sweep tamper, VO-leader, geometry a11y + multi-item export, SVG-overlap,
-JSON round-trip) + **25 geometry oracle tests** (DIR-table audit, round-half-up, exact
+Verified: typecheck clean; **162 TS tests** (SVG byte-parity, 2000-seed stability gate,
+reflex-flag + sweep + a11y-text tamper, distinct arc radii, VO-leader, geometry a11y +
+multi-item export, SVG-overlap, JSON round-trip) + **26 geometry oracle tests** (DIR-table audit, round-half-up, exact
 isosceles legs, reflex large/sweep flags across 1500 seeds, the ±0.5° + arc-sector
 coverage diagnostics, boundary 179/180/181, a11y-equivalence positive+negative, VO
 neutral leader, tamper); **geometry 10,000-seed sweep 0 invalid** (all 5 tasks, bands
@@ -70,9 +81,9 @@ min/max + reflex + non-multiple-of-5 angles; 12/13 misconceptions exemplified; 0
 collision violations; monochrome). Visual edge-case audit:
 `docs/review/geometry_visual_audit.html`.
 
-**Status:** revised to **v1.1.0** and **machine-validated**; the **five objective
+**Status:** revised to **v1.2.0** and **machine-validated**; the **five objective
 definitions are curriculum-approved**; the **generator, SVG rendering contract, and
-golden exemplars are pending the owner's final review** of the v1.1.0 pack + visual audit.
+golden exemplars are pending the owner's final review** of the v1.2.0 pack + visual audit.
 Awaiting the owner's final geometry curriculum decision (see "Precise curriculum
 decision awaiting the owner" at the end). Nothing here is approved or published.
 

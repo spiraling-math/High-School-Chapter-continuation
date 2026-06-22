@@ -1,6 +1,10 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
-> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.1.0 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL REVIEW.**
+> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.2.0 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL REVIEW.**
+> v1.2.0 adds, on top of the v1.1.0 reflex/VO/a11y fixes below, **per-angle arc radii** (graduated at a shared
+> vertex; scaled to the shortest adjacent side in triangles) so angles are individually identifiable and never
+> crowd, plus an `a11y-text-canonical` validator guard. v1.1.0 preserved (tag `geometry-v1.1.0-superseded`). The
+> remainder of this banner documents the v1.1.0 revision history.
 > History: the owner first issued APPROVE-WITH-REQUIRED-REVISIONS (`DECISION_LOG.md` #32) and the family was
 > implemented as v1.0.0 with all 12 revisions, split into the **five** `SPI.MIDDLE.GEO.*.01` micro-objectives.
 > On review (`DECISION_LOG.md` #34) the owner **curriculum-approved the five objective definitions** but required
