@@ -230,13 +230,18 @@ def _arc_covers_sector(e1, e2, r, large, sweep, n=24):
 class TestReflexAndArcSemantics(unittest.TestCase):
     ARC_RE = re.compile(r'<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"/>')
 
-    def test_owner_cited_reflex_cases_validate(self):
-        a = geo.generate(1, {"task": "angles_at_point_missing", "interactionType": "multiple-choice"})
-        self.assertEqual(a["answer"]["canonical"]["num"], 263)               # reflex UNKNOWN
-        self.assertEqual(geo.validate(a)["status"], "pass")
-        b = geo.generate(26, {"task": "angles_at_point_missing", "interactionType": "free-response"})
-        self.assertIn(248, geo._ctx(b["params"])["givens"])                  # reflex GIVEN
-        self.assertEqual(geo.validate(b)["status"], "pass")
+    def test_reflex_unknown_and_given_cases_validate(self):
+        # A reflex UNKNOWN (answer > 180) and a reflex GIVEN both occur and validate.
+        ua = next(it for s in range(1, 5000)
+                  for it in [geo.generate(s, {"task": "angles_at_point_missing", "interactionType": "multiple-choice"})]
+                  if geo.solve(it["params"]) > 180)
+        self.assertGreater(ua["answer"]["canonical"]["num"], 180)
+        self.assertEqual(geo.validate(ua)["status"], "pass")
+        gb = next(it for s in range(1, 5000)
+                  for it in [geo.generate(s, {"task": "angles_at_point_missing", "interactionType": "free-response"})]
+                  if any(v > 180 for v in geo._ctx(it["params"])["givens"]))
+        self.assertTrue(any(v > 180 for v in geo._ctx(gb["params"])["givens"]))
+        self.assertEqual(geo.validate(gb)["status"], "pass")
 
     def test_large_and_sweep_flags_match_measure_everywhere(self):
         seen_reflex = 0
@@ -262,13 +267,14 @@ class TestReflexAndArcSemantics(unittest.TestCase):
             it = geo.generate(s, {"interactionType": "free-response"})
             fig = geo._build_figure(it["params"])
             P = geo._layout(fig["points"])
-            for (vn, start, measure) in fig["arcs"]:
+            radii = geo._arc_radii(fig, P)
+            for (vn, start, measure), rr in zip(fig["arcs"], radii):
                 V = P[vn]
-                e1 = geo._ray_at(V, start, geo.ARC_R)
-                e2 = geo._ray_at(V, start + measure, geo.ARC_R)
+                e1 = geo._ray_at(V, start, rr)
+                e2 = geo._ray_at(V, start + measure, rr)
                 large = 1 if measure > 180 else 0
                 rel = [(math.degrees(math.atan2(-(py - V[1]), px - V[0])) - start) % 360
-                       for (px, py) in _arc_covers_sector(e1, e2, geo.ARC_R, large, 0)]
+                       for (px, py) in _arc_covers_sector(e1, e2, rr, large, 0)]
                 for a in rel:                       # every point inside the sector (wrap-aware)
                     self.assertTrue(a <= measure + TOL or a >= 360 - TOL, f"s{s} m{measure}: {a:.2f} outside")
                 mid = rel[len(rel) // 2]            # the arc midpoint sits near the bisector
@@ -285,9 +291,11 @@ class TestReflexAndArcSemantics(unittest.TestCase):
             self.assertEqual(int(first[5]), 0)
 
     def test_tamper_large_flag_on_reflex_fails(self):
-        it = geo.generate(1, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+        it = next(x for s in range(1, 5000)
+                  for x in [geo.generate(s, {"task": "angles_at_point_missing", "interactionType": "free-response"})]
+                  if any(m > 180 for (_, _, m) in geo._build_figure(x["params"])["arcs"]))
         svg = it["media"][0]["svg"]
-        bad = re.sub(r"(A 70 70 0 )1( 0 )", r"\g<1>0\g<2>", svg, count=1)
+        bad = re.sub(r"(A (\d+) \2 0 )1( 0 )", r"\g<1>0\g<3>", svg, count=1)   # flip a reflex large-flag (any radius)
         self.assertNotEqual(bad, svg)
         it["media"][0]["svg"] = bad
         names = [c["name"] for c in geo.validate(it)["checks"] if c["result"] == "fail"]
@@ -296,9 +304,27 @@ class TestReflexAndArcSemantics(unittest.TestCase):
 
     def test_tamper_sweep_fails(self):
         it = geo.generate(5, {"task": "triangle_missing_angle", "interactionType": "free-response"})
-        it["media"][0]["svg"] = it["media"][0]["svg"].replace("A 70 70 0 0 0", "A 70 70 0 0 1", 1)
+        it["media"][0]["svg"] = re.sub(r"(A (\d+) \2 0 0 )0 ", r"\g<1>1 ", it["media"][0]["svg"], count=1)
         names = [c["name"] for c in geo.validate(it)["checks"] if c["result"] == "fail"]
         self.assertIn("arc-sweep-correct", names)
+
+    def test_arc_radii_distinct_at_shared_vertex_and_bounded_in_triangles(self):
+        # angles around a point / on a line: graduated (distinct) radii per region.
+        for task in ("angles_at_point_missing", "straight_line_missing_angle"):
+            for s in range(1, 200):
+                fig = geo._build_figure(geo.generate(s, {"task": task, "interactionType": "free-response"})["params"])
+                P = geo._layout(fig["points"])
+                radii = geo._arc_radii(fig, P)
+                self.assertEqual(len(radii), len(set(radii)), f"{task} s{s}: radii must be distinct {radii}")
+        # triangle / isosceles: each arc <= 30% of the shortest incident edge (no crowding).
+        for task in ("triangle_missing_angle", "isosceles_base_angle"):
+            for s in range(1, 200):
+                fig = geo._build_figure(geo.generate(s, {"task": task, "interactionType": "free-response"})["params"])
+                P = geo._layout(fig["points"])
+                for k, (vn, start, measure) in enumerate(fig["arcs"]):
+                    inc = min(geo._edge_len(P[a], P[b]) for (a, b, _c) in fig["segs"] if vn in (a, b))
+                    self.assertLessEqual(geo._arc_radii(fig, P)[k], min(geo.ARC_TRI_MAX, inc * geo.ARC_TRI_NUM // geo.ARC_TRI_DEN) + 0)
+                    self.assertLessEqual(2 * geo._arc_radii(fig, P)[k], inc, f"{task} s{s}: arc would reach mid-side")
 
     def test_label_inside_every_sector(self):
         for s in range(1, 600):

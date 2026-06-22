@@ -20,7 +20,7 @@ import { DIR, R } from "../../core/geometry/dir-table.ts";
 import { MISCONCEPTIONS, rulesFor, type GeoCtx } from "./geometry-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.geometry.angles-figures";
-export const GENERATOR_VERSION = "1.1.0";
+export const GENERATOR_VERSION = "1.2.0";
 
 export type Task = "straight_line_missing_angle" | "triangle_missing_angle" | "isosceles_base_angle"
   | "vertically_opposite_angle" | "angles_at_point_missing";
@@ -46,6 +46,10 @@ const MIN_ANGLE = 10;
 const VIEW_W = 1000, VIEW_H = 700, RAW_LEN = 1000, RAW_BASE = 1200;
 const CX = 500, CY = 350, SPAN_X = 760, SPAN_Y = 520;
 const ARC_R = 70, LBL_R = 120, TICK = 22;
+// Per-angle arc radii (v1.2.0): distinct radii so each angle's arc is identifiable.
+const ARC_BASE = 44, ARC_STEP = 20;
+const ARC_TRI_MAX = 56, ARC_TRI_NUM = 30, ARC_TRI_DEN = 100;
+const ARC_DEFAULT = 62, LBL_GAP = 30;
 const LEADER_R1 = 46, LEADER_R2 = 96;
 const STYLE = ".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
   + ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
@@ -183,17 +187,40 @@ function layout(points: Record<string, Pt>): Record<string, Pt> {
 function rayAt(v: Pt, theta: number, radius: number): Pt {
   return [v[0] + gridRound(dirAt(theta)[0] * radius, R), v[1] - gridRound(dirAt(theta)[1] * radius, R)];
 }
+function isqrt(n: number): number {        // exact integer floor sqrt (no float / no trig)
+  if (n < 2) return n;
+  let x = n, y = Math.floor((n + 1) / 2);
+  while (y < x) { x = y; y = Math.floor((x + Math.floor(n / x)) / 2); }
+  return x;
+}
+const edgeLen = (p: Pt, q: Pt): number => isqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2);
+
+// One radius per arc: graduated at a shared vertex (angles on a line / around a point);
+// scaled to the shortest incident edge for triangle/isosceles vertices; default for VO.
+function arcRadii(fig: Figure, P: Record<string, Pt>): number[] {
+  const sameVertex = new Set(fig.arcs.map((a) => a[0])).size === 1 && fig.arcs.length >= 2;
+  return fig.arcs.map(([vn], j) => {
+    if (sameVertex) return ARC_BASE + j * ARC_STEP;
+    const inc = fig.segs.filter(([a, b]) => a === vn || b === vn).map(([a, b]) => edgeLen(P[a]!, P[b]!));
+    return inc.length ? Math.min(ARC_TRI_MAX, Math.floor((Math.min(...inc) * ARC_TRI_NUM) / ARC_TRI_DEN)) : ARC_DEFAULT;
+  });
+}
+function labelRadii(fig: Figure, ar: number[]): number[] {
+  const m = new Map(fig.arcs.map(([vn, s, me], i) => [`${vn}|${s}|${me}`, ar[i]!]));
+  return fig.alabels.map(([vn, s, me]) => (m.get(`${vn}|${s}|${me}`) ?? ARC_DEFAULT) + LBL_GAP);
+}
+
 // Arc of the CCW sector [start, start+measure]. Reflex-correct: large-arc-flag = 1 iff
 // measure > 180 (exactly 180 -> 0); sweep-flag is always 0 (the intended interior sector).
-function arcPath(v: Pt, start: number, measure: number): string {
-  const e1 = rayAt(v, start, ARC_R), e2 = rayAt(v, start + measure, ARC_R);
+function arcPath(v: Pt, start: number, measure: number, radius: number): string {
+  const e1 = rayAt(v, start, radius), e2 = rayAt(v, start + measure, radius);
   const large = measure > 180 ? 1 : 0;
-  return `M ${e1[0]} ${e1[1]} A ${ARC_R} ${ARC_R} 0 ${large} 0 ${e2[0]} ${e2[1]}`;
+  return `M ${e1[0]} ${e1[1]} A ${radius} ${radius} 0 ${large} 0 ${e2[0]} ${e2[1]}`;
 }
-// Label on the sector bisector (start + measure//2), inside the intended sector for
-// both minor and reflex regions.
-function labelPos(v: Pt, start: number, measure: number): Pt {
-  return rayAt(v, start + Math.floor(measure / 2), LBL_R);
+// Label on the sector bisector (start + measure//2), just beyond its own arc, inside the
+// intended sector for both minor and reflex regions.
+function labelPos(v: Pt, start: number, measure: number, radius: number): Pt {
+  return rayAt(v, start + Math.floor(measure / 2), radius);
 }
 
 type TextLabel = [number, number, string, string]; // x, y, anchor, text
@@ -202,7 +229,8 @@ function textLabelPositions(P: Record<string, Pt>, fig: Figure): TextLabel[] {
   // always match the rendered label positions. NOT TO SCALE is structural (excluded).
   const out: TextLabel[] = [];
   for (const [name, ox, oy, text, anchor] of fig.plabels) { const p = P[name]!; out.push([p[0] + ox, p[1] + oy, anchor, text]); }
-  for (const [vn, a1, a2, text] of fig.alabels) { const lp = labelPos(P[vn]!, a1, a2); out.push([lp[0], lp[1], "middle", text]); }
+  const lr = labelRadii(fig, arcRadii(fig, P));
+  fig.alabels.forEach(([vn, a1, a2, text], k) => { const lp = labelPos(P[vn]!, a1, a2, lr[k]!); out.push([lp[0], lp[1], "middle", text]); });
   return out;
 }
 
@@ -232,7 +260,8 @@ function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): st
   out.push(`<desc>${esc(desc)}</desc>`);
   out.push(`<style>${STYLE}</style>`);
   for (const [a, b, cls] of fig.segs) out.push(`<line class="${cls}" x1="${P[a]![0]}" y1="${P[a]![1]}" x2="${P[b]![0]}" y2="${P[b]![1]}"/>`);
-  for (const [vn, start, measure] of fig.arcs) out.push(`<path class="ga" d="${arcPath(P[vn]!, start, measure)}"/>`);
+  const arcR = arcRadii(fig, P);
+  fig.arcs.forEach(([vn, start, measure], k) => out.push(`<path class="ga" d="${arcPath(P[vn]!, start, measure, arcR[k]!)}"/>`));
   for (const [vn, d, r1, r2] of fig.leaders) {
     const p1 = rayAt(P[vn]!, d, r1), p2 = rayAt(P[vn]!, d, r2);
     out.push(`<line class="gx" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}"/>`);
@@ -559,6 +588,8 @@ export function validate(item: Record<string, Json>): ValidationResult {
   // region's measure, sector direction, and major/minor nature (catches a reflex
   // region drawn with its minor arc).
   const P = layout(fig.points);
+  const arcR = arcRadii(fig, P);
+  const labR = labelRadii(fig, arcR);
   const arcCmds = [...storedSvg.matchAll(/<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"\/>/g)]
     .map((m) => m.slice(1, 9).map(Number));
   let regionOk = arcCmds.length === fig.arcs.length;
@@ -566,19 +597,19 @@ export function validate(item: Record<string, Json>): ValidationResult {
   fig.arcs.forEach(([vn, start, measure], k) => {
     const a = arcCmds[k]; if (!a) return;
     const [x1, y1, rx, ry, large, sweep, x2, y2] = a as number[];
-    const V = P[vn]!, e1 = rayAt(V, start, ARC_R), e2 = rayAt(V, start + measure, ARC_R);
-    regionOk = regionOk && x1 === e1[0] && y1 === e1[1] && x2 === e2[0] && y2 === e2[1] && rx === ARC_R && ry === ARC_R;
+    const V = P[vn]!, rr = arcR[k]!, e1 = rayAt(V, start, rr), e2 = rayAt(V, start + measure, rr);
+    regionOk = regionOk && x1 === e1[0] && y1 === e1[1] && x2 === e2[0] && y2 === e2[1] && rx === rr && ry === rr;
     largeOk = largeOk && large === (measure > 180 ? 1 : 0);
     sweepOk = sweepOk && sweep === 0;
   });
-  add("arc-region-measure-agreement", regionOk, "arc endpoints realise each region's (start, measure)");
+  add("arc-region-measure-agreement", regionOk, "arc endpoints realise each region's (start, measure, radius)");
   add("arc-large-flag-correct", largeOk, "large-arc-flag = 1 iff region exceeds 180 degrees");
   add("arc-sweep-correct", sweepOk, "sweep-flag = 0 (CCW interior sector)");
 
   if (task === "straight_line_missing_angle" || task === "angles_at_point_missing") {
     let chain = arcCmds.length === fig.arcs.length;
-    for (let k = 0; k < arcCmds.length - 1; k++) {
-      chain = chain && arcCmds[k]![6] === arcCmds[k + 1]![0] && arcCmds[k]![7] === arcCmds[k + 1]![1];
+    for (let k = 0; k < fig.arcs.length - 1; k++) {
+      chain = chain && (fig.arcs[k]![1] + fig.arcs[k]![2]) % 360 === fig.arcs[k + 1]![1] % 360;
     }
     add("arc-matches-cyclic-region", chain, "arcs tile the angle consecutively");
   }
@@ -608,14 +639,22 @@ export function validate(item: Record<string, Json>): ValidationResult {
       const m: Pt = [gridRound(lx1! + lx2!, 2), gridRound(ly1! + ly2!, 2)];
       const theta = params["theta"] as number;
       okTarget = inCcwWedge(180, theta, P["O"]!, m);
-      for (const [vn, start, measure, text] of fig.alabels) {
-        if (text === "x") okTarget = okTarget && inCcwWedge(180, theta, P["O"]!, labelPos(P[vn]!, start, measure));
-      }
+      fig.alabels.forEach(([vn, start, measure, text], k) => {
+        if (text === "x") okTarget = okTarget && inCcwWedge(180, theta, P["O"]!, labelPos(P[vn]!, start, measure, labR[k]!));
+      });
     }
     add("target-region-unambiguous", okTarget, "the x leader and label lie in the opposite region");
   }
 
   add("a11y-equivalent-information", a11yEquivalentOk(params, acc), "accessible text is equivalent, not easier (no theorem/answer)");
+  // Harden against a tampered stored description: stored accessibility/media text must
+  // equal the canonical (recomputed) text byte-for-byte.
+  const aStore = (item["accessibility"] as { longDescription?: string; altText?: string; spokenMath?: string }) ?? {};
+  const media0 = (media && media[0] ? media[0] : {}) as { longDescription?: string; altText?: string };
+  add("a11y-text-canonical",
+    aStore.longDescription === acc.desc && aStore.altText === acc.alt && aStore.spokenMath === acc.desc
+    && media0.longDescription === acc.desc && media0.altText === acc.alt,
+    "stored accessibility/media text matches the canonical description");
 
   const numeric = fig.alabels.filter(([, , , t]) => t.endsWith("°")).map(([, , , t]) => parseInt(t, 10)).sort((a, b) => a - b);
   const xCount = fig.alabels.filter(([, , , t]) => t === "x").length;
@@ -659,7 +698,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", Boolean(item["generatorId"]) && Boolean(item["generatorVersion"]), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.1.0", checks };
+  return { status, validatorVersion: "1.2.0", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }

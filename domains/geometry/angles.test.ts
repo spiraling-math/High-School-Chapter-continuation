@@ -85,27 +85,44 @@ test("the unknown is labelled x, never its value (no diagram leakage)", () => {
   }
 });
 
-test("reflex regions render the reflex arc (large-arc-flag=1, sweep=0)", () => {
-  // angles_at_point seed 1 has a 263-degree UNKNOWN; the arc must be the reflex arc.
-  const it = generate(1, { task: "angles_at_point_missing", interactionType: "multiple-choice" });
-  assert.equal((it["answer"] as { canonical: { num: number } }).canonical.num, 263);
-  assert.equal(validate(it).status, "pass");
-  const svg = (it["media"] as Array<{ svg: string }>)[0]!.svg;
-  const flags = [...svg.matchAll(/A 70 70 0 (\d) (\d)/g)].map((m) => `${m[1]}${m[2]}`);
-  assert.ok(flags.includes("10"), `a reflex arc (large=1,sweep=0) is present: ${flags}`);
-  assert.ok(flags.every((f) => f[1] === "0"), "every arc uses sweep=0");
+test("reflex regions render the reflex arc (large-arc-flag=1, sweep=0); arcs use distinct radii", () => {
+  // find a seed whose angles_at_point item has a reflex (>180) region
+  let it: Record<string, Json> | null = null;
+  for (let s = 1; s <= 5000; s++) {
+    const c = generate(s, { task: "angles_at_point_missing", interactionType: "multiple-choice" });
+    if ((c["answer"] as { canonical: { num: number } }).canonical.num > 180) { it = c; break; }
+  }
+  assert.ok(it, "a reflex unknown occurs");
+  assert.equal(validate(it!).status, "pass");
+  const svg = (it!["media"] as Array<{ svg: string }>)[0]!.svg;
+  const arcs = [...svg.matchAll(/A (\d+) \d+ 0 (\d) (\d)/g)];
+  assert.ok(arcs.some((m) => m[2] === "1"), "a reflex arc (large=1) is present");
+  assert.ok(arcs.every((m) => m[3] === "0"), "every arc uses sweep=0");
+  const radii = arcs.map((m) => m[1]);
+  assert.equal(new Set(radii).size, radii.length, `arcs at one vertex use distinct radii: ${radii}`);
 });
 
 test("validator (TS) catches a tampered large-arc flag and a tampered sweep", () => {
-  const it = generate(1, { task: "angles_at_point_missing", interactionType: "free-response" }) as Record<string, Json>;
-  const svg = (it["media"] as Array<{ svg: string }>)[0]!.svg;
-  (it["media"] as Array<{ svg: string }>)[0]!.svg = svg.replace("A 70 70 0 1 0", "A 70 70 0 0 0");
-  let names = validate(it).checks.filter((c) => c.result === "fail").map((c) => c.name);
+  let it: Record<string, Json> | null = null;
+  for (let s = 1; s <= 5000; s++) {
+    const c = generate(s, { task: "angles_at_point_missing", interactionType: "free-response" }) as Record<string, Json>;
+    if ((c["answer"] as { canonical: { num: number } }).canonical.num > 180) { it = c; break; }
+  }
+  const svg = (it!["media"] as Array<{ svg: string }>)[0]!.svg;
+  (it!["media"] as Array<{ svg: string }>)[0]!.svg = svg.replace(/(A (\d+) \2 0 )1( 0 )/, "$10$3"); // flip a reflex large-flag (any radius)
+  let names = validate(it!).checks.filter((c) => c.result === "fail").map((c) => c.name);
   assert.ok(names.includes("arc-large-flag-correct") && names.includes("reflex-region-rendered-correctly"));
   const tri = generate(5, { task: "triangle_missing_angle", interactionType: "free-response" }) as Record<string, Json>;
-  (tri["media"] as Array<{ svg: string }>)[0]!.svg = (tri["media"] as Array<{ svg: string }>)[0]!.svg.replace("A 70 70 0 0 0", "A 70 70 0 0 1");
+  (tri["media"] as Array<{ svg: string }>)[0]!.svg = (tri["media"] as Array<{ svg: string }>)[0]!.svg.replace(/(A (\d+) \2 0 0 )0 /, "$11 ");
   names = validate(tri).checks.filter((c) => c.result === "fail").map((c) => c.name);
   assert.ok(names.includes("arc-sweep-correct"));
+});
+
+test("validator (TS) catches a tampered stored accessibility description", () => {
+  const it = generate(3, { task: "triangle_missing_angle", interactionType: "free-response" }) as Record<string, Json>;
+  (it["accessibility"] as { longDescription: string }).longDescription += " The two angles are equal.";
+  const names = validate(it).checks.filter((c) => c.result === "fail").map((c) => c.name);
+  assert.ok(names.includes("a11y-text-canonical"), "stored-text tamper caught");
 });
 
 test("vertically opposite uses a neutral leader, not a matching arc", () => {

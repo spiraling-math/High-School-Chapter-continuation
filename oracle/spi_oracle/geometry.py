@@ -31,7 +31,7 @@ from .difficulty import round3
 from .geometry_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.geometry.angles-figures"
-GENERATOR_VERSION = "1.1.0"
+GENERATOR_VERSION = "1.2.0"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _TABLE = json.load(open(os.path.join(_HERE, "..", "..", "core", "geometry", "dir-table.json"), encoding="utf-8"))
@@ -69,6 +69,15 @@ RAW_BASE = 1200         # raw triangle base width
 CX, CY = 500, 350       # plotting-box centre
 SPAN_X, SPAN_Y = 760, 520
 ARC_R, LBL_R, TICK = 70, 120, 22   # final-pixel radii for arcs, value labels, tick marks
+# Per-angle arc radii (v1.2.0): distinct radii so each angle's arc is identifiable and
+# never crowds another. Multi-region figures that share a vertex (angles on a line / at
+# a point) get GRADUATED radii; triangle/isosceles vertex arcs are scaled to the SHORTEST
+# adjacent side so they sit well inside the angle without meeting another vertex.
+ARC_BASE, ARC_STEP = 44, 20
+ARC_TRI_MAX = 56
+ARC_TRI_NUM, ARC_TRI_DEN = 30, 100   # <= 30% of the shortest incident edge
+ARC_DEFAULT = 62                     # single-arc figures (vertically opposite)
+LBL_GAP = 30                         # the value label sits this far beyond its own arc
 LEADER_R1, LEADER_R2 = 46, 96      # neutral target-leader radial extent (vertically opposite)
 
 STYLE = (".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
@@ -228,23 +237,65 @@ def _ray_at(v: Tuple[int, int], theta: int, radius: int) -> Tuple[int, int]:
     return (v[0] + grid_round(DIR[theta % 360][0] * radius, R), v[1] - grid_round(DIR[theta % 360][1] * radius, R))
 
 
-def _arc_path(v: Tuple[int, int], start: int, measure: int) -> str:
+def _isqrt(n: int) -> int:
+    """Exact integer floor square root (pure integer; no float / no trig)."""
+    if n < 2:
+        return n
+    x, y = n, (n + 1) // 2
+    while y < x:
+        x, y = y, (y + n // y) // 2
+    return x
+
+
+def _edge_len(p: Tuple[int, int], q: Tuple[int, int]) -> int:
+    return _isqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
+
+
+def _arc_radii(fig: Dict[str, Any], P: Dict[str, Tuple[int, int]]) -> List[int]:
+    """One radius per arc so each angle's arc is visually distinct and well-sized.
+
+    - Multi-region figures that share a single vertex (angles on a line / around a
+      point): GRADUATED radii by region index, so the arcs read as separate rings
+      rather than one continuous circle.
+    - Triangle / isosceles vertex arcs: scaled to <= ARC_TRI_NUM/ARC_TRI_DEN of the
+      SHORTEST incident edge (capped at ARC_TRI_MAX), so each arc sits inside its angle
+      and two arcs sharing a side cannot meet.
+    - Single-arc figures (vertically opposite): a fixed default.
+    """
+    arcs = fig["arcs"]
+    same_vertex = len({a[0] for a in arcs}) == 1 and len(arcs) >= 2
+    radii: List[int] = []
+    for j, (vn, start, measure) in enumerate(arcs):
+        if same_vertex:
+            radii.append(ARC_BASE + j * ARC_STEP)
+        else:
+            inc = [_edge_len(P[a], P[b]) for (a, b, _cls) in fig["segs"] if vn in (a, b)]
+            radii.append(min(ARC_TRI_MAX, min(inc) * ARC_TRI_NUM // ARC_TRI_DEN) if inc else ARC_DEFAULT)
+    return radii
+
+
+def _label_radii(fig: Dict[str, Any], arc_radii: List[int]) -> List[int]:
+    rmap = {(vn, start, measure): r for (vn, start, measure), r in zip(fig["arcs"], arc_radii)}
+    return [rmap.get((vn, start, measure), ARC_DEFAULT) + LBL_GAP for (vn, start, measure, _t) in fig["alabels"]]
+
+
+def _arc_path(v: Tuple[int, int], start: int, measure: int, radius: int) -> str:
     """Arc of the CCW sector [start, start+measure] (measure = the region angle).
 
     Reflex-correct: large-arc-flag = 1 iff measure > 180 (exactly 180 -> 0, a
     semicircle); sweep-flag is always 0 (CCW in math = the intended interior sector).
-    Endpoints lie on the boundary rays at ARC_R from the vertex.
+    Endpoints lie on the boundary rays at `radius` from the vertex.
     """
-    e1 = _ray_at(v, start, ARC_R)
-    e2 = _ray_at(v, start + measure, ARC_R)
+    e1 = _ray_at(v, start, radius)
+    e2 = _ray_at(v, start + measure, radius)
     large = 1 if measure > 180 else 0
-    return f"M {e1[0]} {e1[1]} A {ARC_R} {ARC_R} 0 {large} 0 {e2[0]} {e2[1]}"
+    return f"M {e1[0]} {e1[1]} A {radius} {radius} 0 {large} 0 {e2[0]} {e2[1]}"
 
 
-def _label_pos(v: Tuple[int, int], start: int, measure: int) -> Tuple[int, int]:
-    """Label point on the sector bisector (start + measure//2), so it sits INSIDE the
-    intended sector for both minor and reflex regions (never in the complement)."""
-    return _ray_at(v, start + measure // 2, LBL_R)
+def _label_pos(v: Tuple[int, int], start: int, measure: int, radius: int) -> Tuple[int, int]:
+    """Label point on the sector bisector (start + measure//2), just beyond its own
+    arc, so it sits INSIDE the intended sector for both minor and reflex regions."""
+    return _ray_at(v, start + measure // 2, radius)
 
 
 def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) -> List[Tuple[int, int, str, str]]:
@@ -258,8 +309,9 @@ def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) ->
     for (name, ox, oy, text, anchor) in fig["plabels"]:
         p = P[name]
         out.append((p[0] + ox, p[1] + oy, anchor, text))
-    for (vn, start, measure, text) in fig["alabels"]:
-        lp = _label_pos(P[vn], start, measure)
+    lab_radii = _label_radii(fig, _arc_radii(fig, P))
+    for (vn, start, measure, text), lr in zip(fig["alabels"], lab_radii):
+        lp = _label_pos(P[vn], start, measure, lr)
         out.append((lp[0], lp[1], "middle", text))
     return out
 
@@ -302,8 +354,9 @@ def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
     out.append(f"<style>{STYLE}</style>")
     for (a, b, cls) in fig["segs"]:
         out.append(f'<line class="{cls}" x1="{P[a][0]}" y1="{P[a][1]}" x2="{P[b][0]}" y2="{P[b][1]}"/>')
-    for (vn, start, measure) in fig["arcs"]:
-        out.append(f'<path class="ga" d="{_arc_path(P[vn], start, measure)}"/>')
+    arc_radii = _arc_radii(fig, P)
+    for (vn, start, measure), radius in zip(fig["arcs"], arc_radii):
+        out.append(f'<path class="ga" d="{_arc_path(P[vn], start, measure, radius)}"/>')
     for (vn, d, r1, r2) in fig.get("leaders", []):
         p1, p2 = _ray_at(P[vn], d, r1), _ray_at(P[vn], d, r2)
         out.append(f'<line class="gx" x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}"/>')
@@ -748,6 +801,8 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     # realise each FigureModel region's measure, sector direction, and major/minor
     # nature (this is what catches a reflex region drawn with its minor arc).
     P = _layout(fig["points"])
+    arc_radii = _arc_radii(fig, P)
+    lab_radii = _label_radii(fig, arc_radii)
     arc_cmds = re.findall(r'<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"/>', stored_svg)
     region_ok = (len(arc_cmds) == len(fig["arcs"]))
     large_ok = sweep_ok = region_ok
@@ -755,19 +810,20 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         if k >= len(arc_cmds):
             break
         x1, y1, rx, ry, large, sweep, x2, y2 = (int(t) for t in arc_cmds[k])
-        V = P[vn]
-        region_ok = region_ok and (x1, y1) == _ray_at(V, start, ARC_R) and (x2, y2) == _ray_at(V, start + measure, ARC_R) and rx == ARC_R and ry == ARC_R
+        V, rr = P[vn], arc_radii[k]
+        region_ok = region_ok and (x1, y1) == _ray_at(V, start, rr) and (x2, y2) == _ray_at(V, start + measure, rr) and rx == rr and ry == rr
         large_ok = large_ok and large == (1 if measure > 180 else 0)
         sweep_ok = sweep_ok and sweep == 0
-    add("arc-region-measure-agreement", bool(region_ok), "arc endpoints realise each region's (start, measure)")
+    add("arc-region-measure-agreement", bool(region_ok), "arc endpoints realise each region's (start, measure, radius)")
     add("arc-large-flag-correct", bool(large_ok), "large-arc-flag = 1 iff region exceeds 180 degrees")
     add("arc-sweep-correct", bool(sweep_ok), "sweep-flag = 0 (CCW interior sector)")
 
-    # Consecutive partition arcs must chain (cyclic region order) in the rendered SVG.
+    # Consecutive partition arcs tile the angle: each region starts where the previous
+    # ended (region_ok above ties each parsed arc to these start/measure rays).
     if task in ("straight_line_missing_angle", "angles_at_point_missing"):
         chain = len(arc_cmds) == len(fig["arcs"])
-        for k in range(len(arc_cmds) - 1):
-            chain = chain and arc_cmds[k][6:8] == arc_cmds[k + 1][0:2]
+        for k in range(len(fig["arcs"]) - 1):
+            chain = chain and (fig["arcs"][k][1] + fig["arcs"][k][2]) % 360 == fig["arcs"][k + 1][1] % 360
         add("arc-matches-cyclic-region", bool(chain), "arcs tile the angle consecutively")
 
     # Each angle label sits INSIDE its intended sector (parsed from the SVG text).
@@ -800,12 +856,21 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             mid = (grid_round(lx1 + lx2, 2), grid_round(ly1 + ly2, 2))
             theta = params["theta"]
             ok_target = _in_ccw_wedge(180, theta, P["O"], mid)
-            for (vn, start, measure, text) in fig["alabels"]:
+            for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
                 if text == "x":
-                    ok_target = ok_target and _in_ccw_wedge(180, theta, P["O"], _label_pos(P[vn], start, measure))
+                    ok_target = ok_target and _in_ccw_wedge(180, theta, P["O"], _label_pos(P[vn], start, measure, lab_radii[k]))
         add("target-region-unambiguous", bool(ok_target), "the x leader and label lie in the opposite region")
 
     add("a11y-equivalent-information", _a11y_equivalent_ok(params, acc), "accessible text is equivalent, not easier (no theorem/answer)")
+    # Harden against a TAMPERED stored description: the stored accessibility text and the
+    # media long description must equal the canonical (recomputed) text byte-for-byte.
+    a_store = item.get("accessibility", {})
+    media0 = item["media"][0] if item.get("media") else {}
+    add("a11y-text-canonical",
+        a_store.get("longDescription") == acc["desc"] and a_store.get("altText") == acc["alt"]
+        and a_store.get("spokenMath") == acc["desc"] and media0.get("longDescription") == acc["desc"]
+        and media0.get("altText") == acc["alt"],
+        "stored accessibility/media text matches the canonical description")
 
     # The unknown region is labelled 'x' (not its value); only the givens are drawn.
     numeric = sorted(int(t[:-1]) for (_, _, _, t) in fig["alabels"] if t.endswith("°"))
@@ -848,4 +913,4 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.1.0", "checks": checks}
+    return {"status": status, "validatorVersion": "1.2.0", "checks": checks}

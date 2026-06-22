@@ -4,9 +4,9 @@
 <style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="170" y1="350" x2="830" y2="350"/>
 <line class="gl" x1="703" y1="610" x2="297" y2="90"/>
-<path class="ga" d="M 570 350 A 70 70 0 0 0 457 295"/>
+<path class="ga" d="M 562 350 A 62 62 0 0 0 462 301"/>
 <line class="gx" x1="480" y1="391" x2="458" y2="436"/>
-<text x="553" y="242" text-anchor="middle">128°</text>
-<text x="447" y="458" text-anchor="middle">x</text>
+<text x="540" y="267" text-anchor="middle">128°</text>
+<text x="460" y="433" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

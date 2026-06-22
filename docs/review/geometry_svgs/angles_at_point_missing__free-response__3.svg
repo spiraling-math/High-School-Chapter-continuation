@@ -6,13 +6,13 @@
 <line class="gl" x1="498" y1="375" x2="852" y2="232"/>
 <line class="gl" x1="498" y1="375" x2="120" y2="322"/>
 <line class="gl" x1="498" y1="375" x2="128" y2="468"/>
-<path class="ga" d="M 568 375 A 70 70 0 0 0 563 349"/>
-<path class="ga" d="M 563 349 A 70 70 0 0 0 429 365"/>
-<path class="ga" d="M 429 365 A 70 70 0 0 0 430 392"/>
-<path class="ga" d="M 430 392 A 70 70 0 0 0 568 375"/>
-<text x="616" y="352" text-anchor="middle">22°</text>
-<text x="483" y="256" text-anchor="middle">150°</text>
-<text x="378" y="381" text-anchor="middle">22°</text>
-<text x="513" y="494" text-anchor="middle">x</text>
+<path class="ga" d="M 542 375 A 44 44 0 0 0 539 359"/>
+<path class="ga" d="M 557 351 A 64 64 0 0 0 435 366"/>
+<path class="ga" d="M 415 363 A 84 84 0 0 0 416 395"/>
+<path class="ga" d="M 397 400 A 104 104 0 0 0 602 375"/>
+<text x="571" y="361" text-anchor="middle">22°</text>
+<text x="487" y="282" text-anchor="middle">150°</text>
+<text x="384" y="381" text-anchor="middle">22°</text>
+<text x="514" y="508" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

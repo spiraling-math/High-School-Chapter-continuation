@@ -5,11 +5,11 @@
 <line class="gl" x1="389" y1="610" x2="611" y2="610"/>
 <line class="gl" x1="389" y1="610" x2="500" y2="90"/>
 <line class="gl" x1="611" y1="610" x2="500" y2="90"/>
-<path class="ga" d="M 485 158 A 70 70 0 0 0 515 158"/>
-<path class="ga" d="M 459 610 A 70 70 0 0 0 404 542"/>
+<path class="ga" d="M 488 145 A 56 56 0 0 0 512 145"/>
+<path class="ga" d="M 445 610 A 56 56 0 0 0 401 555"/>
 <line class="gt" x1="467" y1="355" x2="423" y2="345"/>
 <line class="gt" x1="578" y1="345" x2="534" y2="355"/>
-<text x="500" y="210" text-anchor="middle">24°</text>
-<text x="482" y="534" text-anchor="middle">x</text>
+<text x="500" y="176" text-anchor="middle">24°</text>
+<text x="456" y="556" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

@@ -59,9 +59,11 @@ def _region_card(label, role, measure, seed, it):
         idx = 0
     a = arcs[idx] if idx < len(arcs) else ("?",) * 8
     large, sweep = (a[4], a[5]) if len(a) >= 6 else ("?", "?")
+    arc_radius = a[2] if len(a) >= 3 else "?"
     # label anchor for that region
     lab = fig["alabels"][idx]
-    lp = geo._label_pos(P[lab[0]], lab[1], lab[2])
+    lab_radii = geo._label_radii(fig, geo._arc_radii(fig, P))
+    lp = geo._label_pos(P[lab[0]], lab[1], lab[2], lab_radii[idx])
     v = geo.validate(it)
     checks = {c["name"]: c["result"] for c in v["checks"]}
     key = ("svg-realises-data", "arc-large-flag-correct", "arc-sweep-correct",

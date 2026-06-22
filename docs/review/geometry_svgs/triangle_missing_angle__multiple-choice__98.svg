@@ -5,14 +5,14 @@
 <line class="gl" x1="120" y1="490" x2="880" y2="490"/>
 <line class="gl" x1="120" y1="490" x2="282" y2="210"/>
 <line class="gl" x1="880" y1="490" x2="282" y2="210"/>
-<path class="ga" d="M 190 490 A 70 70 0 0 0 155 429"/>
-<path class="ga" d="M 817 460 A 70 70 0 0 0 810 490"/>
-<path class="ga" d="M 247 271 A 70 70 0 0 0 345 240"/>
+<path class="ga" d="M 176 490 A 56 56 0 0 0 148 442"/>
+<path class="ga" d="M 829 466 A 56 56 0 0 0 824 490"/>
+<path class="ga" d="M 254 258 A 56 56 0 0 0 333 234"/>
 <text x="86" y="520" text-anchor="end">A</text>
 <text x="914" y="520" text-anchor="start">B</text>
 <text x="282" y="192" text-anchor="middle">C</text>
-<text x="224" y="430" text-anchor="middle">60°</text>
-<text x="763" y="463" text-anchor="middle">25°</text>
-<text x="317" y="325" text-anchor="middle">x</text>
+<text x="194" y="447" text-anchor="middle">60°</text>
+<text x="796" y="471" text-anchor="middle">25°</text>
+<text x="307" y="292" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>
