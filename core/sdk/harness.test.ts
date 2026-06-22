@@ -32,5 +32,6 @@ test("the registered generators are the approved set", () => {
     "gen.sequences.arithmetic@1.1.0",
     "gen.sequences.geometric@1.1.0",
     "gen.algebra.linear-equations@1.0.1",
+    "gen.geometry.angles-figures@1.0.0",
   ]);
 });

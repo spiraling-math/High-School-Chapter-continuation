@@ -10,7 +10,7 @@
     "topic": "inverse operations",
     "subtopic": "inverse operations and changing the subject",
     "microSkill": "reverse a chain of operations using inverse pairs (+/-, x/div) applied in reverse order",
-    "objectiveWording": "Identify and apply inverse operations - undoing a sequence of operations in reverse order - to isolate a target quantity.",
+    "objectiveWording": "Identify and apply inverse operations to undo addition, subtraction, multiplication, and division in numerical and algebraic contexts.",
     "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01"],
     "successCriteria": [
       "States the inverse of each operation and recognises +/- and x// as inverse pairs.",
@@ -33,7 +33,7 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.1", "label": "Algebraic notation and manipulation of formulae" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Algebraic manipulation and inverse operations" }
     ],
-    "reviewStatus": "proposed",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -47,7 +47,7 @@
     "topic": "expanding brackets",
     "subtopic": "expanding a single bracket (distributive law)",
     "microSkill": "multiply each term inside one bracket by the term outside, preserving signs",
-    "objectiveWording": "Expand a single bracket of the form k(ax + b) using the distributive law, distributing the sign correctly across every term inside.",
+    "objectiveWording": "Expand and simplify a single linear bracket of the form a(bx + c) using the distributive property.",
     "prerequisites": ["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01"],
     "successCriteria": [
       "Expands k(ax + b) correctly, e.g. 3(x + 4) = 3x + 12.",
@@ -69,7 +69,7 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C2.2/E2.2", "label": "Expansion of brackets" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1-2", "label": "Expansion of linear expressions" }
     ],
-    "reviewStatus": "proposed",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   }
 ]

@@ -1,0 +1,172 @@
+[
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "geometry",
+    "strand": "angles-lines-triangles-quadrilaterals",
+    "topic": "angles on a straight line",
+    "subtopic": "unknown angle on a straight line",
+    "microSkill": "find an unknown angle on a straight line from the 180-degree sum",
+    "objectiveWording": "Find an unknown angle on a straight line using the fact that angles on a straight line sum to 180 degrees.",
+    "prerequisites": ["SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01"],
+    "successCriteria": [
+      "Identifies the given angles and the unknown on a straight line from the diagram.",
+      "Applies the straight-line angle sum (180 degrees) to form and solve a single equation.",
+      "States the unknown angle exactly, in degrees."
+    ],
+    "allowedRepresentations": ["diagram", "numeric", "symbolic"],
+    "vocabulary": ["straight line", "angle", "sum", "supplementary", "degrees"],
+    "notation": ["x for the unknown angle", "the degree symbol"],
+    "answerTypes": ["integer", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 3 },
+    "commonMisconceptions": ["MISC.GEOM.LINE.USES_360", "MISC.GEOM.LINE.RETURNS_SUM_GIVENS", "MISC.GEOM.LINE.FORGOT_ONE_GIVEN"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.ANGLES_AT_POINT.01", "SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch21", "locator": "Middle School Topic 21: Angles, Lines, Triangles & Quadrilaterals (angles on a straight line)" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C4.6", "label": "Angles at a point and on a straight line" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Basic angle properties" }
+    ],
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "geometry",
+    "strand": "angles-lines-triangles-quadrilaterals",
+    "topic": "triangle angle sum",
+    "subtopic": "unknown interior angle of a general triangle",
+    "microSkill": "find an unknown interior angle of a general triangle from the 180-degree sum",
+    "objectiveWording": "Find an unknown interior angle of a general triangle using the fact that the interior angles sum to 180 degrees.",
+    "prerequisites": ["SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01"],
+    "successCriteria": [
+      "Identifies the two given interior angles and the unknown from the diagram.",
+      "Applies the triangle interior-angle sum (180 degrees).",
+      "States the unknown angle exactly, in degrees."
+    ],
+    "allowedRepresentations": ["diagram", "numeric", "symbolic"],
+    "vocabulary": ["triangle", "interior angle", "angle sum", "vertex", "degrees"],
+    "notation": ["x for the unknown angle", "labelled vertices A, B, C"],
+    "answerTypes": ["integer", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.GEOM.TRI.USES_360", "MISC.GEOM.TRI.RETURNS_SUM_GIVENS", "MISC.GEOM.TRI.SUBTRACTS_ONLY_ONE_GIVEN"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01", "SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch21", "locator": "Middle School Topic 21: Triangle angle sum" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C4.6", "label": "Angle properties of triangles" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Angle properties of triangles" }
+    ],
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "geometry",
+    "strand": "angles-lines-triangles-quadrilaterals",
+    "topic": "isosceles triangle base angles",
+    "subtopic": "unknown base angle of an isosceles triangle",
+    "microSkill": "find an unknown base angle of an isosceles triangle from the equal base angles and the angle sum",
+    "objectiveWording": "Find an unknown base angle of an isosceles triangle using the equality of the base angles and the triangle angle sum.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01", "SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01"],
+    "successCriteria": [
+      "Recognises the two equal sides (tick marks) and the equal base angles.",
+      "Applies base angle = (180 - apex)/2.",
+      "States the base angle exactly, in degrees."
+    ],
+    "allowedRepresentations": ["diagram", "numeric", "symbolic"],
+    "vocabulary": ["isosceles triangle", "base angle", "apex angle", "equal sides", "degrees"],
+    "notation": ["x for the unknown base angle", "tick marks for equal sides"],
+    "answerTypes": ["integer", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.GEOM.ISO.FORGOT_TO_HALVE", "MISC.GEOM.ISO.HALVES_180_ONLY", "MISC.GEOM.ISO.APEX_EQUALS_BASE"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch21", "locator": "Middle School Topic 21: Isosceles triangle base angles" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C4.6", "label": "Angle properties of isosceles triangles" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Isosceles triangle properties" }
+    ],
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "geometry",
+    "strand": "angles-lines-triangles-quadrilaterals",
+    "topic": "vertically opposite angles",
+    "subtopic": "angle vertically opposite a given angle",
+    "microSkill": "find the angle vertically opposite a given angle (equal)",
+    "objectiveWording": "Find an angle vertically opposite to a given angle using the fact that vertically opposite angles are equal.",
+    "prerequisites": ["SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01"],
+    "successCriteria": [
+      "Identifies the two intersecting straight lines and the given angle.",
+      "Identifies the angle directly opposite the vertex.",
+      "States that the vertically opposite angle equals the given angle, in degrees."
+    ],
+    "allowedRepresentations": ["diagram", "numeric"],
+    "vocabulary": ["intersecting lines", "vertically opposite", "vertex", "equal", "degrees"],
+    "notation": ["x for the unknown angle"],
+    "answerTypes": ["integer"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 2 },
+    "commonMisconceptions": ["MISC.GEOM.VO.USES_SUPPLEMENTARY"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01", "SPI.MIDDLE.GEO.ANGLES_AT_POINT.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch21", "locator": "Middle School Topic 21: Vertically opposite angles" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C4.6", "label": "Vertically opposite angles" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Vertically opposite angles" }
+    ],
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.ANGLES_AT_POINT.01",
+    "academy": "SPI-Math",
+    "programme": "SPI-Math Middle School",
+    "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics",
+    "domain": "geometry",
+    "strand": "angles-lines-triangles-quadrilaterals",
+    "topic": "angles around a point",
+    "subtopic": "unknown angle around a point",
+    "microSkill": "find an unknown angle around a point from the 360-degree sum",
+    "objectiveWording": "Find an unknown angle around a point using the fact that angles around a point sum to 360 degrees.",
+    "prerequisites": ["SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01"],
+    "successCriteria": [
+      "Identifies the given angles and the unknown around a single point.",
+      "Applies the angles-at-a-point sum (360 degrees).",
+      "States the unknown angle exactly, in degrees."
+    ],
+    "allowedRepresentations": ["diagram", "numeric", "symbolic"],
+    "vocabulary": ["point", "full turn", "angle sum", "rays", "degrees"],
+    "notation": ["x for the unknown angle", "rays from a common point O"],
+    "answerTypes": ["integer", "multiple-choice"],
+    "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 4 },
+    "commonMisconceptions": ["MISC.GEOM.POINT.USES_180", "MISC.GEOM.POINT.RETURNS_SUM_GIVENS", "MISC.GEOM.POINT.FORGOT_ONE_GIVEN"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-ch21", "locator": "Middle School Topic 21: Angles around a point" }],
+    "externalAlignments": [
+      { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C4.6", "label": "Angles at a point" },
+      { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Angles at a point" }
+    ],
+    "reviewStatus": "approved",
+    "version": "1.0.0"
+  }
+]

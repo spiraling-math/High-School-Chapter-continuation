@@ -26,6 +26,7 @@ sys.path.insert(0, HERE)
 from spi_oracle import sequences as seq  # noqa: E402
 from spi_oracle import geometric as geo  # noqa: E402
 from spi_oracle import linear_equations as lin  # noqa: E402
+from spi_oracle import geometry as geoang  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -153,11 +154,19 @@ def main() -> int:
     for task in ("one_step_add", "one_step_mul", "two_step", "both_sides", "brackets"):
         ok &= validate(lin.generate(5, {"answerType": "multiple-choice", "task": task}), item_schema, registry, f"linear item task={task}")
 
+    # 4d. Live geometry-angles items (SVG diagrams; all five tasks).
+    for seed in (1, 42, 123456789):
+        ok &= validate(geoang.generate(seed, {"interactionType": "multiple-choice"}), item_schema, registry, f"geometry item seed={seed} (MC)")
+    for task in ("straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle", "vertically_opposite_angle", "angles_at_point_missing"):
+        mode = "free-response" if task == "vertically_opposite_angle" else "multiple-choice"
+        ok &= validate(geoang.generate(5, {"interactionType": mode, "task": task}), item_schema, registry, f"geometry item task={task}")
+
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]
     ok &= validate(seq.describe(), gen_schema, registry, "gen.sequences.arithmetic describe()")
     ok &= validate(geo.describe(), gen_schema, registry, "gen.sequences.geometric describe()")
     ok &= validate(lin.describe(), gen_schema, registry, "gen.algebra.linear-equations describe()")
+    ok &= validate(geoang.describe(), gen_schema, registry, "gen.geometry.angles-figures describe()")
 
     print("\n" + ("ALL CONFORMANCE CHECKS PASSED" if ok else "CONFORMANCE FAILURES PRESENT"))
     return 0 if ok else 1

@@ -13,6 +13,7 @@ import * as arithmetic from "../../domains/sequences/arithmetic.ts";
 import { validate as arithmeticValidate } from "../../domains/sequences/validate.ts";
 import * as geometric from "../../domains/sequences/geometric.ts";
 import * as linear from "../../domains/algebra/linear-equations.ts";
+import * as geometryAngles from "../../domains/geometry/angles.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -58,6 +59,21 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => linear.generate(s, c as linear.Config),
     validate: linear.validate,
     serialize: linear.serialize,
+  },
+  {
+    id: geometryAngles.GENERATOR_ID,
+    version: geometryAngles.GENERATOR_VERSION,
+    label: "Geometry — angles (SVG)",
+    tasks: [
+      { value: "straight_line_missing_angle", label: "Angles on a straight line", mc: true },
+      { value: "triangle_missing_angle", label: "Triangle angle sum", mc: true },
+      { value: "isosceles_base_angle", label: "Isosceles base angle", mc: true },
+      { value: "vertically_opposite_angle", label: "Vertically opposite", mc: false },
+      { value: "angles_at_point_missing", label: "Angles around a point", mc: true },
+    ],
+    generate: (s, c) => geometryAngles.generate(s, c as geometryAngles.Config),
+    validate: geometryAngles.validate,
+    serialize: geometryAngles.serialize,
   },
 ];
 
