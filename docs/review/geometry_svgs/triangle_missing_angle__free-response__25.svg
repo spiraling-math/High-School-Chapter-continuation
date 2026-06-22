@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: a triangle with two known angles and an unknown angle x.">
+<title>Triangle ABC</title>
+<desc>Triangle ABC has an interior angle of 100 degrees at A, an interior angle of 60 degrees at B, and an unknown interior angle x at C.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="442" y1="610" x2="650" y2="610"/>
+<line class="gl" x1="442" y1="610" x2="350" y2="90"/>
+<line class="gl" x1="650" y1="610" x2="350" y2="90"/>
+<path class="ga" d="M 512 610 A 70 70 0 0 0 430 541"/>
+<path class="ga" d="M 615 549 A 70 70 0 0 0 580 610"/>
+<path class="ga" d="M 362 159 A 70 70 0 0 0 385 151"/>
+<text x="408" y="640" text-anchor="end">A</text>
+<text x="684" y="640" text-anchor="start">B</text>
+<text x="350" y="72" text-anchor="middle">C</text>
+<text x="519" y="518" text-anchor="middle">100°</text>
+<text x="546" y="550" text-anchor="middle">60°</text>
+<text x="391" y="203" text-anchor="middle">x</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

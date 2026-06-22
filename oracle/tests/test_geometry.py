@@ -201,5 +201,154 @@ class TestValidation(unittest.TestCase):
         self.assertEqual(geo.validate(item)["status"], "fail")
 
 
+def _arc_covers_sector(e1, e2, r, large, sweep, n=24):
+    """Reconstruct the SVG elliptical-arc (rx=ry=r) and return the set of sampled
+    points. Used as a NON-BLOCKING geometric diagnostic (atan2 here only)."""
+    x1, y1 = e1
+    x2, y2 = e2
+    x1p = (x1 - x2) / 2.0
+    y1p = (y1 - y2) / 2.0
+    num = r * r * r * r - r * r * y1p * y1p - r * r * x1p * x1p
+    den = r * r * y1p * y1p + r * r * x1p * x1p
+    co = math.sqrt(max(num / den, 0.0))
+    if large == sweep:
+        co = -co
+    cxp = co * (r * y1p / r)
+    cyp = co * (-r * x1p / r)
+    cx = cxp + (x1 + x2) / 2.0
+    cy = cyp + (y1 + y2) / 2.0
+    t1 = math.atan2((y1p - cyp) / r, (x1p - cxp) / r)
+    t2 = math.atan2((-y1p - cyp) / r, (-x1p - cxp) / r)
+    d = t2 - t1
+    if sweep == 0 and d > 0:
+        d -= 2 * math.pi
+    if sweep == 1 and d < 0:
+        d += 2 * math.pi
+    return [(cx + r * math.cos(t1 + d * i / n), cy + r * math.sin(t1 + d * i / n)) for i in range(n + 1)]
+
+
+class TestReflexAndArcSemantics(unittest.TestCase):
+    ARC_RE = re.compile(r'<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"/>')
+
+    def test_owner_cited_reflex_cases_validate(self):
+        a = geo.generate(1, {"task": "angles_at_point_missing", "interactionType": "multiple-choice"})
+        self.assertEqual(a["answer"]["canonical"]["num"], 263)               # reflex UNKNOWN
+        self.assertEqual(geo.validate(a)["status"], "pass")
+        b = geo.generate(26, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+        self.assertIn(248, geo._ctx(b["params"])["givens"])                  # reflex GIVEN
+        self.assertEqual(geo.validate(b)["status"], "pass")
+
+    def test_large_and_sweep_flags_match_measure_everywhere(self):
+        seen_reflex = 0
+        for s in range(1, 1500):
+            for task in ("straight_line_missing_angle", "angles_at_point_missing"):
+                it = geo.generate(s, {"task": task, "interactionType": "free-response"})
+                fig = geo._build_figure(it["params"])
+                arcs = self.ARC_RE.findall(it["media"][0]["svg"])
+                self.assertEqual(len(arcs), len(fig["arcs"]))
+                for (vn, start, measure), a in zip(fig["arcs"], arcs):
+                    large, sweep = int(a[4]), int(a[5])
+                    self.assertEqual(large, 1 if measure > 180 else 0, f"{task} s{s} m{measure}")
+                    self.assertEqual(sweep, 0)
+                    if measure > 180:
+                        seen_reflex += 1
+        self.assertGreater(seen_reflex, 20, "reflex regions must be exercised")
+
+    def test_rendered_arc_geometrically_covers_its_sector(self):
+        # Non-blocking diagnostic: the actual SVG arc stays within [start, start+measure]
+        # and passes through the bisector — for minor AND reflex regions.
+        TOL = 1.5
+        for s in range(1, 400):
+            it = geo.generate(s, {"interactionType": "free-response"})
+            fig = geo._build_figure(it["params"])
+            P = geo._layout(fig["points"])
+            for (vn, start, measure) in fig["arcs"]:
+                V = P[vn]
+                e1 = geo._ray_at(V, start, geo.ARC_R)
+                e2 = geo._ray_at(V, start + measure, geo.ARC_R)
+                large = 1 if measure > 180 else 0
+                rel = [(math.degrees(math.atan2(-(py - V[1]), px - V[0])) - start) % 360
+                       for (px, py) in _arc_covers_sector(e1, e2, geo.ARC_R, large, 0)]
+                for a in rel:                       # every point inside the sector (wrap-aware)
+                    self.assertTrue(a <= measure + TOL or a >= 360 - TOL, f"s{s} m{measure}: {a:.2f} outside")
+                mid = rel[len(rel) // 2]            # the arc midpoint sits near the bisector
+                self.assertLess(abs(mid - measure / 2.0), TOL, f"s{s} m{measure}: bisector off")
+
+    def test_boundary_179_180_181(self):
+        for measure, exp_large in ((179, 0), (180, 0), (181, 1)):
+            other = (360 - measure)
+            params = {"task": "angles_at_point_missing", "regions": [measure, other - 10, 10], "unknownIndex": 2}
+            fig = geo._build_figure(params)
+            svg = geo.canonical_svg(fig, "a", "t", "d")
+            first = self.ARC_RE.findall(svg)[0]
+            self.assertEqual(int(first[4]), exp_large, f"measure {measure}")
+            self.assertEqual(int(first[5]), 0)
+
+    def test_tamper_large_flag_on_reflex_fails(self):
+        it = geo.generate(1, {"task": "angles_at_point_missing", "interactionType": "free-response"})
+        svg = it["media"][0]["svg"]
+        bad = re.sub(r"(A 70 70 0 )1( 0 )", r"\g<1>0\g<2>", svg, count=1)
+        self.assertNotEqual(bad, svg)
+        it["media"][0]["svg"] = bad
+        names = [c["name"] for c in geo.validate(it)["checks"] if c["result"] == "fail"]
+        self.assertIn("arc-large-flag-correct", names)
+        self.assertIn("reflex-region-rendered-correctly", names)
+
+    def test_tamper_sweep_fails(self):
+        it = geo.generate(5, {"task": "triangle_missing_angle", "interactionType": "free-response"})
+        it["media"][0]["svg"] = it["media"][0]["svg"].replace("A 70 70 0 0 0", "A 70 70 0 0 1", 1)
+        names = [c["name"] for c in geo.validate(it)["checks"] if c["result"] == "fail"]
+        self.assertIn("arc-sweep-correct", names)
+
+    def test_label_inside_every_sector(self):
+        for s in range(1, 600):
+            for m in ("free-response", "multiple-choice"):
+                v = geo.validate(geo.generate(s, {"interactionType": m}))
+                ok = {c["name"]: c["result"] for c in v["checks"]}
+                self.assertEqual(ok.get("label-inside-intended-region"), "pass", f"s{s} {m}")
+                self.assertEqual(ok.get("reflex-region-rendered-correctly"), "pass")
+
+
+class TestVerticallyOppositeMarking(unittest.TestCase):
+    def test_neutral_leader_no_matching_arc(self):
+        for s in range(1, 400):
+            it = geo.generate(s, {"task": "vertically_opposite_angle", "interactionType": "free-response"})
+            svg = it["media"][0]["svg"]
+            self.assertEqual(svg.count('<path class="ga"'), 1, "only the given angle has an arc")
+            self.assertEqual(svg.count('class="gt"'), 0, "no congruence tick marks")
+            self.assertEqual(svg.count('class="gx"'), 1, "exactly one neutral target leader")
+            ok = {c["name"]: c["result"] for c in geo.validate(it)["checks"]}
+            self.assertEqual(ok.get("no-theorem-revealing-markers"), "pass", f"s{s}")
+            self.assertEqual(ok.get("target-region-unambiguous"), "pass", f"s{s}")
+
+
+class TestA11yEquivalence(unittest.TestCase):
+    LEAK = {
+        "straight_line_missing_angle": "The angles sum to 180 degrees, so x is the rest.",
+        "triangle_missing_angle": "The angles sum to 180 degrees; x = 70.",
+        "isosceles_base_angle": "The base angles are equal in an isosceles triangle.",
+        "vertically_opposite_angle": "Vertically opposite angles are equal, so x equals the given.",
+        "angles_at_point_missing": "Angles around a point add up to 360 degrees.",
+    }
+
+    def test_generated_descriptions_are_equivalent_not_easier(self):
+        for s in range(1, 400):
+            for m in ("free-response", "multiple-choice"):
+                it = geo.generate(s, {"interactionType": m})
+                ok = {c["name"]: c["result"] for c in geo.validate(it)["checks"]}
+                self.assertEqual(ok.get("a11y-equivalent-information"), "pass", f"s{s} {m}")
+
+    def test_theorem_leaking_text_is_rejected(self):
+        for task, leak in self.LEAK.items():
+            params = ({"task": task, "A": 50, "B": 60} if task == "triangle_missing_angle"
+                      else {"task": task, "apex": 108} if task == "isosceles_base_angle"
+                      else {"task": task, "theta": 40} if task == "vertically_opposite_angle"
+                      else {"task": task, "regions": [40, 60, 80], "unknownIndex": 2})
+            acc = geo._accessibility(params)
+            self.assertTrue(geo._a11y_equivalent_ok(params, acc), f"{task} clean desc accepted")
+            bad = dict(acc, desc=leak)
+            self.assertFalse(geo._a11y_equivalent_ok(params, bad), f"{task} leak rejected")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

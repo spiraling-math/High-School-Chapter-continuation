@@ -32,8 +32,11 @@ from spi_oracle.geometry_misconceptions import MISCONCEPTIONS, rules_for  # noqa
 REVIEW_DIR = os.path.join(ROOT, "docs", "review")
 SVG_DIR = os.path.join(REVIEW_DIR, "geometry_svgs")
 SCAN_LIMIT = 40000
-DIAGRAM_CHECKS = ("svg-realises-data", "labels-non-overlapping", "not-to-scale", "no-answer-leakage", "media-present")
-A11Y_CHECKS = ("a11y-fields-present", "a11y-no-answer-in-text")
+DIAGRAM_CHECKS = ("svg-realises-data", "arc-region-measure-agreement", "arc-large-flag-correct", "arc-sweep-correct",
+                  "arc-matches-cyclic-region", "label-inside-intended-region", "reflex-region-rendered-correctly",
+                  "no-theorem-revealing-markers", "target-region-unambiguous", "labels-non-overlapping",
+                  "not-to-scale", "no-answer-leakage", "media-present")
+A11Y_CHECKS = ("a11y-fields-present", "a11y-no-answer-in-text", "a11y-equivalent-information")
 
 
 def _modes(task: str) -> list:

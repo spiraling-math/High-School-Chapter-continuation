@@ -20,7 +20,7 @@ import { DIR, R } from "../../core/geometry/dir-table.ts";
 import { MISCONCEPTIONS, rulesFor, type GeoCtx } from "./geometry-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.geometry.angles-figures";
-export const GENERATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.1.0";
 
 export type Task = "straight_line_missing_angle" | "triangle_missing_angle" | "isosceles_base_angle"
   | "vertically_opposite_angle" | "angles_at_point_missing";
@@ -46,8 +46,9 @@ const MIN_ANGLE = 10;
 const VIEW_W = 1000, VIEW_H = 700, RAW_LEN = 1000, RAW_BASE = 1200;
 const CX = 500, CY = 350, SPAN_X = 760, SPAN_Y = 520;
 const ARC_R = 70, LBL_R = 120, TICK = 22;
+const LEADER_R1 = 46, LEADER_R2 = 96;
 const STYLE = ".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
-  + ".gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
+  + ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
   + ".gn{font-size:22px;fill:#444;letter-spacing:1px}";
 
 export interface Params { task: Task; [k: string]: Json; }
@@ -78,8 +79,9 @@ function cum(values: number[]): number[] {
 interface Figure {
   points: Record<string, Pt>;
   segs: Array<[string, string, string]>;
-  arcs: Array<[string, number, number]>;
-  alabels: Array<[string, number, number, string]>;
+  arcs: Array<[string, number, number]>;            // (vertex, startDir, measure) — CCW region
+  alabels: Array<[string, number, number, string]>; // (vertex, startDir, measure, text)
+  leaders: Array<[string, number, number, number]>; // (vertex, dir, r1, r2) — neutral target marker
   ticks: Array<[string, string, number]>;
   plabels: Array<[string, number, number, string, string]>;
 }
@@ -90,6 +92,7 @@ function buildFigure(p: Params): Figure {
   const segs: Array<[string, string, string]> = [];
   const arcs: Array<[string, number, number]> = [];
   const alabels: Array<[string, number, number, string]> = [];
+  const leaders: Array<[string, number, number, number]> = [];
   const ticks: Array<[string, string, number]> = [];
   const plabels: Array<[string, number, number, string, string]> = [];
 
@@ -103,8 +106,8 @@ function buildFigure(p: Params): Figure {
     segs.push([names[0]!, names[names.length - 1]!, "gl"]);
     for (let i = 1; i < bounds.length - 1; i++) segs.push(["O", names[i]!, "gl"]);
     for (let j = 0; j < regions.length; j++) {
-      arcs.push(["O", bounds[j]!, bounds[j + 1]!]);
-      alabels.push(["O", bounds[j]!, bounds[j + 1]!, j === uidx ? "x" : `${regions[j]}°`]);
+      arcs.push(["O", bounds[j]!, regions[j]!]);
+      alabels.push(["O", bounds[j]!, regions[j]!, j === uidx ? "x" : `${regions[j]}°`]);
     }
   } else if (task === "triangle_missing_angle" || task === "isosceles_base_angle") {
     let A: number, B: number; let apex = 0;
@@ -114,13 +117,14 @@ function buildFigure(p: Params): Figure {
     const P = apexPoint(L, Rr, A, B);
     points["L"] = L; points["R"] = Rr; points["P"] = P;
     segs.push(["L", "R", "gl"], ["L", "P", "gl"], ["R", "P", "gl"]);
+    // interior angle at each vertex = (startDir, measure) sweeping CCW through the interior.
     if (task === "triangle_missing_angle") {
-      arcs.push(["L", 0, A], ["R", 180 - B, 180], ["P", (A + 180) % 360, (360 - B) % 360]);
-      alabels.push(["L", 0, A, `${A}°`], ["R", 180 - B, 180, `${B}°`], ["P", (A + 180) % 360, (360 - B) % 360, "x"]);
+      arcs.push(["L", 0, A], ["R", 180 - B, B], ["P", (A + 180) % 360, 180 - A - B]);
+      alabels.push(["L", 0, A, `${A}°`], ["R", 180 - B, B, `${B}°`], ["P", (A + 180) % 360, 180 - A - B, "x"]);
       plabels.push(["L", -34, 30, "A", "end"], ["R", 34, 30, "B", "start"], ["P", 0, -18, "C", "middle"]);
     } else {
-      arcs.push(["P", (A + 180) % 360, (360 - B) % 360], ["L", 0, A]);
-      alabels.push(["P", (A + 180) % 360, (360 - B) % 360, `${apex}°`], ["L", 0, A, "x"]);
+      arcs.push(["P", (A + 180) % 360, 180 - A - B], ["L", 0, A]);
+      alabels.push(["P", (A + 180) % 360, 180 - A - B, `${apex}°`], ["L", 0, A, "x"]);
       ticks.push(["L", "P", A], ["R", "P", 180 - B]);
     }
   } else if (task === "vertically_opposite_angle") {
@@ -129,8 +133,11 @@ function buildFigure(p: Params): Figure {
     points["O"] = O; points["E0"] = ray(O, 0, RAW_LEN); points["E180"] = ray(O, 180, RAW_LEN);
     points["Et"] = ray(O, theta, RAW_LEN); points["Et2"] = ray(O, theta + 180, RAW_LEN);
     segs.push(["E180", "E0", "gl"], ["Et2", "Et", "gl"]);
-    arcs.push(["O", 0, theta], ["O", 180, (theta + 180) % 360]);
-    alabels.push(["O", 0, theta, `${theta}°`], ["O", 180, (theta + 180) % 360, "x"]);
+    // ONLY the given angle gets an arc; the target (x) is a NEUTRAL leader in the
+    // directly-opposite region — no matching arc that would announce the equality.
+    arcs.push(["O", 0, theta]);
+    alabels.push(["O", 0, theta, `${theta}°`], ["O", 180, theta, "x"]);
+    leaders.push(["O", (180 + Math.floor(theta / 2)) % 360, LEADER_R1, LEADER_R2]);
   } else {
     const regions = p["regions"] as number[], uidx = p["unknownIndex"] as number;
     const bounds = cum(regions);
@@ -139,11 +146,11 @@ function buildFigure(p: Params): Figure {
     const m = regions.length;
     for (let i = 0; i < m; i++) { points[`Rr${i}`] = ray(O, bounds[i]!, RAW_LEN); segs.push(["O", `Rr${i}`, "gl"]); }
     for (let j = 0; j < m; j++) {
-      arcs.push(["O", bounds[j]!, bounds[j + 1]!]);
-      alabels.push(["O", bounds[j]!, bounds[j + 1]!, j === uidx ? "x" : `${regions[j]}°`]);
+      arcs.push(["O", bounds[j]!, regions[j]!]);
+      alabels.push(["O", bounds[j]!, regions[j]!, j === uidx ? "x" : `${regions[j]}°`]);
     }
   }
-  return { points, segs, arcs, alabels, ticks, plabels };
+  return { points, segs, arcs, alabels, leaders, ticks, plabels };
 }
 
 function apexPoint(L: Pt, Rr: Pt, A: number, B: number): Pt {
@@ -173,17 +180,20 @@ function layout(points: Record<string, Pt>): Record<string, Pt> {
   return out;
 }
 
-function arcPath(v: Pt, a1: number, a2: number): string {
-  const e1: Pt = [v[0] + gridRound(dirAt(a1)[0] * ARC_R, R), v[1] - gridRound(dirAt(a1)[1] * ARC_R, R)];
-  const e2: Pt = [v[0] + gridRound(dirAt(a2)[0] * ARC_R, R), v[1] - gridRound(dirAt(a2)[1] * ARC_R, R)];
-  const cross = (e1[0] - v[0]) * (e2[1] - v[1]) - (e1[1] - v[1]) * (e2[0] - v[0]);
-  const sweep = cross < 0 ? 1 : 0;
-  return `M ${e1[0]} ${e1[1]} A ${ARC_R} ${ARC_R} 0 0 ${sweep} ${e2[0]} ${e2[1]}`;
+function rayAt(v: Pt, theta: number, radius: number): Pt {
+  return [v[0] + gridRound(dirAt(theta)[0] * radius, R), v[1] - gridRound(dirAt(theta)[1] * radius, R)];
 }
-function labelPos(v: Pt, a1: number, a2: number): Pt {
-  const p1: Pt = [v[0] + gridRound(dirAt(a1)[0] * LBL_R, R), v[1] - gridRound(dirAt(a1)[1] * LBL_R, R)];
-  const p2: Pt = [v[0] + gridRound(dirAt(a2)[0] * LBL_R, R), v[1] - gridRound(dirAt(a2)[1] * LBL_R, R)];
-  return mid(p1, p2);
+// Arc of the CCW sector [start, start+measure]. Reflex-correct: large-arc-flag = 1 iff
+// measure > 180 (exactly 180 -> 0); sweep-flag is always 0 (the intended interior sector).
+function arcPath(v: Pt, start: number, measure: number): string {
+  const e1 = rayAt(v, start, ARC_R), e2 = rayAt(v, start + measure, ARC_R);
+  const large = measure > 180 ? 1 : 0;
+  return `M ${e1[0]} ${e1[1]} A ${ARC_R} ${ARC_R} 0 ${large} 0 ${e2[0]} ${e2[1]}`;
+}
+// Label on the sector bisector (start + measure//2), inside the intended sector for
+// both minor and reflex regions.
+function labelPos(v: Pt, start: number, measure: number): Pt {
+  return rayAt(v, start + Math.floor(measure / 2), LBL_R);
 }
 
 type TextLabel = [number, number, string, string]; // x, y, anchor, text
@@ -222,7 +232,11 @@ function canonicalSvg(fig: Figure, alt: string, title: string, desc: string): st
   out.push(`<desc>${esc(desc)}</desc>`);
   out.push(`<style>${STYLE}</style>`);
   for (const [a, b, cls] of fig.segs) out.push(`<line class="${cls}" x1="${P[a]![0]}" y1="${P[a]![1]}" x2="${P[b]![0]}" y2="${P[b]![1]}"/>`);
-  for (const [vn, a1, a2] of fig.arcs) out.push(`<path class="ga" d="${arcPath(P[vn]!, a1, a2)}"/>`);
+  for (const [vn, start, measure] of fig.arcs) out.push(`<path class="ga" d="${arcPath(P[vn]!, start, measure)}"/>`);
+  for (const [vn, d, r1, r2] of fig.leaders) {
+    const p1 = rayAt(P[vn]!, d, r1), p2 = rayAt(P[vn]!, d, r2);
+    out.push(`<line class="gx" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}"/>`);
+  }
   for (const [a, b, ang] of fig.ticks) {
     const m = mid(P[a]!, P[b]!);
     const d: Pt = [gridRound(dirAt(ang + 90)[0] * TICK, R), -gridRound(dirAt(ang + 90)[1] * TICK, R)];
@@ -278,31 +292,64 @@ export function generateDistractors(p: Params): Cand[] | null {
 function accessibility(p: Params): { title: string; alt: string; desc: string; dataTable: Json } {
   const g = ctx(p);
   const gv = g.givens.map((v) => `${v} degrees`).join(", ");
+  // Information-EQUIVALENT to the diagram: same givens/configuration, never the
+  // theorem, calculation, or answer being assessed (see a11yEquivalentOk).
   let title: string, alt: string, desc: string;
   if (p.task === "straight_line_missing_angle") {
     title = "Angles on a straight line";
-    alt = "Diagram: angles meeting on a straight line, with an unknown angle x.";
-    desc = `Angles of ${gv} and an unknown angle x lie along one side of a straight line and together make a straight angle of 180 degrees.`;
+    alt = "Diagram: angles adjacent on one side of a straight line, with an unknown angle x.";
+    desc = `Angles of ${gv} and an unknown angle x are adjacent, in order, along one side of a straight line.`;
   } else if (p.task === "triangle_missing_angle") {
     title = "Triangle ABC";
     alt = "Diagram: a triangle with two known angles and an unknown angle x.";
-    desc = `Triangle ABC has interior angles of ${p["A"]} degrees at A and ${p["B"]} degrees at B, and an unknown interior angle x at C.`;
+    desc = `Triangle ABC has an interior angle of ${p["A"]} degrees at A, an interior angle of ${p["B"]} degrees at B, and an unknown interior angle x at C.`;
   } else if (p.task === "isosceles_base_angle") {
     title = "Isosceles triangle";
-    alt = "Diagram: an isosceles triangle with the apex angle given and an unknown base angle x.";
-    desc = `An isosceles triangle has an apex angle of ${p["apex"]} degrees and two equal sides marked with single tick marks; each base angle is equal, and one is the unknown x.`;
+    alt = "Diagram: a triangle with two sides marked equal, an apex angle, and an unknown base angle x.";
+    desc = `Triangle ABC has its two slanted sides marked equal with single tick marks. The angle at the apex is ${p["apex"]} degrees, and the unknown base angle is marked x.`;
   } else if (p.task === "vertically_opposite_angle") {
     title = "Two intersecting straight lines";
-    alt = "Diagram: two straight lines crossing at a point, with a given angle and the angle x opposite it.";
-    desc = `Two straight lines cross at a point. One angle is ${p["theta"]} degrees and the unknown angle x is the angle vertically opposite it.`;
+    alt = "Diagram: two straight lines crossing at a point, with a given angle and the angle x in the opposite region.";
+    desc = `Two straight lines cross at a point, forming four angles. One angle measures ${p["theta"]} degrees, and the unknown angle x is in the region directly opposite it.`;
   } else {
     title = "Angles around a point";
-    alt = "Diagram: several angles meeting around a point, with an unknown angle x.";
-    desc = `Angles of ${gv} and an unknown angle x meet around a single point and together make a full turn of 360 degrees.`;
+    alt = "Diagram: angles meeting consecutively around a point, with an unknown angle x.";
+    desc = `Angles of ${gv} and an unknown angle x are arranged consecutively, with no gaps, around a single point.`;
   }
   const rows: Json[] = g.givens.map((v, i) => [`angle ${i + 1}`, `${v} degrees`]);
   rows.push(["x", "unknown"]);
   return { title, alt, desc, dataTable: { columns: ["angle", "value"], rows } };
+}
+
+// Theorem/answer phrasings the accessible text must never contain (it must be
+// information-EQUIVALENT, not easier). Bare numbers like "180" are not banned.
+const A11Y_BANNED = ["sum", "add up", "full turn", "straight angle", "are equal", "is equal",
+  "equal to", "base angles", "make a straight", "make a full", "add to"];
+const A11Y_REQUIRED: Record<Task, string[]> = {
+  straight_line_missing_angle: ["straight line", "adjacent"],
+  triangle_missing_angle: ["triangle abc"],
+  isosceles_base_angle: ["marked equal", "apex"],
+  vertically_opposite_angle: ["opposite", "cross"],
+  angles_at_point_missing: ["around", "consecutively"],
+};
+function a11yEquivalentOk(p: Params, acc: { alt: string; desc: string }): boolean {
+  const g = ctx(p);
+  const blob = (acc.desc + " " + acc.alt).toLowerCase();
+  if (A11Y_BANNED.some((b) => blob.includes(b))) return false;
+  if (!A11Y_REQUIRED[p.task].every((r) => blob.includes(r))) return false;
+  if (!acc.desc.toLowerCase().includes("unknown")) return false;
+  return g.givens.every((v) => acc.desc.includes(`${v} degrees`));
+}
+
+// Is pt inside the CCW sector [start, start+measure] at vertex v? Integer math-frame test.
+function inCcwWedge(start: number, measure: number, v: Pt, pt: Pt): boolean {
+  const us = dirAt(start), ue = dirAt(start + measure);
+  const pm: Pt = [pt[0] - v[0], -(pt[1] - v[1])];
+  const cs = us[0] * pm[1] - us[1] * pm[0];   // > 0 if pm CCW of the start ray
+  const ce = pm[0] * ue[1] - pm[1] * ue[0];   // > 0 if pm CW of the end ray
+  if (measure < 180) return cs > 0 && ce > 0;
+  if (measure > 180) return !(cs < 0 && ce < 0);
+  return cs > 0;
 }
 
 export function generateSolution(p: Params): Json {
@@ -508,6 +555,68 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("not-to-scale", Boolean(media && media[0] && media[0].toScale === false) && storedSvg.includes("NOT TO SCALE"), "toScale false + label");
   add("labels-non-overlapping", labelsOk(params), "angle/vertex label boxes do not collide");
 
+  // --- Semantic arc checks: PARSE the SVG arc commands and verify they realise each
+  // region's measure, sector direction, and major/minor nature (catches a reflex
+  // region drawn with its minor arc).
+  const P = layout(fig.points);
+  const arcCmds = [...storedSvg.matchAll(/<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"\/>/g)]
+    .map((m) => m.slice(1, 9).map(Number));
+  let regionOk = arcCmds.length === fig.arcs.length;
+  let largeOk = regionOk, sweepOk = regionOk;
+  fig.arcs.forEach(([vn, start, measure], k) => {
+    const a = arcCmds[k]; if (!a) return;
+    const [x1, y1, rx, ry, large, sweep, x2, y2] = a as number[];
+    const V = P[vn]!, e1 = rayAt(V, start, ARC_R), e2 = rayAt(V, start + measure, ARC_R);
+    regionOk = regionOk && x1 === e1[0] && y1 === e1[1] && x2 === e2[0] && y2 === e2[1] && rx === ARC_R && ry === ARC_R;
+    largeOk = largeOk && large === (measure > 180 ? 1 : 0);
+    sweepOk = sweepOk && sweep === 0;
+  });
+  add("arc-region-measure-agreement", regionOk, "arc endpoints realise each region's (start, measure)");
+  add("arc-large-flag-correct", largeOk, "large-arc-flag = 1 iff region exceeds 180 degrees");
+  add("arc-sweep-correct", sweepOk, "sweep-flag = 0 (CCW interior sector)");
+
+  if (task === "straight_line_missing_angle" || task === "angles_at_point_missing") {
+    let chain = arcCmds.length === fig.arcs.length;
+    for (let k = 0; k < arcCmds.length - 1; k++) {
+      chain = chain && arcCmds[k]![6] === arcCmds[k + 1]![0] && arcCmds[k]![7] === arcCmds[k + 1]![1];
+    }
+    add("arc-matches-cyclic-region", chain, "arcs tile the angle consecutively");
+  }
+
+  const allText = [...storedSvg.matchAll(/<text(?: class="gn")? x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)<\/text>/g)];
+  const nonGn = allText.filter((m) => m[3] !== "NOT TO SCALE").map((m) => [Number(m[1]), Number(m[2]), m[3]] as [number, number, string]);
+  const alabelPts = nonGn.slice(fig.plabels.length);
+  let labelIn = alabelPts.length === fig.alabels.length;
+  let reflexOk = labelIn;
+  fig.alabels.forEach(([vn, start, measure, text], k) => {
+    const lp = alabelPts[k]; if (!lp) { labelIn = false; return; }
+    const inside = inCcwWedge(start, measure, P[vn]!, [lp[0], lp[1]]) && lp[2] === text;
+    labelIn = labelIn && inside;
+    if (measure > 180) reflexOk = reflexOk && inside;
+  });
+  add("label-inside-intended-region", labelIn, "every angle label lies in its own sector");
+  add("reflex-region-rendered-correctly", reflexOk && largeOk, "regions > 180 use the reflex arc with the label inside it");
+
+  if (task === "vertically_opposite_angle") {
+    const ga = (storedSvg.match(/<path class="ga"/g) ?? []).length;
+    const gt = (storedSvg.match(/class="gt"/g) ?? []).length;
+    const leaders = [...storedSvg.matchAll(/<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"\/>/g)];
+    add("no-theorem-revealing-markers", ga === 1 && gt === 0 && leaders.length === 1, `ga=${ga} gt=${gt} leaders=${leaders.length}`);
+    let okTarget = leaders.length === 1;
+    if (okTarget) {
+      const [lx1, ly1, lx2, ly2] = leaders[0]!.slice(1, 5).map(Number);
+      const m: Pt = [gridRound(lx1! + lx2!, 2), gridRound(ly1! + ly2!, 2)];
+      const theta = params["theta"] as number;
+      okTarget = inCcwWedge(180, theta, P["O"]!, m);
+      for (const [vn, start, measure, text] of fig.alabels) {
+        if (text === "x") okTarget = okTarget && inCcwWedge(180, theta, P["O"]!, labelPos(P[vn]!, start, measure));
+      }
+    }
+    add("target-region-unambiguous", okTarget, "the x leader and label lie in the opposite region");
+  }
+
+  add("a11y-equivalent-information", a11yEquivalentOk(params, acc), "accessible text is equivalent, not easier (no theorem/answer)");
+
   const numeric = fig.alabels.filter(([, , , t]) => t.endsWith("°")).map(([, , , t]) => parseInt(t, 10)).sort((a, b) => a - b);
   const xCount = fig.alabels.filter(([, , , t]) => t === "x").length;
   add("no-answer-leakage", xCount === 1 && JSON.stringify(numeric) === JSON.stringify([...g.givens].sort((a, b) => a - b)),
@@ -550,7 +659,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", Boolean(item["generatorId"]) && Boolean(item["generatorVersion"]), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.0.0", checks };
+  return { status, validatorVersion: "1.1.0", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }

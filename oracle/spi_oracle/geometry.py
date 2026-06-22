@@ -31,7 +31,7 @@ from .difficulty import round3
 from .geometry_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.geometry.angles-figures"
-GENERATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.1.0"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _TABLE = json.load(open(os.path.join(_HERE, "..", "..", "core", "geometry", "dir-table.json"), encoding="utf-8"))
@@ -69,9 +69,10 @@ RAW_BASE = 1200         # raw triangle base width
 CX, CY = 500, 350       # plotting-box centre
 SPAN_X, SPAN_Y = 760, 520
 ARC_R, LBL_R, TICK = 70, 120, 22   # final-pixel radii for arcs, value labels, tick marks
+LEADER_R1, LEADER_R2 = 46, 96      # neutral target-leader radial extent (vertically opposite)
 
 STYLE = (".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
-         ".gt{stroke:#111;stroke-width:3}.gv{fill:#111}"
+         ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}"
          "text{font-family:sans-serif;font-size:30px;fill:#111}"
          ".gn{font-size:22px;fill:#444;letter-spacing:1px}")
 
@@ -112,8 +113,9 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
     task = params["task"]
     pts: Dict[str, Tuple[int, int]] = {}
     segs: List[Tuple[str, str, str]] = []
-    arcs: List[Tuple[str, int, int]] = []          # (vertex, angle1, angle2)
-    alabels: List[Tuple[str, int, int, str]] = []  # (vertex, angle1, angle2, text)
+    arcs: List[Tuple[str, int, int]] = []          # (vertex, startDir, measure) — CCW region
+    alabels: List[Tuple[str, int, int, str]] = []  # (vertex, startDir, measure, text)
+    leaders: List[Tuple[str, int, int, int]] = []  # (vertex, dir, r1, r2) — neutral target marker
     ticks: List[Tuple[str, str, int]] = []         # (a, b, side-math-angle)
     plabels: List[Tuple[str, int, int, str, str]] = []  # (name, ox, oy, text, anchor)
 
@@ -132,9 +134,8 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
         for i in range(1, len(bounds) - 1):                       # interior rays
             segs.append(("O", names[i], "gl"))
         for j in range(len(regions)):
-            a1, a2 = bounds[j], bounds[j + 1]
-            arcs.append(("O", a1, a2))
-            alabels.append(("O", a1, a2, "x" if j == uidx else f"{regions[j]}°"))
+            arcs.append(("O", bounds[j], regions[j]))
+            alabels.append(("O", bounds[j], regions[j], "x" if j == uidx else f"{regions[j]}°"))
 
     elif task in ("triangle_missing_angle", "isosceles_base_angle"):
         if task == "triangle_missing_angle":
@@ -146,15 +147,17 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
         P = _apex(L, Rr, A, B)
         pts.update({"L": L, "R": Rr, "P": P})
         segs += [("L", "R", "gl"), ("L", "P", "gl"), ("R", "P", "gl")]
+        # interior angle at each vertex = (startDir, measure) sweeping CCW through the
+        # triangle interior, so the arc is concave toward the vertex (not the exterior).
         if task == "triangle_missing_angle":
-            arcs += [("L", 0, A), ("R", 180 - B, 180), ("P", (A + 180) % 360, (360 - B) % 360)]
-            alabels += [("L", 0, A, f"{A}°"), ("R", 180 - B, 180, f"{B}°"),
-                        ("P", (A + 180) % 360, (360 - B) % 360, "x")]
+            arcs += [("L", 0, A), ("R", 180 - B, B), ("P", (A + 180) % 360, 180 - A - B)]
+            alabels += [("L", 0, A, f"{A}°"), ("R", 180 - B, B, f"{B}°"),
+                        ("P", (A + 180) % 360, 180 - A - B, "x")]
             plabels += [("L", -34, 30, "A", "end"), ("R", 34, 30, "B", "start"), ("P", 0, -18, "C", "middle")]
         else:
             # apex labelled with its value; left base angle is x; equal legs carry single ticks
-            arcs += [("P", (A + 180) % 360, (360 - B) % 360), ("L", 0, A)]
-            alabels += [("P", (A + 180) % 360, (360 - B) % 360, f"{apex}°"), ("L", 0, A, "x")]
+            arcs += [("P", (A + 180) % 360, 180 - A - B), ("L", 0, A)]
+            alabels += [("P", (A + 180) % 360, 180 - A - B, f"{apex}°"), ("L", 0, A, "x")]
             ticks += [("L", "P", A), ("R", "P", 180 - B)]
 
     elif task == "vertically_opposite_angle":
@@ -166,8 +169,11 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
         pts["Et"] = _ray(O, theta, RAW_LEN)
         pts["Et2"] = _ray(O, theta + 180, RAW_LEN)
         segs += [("E180", "E0", "gl"), ("Et2", "Et", "gl")]       # two full straight lines
-        arcs += [("O", 0, theta), ("O", 180, (theta + 180) % 360)]
-        alabels += [("O", 0, theta, f"{theta}°"), ("O", 180, (theta + 180) % 360, "x")]
+        # ONLY the given angle gets an arc. The target (x) is marked by a NEUTRAL leader in
+        # the directly-opposite region — no matching arc that would announce the equality.
+        arcs += [("O", 0, theta)]
+        alabels += [("O", 0, theta, f"{theta}°"), ("O", 180, theta, "x")]
+        leaders += [("O", (180 + theta // 2) % 360, LEADER_R1, LEADER_R2)]
 
     elif task == "angles_at_point_missing":
         regions = params["regions"]
@@ -180,11 +186,11 @@ def _build_figure(params: Dict[str, Any]) -> Dict[str, Any]:
             pts[f"Rr{i}"] = _ray(O, bounds[i], RAW_LEN)
             segs.append(("O", f"Rr{i}", "gl"))
         for j in range(m):
-            a1, a2 = bounds[j], bounds[j + 1]
-            arcs.append(("O", a1, a2))
-            alabels.append(("O", a1, a2, "x" if j == uidx else f"{regions[j]}°"))
+            arcs.append(("O", bounds[j], regions[j]))
+            alabels.append(("O", bounds[j], regions[j], "x" if j == uidx else f"{regions[j]}°"))
 
-    return {"points": pts, "segs": segs, "arcs": arcs, "alabels": alabels, "ticks": ticks, "plabels": plabels}
+    return {"points": pts, "segs": segs, "arcs": arcs, "alabels": alabels,
+            "leaders": leaders, "ticks": ticks, "plabels": plabels}
 
 
 def _apex(L: Tuple[int, int], Rr: Tuple[int, int], A: int, B: int) -> Tuple[int, int]:
@@ -218,18 +224,27 @@ def _layout(points: Dict[str, Tuple[int, int]]) -> Dict[str, Tuple[int, int]]:
     return out
 
 
-def _arc_path(v: Tuple[int, int], a1: int, a2: int) -> str:
-    e1 = (v[0] + grid_round(DIR[a1 % 360][0] * ARC_R, R), v[1] - grid_round(DIR[a1 % 360][1] * ARC_R, R))
-    e2 = (v[0] + grid_round(DIR[a2 % 360][0] * ARC_R, R), v[1] - grid_round(DIR[a2 % 360][1] * ARC_R, R))
-    cross = (e1[0] - v[0]) * (e2[1] - v[1]) - (e1[1] - v[1]) * (e2[0] - v[0])
-    sweep = 1 if cross < 0 else 0
-    return f"M {e1[0]} {e1[1]} A {ARC_R} {ARC_R} 0 0 {sweep} {e2[0]} {e2[1]}"
+def _ray_at(v: Tuple[int, int], theta: int, radius: int) -> Tuple[int, int]:
+    return (v[0] + grid_round(DIR[theta % 360][0] * radius, R), v[1] - grid_round(DIR[theta % 360][1] * radius, R))
 
 
-def _label_pos(v: Tuple[int, int], a1: int, a2: int) -> Tuple[int, int]:
-    p1 = (v[0] + grid_round(DIR[a1 % 360][0] * LBL_R, R), v[1] - grid_round(DIR[a1 % 360][1] * LBL_R, R))
-    p2 = (v[0] + grid_round(DIR[a2 % 360][0] * LBL_R, R), v[1] - grid_round(DIR[a2 % 360][1] * LBL_R, R))
-    return _mid(p1, p2)
+def _arc_path(v: Tuple[int, int], start: int, measure: int) -> str:
+    """Arc of the CCW sector [start, start+measure] (measure = the region angle).
+
+    Reflex-correct: large-arc-flag = 1 iff measure > 180 (exactly 180 -> 0, a
+    semicircle); sweep-flag is always 0 (CCW in math = the intended interior sector).
+    Endpoints lie on the boundary rays at ARC_R from the vertex.
+    """
+    e1 = _ray_at(v, start, ARC_R)
+    e2 = _ray_at(v, start + measure, ARC_R)
+    large = 1 if measure > 180 else 0
+    return f"M {e1[0]} {e1[1]} A {ARC_R} {ARC_R} 0 {large} 0 {e2[0]} {e2[1]}"
+
+
+def _label_pos(v: Tuple[int, int], start: int, measure: int) -> Tuple[int, int]:
+    """Label point on the sector bisector (start + measure//2), so it sits INSIDE the
+    intended sector for both minor and reflex regions (never in the complement)."""
+    return _ray_at(v, start + measure // 2, LBL_R)
 
 
 def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) -> List[Tuple[int, int, str, str]]:
@@ -243,8 +258,8 @@ def _text_label_positions(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]) ->
     for (name, ox, oy, text, anchor) in fig["plabels"]:
         p = P[name]
         out.append((p[0] + ox, p[1] + oy, anchor, text))
-    for (vn, a1, a2, text) in fig["alabels"]:
-        lp = _label_pos(P[vn], a1, a2)
+    for (vn, start, measure, text) in fig["alabels"]:
+        lp = _label_pos(P[vn], start, measure)
         out.append((lp[0], lp[1], "middle", text))
     return out
 
@@ -287,8 +302,11 @@ def canonical_svg(fig: Dict[str, Any], alt: str, title: str, desc: str) -> str:
     out.append(f"<style>{STYLE}</style>")
     for (a, b, cls) in fig["segs"]:
         out.append(f'<line class="{cls}" x1="{P[a][0]}" y1="{P[a][1]}" x2="{P[b][0]}" y2="{P[b][1]}"/>')
-    for (vn, a1, a2) in fig["arcs"]:
-        out.append(f'<path class="ga" d="{_arc_path(P[vn], a1, a2)}"/>')
+    for (vn, start, measure) in fig["arcs"]:
+        out.append(f'<path class="ga" d="{_arc_path(P[vn], start, measure)}"/>')
+    for (vn, d, r1, r2) in fig.get("leaders", []):
+        p1, p2 = _ray_at(P[vn], d, r1), _ray_at(P[vn], d, r2)
+        out.append(f'<line class="gx" x1="{p1[0]}" y1="{p1[1]}" x2="{p2[0]}" y2="{p2[1]}"/>')
     for (a, b, ang) in fig["ticks"]:
         m = _mid(P[a], P[b])
         d = (grid_round(DIR[(ang + 90) % 360][0] * TICK, R), -grid_round(DIR[(ang + 90) % 360][1] * TICK, R))
@@ -353,35 +371,81 @@ def _accessibility(params: Dict[str, Any]) -> Dict[str, Any]:
     task = params["task"]
     g = _ctx(params)
     gv = ", ".join(f"{v} degrees" for v in g["givens"])
+    # Descriptions are INFORMATION-EQUIVALENT to the visible diagram: they convey the
+    # same givens and spatial configuration but never the theorem, calculation, or
+    # answer the student is being assessed on (see _a11y_equivalent_ok).
     if task == "straight_line_missing_angle":
         title = "Angles on a straight line"
-        alt = "Diagram: angles meeting on a straight line, with an unknown angle x."
-        desc = (f"Angles of {gv} and an unknown angle x lie along one side of a straight line and together make a "
-                f"straight angle of 180 degrees.")
+        alt = "Diagram: angles adjacent on one side of a straight line, with an unknown angle x."
+        desc = (f"Angles of {gv} and an unknown angle x are adjacent, in order, along one side of a straight line.")
     elif task == "triangle_missing_angle":
         title = "Triangle ABC"
         alt = "Diagram: a triangle with two known angles and an unknown angle x."
-        desc = (f"Triangle ABC has interior angles of {params['A']} degrees at A and {params['B']} degrees at B, and an "
-                f"unknown interior angle x at C.")
+        desc = (f"Triangle ABC has an interior angle of {params['A']} degrees at A, an interior angle of {params['B']} "
+                f"degrees at B, and an unknown interior angle x at C.")
     elif task == "isosceles_base_angle":
         title = "Isosceles triangle"
-        alt = "Diagram: an isosceles triangle with the apex angle given and an unknown base angle x."
-        desc = (f"An isosceles triangle has an apex angle of {params['apex']} degrees and two equal sides marked with "
-                f"single tick marks; each base angle is equal, and one is the unknown x.")
+        alt = "Diagram: a triangle with two sides marked equal, an apex angle, and an unknown base angle x."
+        desc = (f"Triangle ABC has its two slanted sides marked equal with single tick marks. The angle at the apex is "
+                f"{params['apex']} degrees, and the unknown base angle is marked x.")
     elif task == "vertically_opposite_angle":
         title = "Two intersecting straight lines"
-        alt = "Diagram: two straight lines crossing at a point, with a given angle and the angle x opposite it."
-        desc = (f"Two straight lines cross at a point. One angle is {params['theta']} degrees and the unknown angle x is "
-                f"the angle vertically opposite it.")
+        alt = "Diagram: two straight lines crossing at a point, with a given angle and the angle x in the opposite region."
+        desc = (f"Two straight lines cross at a point, forming four angles. One angle measures {params['theta']} degrees, "
+                f"and the unknown angle x is in the region directly opposite it.")
     else:
         title = "Angles around a point"
-        alt = "Diagram: several angles meeting around a point, with an unknown angle x."
-        desc = (f"Angles of {gv} and an unknown angle x meet around a single point and together make a full turn of "
-                f"360 degrees.")
+        alt = "Diagram: angles meeting consecutively around a point, with an unknown angle x."
+        desc = (f"Angles of {gv} and an unknown angle x are arranged consecutively, with no gaps, around a single point.")
     data_rows = [[f"angle {i + 1}", f"{v} degrees"] for i, v in enumerate(g["givens"])]
     data_rows.append(["x", "unknown"])
     return {"title": title, "alt": alt, "desc": desc,
             "dataTable": {"columns": ["angle", "value"], "rows": data_rows}}
+
+
+# Theorem/answer phrasings that accessibility text must NEVER contain (it must be
+# information-EQUIVALENT to the diagram, not easier). Bare value strings like
+# "180 degrees" are NOT banned, since a given angle may legitimately be 180.
+_A11Y_BANNED = ("sum", "add up", "full turn", "straight angle", "are equal", "is equal",
+                "equal to", "base angles", "make a straight", "make a full", "add to")
+_A11Y_REQUIRED = {
+    "straight_line_missing_angle": ("straight line", "adjacent"),
+    "triangle_missing_angle": ("triangle abc",),
+    "isosceles_base_angle": ("marked equal", "apex"),
+    "vertically_opposite_angle": ("opposite", "cross"),
+    "angles_at_point_missing": ("around", "consecutively"),
+}
+
+
+def _a11y_equivalent_ok(params: Dict[str, Any], acc: Dict[str, Any]) -> bool:
+    """The diagram's accessible text conveys the same givens/configuration as the
+    visible figure but states no theorem, calculation, or answer."""
+    task = params["task"]
+    g = _ctx(params)
+    blob = (acc["desc"] + " " + acc["alt"]).lower()
+    if any(b in blob for b in _A11Y_BANNED):
+        return False
+    if not all(r in blob for r in _A11Y_REQUIRED[task]):
+        return False
+    if "unknown" not in acc["desc"].lower():
+        return False
+    return all(f"{v} degrees" in acc["desc"] for v in g["givens"])
+
+
+def _in_ccw_wedge(start: int, measure: int, v: Tuple[int, int], pt: Tuple[int, int]) -> bool:
+    """Is point pt inside the CCW sector [start, start+measure] at vertex v?
+    Integer test in the math frame (+y up). Used to verify a label/leader is in the
+    intended region (and, for reflex, NOT in the minor complement)."""
+    us = DIR[start % 360]
+    ue = DIR[(start + measure) % 360]
+    pm = (pt[0] - v[0], -(pt[1] - v[1]))             # math frame, relative to vertex
+    cs = us[0] * pm[1] - us[1] * pm[0]               # > 0 if pm is CCW of the start ray
+    ce = pm[0] * ue[1] - pm[1] * ue[0]               # > 0 if pm is CW of the end ray
+    if measure < 180:
+        return cs > 0 and ce > 0
+    if measure > 180:
+        return not (cs < 0 and ce < 0)               # not inside the minor complement
+    return cs > 0                                    # exactly 180: the CCW half-plane
 
 
 def generate_solution(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -680,6 +744,69 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("not-to-scale", item["media"][0].get("toScale") is False and "NOT TO SCALE" in stored_svg, "toScale false + label")
     add("labels-non-overlapping", _labels_ok(params), "angle/vertex label boxes do not collide")
 
+    # --- Semantic arc checks: PARSE the emitted SVG arc commands and verify they
+    # realise each FigureModel region's measure, sector direction, and major/minor
+    # nature (this is what catches a reflex region drawn with its minor arc).
+    P = _layout(fig["points"])
+    arc_cmds = re.findall(r'<path class="ga" d="M (-?\d+) (-?\d+) A (\d+) (\d+) 0 (\d) (\d) (-?\d+) (-?\d+)"/>', stored_svg)
+    region_ok = (len(arc_cmds) == len(fig["arcs"]))
+    large_ok = sweep_ok = region_ok
+    for k, (vn, start, measure) in enumerate(fig["arcs"]):
+        if k >= len(arc_cmds):
+            break
+        x1, y1, rx, ry, large, sweep, x2, y2 = (int(t) for t in arc_cmds[k])
+        V = P[vn]
+        region_ok = region_ok and (x1, y1) == _ray_at(V, start, ARC_R) and (x2, y2) == _ray_at(V, start + measure, ARC_R) and rx == ARC_R and ry == ARC_R
+        large_ok = large_ok and large == (1 if measure > 180 else 0)
+        sweep_ok = sweep_ok and sweep == 0
+    add("arc-region-measure-agreement", bool(region_ok), "arc endpoints realise each region's (start, measure)")
+    add("arc-large-flag-correct", bool(large_ok), "large-arc-flag = 1 iff region exceeds 180 degrees")
+    add("arc-sweep-correct", bool(sweep_ok), "sweep-flag = 0 (CCW interior sector)")
+
+    # Consecutive partition arcs must chain (cyclic region order) in the rendered SVG.
+    if task in ("straight_line_missing_angle", "angles_at_point_missing"):
+        chain = len(arc_cmds) == len(fig["arcs"])
+        for k in range(len(arc_cmds) - 1):
+            chain = chain and arc_cmds[k][6:8] == arc_cmds[k + 1][0:2]
+        add("arc-matches-cyclic-region", bool(chain), "arcs tile the angle consecutively")
+
+    # Each angle label sits INSIDE its intended sector (parsed from the SVG text).
+    all_text = re.findall(r'<text(?: class="gn")? x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)</text>', stored_svg)
+    non_gn = [(int(x), int(y), t) for (x, y, t) in all_text if t != "NOT TO SCALE"]
+    alabel_pts = non_gn[len(fig["plabels"]):]
+    label_in = len(alabel_pts) == len(fig["alabels"])
+    reflex_ok = label_in
+    for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
+        if k >= len(alabel_pts):
+            break
+        pt = (alabel_pts[k][0], alabel_pts[k][1])
+        inside = _in_ccw_wedge(start, measure, P[vn], pt) and alabel_pts[k][2] == text
+        label_in = label_in and inside
+        if measure > 180:
+            reflex_ok = reflex_ok and inside
+    add("label-inside-intended-region", bool(label_in), "every angle label lies in its own sector")
+    add("reflex-region-rendered-correctly", bool(reflex_ok and large_ok), "regions > 180 use the reflex arc with the label inside it")
+
+    # Vertically opposite must not reveal the equality: the target (x) is a neutral
+    # leader, not a second matching arc, and points unambiguously at the opposite region.
+    if task == "vertically_opposite_angle":
+        ga = stored_svg.count('<path class="ga"')
+        gt = stored_svg.count('class="gt"')
+        leaders = re.findall(r'<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"/>', stored_svg)
+        add("no-theorem-revealing-markers", ga == 1 and gt == 0 and len(leaders) == 1, f"ga={ga} gt={gt} leaders={len(leaders)}")
+        ok_target = len(leaders) == 1
+        if ok_target:
+            lx1, ly1, lx2, ly2 = (int(t) for t in leaders[0])
+            mid = (grid_round(lx1 + lx2, 2), grid_round(ly1 + ly2, 2))
+            theta = params["theta"]
+            ok_target = _in_ccw_wedge(180, theta, P["O"], mid)
+            for (vn, start, measure, text) in fig["alabels"]:
+                if text == "x":
+                    ok_target = ok_target and _in_ccw_wedge(180, theta, P["O"], _label_pos(P[vn], start, measure))
+        add("target-region-unambiguous", bool(ok_target), "the x leader and label lie in the opposite region")
+
+    add("a11y-equivalent-information", _a11y_equivalent_ok(params, acc), "accessible text is equivalent, not easier (no theorem/answer)")
+
     # The unknown region is labelled 'x' (not its value); only the givens are drawn.
     numeric = sorted(int(t[:-1]) for (_, _, _, t) in fig["alabels"] if t.endswith("°"))
     x_count = sum(1 for (_, _, _, t) in fig["alabels"] if t == "x")
@@ -721,4 +848,4 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.0.0", "checks": checks}
+    return {"status": status, "validatorVersion": "1.1.0", "checks": checks}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
+<title>Angles around a point</title>
+<desc>Angles of 25 degrees, 40 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="213" y1="90" x2="787" y2="90"/>
+<line class="gl" x1="213" y1="90" x2="456" y2="610"/>
+<line class="gl" x1="213" y1="90" x2="653" y2="459"/>
+<path class="ga" d="M 283 90 A 70 70 0 1 0 243 153"/>
+<path class="ga" d="M 243 153 A 70 70 0 0 0 267 135"/>
+<path class="ga" d="M 267 135 A 70 70 0 0 0 283 90"/>
+<text x="112" y="25" text-anchor="middle">x</text>
+<text x="285" y="186" text-anchor="middle">25°</text>
+<text x="326" y="131" text-anchor="middle">40°</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>

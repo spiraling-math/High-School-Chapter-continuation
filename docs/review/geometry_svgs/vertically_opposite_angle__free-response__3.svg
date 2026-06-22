@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: two straight lines crossing at a point, with a given angle and the angle x opposite it.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: two straight lines crossing at a point, with a given angle and the angle x in the opposite region.">
 <title>Two intersecting straight lines</title>
-<desc>Two straight lines cross at a point. One angle is 125 degrees and the unknown angle x is the angle vertically opposite it.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<desc>Two straight lines cross at a point, forming four angles. One angle measures 125 degrees, and the unknown angle x is in the region directly opposite it.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="183" y1="350" x2="817" y2="350"/>
 <line class="gl" x1="682" y1="610" x2="318" y2="90"/>
-<path class="ga" d="M 570 350 A 70 70 0 0 1 460 293"/>
-<path class="ga" d="M 430 350 A 70 70 0 0 1 540 407"/>
-<text x="526" y="301" text-anchor="middle">125°</text>
-<text x="475" y="399" text-anchor="middle">x</text>
+<path class="ga" d="M 570 350 A 70 70 0 0 0 460 293"/>
+<line class="gx" x1="478" y1="391" x2="455" y2="435"/>
+<text x="556" y="244" text-anchor="middle">125°</text>
+<text x="444" y="456" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

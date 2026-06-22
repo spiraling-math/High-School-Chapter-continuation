@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: an isosceles triangle with the apex angle given and an unknown base angle x.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: a triangle with two sides marked equal, an apex angle, and an unknown base angle x.">
 <title>Isosceles triangle</title>
-<desc>An isosceles triangle has an apex angle of 20 degrees and two equal sides marked with single tick marks; each base angle is equal, and one is the unknown x.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<desc>Triangle ABC has its two slanted sides marked equal with single tick marks. The angle at the apex is 20 degrees, and the unknown base angle is marked x.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="408" y1="610" x2="592" y2="610"/>
 <line class="gl" x1="408" y1="610" x2="500" y2="90"/>
 <line class="gl" x1="592" y1="610" x2="500" y2="90"/>
-<path class="ga" d="M 488 159 A 70 70 0 0 1 512 159"/>
-<path class="ga" d="M 478 610 A 70 70 0 0 1 420 541"/>
+<path class="ga" d="M 488 159 A 70 70 0 0 0 512 159"/>
+<path class="ga" d="M 478 610 A 70 70 0 0 0 420 541"/>
 <line class="gt" x1="476" y1="354" x2="432" y2="346"/>
 <line class="gt" x1="568" y1="346" x2="524" y2="354"/>
-<text x="500" y="208" text-anchor="middle">20°</text>
-<text x="479" y="551" text-anchor="middle">x</text>
+<text x="500" y="210" text-anchor="middle">20°</text>
+<text x="500" y="533" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
+<title>Angles around a point</title>
+<desc>Angles of 44 degrees, 23 degrees, 10 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="290" y1="381" x2="710" y2="381"/>
+<line class="gl" x1="290" y1="381" x2="592" y2="90"/>
+<line class="gl" x1="290" y1="381" x2="642" y2="610"/>
+<line class="gl" x1="290" y1="381" x2="703" y2="454"/>
+<path class="ga" d="M 360 381 A 70 70 0 0 0 340 332"/>
+<path class="ga" d="M 340 332 A 70 70 0 1 0 349 419"/>
+<path class="ga" d="M 349 419 A 70 70 0 0 0 359 393"/>
+<path class="ga" d="M 359 393 A 70 70 0 0 0 360 381"/>
+<text x="401" y="336" text-anchor="middle">44°</text>
+<text x="170" y="391" text-anchor="middle">x</text>
+<text x="401" y="426" text-anchor="middle">23°</text>
+<text x="410" y="391" text-anchor="middle">10°</text>
+<text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
+</svg>
