@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
 <title>Angles around a point</title>
 <desc>Angles of 30 degrees, 313 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="172" y1="418" x2="828" y2="418"/>
 <line class="gl" x1="172" y1="418" x2="740" y2="90"/>
 <line class="gl" x1="172" y1="418" x2="799" y2="610"/>
 <path class="ga" d="M 216 418 A 44 44 0 0 0 210 396"/>
 <path class="ga" d="M 227 386 A 64 64 0 1 0 233 437"/>
 <path class="ga" d="M 252 443 A 84 84 0 0 0 256 418"/>
-<line class="gx" x1="263" y1="432" x2="275" y2="472"/>
-<text x="330" y="376" text-anchor="middle">30°</text>
-<text x="57" y="430" text-anchor="middle">313°</text>
-<text x="282" y="492" text-anchor="middle">x</text>
+<line class="gx" x1="265" y1="433" x2="342" y2="445"/>
+<text x="325" y="377" text-anchor="middle">30°</text>
+<text x="59" y="430" text-anchor="middle">313°</text>
+<text x="373" y="450" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

@@ -9,6 +9,8 @@ no-leakage / no-theorem-reveal invariants.
 Run:  python oracle/tests/test_geometry.py
 """
 
+import hashlib
+import json
 import math
 import os
 import re
@@ -145,14 +147,16 @@ class TestLabels(unittest.TestCase):
 
 class TestMonochromeAndNoReveal(unittest.TestCase):
     def test_no_colour_only_information(self):
-        # The diagram is black-on-white; nothing carries meaning by colour alone.
+        # The diagram is greyscale (black-on-white); nothing carries meaning by colour alone.
+        # Documented inks: #111 (geometry/labels), #444 (caption), #555 (secondary leaders).
+        GREYS = ("#111", "#444", "#555")
         for s in range(1, 300):
             svg = geo.generate(s, {"interactionType": "multiple-choice"})["media"][0]["svg"]
-            self.assertNotIn("stroke:red", svg)
-            self.assertNotIn("fill:#", svg.replace("fill:#111", "").replace("fill:#444", ""))
-            # only the two documented near-black inks appear
             for col in re.findall(r'(?:fill|stroke):(#[0-9a-fA-F]{3,6})', svg):
-                self.assertIn(col, ("#111", "#444"))
+                self.assertIn(col, GREYS, f"non-greyscale colour {col}")
+            # confirm every channel of each ink is equal (a true grey, not a hue)
+            for col in set(re.findall(r'(?:fill|stroke):#([0-9a-fA-F]{3})\b', svg)):
+                self.assertTrue(col[0] == col[1] == col[2], f"{col} is not a grey")
 
     def test_vertically_opposite_has_no_equality_marks(self):
         # Must not betray the theorem: no tick/equal marks announcing the answer.
@@ -444,6 +448,102 @@ class TestA11yEquivalence(unittest.TestCase):
             self.assertTrue(geo._a11y_equivalent_ok(params, acc), f"{task} clean desc accepted")
             bad = dict(acc, desc=leak)
             self.assertFalse(geo._a11y_equivalent_ok(params, bad), f"{task} leak rejected")
+
+
+class TestLeaderContract(unittest.TestCase):
+    """Leaders parsed from the ACTUAL serialized SVG satisfy the full leader contract."""
+    GX = re.compile(r'<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"/>')
+    LEADER_CHECKS = ("leader-style-distinct-from-geometry", "leader-non-degenerate", "leader-minimum-length",
+                     "leader-ray-clearance", "leader-side-clearance", "leader-arc-clearance",
+                     "leader-vertex-clearance", "leader-label-clearance", "leader-leader-clearance",
+                     "leader-route-unambiguous")
+    SEEDS = [(26, "angles_at_point_missing"), (73, "angles_at_point_missing"), (98, "angles_at_point_missing"),
+             (13322, "angles_at_point_missing"), (1, "vertically_opposite_angle"),
+             (1, "straight_line_missing_angle"), (1, "triangle_missing_angle")]
+
+    def test_required_seeds_satisfy_leader_contract(self):
+        for seed, task in self.SEEDS:
+            for mode in ("free-response", "multiple-choice"):
+                if task == "vertically_opposite_angle" and mode == "multiple-choice":
+                    continue
+                item = geo.generate(seed, {"task": task, "interactionType": mode})
+                svg = item["media"][0]["svg"]
+                # parse the actual serialized leaders
+                for (a, b, c, d) in self.GX.findall(svg):
+                    self.assertNotEqual((int(a), int(b)), (int(c), int(d)), f"{task} seed {seed}: zero-length leader")
+                    self.assertGreaterEqual((int(c) - int(a)) ** 2 + (int(d) - int(b)) ** 2, geo.LEADER_MIN ** 2)
+                ok = {ch["name"]: ch["result"] for ch in geo.validate(item)["checks"]}
+                for chk in self.LEADER_CHECKS:
+                    self.assertEqual(ok.get(chk), "pass", f"{chk} {task} seed {seed} {mode}")
+
+    def test_seed_26_has_no_zero_length_leader(self):
+        for mode in ("free-response", "multiple-choice"):
+            svg = geo.generate(26, {"task": "angles_at_point_missing", "interactionType": mode})["media"][0]["svg"]
+            for (a, b, c, d) in self.GX.findall(svg):
+                self.assertNotEqual((int(a), int(b)), (int(c), int(d)), f"seed 26 {mode}: zero-length leader")
+
+    def test_no_zero_length_leader_across_sweep(self):
+        zero = 0
+        for s in range(1, 3000):
+            for mode in ("free-response", "multiple-choice"):
+                for (a, b, c, d) in self.GX.findall(geo.generate(s, {"interactionType": mode})["media"][0]["svg"]):
+                    if (int(a), int(b)) == (int(c), int(d)):
+                        zero += 1
+        self.assertEqual(zero, 0, f"{zero} zero-length leaders over 6000 items")
+
+    def test_leader_style_is_secondary(self):
+        # thinner than every geometry stroke, dashed, round-capped.
+        self.assertIn(".gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round", geo.STYLE)
+        self.assertLess(geo.LEADER_STROKE_WIDTH, min(geo.GEOMETRY_STROKE_WIDTHS))
+
+
+class TestArtifactIntegrity(unittest.TestCase):
+    """The generated review pack + visual audit carry the CURRENT generator version and a
+    consistent build commit, contain no stale version text, and match the manifest hashes."""
+    REPO = os.path.dirname(os.path.dirname(HERE))
+    MANIFEST = "docs/review/geometry_manifest.json"
+    AUDIT = "docs/review/geometry_visual_audit.html"
+    PACK_MD = "docs/review/geometry_angles_review_pack.md"
+    PACK_JSON = "docs/review/geometry_angles_review_pack.json"
+
+    def _read(self, rel):
+        with open(os.path.join(self.REPO, rel.replace("/", os.sep)), encoding="utf-8") as fh:
+            return fh.read()
+
+    def setUp(self):
+        if not os.path.exists(os.path.join(self.REPO, self.MANIFEST)):
+            self.skipTest("manifest not generated (run oracle/make_geometry_manifest.py)")
+
+    def test_audit_version_matches_generator(self):
+        man = json.loads(self._read(self.MANIFEST))
+        self.assertEqual(man["generatorVersion"], geo.GENERATOR_VERSION)
+        ver = re.search(r'data-generator-version="([^"]+)"', self._read(self.AUDIT)).group(1)
+        self.assertEqual(ver, geo.GENERATOR_VERSION, "audit version must equal the generator version")
+        self.assertIn(geo.GENERATOR_VERSION, self._read(self.PACK_MD), "review pack states the current version")
+
+    def test_audit_commit_matches_build(self):
+        man = json.loads(self._read(self.MANIFEST))
+        com = re.search(r'data-git-commit="([^"]+)"', self._read(self.AUDIT)).group(1)
+        self.assertEqual(com, man["gitCommit"], "audit commit must match the manifest build commit")
+        self.assertRegex(com, r"^[0-9a-f]{7,40}$", "a real git commit hash")
+
+    def test_no_stale_version_text(self):
+        # the audit + pack reference only the current version and the v1.2.0 before/after baseline.
+        for rel in (self.AUDIT, self.PACK_MD, self.PACK_JSON):
+            txt = self._read(rel)
+            for stale in ("1.2.1", "1.2.2"):
+                self.assertNotIn(stale, txt, f"stale version {stale} in {rel}")
+            self.assertIn(geo.GENERATOR_VERSION, txt, f"{rel} states the current version")
+
+    def test_manifest_hashes_match_files(self):
+        man = json.loads(self._read(self.MANIFEST))
+        artifacts = {"reviewPackMd": self.PACK_MD, "reviewPackJson": self.PACK_JSON,
+                     "visualAudit": self.AUDIT, "goldenFixture": "oracle/golden/geometry_angles.golden.json",
+                     "parityFixture": "oracle/golden/geometry_angles.parity.json"}
+        for key, rel in artifacts.items():
+            with open(os.path.join(self.REPO, rel.replace("/", os.sep)), "rb") as fh:
+                digest = hashlib.sha256(fh.read()).hexdigest()
+            self.assertEqual(digest, man["sha256"][key], f"manifest hash stale for {rel}")
 
 
 if __name__ == "__main__":

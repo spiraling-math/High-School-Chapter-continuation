@@ -1,0 +1,28 @@
+{
+  "schema": "spi-math-geometry-manifest/1",
+  "generatorId": "gen.geometry.angles-figures",
+  "generatorVersion": "1.2.3",
+  "validatorVersion": "1.2.3",
+  "gitCommit": "bffba8c3f0bbc7ffd081e64a001b1725d1a655cf",
+  "generatedAt": "2026-06-23T06:26:49+00:00",
+  "commands": [
+    "python oracle/run_geometry_angles.py            # golden + parity fixtures + 10k sweep",
+    "python oracle/make_review_pack_geometry.py      # review pack (.md/.json) + SVGs",
+    "python oracle/make_visual_audit_geometry.py     # visual edge-case audit (before/after)",
+    "node scripts/build-samples.mjs                  # offline sample exports (geometry excluded: pending-review)",
+    "python oracle/make_geometry_manifest.py         # this manifest"
+  ],
+  "sha256": {
+    "reviewPackMd": "e03a5cf55228937d19fbd8dd6ea4daab104bf099eb378243c369ed219cb3cf07",
+    "reviewPackJson": "cd29bd1726769dcdbacad4a291d2503ad9da0b0c323f9bc84ccb61089cac7d7f",
+    "visualAudit": "72a82e89ddbb6461ed9854a633febdb1c0b1b603670ccb757c508a6193b37a4d",
+    "goldenFixture": "4164e33a0befc996bb8c9f6e6e9d60d0a759fed4a22a4b8c38f3f9cf6145d287",
+    "parityFixture": "2af70e0509c1e4139bc399e434c487eb9d36efba6668a6a0bdb211783b2840fb",
+    "sampleWorksheet": "35671f3321b704153022674caefaec755537c670a238c2834f120cc4ecb0e724",
+    "sampleAnswerKey": "9dfff7369438b3ed785514c9e5d129c7e6a8db98632f5383ec5e62410f6495ec",
+    "sampleSolutions": "6fb5436be0924180796531a2189873b46e4204e2c5040d85ee1b328c3f921323",
+    "sampleBankJson": "2acd4f32c151ecb9156bba54916a3c47d1717eb853654ec261287371ba1d0b03"
+  },
+  "sha256SvgDir": "05f1fd176b507ab7ae40dc2836f6b55d8cc9a223ec61035b2a7bbdb70399aaed",
+  "svgCount": 45
+}

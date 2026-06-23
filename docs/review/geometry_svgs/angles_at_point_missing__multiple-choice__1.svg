@@ -1,16 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
 <title>Angles around a point</title>
-<desc>Angles of 32 degrees, 65 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
-<line class="gl" x1="270" y1="90" x2="794" y2="90"/>
-<line class="gl" x1="270" y1="90" x2="206" y2="610"/>
-<line class="gl" x1="270" y1="90" x2="492" y2="565"/>
-<path class="ga" d="M 314 90 A 44 44 0 1 0 265 134"/>
-<path class="ga" d="M 262 154 A 64 64 0 0 0 297 148"/>
-<path class="ga" d="M 305 166 A 84 84 0 0 0 354 90"/>
-<line class="gx" x1="236" y1="51" x2="217" y2="49"/>
-<text x="197" y="48" text-anchor="middle">x</text>
-<text x="295" y="245" text-anchor="middle">32°</text>
-<text x="371" y="155" text-anchor="middle">65°</text>
+<desc>Angles of 78 degrees, 99 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<line class="gl" x1="388" y1="349" x2="653" y2="349"/>
+<line class="gl" x1="388" y1="349" x2="443" y2="90"/>
+<line class="gl" x1="388" y1="349" x2="347" y2="610"/>
+<path class="ga" d="M 432 349 A 44 44 0 0 0 397 306"/>
+<path class="ga" d="M 401 286 A 64 64 0 1 0 378 412"/>
+<path class="ga" d="M 375 432 A 84 84 0 0 0 472 349"/>
+<text x="450" y="299" text-anchor="middle">78°</text>
+<text x="290" y="330" text-anchor="middle">x</text>
+<text x="474" y="452" text-anchor="middle">99°</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

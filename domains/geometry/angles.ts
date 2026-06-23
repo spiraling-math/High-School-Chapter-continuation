@@ -20,7 +20,7 @@ import { DIR, R } from "../../core/geometry/dir-table.ts";
 import { MISCONCEPTIONS, rulesFor, type GeoCtx } from "./geometry-misconceptions.ts";
 
 export const GENERATOR_ID = "gen.geometry.angles-figures";
-export const GENERATOR_VERSION = "1.2.2"; // v1.2.1 rejected (owner); v1.2.2 = pending-review continuation, same diagrams
+export const GENERATOR_VERSION = "1.2.3"; // v1.2.1/v1.2.2: see DECISION_LOG; v1.2.3 = secondary non-crossing leaders
 
 export type Task = "straight_line_missing_angle" | "triangle_missing_angle" | "isosceles_base_angle"
   | "vertically_opposite_angle" | "angles_at_point_missing";
@@ -50,13 +50,17 @@ const ARC_R = 70, TICK = 22;
 const ARC_BASE = 44, ARC_STEP = 20;
 const ARC_TRI_MAX = 56, ARC_TRI_NUM = 30, ARC_TRI_DEN = 100;
 const ARC_DEFAULT = 62;
-// Adaptive label placement (v1.2.1).
-const LBL_CLEAR = 8, CANVAS_M = 12, CAPTION_TOP = 666, LBL_R0_GAP = 36, LBL_STEP = 16;
-const LEAD_IN = 8, LEAD_BACK = 12, ARC_SAMPLES = 8, NARROW_DEG = 30;
-const PERP_LIST = [28, -28, 56, -56, 84, -84, 112, -112, 140, -140];
+// Adaptive label placement (v1.2.1) + non-crossing radial leaders (v1.2.3).
+const LBL_ASC = 22, LBL_DESC = 8, LBL_H = LBL_ASC + LBL_DESC;
+const LBL_CLEAR = 8, CANVAS_M = 12, CAPTION_TOP = 666, LBL_R0_GAP = 36, LBL_STEP = 14, R_LABEL_MAX = 480;
+const LEAD_IN = 10, LEAD_BACK = 14, LEADER_MIN = 26, ARC_SAMPLES = 8, NARROW_DEG = 30;
+// Callout leaders (.gx) are visually SECONDARY: thinner than every geometry stroke, dashed,
+// and round-capped, so they read as annotations, not rays/sides/arcs/ticks.
 const STYLE = ".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
-  + ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
+  + ".gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}"
   + ".gn{font-size:22px;fill:#444;letter-spacing:1px}";
+const LEADER_STROKE_WIDTH = 1.5;
+const GEOMETRY_STROKE_WIDTHS = [3, 2];
 
 export interface Params { task: Task; [k: string]: Json; }
 export interface Config { task?: Task; answerType?: "integer" | "multiple-choice"; interactionType?: "free-response" | "multiple-choice"; }
@@ -220,7 +224,6 @@ type TextLabel = [number, number, string, string]; // x, y, anchor, text
 type Box = [number, number, number, number];
 type Leader = readonly [Pt, Pt];
 const LBL_CHARW: Record<string, number> = { x: 16, "°": 11 };
-const LBL_ASC = 22, LBL_DESC = 8;
 const textW = (t: string): number => [...t].reduce((a, c) => a + (LBL_CHARW[c] ?? 17), 0);
 const boxMake = (x: number, y: number, w: number): Box => [x - Math.floor(w / 2), y - LBL_ASC, x + (w - Math.floor(w / 2)), y + LBL_DESC];
 const boxInCanvas = (b: Box): boolean => b[0] >= CANVAS_M && b[2] <= VIEW_W - CANVAS_M && b[1] >= CANVAS_M && b[3] <= CAPTION_TOP;
@@ -261,6 +264,33 @@ function boxInsideWedge(box: Box, v: Pt, start: number, measure: number): boolea
   for (const cx of [box[0], box[2]]) for (const cy of [box[1], box[3]]) if (!inCcwWedge(start, measure, v, [cx, cy])) return false;
   return true;
 }
+// Is point P at least c px from segment AB? Exact integer (squared) comparison.
+function ptSegClear(px: number, py: number, ax: number, ay: number, bx: number, by: number, c: number): boolean {
+  const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy, cc = c * c;
+  if (l2 === 0) return (px - ax) ** 2 + (py - ay) ** 2 >= cc;
+  const t = (px - ax) * dx + (py - ay) * dy;
+  if (t <= 0) return (px - ax) ** 2 + (py - ay) ** 2 >= cc;
+  if (t >= l2) return (px - bx) ** 2 + (py - by) ** 2 >= cc;
+  const pa2 = (px - ax) ** 2 + (py - ay) ** 2;
+  return l2 * pa2 - t * t >= cc * l2;
+}
+function segSegClear(ax: number, ay: number, bx: number, by: number, cx: number, cy: number, dx: number, dy: number, c: number): boolean {
+  if (segIntersect(ax, ay, bx, by, cx, cy, dx, dy)) return false;
+  return ptSegClear(ax, ay, cx, cy, dx, dy, c) && ptSegClear(bx, by, cx, cy, dx, dy, c)
+    && ptSegClear(cx, cy, ax, ay, bx, by, c) && ptSegClear(dx, dy, ax, ay, bx, by, c);
+}
+function arcClearSeg(seg: Leader, v: Pt, ar: number, start: number, measure: number, c: number): boolean {
+  for (let i = 0; i <= ARC_SAMPLES; i++) { const ang = start + Math.floor((measure * i) / ARC_SAMPLES); const pt = rayAt(v, ang, ar); if (!ptSegClear(pt[0], pt[1], seg[0][0], seg[0][1], seg[1][0], seg[1][1], c)) return false; }
+  return true;
+}
+const segLen2 = (s: Leader): number => (s[1][0] - s[0][0]) ** 2 + (s[1][1] - s[0][1]) ** 2;
+function leaderClearsGeometry(seg: Leader, segLines: [Pt, Pt][], arcsObs: [Pt, number, number, number][], vertices: Pt[], c: number): boolean {
+  const [ix, iy] = seg[0], [ox, oy] = seg[1];
+  for (const [A, B] of segLines) if (!segSegClear(ix, iy, ox, oy, A[0], A[1], B[0], B[1], c)) return false;
+  for (const [av, r, s, m] of arcsObs) if (!arcClearSeg(seg, av, r, s, m, c)) return false;
+  for (const vtx of vertices) if (!ptSegClear(vtx[0], vtx[1], ix, iy, ox, oy, c)) return false;
+  return true;
+}
 
 interface Placed { placements: TextLabel[]; leaders: (Leader | null)[]; }
 function placeLabels(P: Record<string, Pt>, fig: Figure): Placed | null {
@@ -275,13 +305,12 @@ function placeLabels(P: Record<string, Pt>, fig: Figure): Placed | null {
     const left = p[0] + ox - (anchor === "middle" ? Math.floor(w / 2) : anchor === "end" ? w : 0);
     placed.push([left, p[1] + oy - LBL_ASC, left + w, p[1] + oy + LBL_DESC]);
   }
-  const ok = (box: Box, leader: Leader | null = null): boolean => {
+  const boxOk = (box: Box): boolean => {
     if (!boxInCanvas(box)) return false;
     for (const [A, B] of segLines) if (!segClearBox(A[0], A[1], B[0], B[1], box, LBL_CLEAR)) return false;
     for (const [av, r, s, m] of arcsObs) if (!arcClearBox(box, av, r, s, m, LBL_CLEAR)) return false;
     for (const vtx of vertices) if (ptBoxD2(vtx[0], vtx[1], box) < LBL_CLEAR * LBL_CLEAR) return false;
     for (const pb of placed) if (!boxesClear(box, pb, LBL_CLEAR)) return false;
-    if (leader) for (const pb of placed) if (!segClearBox(leader[0][0], leader[0][1], leader[1][0], leader[1][1], pb, LBL_CLEAR)) return false;
     return true;
   };
   const placements: TextLabel[] = [], leaders: (Leader | null)[] = [];
@@ -289,33 +318,32 @@ function placeLabels(P: Record<string, Pt>, fig: Figure): Placed | null {
     const v = P[vn]!, w = textW(text), bis = (((start + Math.floor(measure / 2)) % 360) + 360) % 360;
     const arad = rmap.get(`${vn}|${start}|${measure}`) ?? ARC_DEFAULT;
     const s = dirAt(Math.floor(measure / 2))[1];
-    const rFit = s > 0 ? Math.floor(((Math.floor(w / 2) + LBL_CLEAR) * R + s - 1) / s) : 1000000000;
-    let chosen: Pt | null = null, leaderSeg: Leader | null = null;
-    const rIn = Math.max(arad + LBL_R0_GAP, rFit);
-    for (let i = 0; i < 4; i++) {
-      const pos = rayAt(v, bis, rIn + i * LBL_STEP), box = boxMake(pos[0], pos[1], w);
-      if (boxInsideWedge(box, v, start, measure) && ok(box)) { chosen = pos; break; }
+    const rFit = s > 0 ? Math.floor(((Math.floor(w / 2) + LBL_CLEAR) * R + s - 1) / s) : R_LABEL_MAX;
+    const rLo = Math.max(arad + LBL_R0_GAP, rFit);
+    let pos: Pt | null = null;
+    for (let r = rLo; r <= R_LABEL_MAX; r += LBL_STEP) {
+      const cand = rayAt(v, bis, r), box = boxMake(cand[0], cand[1], w);
+      if (!boxInCanvas(box)) break;
+      if (boxInsideWedge(box, v, start, measure) && boxOk(box)) { pos = cand; break; }
     }
-    if (chosen === null) {
-      const inner = rayAt(v, bis, arad + LEAD_IN);
-      if (inCcwWedge(start, measure, v, inner)) {
-        outer: for (let ri = 0; ri < 7; ri++) {
-          const base = rayAt(v, bis, arad + LBL_R0_GAP + ri * LBL_STEP);
-          for (const perp of PERP_LIST) {
-            const sx = base[0] + gridRound(dirAt(bis + 90)[0] * perp, R);
-            const sy = base[1] - gridRound(dirAt(bis + 90)[1] * perp, R);
-            const box = boxMake(sx, sy, w);
-            const end = pointAlong(inner[0], inner[1], sx, sy, Math.floor(w / 2) + LEAD_BACK);
-            const seg: Leader = [inner, end];
-            if (ok(box, seg)) { chosen = [sx, sy]; leaderSeg = seg; break outer; }
-          }
-        }
+    if (pos === null) return null;
+    const box = boxMake(pos[0], pos[1], w);
+    let leaderSeg: Leader | null = null;
+    if (measure < NARROW_DEG) {
+      const rIn = Math.max(arad + LEAD_IN, Math.floor((LBL_CLEAR * R + s - 1) / s) + 2);
+      const inner = rayAt(v, bis, rIn);
+      const back = Math.floor(isqrt(w * w + LBL_H * LBL_H) / 2) + LEAD_BACK;
+      const outer = pointAlong(inner[0], inner[1], pos[0], pos[1], back);
+      const seg: Leader = [inner, outer];
+      if (!(inner[0] === outer[0] && inner[1] === outer[1]) && segLen2(seg) >= LEADER_MIN * LEADER_MIN
+        && inCcwWedge(start, measure, v, inner) && leaderClearsGeometry(seg, segLines, arcsObs, vertices, LBL_CLEAR)
+        && segClearBox(inner[0], inner[1], outer[0], outer[1], box, 0)) {
+        leaderSeg = seg;
       }
     }
-    if (chosen === null) return null;
-    placements.push([chosen[0], chosen[1], "middle", text]);
+    placements.push([pos[0], pos[1], "middle", text]);
     leaders.push(leaderSeg);
-    placed.push(boxMake(chosen[0], chosen[1], w));
+    placed.push(box);
   }
   const nPl = fig.plabels.length;
   for (let k = 0; k < leaders.length; k++) {
@@ -323,6 +351,10 @@ function placeLabels(P: Record<string, Pt>, fig: Figure): Placed | null {
     for (let idx = 0; idx < placed.length; idx++) {
       if (idx === nPl + k) continue;
       if (!segClearBox(seg[0][0], seg[0][1], seg[1][0], seg[1][1], placed[idx]!, LBL_CLEAR)) return null;
+    }
+    for (let j = 0; j < leaders.length; j++) {
+      const o = leaders[j];
+      if (j !== k && o && !segSegClear(seg[0][0], seg[0][1], seg[1][0], seg[1][1], o[0][0], o[0][1], o[1][0], o[1][1], LBL_CLEAR)) return null;
     }
   }
   return { placements, leaders };
@@ -720,13 +752,38 @@ export function validate(item: Record<string, Json>): ValidationResult {
     add("label-ray-clearance", alabelBoxes.every((b) => segLines.every(([A, B]) => segClearBox(A[0], A[1], B[0], B[1], b, LBL_CLEAR))), `labels clear every drawn line by >= ${LBL_CLEAR}px`);
     add("label-arc-clearance", alabelBoxes.every((b) => fig.arcs.every(([vn, s, m], i) => arcClearBox(b, P[vn]!, arcR[i]!, s, m, LBL_CLEAR))), `labels clear every arc by >= ${LBL_CLEAR}px`);
     add("label-vertex-clearance", alabelBoxes.every((b) => vertices.every((vtx) => ptBoxD2(vtx[0], vtx[1], b) >= LBL_CLEAR * LBL_CLEAR)), `labels clear every vertex by >= ${LBL_CLEAR}px`);
+    // --- Leader contract, PARSED from the serialized SVG. Leaders are radial, inside the
+    // wedge, visually SECONDARY, non-degenerate, and clear of all geometry/labels.
+    const gxSegs: Leader[] = [...storedSvg.matchAll(/<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"\/>/g)]
+      .map((m) => [[Number(m[1]), Number(m[2])], [Number(m[3]), Number(m[4])]] as Leader);
+    const styleOk = STYLE.includes(".gx{") && STYLE.includes(`stroke-width:${LEADER_STROKE_WIDTH}`)
+      && STYLE.includes("stroke-dasharray:") && STYLE.includes("stroke-linecap:round")
+      && LEADER_STROKE_WIDTH < Math.min(...GEOMETRY_STROKE_WIDTHS);
+    add("leader-style-distinct-from-geometry", styleOk, "thinner + dashed + round-capped (not a ray/side/arc/tick)");
+    add("leader-non-degenerate", gxSegs.every((s) => segLen2(s) > 0), "no zero-length leader");
+    add("leader-minimum-length", gxSegs.every((s) => segLen2(s) >= LEADER_MIN * LEADER_MIN), `every leader >= ${LEADER_MIN}px`);
+    const lclr = (s: Leader, A: Pt, B: Pt): boolean => segSegClear(s[0][0], s[0][1], s[1][0], s[1][1], A[0], A[1], B[0], B[1], LBL_CLEAR);
+    add("leader-ray-clearance", gxSegs.every((s) => segLines.every(([A, B]) => lclr(s, A, B))), "leaders clear every ray");
+    add("leader-side-clearance", gxSegs.every((s) => segLines.every(([A, B]) => lclr(s, A, B))), "leaders clear every triangle side");
+    add("leader-arc-clearance", gxSegs.every((s) => fig.arcs.every(([vn, st, m], i) => arcClearSeg(s, P[vn]!, arcR[i]!, st, m, LBL_CLEAR))), "leaders clear every arc");
+    add("leader-vertex-clearance", gxSegs.every((s) => vertices.every((vtx) => ptSegClear(vtx[0], vtx[1], s[0][0], s[0][1], s[1][0], s[1][1], LBL_CLEAR))), "leaders clear every vertex");
     let leadOk = true;
     leaders.forEach((seg, k) => {
       if (!seg) return;
       const others = [...plabelBoxes, ...alabelBoxes.filter((_, j) => j !== k)];
       if (!others.every((b) => segClearBox(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR))) leadOk = false;
     });
+    add("leader-label-clearance", leadOk, "no leader crosses a label box");
     add("leader-does-not-cross-label", leadOk, "no leader crosses another label box");
+    let llc = true;
+    for (let i = 0; i < gxSegs.length; i++) for (let j = i + 1; j < gxSegs.length; j++) {
+      const a = gxSegs[i]!, b = gxSegs[j]!;
+      if (!segSegClear(a[0][0], a[0][1], a[1][0], a[1][1], b[0][0], b[0][1], b[1][0], b[1][1], LBL_CLEAR)) llc = false;
+    }
+    add("leader-leader-clearance", llc, "leaders do not cross each other");
+    let routeOk = true;
+    leaders.forEach((seg, k) => { if (seg) { const [vn, start, measure] = fig.alabels[k]!; if (!inCcwWedge(start, measure, P[vn]!, seg[0])) routeOk = false; } });
+    add("leader-route-unambiguous", routeOk, "each leader starts inside its sector and points to its label");
 
     let attribOk = true, smallOk = true, reflexOk = true;
     fig.alabels.forEach(([vn, start, measure], k) => {
@@ -813,7 +870,7 @@ export function validate(item: Record<string, Json>): ValidationResult {
   add("version-fields-present", Boolean(item["generatorId"]) && Boolean(item["generatorVersion"]), "");
 
   const status = checks.every((c) => c.result === "pass") ? "pass" : "fail";
-  return { status, validatorVersion: "1.2.2", checks };
+  return { status, validatorVersion: "1.2.3", checks };
 }
 
 export function serialize(item: Record<string, Json>): string { return canonicalStringify(item); }

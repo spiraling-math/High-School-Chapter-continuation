@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
 <title>Angles around a point</title>
 <desc>Angles of 10 degrees, 179 degrees, 159 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="498" y1="344" x2="880" y2="344"/>
 <line class="gl" x1="498" y1="344" x2="874" y2="277"/>
 <line class="gl" x1="498" y1="344" x2="120" y2="403"/>
@@ -10,10 +10,11 @@
 <path class="ga" d="M 561 333 A 64 64 0 0 0 435 354"/>
 <path class="ga" d="M 415 357 A 84 84 0 0 0 580 361"/>
 <path class="ga" d="M 600 366 A 104 104 0 0 0 602 344"/>
-<line class="gx" x1="609" y1="356" x2="623" y2="395"/>
-<text x="890" y="310" text-anchor="middle">10°</text>
+<line class="gx" x1="592" y1="336" x2="856" y2="312"/>
+<line class="gx" x1="611" y1="356" x2="759" y2="371"/>
+<text x="897" y="309" text-anchor="middle">10°</text>
 <text x="482" y="245" text-anchor="middle">179°</text>
 <text x="494" y="464" text-anchor="middle">159°</text>
-<text x="631" y="415" text-anchor="middle">x</text>
+<text x="790" y="375" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

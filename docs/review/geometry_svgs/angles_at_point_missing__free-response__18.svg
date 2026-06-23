@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles meeting consecutively around a point, with an unknown angle x.">
 <title>Angles around a point</title>
 <desc>Angles of 79 degrees, 72 degrees and an unknown angle x are arranged consecutively, with no gaps, around a single point.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="475" y1="157" x2="880" y2="157"/>
 <line class="gl" x1="475" y1="157" x2="120" y2="354"/>
 <line class="gl" x1="475" y1="157" x2="600" y2="543"/>
@@ -10,6 +10,6 @@
 <path class="ga" d="M 501 237 A 84 84 0 0 0 559 157"/>
 <text x="456" y="79" text-anchor="middle">x</text>
 <text x="438" y="250" text-anchor="middle">79°</text>
-<text x="585" y="237" text-anchor="middle">72°</text>
+<text x="583" y="236" text-anchor="middle">72°</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

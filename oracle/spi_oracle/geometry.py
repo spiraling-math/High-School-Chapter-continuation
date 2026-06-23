@@ -31,7 +31,7 @@ from .difficulty import round3
 from .geometry_misconceptions import MISCONCEPTIONS, rules_for
 
 GENERATOR_ID = "gen.geometry.angles-figures"
-GENERATOR_VERSION = "1.2.2"
+GENERATOR_VERSION = "1.2.3"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _TABLE = json.load(open(os.path.join(_HERE, "..", "..", "core", "geometry", "dir-table.json"), encoding="utf-8"))
@@ -81,9 +81,15 @@ LBL_GAP = 30                         # the value label sits this far beyond its 
 LEADER_R1, LEADER_R2 = 46, 96      # neutral target-leader radial extent (vertically opposite)
 
 STYLE = (".gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}"
-         ".gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}"
+         ".gt{stroke:#111;stroke-width:3}"
+         # Callout leaders are visually SECONDARY: thinner than every geometry stroke,
+         # dashed, and round-capped, so they read as annotations, not rays/sides/arcs/ticks.
+         ".gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}"
          "text{font-family:sans-serif;font-size:30px;fill:#111}"
          ".gn{font-size:22px;fill:#444;letter-spacing:1px}")
+# The leader's distinguishing properties (asserted by leader-style-distinct-from-geometry).
+LEADER_STROKE_WIDTH = 1.5
+GEOMETRY_STROKE_WIDTHS = (3, 2)  # gl/gt = 3, ga = 2
 
 
 # --------------------------------------------------------------------------- #
@@ -300,12 +306,14 @@ LBL_CLEAR = 8        # minimum px clearance: label box to any ray / arc / vertex
 CANVAS_M = 12        # keep label boxes this far inside the viewBox
 CAPTION_TOP = 666    # labels stay above the NOT TO SCALE caption (y=685)
 LBL_R0_GAP = 36      # a label starts this far beyond its own arc
-LBL_STEP = 16        # radial search step
-LEAD_IN = 8          # leader inner endpoint sits this far beyond the arc, inside the sector
-LEAD_BACK = 12       # leader stops this far short of the label box
-ARC_SAMPLES = 8      # arc is sampled at this many points for label-arc clearance
-NARROW_DEG = 30      # sectors below this need an inside-fit OR a leader (unambiguous attribution)
-PERP_LIST = (28, -28, 56, -56, 84, -84, 112, -112, 140, -140)
+LBL_STEP = 14        # radial search step
+LBL_H = LBL_ASC + LBL_DESC          # label box height (30 px)
+R_LABEL_MAX = 480    # furthest a label may sit from its vertex
+LEAD_IN = 10         # leader inner endpoint sits this far beyond the arc
+LEAD_BACK = 14       # leader stops this far short of the label box
+LEADER_MIN = 26      # a drawn leader is at least this long (non-degenerate)
+ARC_SAMPLES = 8      # arc is sampled at this many points for label/leader-arc clearance
+NARROW_DEG = 30      # sectors below this get a connecting leader (radial, inside the wedge)
 
 
 def _text_w(text: str) -> int:
@@ -393,13 +401,64 @@ def _box_inside_wedge(box, v, start, measure) -> bool:
     return all(_in_ccw_wedge(start, measure, v, (cx, cy)) for cx in (box[0], box[2]) for cy in (box[1], box[3]))
 
 
-def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
-    """Adaptively place each angle label and return (placements, leaders).
+def _pt_seg_clear(px, py, ax, ay, bx, by, c) -> bool:
+    """Is point P at least c px from segment AB? Exact integer (squared) comparison."""
+    dx, dy = bx - ax, by - ay
+    l2 = dx * dx + dy * dy
+    cc = c * c
+    if l2 == 0:
+        return (px - ax) ** 2 + (py - ay) ** 2 >= cc
+    t = (px - ax) * dx + (py - ay) * dy
+    if t <= 0:
+        return (px - ax) ** 2 + (py - ay) ** 2 >= cc
+    if t >= l2:
+        return (px - bx) ** 2 + (py - by) ** 2 >= cc
+    pa2 = (px - ax) ** 2 + (py - ay) ** 2
+    return l2 * pa2 - t * t >= cc * l2          # perpendicular-distance^2 >= c^2
 
-    placements[k] = (x, y, "middle", text) aligned with fig['alabels']; leaders[k] is a
-    ((ix,iy),(ox,oy)) neutral leader or None. A label is placed INSIDE its sector when its
-    full bounding box fits with clearance; otherwise it is a callout in clear space joined
-    to the sector by a short neutral leader. Returns None if any label cannot be placed
+
+def _seg_seg_clear(ax, ay, bx, by, cx, cy, dx, dy, c) -> bool:
+    """Do segments AB and CD stay at least c px apart (and not cross)?"""
+    if _seg_intersect(ax, ay, bx, by, cx, cy, dx, dy):
+        return False
+    return (_pt_seg_clear(ax, ay, cx, cy, dx, dy, c) and _pt_seg_clear(bx, by, cx, cy, dx, dy, c)
+            and _pt_seg_clear(cx, cy, ax, ay, bx, by, c) and _pt_seg_clear(dx, dy, ax, ay, bx, by, c))
+
+
+def _arc_clear_seg(seg, v, ar, start, measure, c) -> bool:
+    for i in range(ARC_SAMPLES + 1):
+        ang = start + (measure * i) // ARC_SAMPLES
+        pt = _ray_at(v, ang, ar)
+        if not _pt_seg_clear(pt[0], pt[1], seg[0][0], seg[0][1], seg[1][0], seg[1][1], c):
+            return False
+    return True
+
+
+def _seg_len2(seg) -> int:
+    return (seg[1][0] - seg[0][0]) ** 2 + (seg[1][1] - seg[0][1]) ** 2
+
+
+def _leader_clears_geometry(seg, seg_lines, arcs, vertices, c) -> bool:
+    """A leader must not touch (within c) any ray/side, arc, or vertex."""
+    (ix, iy), (ox, oy) = seg
+    if any(not _seg_seg_clear(ix, iy, ox, oy, A[0], A[1], B[0], B[1], c) for (A, B) in seg_lines):
+        return False
+    if any(not _arc_clear_seg(seg, av, r, s, m, c) for (av, r, s, m) in arcs):
+        return False
+    if any(not _pt_seg_clear(vx, vy, ix, iy, ox, oy, c) for (vx, vy) in vertices):
+        return False
+    return True
+
+
+def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
+    """Place each angle label on its sector BISECTOR and return (placements, leaders).
+
+    placements[k] = (x, y, "middle", text) aligned with fig['alabels']. The label sits on
+    the bisector at the smallest radius where its full box fits the wedge with clearance;
+    this keeps every label inside its own region. For narrow sectors a RADIAL leader is
+    drawn along the bisector, from just past the arc out toward the label — entirely inside
+    the wedge, so it NEVER crosses a ray, side, arc, or vertex. leaders[k] is a
+    ((ix,iy),(ox,oy)) segment or None. Returns None if any label cannot be placed cleanly
     (the figure is then rejected and re-drawn). Deterministic integer geometry.
     """
     arc_radii = _arc_radii(fig, P)
@@ -414,21 +473,12 @@ def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
         left = p[0] + ox - (w // 2 if anchor == "middle" else (w if anchor == "end" else 0))
         placed.append((left, p[1] + oy - LBL_ASC, left + w, p[1] + oy + LBL_DESC))
 
-    def ok(box, leader=None) -> bool:
-        if not _box_in_canvas(box):
-            return False
-        if any(not _seg_clear_box(A[0], A[1], B[0], B[1], box, LBL_CLEAR) for (A, B) in seg_lines):
-            return False
-        if any(not _arc_clear_box(box, av, r, s, m, LBL_CLEAR) for (av, r, s, m) in arcs):
-            return False
-        if any(_pt_box_d2(vx, vy, box) < LBL_CLEAR * LBL_CLEAR for (vx, vy) in vertices):
-            return False
-        if any(not _boxes_clear(box, pb, LBL_CLEAR) for pb in placed):
-            return False
-        if leader is not None and any(
-                not _seg_clear_box(leader[0][0], leader[0][1], leader[1][0], leader[1][1], pb, LBL_CLEAR) for pb in placed):
-            return False
-        return True
+    def box_ok(box) -> bool:
+        return (_box_in_canvas(box)
+                and all(_seg_clear_box(A[0], A[1], B[0], B[1], box, LBL_CLEAR) for (A, B) in seg_lines)
+                and all(_arc_clear_box(box, av, r, s, m, LBL_CLEAR) for (av, r, s, m) in arcs)
+                and all(_pt_box_d2(vx, vy, box) >= LBL_CLEAR * LBL_CLEAR for (vx, vy) in vertices)
+                and all(_boxes_clear(box, pb, LBL_CLEAR) for pb in placed))
 
     placements, leaders = [], []
     for (vn, start, measure, text) in fig["alabels"]:
@@ -436,41 +486,44 @@ def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
         w = _text_w(text)
         bis = (start + measure // 2) % 360
         ar = rmap.get((vn, start, measure), ARC_DEFAULT)
-        s = DIR[(measure // 2) % 360][1]                       # R*sin(measure/2)
-        r_fit = ((w // 2 + LBL_CLEAR) * R + s - 1) // s if s > 0 else 10 ** 9
-        chosen = None
-        leader_seg = None
-        # 1) INSIDE the sector (no leader) when the whole box fits with clearance.
-        r_in = max(ar + LBL_R0_GAP, r_fit)
-        for i in range(4):
-            pos = _ray_at(v, bis, r_in + i * LBL_STEP)
-            box = _box_make(pos[0], pos[1], w)
-            if _box_inside_wedge(box, v, start, measure) and ok(box):
-                chosen = pos
+        s = DIR[(measure // 2) % 360][1]                       # R*sin(measure/2)  (> 0 for measure >= 10)
+        # smallest radius whose half-width fits inside the wedge with clearance
+        r_fit = ((w // 2 + LBL_CLEAR) * R + s - 1) // s if s > 0 else R_LABEL_MAX
+        r_lo = max(ar + LBL_R0_GAP, r_fit)
+        pos = None
+        for r in range(r_lo, R_LABEL_MAX + 1, LBL_STEP):
+            cand = _ray_at(v, bis, r)
+            box = _box_make(cand[0], cand[1], w)
+            if not _box_in_canvas(box):
+                break                                          # further out only gets worse
+            # the WHOLE box (all four corners, i.e. its height too) must sit inside the
+            # wedge, so the label is unambiguously inside its own region.
+            if _box_inside_wedge(box, v, start, measure) and box_ok(box):
+                pos = cand
                 break
-        # 2) CALLOUT in clear space, joined to the sector by a neutral leader.
-        if chosen is None:
-            inner = _ray_at(v, bis, ar + LEAD_IN)
-            if _in_ccw_wedge(start, measure, v, inner):
-                for ri in range(7):
-                    base = _ray_at(v, bis, ar + LBL_R0_GAP + ri * LBL_STEP)
-                    for perp in PERP_LIST:
-                        sx = base[0] + grid_round(DIR[(bis + 90) % 360][0] * perp, R)
-                        sy = base[1] - grid_round(DIR[(bis + 90) % 360][1] * perp, R)
-                        box = _box_make(sx, sy, w)
-                        end = _point_along(inner[0], inner[1], sx, sy, w // 2 + LEAD_BACK)
-                        seg = (inner, end)
-                        if ok(box, seg):
-                            chosen, leader_seg = (sx, sy), seg
-                            break
-                    if chosen is not None:
-                        break
-        if chosen is None:
+        if pos is None:
             return None
-        placements.append((chosen[0], chosen[1], "middle", text))
+        box = _box_make(pos[0], pos[1], w)
+
+        # Radial leader along the bisector for narrow sectors (clarity); stays in the wedge.
+        leader_seg = None
+        if measure < NARROW_DEG:
+            # inner end: past the arc AND far enough that the bisector clears both rays by LBL_CLEAR
+            r_in = max(ar + LEAD_IN, (LBL_CLEAR * R + s - 1) // s + 2)
+            inner = _ray_at(v, bis, r_in)
+            back = _isqrt(w * w + LBL_H * LBL_H) // 2 + LEAD_BACK
+            outer = _point_along(inner[0], inner[1], pos[0], pos[1], back)
+            if (inner != outer and _seg_len2((inner, outer)) >= LEADER_MIN * LEADER_MIN
+                    and _in_ccw_wedge(start, measure, v, inner)
+                    and _leader_clears_geometry((inner, outer), seg_lines, arcs, vertices, LBL_CLEAR)
+                    and _seg_clear_box(inner[0], inner[1], outer[0], outer[1], box, 0)):
+                leader_seg = (inner, outer)
+
+        placements.append((pos[0], pos[1], "middle", text))
         leaders.append(leader_seg)
-        placed.append(_box_make(chosen[0], chosen[1], w))
-    # Final pass: no leader may cross ANY other label box (incl. later-placed ones).
+        placed.append(box)
+
+    # Final pass: every leader must clear ALL other label boxes and ALL other leaders.
     n_pl = len(fig["plabels"])
     for k, seg in enumerate(leaders):
         if seg is None:
@@ -479,6 +532,10 @@ def _place_labels(P: Dict[str, Tuple[int, int]], fig: Dict[str, Any]):
             if idx == n_pl + k:
                 continue
             if not _seg_clear_box(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR):
+                return None
+        for j, other in enumerate(leaders):
+            if j != k and other is not None and not _seg_seg_clear(
+                    seg[0][0], seg[0][1], seg[1][0], seg[1][1], other[0][0], other[0][1], other[1][0], other[1][1], LBL_CLEAR):
                 return None
     return placements, leaders
 
@@ -1013,14 +1070,41 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         add("label-vertex-clearance",
             all(_pt_box_d2(vx, vy, b) >= LBL_CLEAR * LBL_CLEAR for b in alabel_boxes for (vx, vy) in vertices),
             f"labels clear every vertex by >= {LBL_CLEAR}px")
-        lead_ok = True
+        # --- Leader contract, PARSED from the serialized SVG. Leaders are radial, inside
+        # the wedge, visually SECONDARY, non-degenerate, and clear of all geometry/labels.
+        gx = re.findall(r'<line class="gx" x1="(-?\d+)" y1="(-?\d+)" x2="(-?\d+)" y2="(-?\d+)"/>', stored_svg)
+        gx_segs = [((int(a), int(b)), (int(c), int(d))) for (a, b, c, d) in gx]
+        style_ok = (".gx{" in STYLE and f"stroke-width:{LEADER_STROKE_WIDTH}" in STYLE
+                    and "stroke-dasharray:" in STYLE and "stroke-linecap:round" in STYLE
+                    and LEADER_STROKE_WIDTH < min(GEOMETRY_STROKE_WIDTHS))
+        add("leader-style-distinct-from-geometry", style_ok, "thinner + dashed + round-capped (not a ray/side/arc/tick)")
+        add("leader-non-degenerate", all(_seg_len2(s) > 0 for s in gx_segs), "no zero-length leader")
+        add("leader-minimum-length", all(_seg_len2(s) >= LEADER_MIN * LEADER_MIN for s in gx_segs), f"every leader >= {LEADER_MIN}px")
+        clr = lambda s, A, B: _seg_seg_clear(s[0][0], s[0][1], s[1][0], s[1][1], A[0], A[1], B[0], B[1], LBL_CLEAR)  # noqa: E731
+        add("leader-ray-clearance", all(clr(s, A, B) for s in gx_segs for (A, B) in seg_lines), "leaders clear every ray")
+        add("leader-side-clearance", all(clr(s, A, B) for s in gx_segs for (A, B) in seg_lines), "leaders clear every triangle side")
+        add("leader-arc-clearance", all(_arc_clear_seg(s, P[vn], rr, st, m, LBL_CLEAR) for s in gx_segs for (vn, st, m), rr in zip(fig["arcs"], arc_radii)), "leaders clear every arc")
+        add("leader-vertex-clearance", all(_pt_seg_clear(vx, vy, s[0][0], s[0][1], s[1][0], s[1][1], LBL_CLEAR) for s in gx_segs for (vx, vy) in vertices), "leaders clear every vertex")
+        lead_label_ok = True
         for k, seg in enumerate(lleaders):
             if seg is None:
                 continue
             others = plabel_boxes + [b for j, b in enumerate(alabel_boxes) if j != k]
             if any(not _seg_clear_box(seg[0][0], seg[0][1], seg[1][0], seg[1][1], b, LBL_CLEAR) for b in others):
-                lead_ok = False
-        add("leader-does-not-cross-label", lead_ok, "no leader crosses another label box")
+                lead_label_ok = False
+        add("leader-label-clearance", lead_label_ok, "no leader crosses a label box")
+        add("leader-does-not-cross-label", lead_label_ok, "no leader crosses another label box")
+        add("leader-leader-clearance",
+            all(_seg_seg_clear(a[0][0], a[0][1], a[1][0], a[1][1], b[0][0], b[0][1], b[1][0], b[1][1], LBL_CLEAR)
+                for i, a in enumerate(gx_segs) for j, b in enumerate(gx_segs) if i < j),
+            "leaders do not cross each other")
+        route_ok = True
+        for k, seg in enumerate(lleaders):
+            if seg is not None:
+                vn, start, measure, _t = fig["alabels"][k]
+                if not _in_ccw_wedge(start, measure, P[vn], seg[0]):
+                    route_ok = False
+        add("leader-route-unambiguous", route_ok, "each leader starts inside its sector and points to its label")
 
         attrib_ok = small_ok = reflex_ok = True
         for k, (vn, start, measure, text) in enumerate(fig["alabels"]):
@@ -1104,4 +1188,4 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     add("version-fields-present", bool(item.get("generatorId") and item.get("generatorVersion")), "")
 
     status = "pass" if all(c["result"] == "pass" for c in checks) else "fail"
-    return {"status": status, "validatorVersion": "1.2.2", "checks": checks}
+    return {"status": status, "validatorVersion": "1.2.3", "checks": checks}

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: angles adjacent on one side of a straight line, with an unknown angle x.">
 <title>Angles on a straight line</title>
 <desc>Angles of 15 degrees, 72 degrees, 15 degrees and an unknown angle x are adjacent, in order, along one side of a straight line.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="880" y1="540" x2="120" y2="540"/>
 <line class="gl" x1="500" y1="540" x2="867" y2="441"/>
 <line class="gl" x1="500" y1="540" x2="520" y2="160"/>
@@ -10,9 +10,11 @@
 <path class="ga" d="M 562 523 A 64 64 0 0 0 503 476"/>
 <path class="ga" d="M 504 456 A 84 84 0 0 0 483 458"/>
 <path class="ga" d="M 478 438 A 104 104 0 0 0 396 540"/>
-<text x="761" y="508" text-anchor="middle">15°</text>
+<line class="gx" x1="567" y1="532" x2="732" y2="511"/>
+<line class="gx" x1="493" y1="446" x2="483" y2="307"/>
+<text x="773" y="506" text-anchor="middle">15°</text>
 <text x="563" y="462" text-anchor="middle">72°</text>
-<text x="481" y="262" text-anchor="middle">15°</text>
+<text x="481" y="266" text-anchor="middle">15°</text>
 <text x="391" y="452" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

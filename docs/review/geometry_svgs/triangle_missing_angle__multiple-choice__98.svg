@@ -1,18 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: a triangle with two known angles and an unknown angle x.">
 <title>Triangle ABC</title>
 <desc>Triangle ABC has an interior angle of 60 degrees at A, an interior angle of 25 degrees at B, and an unknown interior angle x at C.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="120" y1="490" x2="880" y2="490"/>
 <line class="gl" x1="120" y1="490" x2="282" y2="210"/>
 <line class="gl" x1="880" y1="490" x2="282" y2="210"/>
 <path class="ga" d="M 176 490 A 56 56 0 0 0 148 442"/>
 <path class="ga" d="M 829 466 A 56 56 0 0 0 824 490"/>
 <path class="ga" d="M 254 258 A 56 56 0 0 0 333 234"/>
+<line class="gx" x1="816" y1="475" x2="724" y2="454"/>
 <text x="86" y="520" text-anchor="end">A</text>
 <text x="914" y="520" text-anchor="start">B</text>
 <text x="282" y="192" text-anchor="middle">C</text>
 <text x="200" y="444" text-anchor="middle">60°</text>
-<text x="692" y="447" text-anchor="middle">25°</text>
+<text x="684" y="445" text-anchor="middle">25°</text>
 <text x="309" y="298" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>

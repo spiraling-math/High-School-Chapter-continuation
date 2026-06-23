@@ -1,19 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Diagram: a triangle with two known angles and an unknown angle x.">
 <title>Triangle ABC</title>
 <desc>Triangle ABC has an interior angle of 118 degrees at A, an interior angle of 11 degrees at B, and an unknown interior angle x at C.</desc>
-<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#111;stroke-width:3}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
+<style>.gl{stroke:#111;stroke-width:3;fill:none}.ga{stroke:#111;stroke-width:2;fill:none}.gt{stroke:#111;stroke-width:3}.gx{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.gv{fill:#111}text{font-family:sans-serif;font-size:30px;fill:#111}.gn{font-size:22px;fill:#444;letter-spacing:1px}</style>
 <line class="gl" x1="198" y1="424" x2="880" y2="424"/>
 <line class="gl" x1="198" y1="424" x2="120" y2="276"/>
 <line class="gl" x1="880" y1="424" x2="120" y2="276"/>
 <path class="ga" d="M 248 424 A 50 50 0 0 0 175 380"/>
 <path class="ga" d="M 825 413 A 56 56 0 0 0 824 424"/>
 <path class="ga" d="M 143 320 A 50 50 0 0 0 169 286"/>
-<line class="gx" x1="816" y1="417" x2="801" y2="440"/>
 <text x="164" y="454" text-anchor="end">A</text>
 <text x="914" y="454" text-anchor="start">B</text>
 <text x="120" y="258" text-anchor="middle">C</text>
 <text x="242" y="350" text-anchor="middle">118°</text>
-<text x="783" y="470" text-anchor="middle">11°</text>
+<text x="467" y="381" text-anchor="middle">11°</text>
 <text x="189" y="328" text-anchor="middle">x</text>
 <text class="gn" x="500" y="685" text-anchor="middle">NOT TO SCALE</text>
 </svg>
