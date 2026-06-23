@@ -2,6 +2,18 @@
 
 Last updated: 2026-06-23.
 
+## Next family — `gen.geometry.coordinate-lines` v1.0.0 (PROPOSAL pending owner APPROVE/REJECT)
+
+Coordinate geometry & straight-line graphs (Middle School Geometry/Algebra bridge) — the
+next architecture-proving family (it composes the approved linear-equations algebra with
+the geometry SVG pipeline and adds a reusable Cartesian renderer + a premium colour layer
+that Statistics & Data Handling will reuse next). Full spec:
+`docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` (16 sections + 3 appendices). **PROPOSAL
+ONLY — no implementation has begun**; on approval it is built oracle-first and registered
+`pending-review` (gated) until a review-pack decision. Authored + adversarially verified by
+a multi-agent workflow (5 critics; all blocker findings applied). Open design decisions for
+the owner are in the proposal's Appendix A. After it, Statistics & Data Handling is queued.
+
 ## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)
 
 **Owner rejected the v1.2.2 review package (`DECISION_LOG.md` #39):** leaders were styled
