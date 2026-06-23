@@ -1,0 +1,32 @@
+{
+  "schema": "spi-math-coordinate-lines-manifest/1",
+  "generatorId": "gen.geometry.coordinate-lines",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "gitCommit": "dcbea066d500ae550fe30ba849c7305d3baf74eb",
+  "generatedAt": "2026-06-23T19:58:23+00:00",
+  "pngExport": {
+    "maxEnvelope": "7680x4320",
+    "scale": 6,
+    "width": 6000,
+    "height": 4200,
+    "viewBox": "0 0 1000 700"
+  },
+  "commands": [
+    "python oracle/run_coordinate_lines.py                  # golden + parity fixtures + 10k sweep + distribution report",
+    "python oracle/make_review_pack_coordinate_lines.py     # review pack (.md/.json) + per-item SVGs",
+    "python oracle/make_visual_audit_coordinate_lines.py    # visual audit + premium gallery + 6000x4200 export",
+    "python oracle/make_coordinate_lines_manifest.py        # this manifest"
+  ],
+  "sha256": {
+    "reviewPackMd": "586f1cd1bd327b8f5850d7c257e03702cc352c82c7982879787325eedfe8485f",
+    "reviewPackJson": "0f6583d8eec38a5bbbc2fd14c2d349f61ec61e471760290b8aecd65125557c43",
+    "visualAudit": "af7fde7507a25492137b88a0b3d8f8c47fce1a6f26a2893dfcd3a3eabe092e55",
+    "goldenFixture": "eafbcf3388dd3ffbd7722b0962f950bd7b6276b85fe32d3407f4801993c56e7b",
+    "parityFixture": "4e07e1642061018842256d7c8e460223b89eab8a6bcd5f7942465882f911c412",
+    "distributionReport": "f42c02c3be290f55425ff9418ff1f869f0d23c8df08b36f13bda8d3c4fc027f3",
+    "hiresSample": "392db6fd83b3b355fc1ec796fe80e333a1291237abbdd31900e484108799c003"
+  },
+  "sha256SvgDir": "b6f7d91d764a8e26a348b9ebfaf75ece87d0138e4b2df0753d7bdffc3b82e56a",
+  "svgCount": 29
+}

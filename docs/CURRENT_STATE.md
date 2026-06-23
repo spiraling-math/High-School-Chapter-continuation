@@ -2,17 +2,31 @@
 
 Last updated: 2026-06-23.
 
-## Next family — `gen.geometry.coordinate-lines` v1.0.0 (PROPOSAL pending owner APPROVE/REJECT)
+## `gen.geometry.coordinate-lines` v1.0.0 — IMPLEMENTED oracle-first; PENDING-REVIEW (gated)
 
-Coordinate geometry & straight-line graphs (Middle School Geometry/Algebra bridge) — the
-next architecture-proving family (it composes the approved linear-equations algebra with
-the geometry SVG pipeline and adds a reusable Cartesian renderer + a premium colour layer
-that Statistics & Data Handling will reuse next). Full spec:
-`docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` (16 sections + 3 appendices). **PROPOSAL
-ONLY — no implementation has begun**; on approval it is built oracle-first and registered
-`pending-review` (gated) until a review-pack decision. Authored + adversarially verified by
-a multi-agent workflow (5 critics; all blocker findings applied). Open design decisions for
-the owner are in the proposal's Appendix A. After it, Statistics & Data Handling is queued.
+Coordinate geometry & straight-line graphs (Middle-School Geometry/Algebra bridge) — built
+oracle-first after the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec
+(`DECISION_LOG.md` #41). 7 tasks (read_point, plot_point [FR-only], gradient_two_points,
+midpoint, interpret_mx_c, equation_from_graph, equation_from_two_points) 1:1 with 8
+objectives `SPI.MIDDLE.GEO.COORD.*` (incl. the foundational CARTESIAN_PLANE) in a new strand
+`coordinate-geometry-straight-line-graphs`. Exact-Fraction model; deterministic Cartesian
+renderer (cx-* classes, dynamic equal-scale viewport, single gridRound projection, exact
+clipping, to scale); leakage-controlled figures (plot_point blank, equation_from_graph
+neutral label `l`, midpoint endpoints only, gradient scaffold vs plain, read_point lower-band
+guides); vertical lines excluded from the four finite-gradient tasks; MC only with 3 distinct
+misconception-backed distractors (plot_point MC rejected). Premium colour layer
+(`media[].spec.premium`) + **6000×4200** PNG export (S=6); the monochrome canonical SVG stays
+authoritative. **Independent Python oracle + byte-identical TypeScript mirror** (golden +
+300-entry parity fixtures match byte-for-byte). Registered `approvalStatus: pending-review`
+— gated out of normal Studio + production exports/samples until the owner's review-pack
+decision. Verified: typecheck; full TS suite; 4 oracle suites; conformance; 10,000-seed
+sweep 0 invalid; review pack (29 svgs, all 11 misconceptions, 0 leakage), visual audit +
+premium gallery (3 modes + dark + stress test + zoom + 6000×4200 export), generation
+manifest + blocking artifact-integrity tests, reusable answer-checkers. Approved
+arithmetic/geometric/linear/geometry output byte-for-byte UNCHANGED. Items begin
+machine-validated; no auto-approval/publication. **Awaiting the owner's APPROVE / REVISE /
+REJECT of the implemented family.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
+After this family, Statistics & Data Handling is the queued next proposal.
 
 ## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)
 

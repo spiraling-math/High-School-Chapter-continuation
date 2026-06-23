@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.">
+<title>Two plotted points</title>
+<desc>Point A is at (8, -1) and point B is at (-4, -4), plotted on a labelled Cartesian grid with equal x and y scales.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<line class="cx-grid-minor" x1="78" y1="155" x2="78" y2="545"/>
+<line class="cx-grid-minor" x1="143" y1="155" x2="143" y2="545"/>
+<line class="cx-grid-minor" x1="208" y1="155" x2="208" y2="545"/>
+<line class="cx-grid-minor" x1="273" y1="155" x2="273" y2="545"/>
+<line class="cx-grid-minor" x1="338" y1="155" x2="338" y2="545"/>
+<line class="cx-grid-minor" x1="403" y1="155" x2="403" y2="545"/>
+<line class="cx-grid-minor" x1="468" y1="155" x2="468" y2="545"/>
+<line class="cx-grid-minor" x1="533" y1="155" x2="533" y2="545"/>
+<line class="cx-grid-minor" x1="598" y1="155" x2="598" y2="545"/>
+<line class="cx-grid-minor" x1="663" y1="155" x2="663" y2="545"/>
+<line class="cx-grid-minor" x1="728" y1="155" x2="728" y2="545"/>
+<line class="cx-grid-minor" x1="793" y1="155" x2="793" y2="545"/>
+<line class="cx-grid-minor" x1="858" y1="155" x2="858" y2="545"/>
+<line class="cx-grid-minor" x1="923" y1="155" x2="923" y2="545"/>
+<line class="cx-grid-minor" x1="45" y1="513" x2="955" y2="513"/>
+<line class="cx-grid-minor" x1="45" y1="448" x2="955" y2="448"/>
+<line class="cx-grid-minor" x1="45" y1="383" x2="955" y2="383"/>
+<line class="cx-grid-minor" x1="45" y1="318" x2="955" y2="318"/>
+<line class="cx-grid-minor" x1="45" y1="253" x2="955" y2="253"/>
+<line class="cx-grid-minor" x1="45" y1="188" x2="955" y2="188"/>
+<line class="cx-grid-major" x1="45" y1="155" x2="45" y2="545"/>
+<line class="cx-grid-major" x1="110" y1="155" x2="110" y2="545"/>
+<line class="cx-grid-major" x1="175" y1="155" x2="175" y2="545"/>
+<line class="cx-grid-major" x1="240" y1="155" x2="240" y2="545"/>
+<line class="cx-grid-major" x1="305" y1="155" x2="305" y2="545"/>
+<line class="cx-grid-major" x1="435" y1="155" x2="435" y2="545"/>
+<line class="cx-grid-major" x1="500" y1="155" x2="500" y2="545"/>
+<line class="cx-grid-major" x1="565" y1="155" x2="565" y2="545"/>
+<line class="cx-grid-major" x1="630" y1="155" x2="630" y2="545"/>
+<line class="cx-grid-major" x1="695" y1="155" x2="695" y2="545"/>
+<line class="cx-grid-major" x1="760" y1="155" x2="760" y2="545"/>
+<line class="cx-grid-major" x1="825" y1="155" x2="825" y2="545"/>
+<line class="cx-grid-major" x1="890" y1="155" x2="890" y2="545"/>
+<line class="cx-grid-major" x1="955" y1="155" x2="955" y2="545"/>
+<line class="cx-grid-major" x1="45" y1="545" x2="955" y2="545"/>
+<line class="cx-grid-major" x1="45" y1="480" x2="955" y2="480"/>
+<line class="cx-grid-major" x1="45" y1="415" x2="955" y2="415"/>
+<line class="cx-grid-major" x1="45" y1="350" x2="955" y2="350"/>
+<line class="cx-grid-major" x1="45" y1="285" x2="955" y2="285"/>
+<line class="cx-grid-major" x1="45" y1="155" x2="955" y2="155"/>
+<line class="cx-axis" x1="45" y1="220" x2="955" y2="220"/>
+<line class="cx-axis" x1="370" y1="545" x2="370" y2="155"/>
+<path class="cx-axis" d="M 943 213 L 955 220 L 943 227"/>
+<path class="cx-axis" d="M 363 167 L 370 155 L 377 167"/>
+<text class="cx-lbl" x="951" y="250" text-anchor="end">x</text>
+<text class="cx-lbl" x="382" y="161" text-anchor="start">y</text>
+<line class="cx-tick" x1="110" y1="214" x2="110" y2="226"/>
+<text class="cx-ticklbl" x="110" y="246" text-anchor="middle">-4</text>
+<line class="cx-tick" x1="240" y1="214" x2="240" y2="226"/>
+<text class="cx-ticklbl" x="240" y="246" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="500" y1="214" x2="500" y2="226"/>
+<text class="cx-ticklbl" x="500" y="246" text-anchor="middle">2</text>
+<line class="cx-tick" x1="630" y1="214" x2="630" y2="226"/>
+<text class="cx-ticklbl" x="630" y="246" text-anchor="middle">4</text>
+<line class="cx-tick" x1="760" y1="214" x2="760" y2="226"/>
+<text class="cx-ticklbl" x="760" y="246" text-anchor="middle">6</text>
+<line class="cx-tick" x1="890" y1="214" x2="890" y2="226"/>
+<text class="cx-ticklbl" x="890" y="246" text-anchor="middle">8</text>
+<line class="cx-tick" x1="364" y1="545" x2="376" y2="545"/>
+<text class="cx-ticklbl" x="358" y="552" text-anchor="end">-5</text>
+<line class="cx-tick" x1="364" y1="480" x2="376" y2="480"/>
+<text class="cx-ticklbl" x="358" y="487" text-anchor="end">-4</text>
+<line class="cx-tick" x1="364" y1="415" x2="376" y2="415"/>
+<text class="cx-ticklbl" x="358" y="422" text-anchor="end">-3</text>
+<line class="cx-tick" x1="364" y1="350" x2="376" y2="350"/>
+<text class="cx-ticklbl" x="358" y="357" text-anchor="end">-2</text>
+<line class="cx-tick" x1="364" y1="285" x2="376" y2="285"/>
+<text class="cx-ticklbl" x="358" y="292" text-anchor="end">-1</text>
+<line class="cx-tick" x1="364" y1="155" x2="376" y2="155"/>
+<text class="cx-ticklbl" x="358" y="162" text-anchor="end">1</text>
+<text class="cx-ticklbl" x="358" y="246" text-anchor="end">0</text>
+<line class="cx-guide" x1="890" y1="285" x2="110" y2="285"/>
+<line class="cx-guide" x1="110" y1="285" x2="110" y2="480"/>
+<circle class="cx-pt-outline" cx="890" cy="285" r="9"/>
+<circle class="cx-pt-core" cx="890" cy="285" r="5"/>
+<text class="cx-lbl" x="876" y="273" text-anchor="end">A</text>
+<circle class="cx-pt-outline" cx="110" cy="480" r="9"/>
+<circle class="cx-pt-core" cx="110" cy="480" r="5"/>
+<text class="cx-lbl" x="124" y="468" text-anchor="start">B</text>
+</svg>

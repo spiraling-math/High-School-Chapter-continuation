@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A straight line drawn on a labelled Cartesian grid with equal x and y scales.">
+<title>A straight-line graph</title>
+<desc>A straight line is drawn on a labelled Cartesian grid with equal x and y scales. It passes through the lattice points (-9, 3) and (9, -9). Determine its equation in the form y = mx + c.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<line class="cx-grid-minor" x1="82" y1="42" x2="82" y2="658"/>
+<line class="cx-grid-minor" x1="126" y1="42" x2="126" y2="658"/>
+<line class="cx-grid-minor" x1="170" y1="42" x2="170" y2="658"/>
+<line class="cx-grid-minor" x1="214" y1="42" x2="214" y2="658"/>
+<line class="cx-grid-minor" x1="258" y1="42" x2="258" y2="658"/>
+<line class="cx-grid-minor" x1="302" y1="42" x2="302" y2="658"/>
+<line class="cx-grid-minor" x1="346" y1="42" x2="346" y2="658"/>
+<line class="cx-grid-minor" x1="390" y1="42" x2="390" y2="658"/>
+<line class="cx-grid-minor" x1="434" y1="42" x2="434" y2="658"/>
+<line class="cx-grid-minor" x1="478" y1="42" x2="478" y2="658"/>
+<line class="cx-grid-minor" x1="522" y1="42" x2="522" y2="658"/>
+<line class="cx-grid-minor" x1="566" y1="42" x2="566" y2="658"/>
+<line class="cx-grid-minor" x1="610" y1="42" x2="610" y2="658"/>
+<line class="cx-grid-minor" x1="654" y1="42" x2="654" y2="658"/>
+<line class="cx-grid-minor" x1="698" y1="42" x2="698" y2="658"/>
+<line class="cx-grid-minor" x1="742" y1="42" x2="742" y2="658"/>
+<line class="cx-grid-minor" x1="786" y1="42" x2="786" y2="658"/>
+<line class="cx-grid-minor" x1="830" y1="42" x2="830" y2="658"/>
+<line class="cx-grid-minor" x1="874" y1="42" x2="874" y2="658"/>
+<line class="cx-grid-minor" x1="918" y1="42" x2="918" y2="658"/>
+<line class="cx-grid-minor" x1="60" y1="636" x2="940" y2="636"/>
+<line class="cx-grid-minor" x1="60" y1="592" x2="940" y2="592"/>
+<line class="cx-grid-minor" x1="60" y1="548" x2="940" y2="548"/>
+<line class="cx-grid-minor" x1="60" y1="504" x2="940" y2="504"/>
+<line class="cx-grid-minor" x1="60" y1="460" x2="940" y2="460"/>
+<line class="cx-grid-minor" x1="60" y1="416" x2="940" y2="416"/>
+<line class="cx-grid-minor" x1="60" y1="372" x2="940" y2="372"/>
+<line class="cx-grid-minor" x1="60" y1="328" x2="940" y2="328"/>
+<line class="cx-grid-minor" x1="60" y1="284" x2="940" y2="284"/>
+<line class="cx-grid-minor" x1="60" y1="240" x2="940" y2="240"/>
+<line class="cx-grid-minor" x1="60" y1="196" x2="940" y2="196"/>
+<line class="cx-grid-minor" x1="60" y1="152" x2="940" y2="152"/>
+<line class="cx-grid-minor" x1="60" y1="108" x2="940" y2="108"/>
+<line class="cx-grid-minor" x1="60" y1="64" x2="940" y2="64"/>
+<line class="cx-grid-major" x1="60" y1="42" x2="60" y2="658"/>
+<line class="cx-grid-major" x1="104" y1="42" x2="104" y2="658"/>
+<line class="cx-grid-major" x1="148" y1="42" x2="148" y2="658"/>
+<line class="cx-grid-major" x1="192" y1="42" x2="192" y2="658"/>
+<line class="cx-grid-major" x1="236" y1="42" x2="236" y2="658"/>
+<line class="cx-grid-major" x1="280" y1="42" x2="280" y2="658"/>
+<line class="cx-grid-major" x1="324" y1="42" x2="324" y2="658"/>
+<line class="cx-grid-major" x1="368" y1="42" x2="368" y2="658"/>
+<line class="cx-grid-major" x1="412" y1="42" x2="412" y2="658"/>
+<line class="cx-grid-major" x1="456" y1="42" x2="456" y2="658"/>
+<line class="cx-grid-major" x1="544" y1="42" x2="544" y2="658"/>
+<line class="cx-grid-major" x1="588" y1="42" x2="588" y2="658"/>
+<line class="cx-grid-major" x1="632" y1="42" x2="632" y2="658"/>
+<line class="cx-grid-major" x1="676" y1="42" x2="676" y2="658"/>
+<line class="cx-grid-major" x1="720" y1="42" x2="720" y2="658"/>
+<line class="cx-grid-major" x1="764" y1="42" x2="764" y2="658"/>
+<line class="cx-grid-major" x1="808" y1="42" x2="808" y2="658"/>
+<line class="cx-grid-major" x1="852" y1="42" x2="852" y2="658"/>
+<line class="cx-grid-major" x1="896" y1="42" x2="896" y2="658"/>
+<line class="cx-grid-major" x1="940" y1="42" x2="940" y2="658"/>
+<line class="cx-grid-major" x1="60" y1="658" x2="940" y2="658"/>
+<line class="cx-grid-major" x1="60" y1="614" x2="940" y2="614"/>
+<line class="cx-grid-major" x1="60" y1="570" x2="940" y2="570"/>
+<line class="cx-grid-major" x1="60" y1="526" x2="940" y2="526"/>
+<line class="cx-grid-major" x1="60" y1="482" x2="940" y2="482"/>
+<line class="cx-grid-major" x1="60" y1="438" x2="940" y2="438"/>
+<line class="cx-grid-major" x1="60" y1="394" x2="940" y2="394"/>
+<line class="cx-grid-major" x1="60" y1="350" x2="940" y2="350"/>
+<line class="cx-grid-major" x1="60" y1="306" x2="940" y2="306"/>
+<line class="cx-grid-major" x1="60" y1="262" x2="940" y2="262"/>
+<line class="cx-grid-major" x1="60" y1="174" x2="940" y2="174"/>
+<line class="cx-grid-major" x1="60" y1="130" x2="940" y2="130"/>
+<line class="cx-grid-major" x1="60" y1="86" x2="940" y2="86"/>
+<line class="cx-grid-major" x1="60" y1="42" x2="940" y2="42"/>
+<line class="cx-axis" x1="60" y1="218" x2="940" y2="218"/>
+<line class="cx-axis" x1="500" y1="658" x2="500" y2="42"/>
+<path class="cx-axis" d="M 928 211 L 940 218 L 928 225"/>
+<path class="cx-axis" d="M 493 54 L 500 42 L 507 54"/>
+<text class="cx-lbl" x="936" y="248" text-anchor="end">x</text>
+<text class="cx-lbl" x="512" y="48" text-anchor="start">y</text>
+<line class="cx-tick" x1="60" y1="212" x2="60" y2="224"/>
+<text class="cx-ticklbl" x="60" y="244" text-anchor="middle">-10</text>
+<line class="cx-tick" x1="148" y1="212" x2="148" y2="224"/>
+<text class="cx-ticklbl" x="148" y="244" text-anchor="middle">-8</text>
+<line class="cx-tick" x1="236" y1="212" x2="236" y2="224"/>
+<text class="cx-ticklbl" x="236" y="244" text-anchor="middle">-6</text>
+<line class="cx-tick" x1="324" y1="212" x2="324" y2="224"/>
+<text class="cx-ticklbl" x="324" y="244" text-anchor="middle">-4</text>
+<line class="cx-tick" x1="412" y1="212" x2="412" y2="224"/>
+<text class="cx-ticklbl" x="412" y="244" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="588" y1="212" x2="588" y2="224"/>
+<text class="cx-ticklbl" x="588" y="244" text-anchor="middle">2</text>
+<line class="cx-tick" x1="676" y1="212" x2="676" y2="224"/>
+<text class="cx-ticklbl" x="676" y="244" text-anchor="middle">4</text>
+<line class="cx-tick" x1="764" y1="212" x2="764" y2="224"/>
+<text class="cx-ticklbl" x="764" y="244" text-anchor="middle">6</text>
+<line class="cx-tick" x1="852" y1="212" x2="852" y2="224"/>
+<text class="cx-ticklbl" x="852" y="244" text-anchor="middle">8</text>
+<line class="cx-tick" x1="940" y1="212" x2="940" y2="224"/>
+<text class="cx-ticklbl" x="940" y="244" text-anchor="middle">10</text>
+<line class="cx-tick" x1="494" y1="658" x2="506" y2="658"/>
+<text class="cx-ticklbl" x="488" y="665" text-anchor="end">-10</text>
+<line class="cx-tick" x1="494" y1="570" x2="506" y2="570"/>
+<text class="cx-ticklbl" x="488" y="577" text-anchor="end">-8</text>
+<line class="cx-tick" x1="494" y1="482" x2="506" y2="482"/>
+<text class="cx-ticklbl" x="488" y="489" text-anchor="end">-6</text>
+<line class="cx-tick" x1="494" y1="394" x2="506" y2="394"/>
+<text class="cx-ticklbl" x="488" y="401" text-anchor="end">-4</text>
+<line class="cx-tick" x1="494" y1="306" x2="506" y2="306"/>
+<text class="cx-ticklbl" x="488" y="313" text-anchor="end">-2</text>
+<line class="cx-tick" x1="494" y1="130" x2="506" y2="130"/>
+<text class="cx-ticklbl" x="488" y="137" text-anchor="end">2</text>
+<line class="cx-tick" x1="494" y1="42" x2="506" y2="42"/>
+<text class="cx-ticklbl" x="488" y="49" text-anchor="end">4</text>
+<text class="cx-ticklbl" x="488" y="244" text-anchor="end">0</text>
+<line class="cx-line" x1="60" y1="57" x2="940" y2="643"/>
+<text class="cx-lbl" x="930" y="633" text-anchor="end">l</text>
+</svg>

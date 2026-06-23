@@ -123,6 +123,23 @@ tests), which was **curriculum-approved** (#40). Each revision preserved its pre
 v1.2.0/1.2.1/1.2.2 stay in history (unapproved) and are **not registered/selectable** —
 only the approved v1.2.3 is.
 
+## Pending-review (machine-validated; gated to review/developer mode)
+
+| Generator | Version | `approvalStatus` | Visible to | Review artifacts |
+| --- | --- | --- | --- | --- |
+| `gen.geometry.coordinate-lines` | 1.0.0 | **pending-review** | Studio review mode only; **excluded** from normal users + production exports/samples | `docs/review/coordinate_lines_review_pack.{md,json}` + `coordinate_lines_visual_audit.html` + `coordinate_lines_manifest.json` |
+
+`gen.geometry.coordinate-lines` v1.0.0 (Coordinate geometry & straight-line graphs) was
+implemented oracle-first after the owner's APPROVE-WITH-REQUIRED-REVISIONS of the spec
+(`DECISION_LOG.md` #41). Its **8 objectives** `SPI.MIDDLE.GEO.COORD.*` (CARTESIAN_PLANE +
+READ_POINT, PLOT_POINT, GRADIENT_TWO_POINTS, MIDPOINT, INTERPRET_MX_C, EQUATION_FROM_GRAPH,
+EQUATION_FROM_2PTS) carry `reviewStatus: approved-for-implementation` in a new strand
+`coordinate-geometry-straight-line-graphs`. The generator is self-verifying (byte-identical
+Python/TypeScript SVG + item parity; 10,000-seed sweep 0 invalid; schema + leakage +
+artifact-integrity gates) but **awaits the owner's review-pack APPROVE/REVISE/REJECT**; it
+is registered `pending-review` and is excluded from normal Studio use + production exports.
+This section moves into "Approved generators" only on that decision.
+
 ## Golden exemplars (curriculum-reviewed and approved)
 
 The representative reviewed examples are approved as **golden exemplars**. The
