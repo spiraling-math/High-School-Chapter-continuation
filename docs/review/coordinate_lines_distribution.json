@@ -1,92 +1,92 @@
 {
   "generatorId": "gen.geometry.coordinate-lines",
   "generatorVersion": "1.0.0",
-  "sweep": 10000,
+  "sweep": 2500,
   "invalid": 0,
   "perTask": {
     "read_point": {
-      "count": 1421,
+      "count": 365,
       "objectiveRange": [
         1,
         2
       ],
       "bands": {
-        "1": 726,
-        "2": 695
+        "1": 176,
+        "2": 189
       },
       "bandPct": {
-        "1": 51.1,
-        "2": 48.9
+        "1": 48.2,
+        "2": 51.8
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     },
     "plot_point": {
-      "count": 1475,
+      "count": 369,
       "objectiveRange": [
         1,
         2
       ],
       "bands": {
-        "1": 465,
-        "2": 1010
+        "1": 113,
+        "2": 256
       },
       "bandPct": {
-        "1": 31.5,
-        "2": 68.5
+        "1": 30.6,
+        "2": 69.4
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     },
     "gradient_two_points": {
-      "count": 1445,
+      "count": 346,
       "objectiveRange": [
         2,
         4
       ],
       "bands": {
-        "2": 377,
-        "3": 911,
-        "4": 157
+        "2": 95,
+        "3": 209,
+        "4": 42
       },
       "bandPct": {
-        "2": 26.1,
-        "3": 63.0,
-        "4": 10.9
+        "2": 27.5,
+        "3": 60.4,
+        "4": 12.1
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     },
     "midpoint": {
-      "count": 1474,
+      "count": 381,
       "objectiveRange": [
         2,
         3
       ],
       "bands": {
-        "2": 603,
-        "3": 871
+        "2": 161,
+        "3": 220
       },
       "bandPct": {
-        "2": 40.9,
-        "3": 59.1
+        "2": 42.3,
+        "3": 57.7
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     },
     "interpret_mx_c": {
-      "count": 1406,
+      "count": 361,
       "objectiveRange": [
         2,
         3
       ],
       "bands": {
-        "2": 323,
-        "3": 1083
+        "2": 75,
+        "3": 286
       },
       "bandPct": {
-        "2": 23.0,
-        "3": 77.0
+        "2": 20.8,
+        "3": 79.2
       },
       "unreachableBands": [],
       "overConcentratedBands": [
@@ -94,52 +94,52 @@
       ]
     },
     "equation_from_graph": {
-      "count": 1460,
+      "count": 354,
       "objectiveRange": [
         3,
         4
       ],
       "bands": {
-        "3": 600,
-        "4": 860
+        "3": 149,
+        "4": 205
       },
       "bandPct": {
-        "3": 41.1,
-        "4": 58.9
+        "3": 42.1,
+        "4": 57.9
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     },
     "equation_from_two_points": {
-      "count": 1319,
+      "count": 324,
       "objectiveRange": [
         3,
         5
       ],
       "bands": {
-        "3": 124,
-        "4": 437,
-        "5": 758
+        "3": 28,
+        "4": 111,
+        "5": 185
       },
       "bandPct": {
-        "3": 9.4,
-        "4": 33.1,
-        "5": 57.5
+        "3": 8.6,
+        "4": 34.3,
+        "5": 57.1
       },
       "unreachableBands": [],
       "overConcentratedBands": []
     }
   },
   "gradient": {
-    "integer": 377,
-    "rational": 1068,
-    "positive": 712,
-    "negative": 703,
-    "zero": 30
+    "integer": 95,
+    "rational": 251,
+    "positive": 173,
+    "negative": 168,
+    "zero": 5
   },
   "midpoint": {
-    "integer": 350,
-    "halfInteger": 1124
+    "integer": 91,
+    "halfInteger": 290
   },
   "redraw": {
     "sampleSeeds": 2000,

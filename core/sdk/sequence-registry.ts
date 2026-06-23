@@ -15,6 +15,7 @@ import { validate as arithmeticValidate } from "../../domains/sequences/validate
 import * as geometric from "../../domains/sequences/geometric.ts";
 import * as linear from "../../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../../domains/geometry/angles.ts";
+import * as coordinateLines from "../../domains/geometry/coordinate-lines.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -80,6 +81,28 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => geometryAngles.generate(s, c as geometryAngles.Config),
     validate: geometryAngles.validate,
     serialize: geometryAngles.serialize,
+  },
+  {
+    id: coordinateLines.GENERATOR_ID,
+    version: coordinateLines.GENERATOR_VERSION,
+    label: "Coordinate geometry & straight-line graphs (SVG)",
+    // Objectives curriculum-approved-for-implementation; the generator is built oracle-first
+    // and registered pending-review (DECISION_LOG.md #41). Gated out of normal Studio use and
+    // production exports/samples until the owner's review-pack decision. Generated items begin
+    // at machine-validated; approval does not auto-approve future items.
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "read_point", label: "Read a point", mc: true },
+      { value: "plot_point", label: "Plot a point", mc: false },
+      { value: "gradient_two_points", label: "Gradient between two points", mc: true },
+      { value: "midpoint", label: "Midpoint", mc: true },
+      { value: "interpret_mx_c", label: "Read m and c from y = mx + c", mc: true },
+      { value: "equation_from_graph", label: "Equation from a graph", mc: true },
+      { value: "equation_from_two_points", label: "Equation through two points", mc: true },
+    ],
+    generate: (s, c) => coordinateLines.generate(s, c as coordinateLines.Config),
+    validate: coordinateLines.validate,
+    serialize: coordinateLines.serialize,
   },
 ];
 

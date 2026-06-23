@@ -34,23 +34,25 @@ test("the registered generators are the expected set", () => {
     "gen.sequences.geometric@1.1.0",
     "gen.algebra.linear-equations@1.0.1",
     "gen.geometry.angles-figures@1.2.3",
+    "gen.geometry.coordinate-lines@1.0.0",
   ]);
 });
 
-test("approval lifecycle: all four families are curriculum-approved (geometry approved at v1.2.3)", () => {
-  // Geometry was curriculum-approved at v1.2.3 (DECISION_LOG.md #40), joining the three
-  // sequence/algebra families. With no pending-review generators registered, normal and
-  // review modes coincide; the visibility gate (generatorsForMode/approvedGenerators) still
-  // hides any future pending-review or rejected generator from normal use + production.
+test("approval lifecycle: four approved families + coordinate-lines pending-review (gated)", () => {
+  // The four sequence/algebra/geometry families are curriculum-approved; the new
+  // coordinate-lines family is built oracle-first and registered pending-review
+  // (DECISION_LOG.md #41), gated out of normal Studio use + production until the owner's
+  // review-pack decision.
   for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations", "gen.geometry.angles-figures"]) {
     assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === id)!), "approved");
   }
+  assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === "gen.geometry.coordinate-lines")!), "pending-review");
   const normal = generatorsForMode("normal").map((g) => g.id);
   const review = generatorsForMode("review").map((g) => g.id);
-  assert.ok(normal.includes("gen.geometry.angles-figures"), "geometry now visible in normal mode + production");
+  assert.ok(!normal.includes("gen.geometry.coordinate-lines"), "coordinate-lines hidden in normal mode + production");
+  assert.ok(review.includes("gen.geometry.coordinate-lines"), "coordinate-lines visible in review/developer mode");
   assert.deepEqual(approvedGenerators().map((g) => g.id), normal, "approved set == normal-mode set");
   assert.equal(normal.length, 4);
-  assert.equal(review.length, 4);
-  // The gate still filters by status: nothing non-approved leaks into the normal/production set.
+  assert.equal(review.length, 5);
   assert.ok(normal.every((id) => approvalStatusOf(GENERATORS.find((g) => g.id === id)!) === "approved"));
 });

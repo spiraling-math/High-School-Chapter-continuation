@@ -520,7 +520,8 @@ def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     # numericalComplexity + exactVsApproximate
     if kind in ("coordinate", "ordered-pair"):
         x, y = answer
-        nc = min(1.0, (abs(x) + abs(y)) / (COORD_MAX_X + COORD_MAX_Y))
+        fx, fy = x.numerator / x.denominator, y.numerator / y.denominator  # float, matches the TS mirror
+        nc = min(1.0, (abs(fx) + abs(fy)) / (COORD_MAX_X + COORD_MAX_Y))
         ev = 1.0 if (x.denominator > 1 or y.denominator > 1) else 0.0
     elif kind == "gradient":
         nc = min(1.0, (abs(answer.numerator) + answer.denominator) / 10.0)
