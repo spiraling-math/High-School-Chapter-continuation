@@ -68,23 +68,27 @@ The five `SPI.MIDDLE.GEO.*.01` objective **definitions** (IDs, wording, one-to-o
 mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their **generator**
 (`gen.geometry.angles-figures`) is NOT yet approved — see the pending section below.
 
-## REJECTED (owner final decision)
+## Pending-review (machine-validated; gated to review/developer mode)
 
-| Generator | Version | Status | Reference |
-| --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.1 | **REJECTED (owner, 2026-06-22; `DECISION_LOG.md` #37)** — not approved; not for use/publication | tag `geometry-v1.2.1-rejected` |
+| Generator | Version | `approvalStatus` | Visible to | Review artifacts |
+| --- | --- | --- | --- | --- |
+| `gen.geometry.angles-figures` | 1.2.2 | **pending-review** | Studio review mode (`?review`) only; **excluded** from normal users + production exports/samples | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
 
-The geometry generator and its SVG-diagram rendering are **rejected**. All geometry
-versions remain `machine-validated` only and produce **no approved/published** items.
-Code and fixtures are preserved in history (nothing deleted). The five
+The geometry **family is retained** for development (source, tests, fixtures, SDK
+registration). It is gated by the approval lifecycle (`core/sdk`): `approvalStatus`
+`pending-review` means machine-validated but **not curriculum-approved**, so it is shown
+only in the Studio's review/developer mode (labelled "machine-validated — pending
+curriculum approval") and is **excluded from production exports/samples**. It becomes
+visible to normal users only after final curriculum approval. The five
 `SPI.MIDDLE.GEO.*.01` objective **definitions remain curriculum-approved** (`DECISION_LOG.md`
-#34); the rejection is of the generator/rendering, not the objective definitions.
-Forward handling (leave dormant vs. unregister from the platform) is awaiting owner
-direction. The earlier geometry versions are below for history only.
+#34, #38).
+
+### Rejected / superseded geometry versions (preserved in history; never selectable)
 
 | Generator | Version | Status | Reference |
 | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.0 | preserved (superseded by 1.2.1, never approved) | tag `geometry-v1.2.0-superseded` |
+| `gen.geometry.angles-figures` | 1.2.1 | **REJECTED** (owner; `DECISION_LOG.md` #37) | tag `geometry-v1.2.1-rejected` |
+| `gen.geometry.angles-figures` | 1.2.0 | superseded (never approved) | tag `geometry-v1.2.0-superseded` |
 | `gen.geometry.angles-figures` | 1.1.0 | preserved (superseded by 1.2.0, never approved) | tag `geometry-v1.1.0-superseded` |
 | `gen.geometry.angles-figures` | 1.0.0 | preserved (superseded by 1.1.0, never approved) | tag `geometry-v1.0.0-superseded` |
 

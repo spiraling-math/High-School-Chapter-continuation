@@ -1,7 +1,14 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
-> **STATUS UPDATE (2026-06-22): REVISED to `gen.geometry.angles-figures` v1.2.1 — OBJECTIVE DEFINITIONS APPROVED; GENERATOR PENDING FINAL APPROVE/REJECT.**
-> v1.2.1 is a **visual-layout-only** revision (owner REVISE): the mathematics, SVG arc semantics, reflex
+> **STATUS UPDATE (2026-06-22): `gen.geometry.angles-figures` v1.2.2 — PENDING-REVIEW (gated); OBJECTIVE DEFINITIONS APPROVED.**
+> v1.2.1 was REJECTED by the owner; the family was retained and continued as **v1.2.2** (same adaptive-placement
+> diagrams) behind an **approval-lifecycle visibility gate** (`approvalStatus: pending-review`): geometry is shown
+> only in the Studio's review/developer mode (URL `?review`, labelled "machine-validated — pending curriculum
+> approval") and is **excluded from normal users and production exports/samples** until final curriculum approval
+> (`DECISION_LOG.md` #37, #38). v1.2.1 preserved (tag `geometry-v1.2.1-rejected`). The banner below documents the
+> v1.2.1 = v1.2.2 visual-layout revision.
+>
+> _(prior:)_ v1.2.1 is a **visual-layout-only** revision (owner REVISE): the mathematics, SVG arc semantics, reflex
 > handling, accessibility model, difficulty, worked solutions, misconceptions, validation architecture, and the
 > free-response-only VO scope are accepted UNCHANGED. It adds **adaptive small-sector label placement** (labels
 > sit inside their sector when they fit, else become a callout in clear space joined by a neutral leader) and
