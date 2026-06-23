@@ -27,6 +27,7 @@ from spi_oracle import sequences as seq  # noqa: E402
 from spi_oracle import geometric as geo  # noqa: E402
 from spi_oracle import linear_equations as lin  # noqa: E402
 from spi_oracle import geometry as geoang  # noqa: E402
+from spi_oracle import coordinate_lines as coord  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -160,6 +161,13 @@ def main() -> int:
     for task in ("straight_line_missing_angle", "triangle_missing_angle", "isosceles_base_angle", "vertically_opposite_angle", "angles_at_point_missing"):
         mode = "free-response" if task == "vertically_opposite_angle" else "multiple-choice"
         ok &= validate(geoang.generate(5, {"interactionType": mode, "task": task}), item_schema, registry, f"geometry item task={task}")
+
+    # 4e. Live coordinate-lines items (coordinate/ordered-pair/equation answers; 7 tasks).
+    for seed in (1, 42, 123456789):
+        ok &= validate(coord.generate(seed, {"interactionType": "multiple-choice"}), item_schema, registry, f"coordinate item seed={seed} (MC)")
+    for task in coord.TASKS:
+        mode = "free-response" if task == "plot_point" else "multiple-choice"
+        ok &= validate(coord.generate(7, {"interactionType": mode, "task": task}), item_schema, registry, f"coordinate item task={task}")
 
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]

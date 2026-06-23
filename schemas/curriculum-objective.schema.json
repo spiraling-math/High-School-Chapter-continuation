@@ -99,8 +99,8 @@
     },
     "reviewStatus": {
       "type": "string",
-      "description": "Curriculum-authority review state for the objective definition.",
-      "enum": ["draft", "proposed", "curriculum-reviewed", "approved", "published", "revised", "retired"]
+      "description": "Curriculum-authority review state for the objective definition. 'approved-for-implementation' means the definition is curriculum-approved and cleared for generator build while the generator itself remains pending-review (gated from production).",
+      "enum": ["draft", "proposed", "curriculum-reviewed", "approved", "approved-for-implementation", "published", "revised", "retired"]
     },
     "version": { "type": "string", "description": "Semantic version of this objective definition." },
     "createdAt": { "type": "string", "format": "date-time" },
