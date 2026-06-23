@@ -17,6 +17,7 @@ import { generate } from "../domains/sequences/arithmetic.ts";
 import { validate } from "../domains/sequences/validate.ts";
 import * as geometric from "../domains/sequences/geometric.ts";
 import * as linear from "../domains/algebra/linear-equations.ts";
+import * as geometryAngles from "../domains/geometry/angles.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -42,10 +43,13 @@ for (const [task, mode] of [["one_step_add", "multiple-choice"], ["one_step_mul"
   const item = linear.generate(11, { task, answerType: mode });
   records.push(makeRecord(item, linear.validate(item).status, { mode, genConfig: { answerType: mode, task } }));
 }
-// NOTE: gen.geometry.angles-figures is "pending-review" (machine-validated, not yet
-// curriculum-approved), so it is intentionally EXCLUDED from production samples/exports.
-// It remains registered for development and is selectable only in the Studio's review
-// mode (URL ?review). See core/sdk/sequence-registry.ts (approvalStatus).
+// Include geometry (angles, SVG diagrams) — curriculum-approved at v1.2.3
+// (DECISION_LOG.md #40), so it is part of production exports/samples. VO is free-response
+// only; the others are multiple-choice. See core/sdk/sequence-registry.ts (approvalStatus).
+for (const [task, mode] of [["straight_line_missing_angle", "multiple-choice"], ["triangle_missing_angle", "multiple-choice"], ["isosceles_base_angle", "multiple-choice"], ["vertically_opposite_angle", "free-response"], ["angles_at_point_missing", "multiple-choice"]]) {
+  const item = geometryAngles.generate(13, { task, interactionType: mode });
+  records.push(makeRecord(item, geometryAngles.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
+}
 
 const katexCss = inlineKatexCss();
 

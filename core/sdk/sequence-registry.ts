@@ -65,10 +65,11 @@ export const GENERATORS: GeneratorModule[] = [
     id: geometryAngles.GENERATOR_ID,
     version: geometryAngles.GENERATOR_VERSION,
     label: "Geometry — angles (SVG)",
-    // Machine-validated but NOT curriculum-approved (v1.2.1 was rejected; v1.2.2 is the
-    // current pending candidate). Kept registered for development; shown only in the
-    // Studio's review/developer mode and excluded from production exports/samples.
-    approvalStatus: "pending-review",
+    // Curriculum-approved at v1.2.3 (DECISION_LOG.md #40, 2026-06-23). Selectable in normal
+    // Studio use and included in production exports/samples. v1.2.0/1.2.1/1.2.2 are preserved
+    // in history (unapproved) and are not registered/selectable. Newly generated items still
+    // begin at machine-validated; approval does not auto-approve future items.
+    approvalStatus: "approved",
     tasks: [
       { value: "straight_line_missing_angle", label: "Angles on a straight line", mc: true },
       { value: "triangle_missing_angle", label: "Triangle angle sum", mc: true },
