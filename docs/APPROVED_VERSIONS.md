@@ -12,13 +12,15 @@ committed golden/parity fixtures.
 | `gen.sequences.arithmetic` | **1.1.0** | curriculum-approved | `GENERATOR_SPEC_arithmetic_sequences.md` | `6e547ea` | 2026-06-20 |
 | `gen.sequences.geometric` | **1.1.0** | curriculum-approved | `GENERATOR_SPEC_geometric_sequences_PROPOSAL.md` | `6efcde6` | 2026-06-20 |
 | `gen.algebra.linear-equations` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_linear_equations_proposal.md` | `0ebcb96` | 2026-06-21 |
+| `gen.geometry.angles-figures` | **1.2.3** | curriculum-approved | `GENERATOR_SPEC_geometry_svg_proposal.md` | `4c9705c` | 2026-06-23 |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
 | `gen.sequences.arithmetic` | 1.0.0, 1.0.1 | preserved (superseded by 1.1.0) | — | `5a962a7`, `4cbb6a1` | — |
 | `gen.algebra.linear-equations` | 1.0.0 | preserved (superseded by 1.0.1) | — | `1cfc76c` | — |
+| `gen.geometry.angles-figures` | 1.2.0 / 1.2.1 / 1.2.2 | preserved (superseded/rejected; never approved) | — | tags below | — |
 
 Git tags identify the approved reference implementations:
 `approved-arith-v1.1.0`, `approved-geo-v1.0.0`, `approved-geo-v1.1.0`,
-`approved-linear-v1.0.1`.
+`approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`).
 
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).
@@ -58,30 +60,47 @@ The three `SPI.MIDDLE.{NUM,ALG}.*` prerequisite objectives were curriculum-appro
 attached in the curriculum graph where genuine (e.g. of the linear-equations
 objectives); they are not themselves bound to a generated task in this version.
 
-| `SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01` | geometry straight_line_missing_angle | — | approved (definition) |
-| `SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01` | geometry triangle_missing_angle | — | approved (definition) |
-| `SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01` | geometry isosceles_base_angle | — | approved (definition) |
-| `SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01` | geometry vertically_opposite_angle | — | approved (definition) |
-| `SPI.MIDDLE.GEO.ANGLES_AT_POINT.01` | geometry angles_at_point_missing | — | approved (definition) |
+| `SPI.MIDDLE.GEO.ANGLES_STRAIGHT_LINE.01` | geometry straight_line_missing_angle | 1.2.3 | approved |
+| `SPI.MIDDLE.GEO.TRIANGLE_ANGLE_SUM.01` | geometry triangle_missing_angle | 1.2.3 | approved |
+| `SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01` | geometry isosceles_base_angle | 1.2.3 | approved |
+| `SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01` | geometry vertically_opposite_angle | 1.2.3 | approved |
+| `SPI.MIDDLE.GEO.ANGLES_AT_POINT.01` | geometry angles_at_point_missing | 1.2.3 | approved |
 
-The five `SPI.MIDDLE.GEO.*.01` objective **definitions** (IDs, wording, one-to-one task
-mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their **generator**
-(`gen.geometry.angles-figures`) is NOT yet approved — see the pending section below.
+The five `SPI.MIDDLE.GEO.*.01` objective **definitions** were curriculum-approved on
+2026-06-22 (`DECISION_LOG.md` #34); their **generator** `gen.geometry.angles-figures`
+**v1.2.3** was curriculum-approved on 2026-06-23 (`DECISION_LOG.md` #40) — see below.
 
-## Pending-review (machine-validated; gated to review/developer mode)
+## Geometry generator — curriculum-approved at v1.2.3 (2026-06-23, `DECISION_LOG.md` #40)
 
-| Generator | Version | `approvalStatus` | Visible to | Review artifacts |
-| --- | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.3 | **pending-review** | Studio review mode (`?review`) only; **excluded** from normal users + production exports/samples | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` + `docs/review/geometry_manifest.json` |
+`gen.geometry.angles-figures` **v1.2.3** is curriculum-approved and is now selectable in
+normal Generator Studio use and included in production exports/samples (`approvalStatus:
+approved`; only v1.2.3 is registered). The owner approved the generator specification, the
+SVG rendering contract, the diagram-validation contract, the difficulty model, the
+worked-solution structures, the misconception/distractor rules, the accessibility model,
+the current F1/F2/F3 scope, the reviewed representative items as golden exemplars, and the
+final **leader-rendering contract** (geometry lines solid + primary; callout leaders
+thinner, dashed, round-capped, secondary; non-degenerate; no crossings of rays/sides/arcs/
+vertices/labels/other leaders; small-sector labels unambiguous; deterministic regeneration
+when no valid layout exists).
 
-The geometry **family is retained** for development (source, tests, fixtures, SDK
-registration). It is gated by the approval lifecycle (`core/sdk`): `approvalStatus`
-`pending-review` means machine-validated but **not curriculum-approved**, so it is shown
-only in the Studio's review/developer mode (labelled "machine-validated — pending
-curriculum approval") and is **excluded from production exports/samples**. It becomes
-visible to normal users only after final curriculum approval. The five
-`SPI.MIDDLE.GEO.*.01` objective **definitions remain curriculum-approved** (`DECISION_LOG.md`
-#34, #38).
+**Frozen, immutable approval artifacts** (the reviewed v1.2.3 package, hash-attested by the
+generation manifest and protected by the artifact-integrity test gate):
+
+| Artifact | Path |
+| --- | --- |
+| Golden fixture | `oracle/golden/geometry_angles.golden.json` |
+| Parity fixture | `oracle/golden/geometry_angles.parity.json` |
+| Canonical SVG fixtures | `docs/review/geometry_svgs/` (45 files) |
+| Review pack | `docs/review/geometry_angles_review_pack.md` + `.json` |
+| Visual audit | `docs/review/geometry_visual_audit.html` |
+| Generation manifest (SHA-256 of all the above + samples) | `docs/review/geometry_manifest.json` |
+
+The generation manifest records the build commit (`bffba8c3f0…`), generator id/version
+(1.2.3), validator version (1.2.3), timestamp, regeneration commands, and the SHA-256 of
+every approval artifact. The blocking artifact-integrity tests (`oracle/tests/test_geometry.py`
+`TestArtifactIntegrity` + `domains/geometry/artifact-integrity.test.ts`) re-hash these files
+and confirm audit-version-matches-generator, audit-commit-matches-build, no-stale-version-text,
+and manifest-hashes-match on every run.
 
 ### Rejected / superseded geometry versions (preserved in history; never selectable)
 
@@ -100,13 +119,9 @@ placement). v1.2.1 was REJECTED (#37); the family was retained and gated as **v1
 (#38: approval-lifecycle visibility gate). The v1.2.2 review package was then REJECTED
 (#39) for an indistinct/zero-length leader style, and corrected as **v1.2.3** (secondary
 dashed non-crossing leaders + a generation manifest and blocking artifact-integrity
-tests). Each revision preserved its predecessor; only the latest is the pending candidate. It is self-verifying (byte-identical
-Python/TypeScript SVG parity; semantic arc validators; 10,000-seed sweep 0 invalid;
-schema + a11y gates pass). The **generator, its SVG rendering contract, the v1.1.0
-representative items, and golden exemplars remain pending** the owner's review of the
-revised review pack + the visual edge-case audit. All generated items remain
-`machine-validated`. This section moves into "Approved generators" only on that final
-decision.
+tests), which was **curriculum-approved** (#40). Each revision preserved its predecessor;
+v1.2.0/1.2.1/1.2.2 stay in history (unapproved) and are **not registered/selectable** —
+only the approved v1.2.3 is.
 
 ## Golden exemplars (curriculum-reviewed and approved)
 
@@ -120,7 +135,8 @@ approved-exemplar status is recorded here.
 | `gen.sequences.arithmetic` 1.1.0 | `oracle/golden/arithmetic_sequences.golden.json` | 1, 42, 123456789, 2147483647 |
 | `gen.sequences.geometric` 1.1.0 | `oracle/golden/geometric_sequences.golden.json` | 1, 42, 123456789, 2147483647 |
 | `gen.algebra.linear-equations` 1.0.1 | `oracle/golden/linear_equations.golden.json` | 1, 42, 123456789, 2147483647 |
-| Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md` | all listed items |
+| `gen.geometry.angles-figures` 1.2.3 | `oracle/golden/geometry_angles.golden.json` | golden seeds + the review-pack items |
+| Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md` | all listed items |
 
 ## Lifecycle policy (unchanged)
 
@@ -134,10 +150,11 @@ approved-exemplar status is recorded here.
 
 The following are preserved unchanged and are protected by the test gate:
 
-- arithmetic v1.0.0 / v1.0.1 / v1.1.0, geometric v1.0.0 / v1.1.0, and
-  **linear-equations v1.0.0 / v1.0.1** output;
+- arithmetic v1.0.0 / v1.0.1 / v1.1.0, geometric v1.0.0 / v1.1.0,
+  **linear-equations v1.0.0 / v1.0.1**, and **geometry v1.2.3** output;
 - all golden and parity fixtures, including the frozen-immutable
-  `oracle/golden/linear_equations.{golden,parity}.json` (v1.0.1);
+  `oracle/golden/linear_equations.{golden,parity}.json` (v1.0.1) and
+  `oracle/golden/geometry_angles.{golden,parity}.json` (v1.2.3, manifest-attested);
 - the Python oracle and the TypeScript implementation (kept byte-for-byte in
   parity);
 - exact-rational normalization (`{num, den}`, den ≥ 1);

@@ -1,8 +1,8 @@
 # Current State
 
-Last updated: 2026-06-22.
+Last updated: 2026-06-23.
 
-## Geometry SVG pilot — v1.2.3 PENDING-REVIEW (gated), family retained (2026-06-23)
+## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)
 
 **Owner rejected the v1.2.2 review package (`DECISION_LOG.md` #39):** leaders were styled
 like rays, some were zero-length, and the audit had stale version text. Confirmed in the
@@ -20,20 +20,18 @@ current generator (case B), so the correction shipped as **v1.2.3** (v1.2.2 pres
   (leader-style-distinct, non-degenerate, min-length, ray/side/arc/vertex/label/leader
   clearance, route-unambiguous) for seeds 26/73/98/13322, VO-1, straight-1, triangle-1.
 
-The pilot remains behind the **approval-lifecycle visibility gate** (`DECISION_LOG.md` #38):
+The owner then **APPROVED v1.2.3** (`DECISION_LOG.md` #40). Geometry now passes through the
+same **approval-lifecycle gate** as the other families:
 
-- Each registered generator now carries an `approvalStatus` (`approved` / `pending-review`
-  / `rejected`); helpers `generatorsForMode("normal"|"review")` and `approvedGenerators()`
+- Each registered generator carries an `approvalStatus` (`approved` / `pending-review` /
+  `rejected`); helpers `generatorsForMode("normal"|"review")` and `approvedGenerators()`
   enforce it (`core/sdk/generator-module.ts` + `sequence-registry.ts`).
-- The three curriculum-approved families are `approved`; **geometry is `pending-review`**.
-- The Studio shows only approved generators to normal users; **review/developer mode
-  (URL `?review`)** also shows geometry, labelled "machine-validated — pending curriculum
-  approval". **Production exports/samples exclude pending-review generators** (geometry is
-  absent from the offline samples). Browser-verified: normal mode = 3 generators (no
-  geometry); `?review` = 4 (geometry shown, labelled, renders, no console errors).
-- v1.2.2's diagram output is the accepted **v1.2.1 adaptive-placement** work (the rejection
-  was about exposure/lifecycle, not the diagrams); only the version fields change. Geometry
-  remains fully registered + tested for development. The family is **not** deleted/retired.
+- **All four families — arithmetic, geometric, linear, geometry — are now `approved`.**
+  Geometry is selectable in normal Studio use and included in production exports/samples
+  (`scripts/build-samples.mjs` now emits geometry items into the sample worksheet/answer-
+  key/solutions/bank). Only v1.2.3 is registered; v1.2.0/1.2.1/1.2.2 stay preserved but
+  unregistered/non-selectable. The gate still hides any future pending-review/rejected
+  generator from normal use + production. The family is **not** deleted/retired.
 
 It becomes visible to normal users only after **final curriculum approval**. The five
 `SPI.MIDDLE.GEO.*.01` objective **definitions remain curriculum-approved**.
@@ -88,8 +86,8 @@ The earlier corrected revisions:
   no-theorem-revealing-markers, target-region-unambiguous, a11y-equivalent-information,
   …); tamper tests prove they catch a wrong flag or leaked theorem.
 - **Visual edge-case audit** `docs/review/geometry_visual_audit.html` (10°…near-max,
-  reflex unknown + given, every task family, monochrome print) — **human inspection
-  required** before final approval.
+  reflex unknown + given, every task family, monochrome print) — reviewed and approved by
+  the owner (2026-06-23).
 
 The first **diagram-bearing** family, placed at **SPI-Math Middle School → Geometry →
 Ch.21 (Angles, Lines, Triangles)**. **The diagram IS the question** — every figure is
@@ -133,13 +131,19 @@ min/max + reflex + non-multiple-of-5 angles; 12/13 misconceptions exemplified; 0
 collision violations; monochrome). Visual edge-case audit:
 `docs/review/geometry_visual_audit.html`.
 
-**Status:** at **v1.2.3**, `approvalStatus: pending-review` (machine-validated, gated to
-review mode; excluded from normal users + production exports). v1.2.1 rejected; v1.2.2
-review package rejected; both preserved.
-The **five objective definitions are curriculum-approved**; the **generator + exemplars
-await final curriculum approval** before exposure to normal users.
-Awaiting the owner's final geometry curriculum decision (see "Precise curriculum
-decision awaiting the owner" at the end). Nothing here is approved or published.
+**Status:** **CURRICULUM-APPROVED at v1.2.3** (`DECISION_LOG.md` #40, 2026-06-23).
+`approvalStatus: approved` — selectable in normal Generator Studio use and included in
+production exports/samples; only v1.2.3 is registered. v1.2.0/1.2.1/1.2.2 are preserved
+in history (unapproved, not selectable; v1.2.1 was rejected, the v1.2.2 review package
+was rejected). The owner approved the generator, its spec, the SVG rendering contract, the
+diagram-validation contract, the difficulty model, worked solutions, misconception/
+distractor rules, the accessibility model, the F1/F2/F3 scope, the final leader-rendering
+contract, and the reviewed items as golden exemplars; the five objective definitions
+remain curriculum-approved. The v1.2.3 golden/parity/SVG fixtures, review pack, visual
+audit, and generation manifest are **frozen immutable approval artifacts** (manifest
+SHA-256 + blocking artifact-integrity tests). Tag `approved-geometry-v1.2.3`. Newly
+generated items remain `machine-validated`; approval does not auto-approve/publish future
+items.
 
 ## Linear equations pilot — CURRICULUM-APPROVED v1.0.1 (2026-06-21)
 
