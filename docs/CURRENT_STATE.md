@@ -2,12 +2,25 @@
 
 Last updated: 2026-06-22.
 
-## Geometry SVG pilot — v1.2.2 PENDING-REVIEW (gated), family retained (2026-06-22)
+## Geometry SVG pilot — v1.2.3 PENDING-REVIEW (gated), family retained (2026-06-23)
 
-**Owner direction (`DECISION_LOG.md` #38):** the geometry **family is retained** (only
-**v1.2.1 was rejected**, kept for history as `geometry-v1.2.1-rejected`, non-selectable).
-The generator continues as **`gen.geometry.angles-figures` v1.2.2** behind an
-**approval-lifecycle visibility gate**:
+**Owner rejected the v1.2.2 review package (`DECISION_LOG.md` #39):** leaders were styled
+like rays, some were zero-length, and the audit had stale version text. Confirmed in the
+current generator (case B), so the correction shipped as **v1.2.3** (v1.2.2 preserved, tag
+`geometry-v1.2.2`):
+
+- **Secondary, non-crossing leaders.** `.gx` is now `#555` / `1.5px` / dashed / round-cap
+  — thinner + dashed vs the 3px solid #111 geometry (browser-confirmed). Leaders are
+  **radial along the sector bisector, inside the wedge**, so they never cross a ray, side,
+  arc, or vertex; they are **non-degenerate** (≥ 26px; 0 zero-length across 6000+ items).
+- **Generation manifest** `docs/review/geometry_manifest.json` (git commit, id/version,
+  timestamp, commands, SHA-256 of pack/audit/fixtures/samples + 45 svgs) + **blocking
+  artifact-integrity tests** (audit-version-matches-generator, audit-commit-matches-build,
+  no-stale-version-text, manifest-hashes-match) and SVG-level leader-contract checks
+  (leader-style-distinct, non-degenerate, min-length, ray/side/arc/vertex/label/leader
+  clearance, route-unambiguous) for seeds 26/73/98/13322, VO-1, straight-1, triangle-1.
+
+The pilot remains behind the **approval-lifecycle visibility gate** (`DECISION_LOG.md` #38):
 
 - Each registered generator now carries an `approvalStatus` (`approved` / `pending-review`
   / `rejected`); helpers `generatorsForMode("normal"|"review")` and `approvedGenerators()`
@@ -102,11 +115,11 @@ computed from the same parameters as the prompt and answer.
   answer in any accessibility text. Monochrome (#111/#444 only). SVGs inline into the
   Studio preview and the worksheet/solutions exports with no external/script refs.
 
-Verified: typecheck clean; **164 TS tests** (SVG byte-parity, 2000-seed stability gate,
-approval-lifecycle visibility gate, reflex/sweep/a11y-text tamper, adaptive-placement
-clearances, VO marker, geometry a11y + multi-item export, JSON round-trip) + **30 geometry
-oracle tests** (incl. owner seeds
-98/26/13322, narrow 10/11/12/15/20, 3- and 4-region, all visual-clearance checks) (DIR-table audit, round-half-up, exact
+Verified: typecheck clean; **168 TS tests** (SVG byte-parity, 2000-seed stability gate,
+approval-lifecycle gate, leader-contract + artifact-integrity, reflex/sweep/a11y-text
+tamper, adaptive-placement clearances, VO marker, geometry a11y + multi-item export, JSON
+round-trip) + **38 geometry oracle tests** (incl. owner seeds 26/73/98/13322 + VO/straight/
+triangle-1, narrow 10/11/12/15/20, 3- and 4-region, all leader + visual-clearance checks) (DIR-table audit, round-half-up, exact
 isosceles legs, reflex large/sweep flags across 1500 seeds, the ±0.5° + arc-sector
 coverage diagnostics, boundary 179/180/181, a11y-equivalence positive+negative, VO
 neutral leader, tamper); **geometry 10,000-seed sweep 0 invalid** (all 5 tasks, bands
@@ -120,8 +133,9 @@ min/max + reflex + non-multiple-of-5 angles; 12/13 misconceptions exemplified; 0
 collision violations; monochrome). Visual edge-case audit:
 `docs/review/geometry_visual_audit.html`.
 
-**Status:** at **v1.2.2**, `approvalStatus: pending-review` (machine-validated, gated to
-review mode; excluded from normal users + production exports). v1.2.1 rejected (preserved).
+**Status:** at **v1.2.3**, `approvalStatus: pending-review` (machine-validated, gated to
+review mode; excluded from normal users + production exports). v1.2.1 rejected; v1.2.2
+review package rejected; both preserved.
 The **five objective definitions are curriculum-approved**; the **generator + exemplars
 await final curriculum approval** before exposure to normal users.
 Awaiting the owner's final geometry curriculum decision (see "Precise curriculum

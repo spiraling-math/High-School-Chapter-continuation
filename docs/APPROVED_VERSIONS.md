@@ -72,7 +72,7 @@ mappings) were curriculum-approved on 2026-06-22 (`DECISION_LOG.md` #34). Their 
 
 | Generator | Version | `approvalStatus` | Visible to | Review artifacts |
 | --- | --- | --- | --- | --- |
-| `gen.geometry.angles-figures` | 1.2.2 | **pending-review** | Studio review mode (`?review`) only; **excluded** from normal users + production exports/samples | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` |
+| `gen.geometry.angles-figures` | 1.2.3 | **pending-review** | Studio review mode (`?review`) only; **excluded** from normal users + production exports/samples | `docs/review/geometry_angles_review_pack.md` + `docs/review/geometry_visual_audit.html` + `docs/review/geometry_manifest.json` |
 
 The geometry **family is retained** for development (source, tests, fixtures, SDK
 registration). It is gated by the approval lifecycle (`core/sdk`): `approvalStatus`
@@ -87,6 +87,7 @@ visible to normal users only after final curriculum approval. The five
 
 | Generator | Version | Status | Reference |
 | --- | --- | --- | --- |
+| `gen.geometry.angles-figures` | 1.2.2 | superseded (review package rejected; `DECISION_LOG.md` #39) | tag `geometry-v1.2.2` |
 | `gen.geometry.angles-figures` | 1.2.1 | **REJECTED** (owner; `DECISION_LOG.md` #37) | tag `geometry-v1.2.1-rejected` |
 | `gen.geometry.angles-figures` | 1.2.0 | superseded (never approved) | tag `geometry-v1.2.0-superseded` |
 | `gen.geometry.angles-figures` | 1.1.0 | preserved (superseded by 1.2.0, never approved) | tag `geometry-v1.1.0-superseded` |
@@ -94,9 +95,12 @@ visible to normal users only after final curriculum approval. The five
 
 The geometry SVG pilot was revised to **v1.1.0** (`DECISION_LOG.md` #34: reflex-arc,
 vertically-opposite-marker, accessibility-equivalence), then **v1.2.0** (#35: per-angle
-arc radii + a11y-text tamper guard), then **v1.2.1** (#36: visual-layout-only — adaptive
-small-sector label placement with leaders + nine blocking visual-clearance checks). Each
-revision preserved its predecessor; only the latest is the pending candidate. It is self-verifying (byte-identical
+arc radii + a11y-text tamper guard), then **v1.2.1** (#36: adaptive small-sector label
+placement). v1.2.1 was REJECTED (#37); the family was retained and gated as **v1.2.2**
+(#38: approval-lifecycle visibility gate). The v1.2.2 review package was then REJECTED
+(#39) for an indistinct/zero-length leader style, and corrected as **v1.2.3** (secondary
+dashed non-crossing leaders + a generation manifest and blocking artifact-integrity
+tests). Each revision preserved its predecessor; only the latest is the pending candidate. It is self-verifying (byte-identical
 Python/TypeScript SVG parity; semantic arc validators; 10,000-seed sweep 0 invalid;
 schema + a11y gates pass). The **generator, its SVG rendering contract, the v1.1.0
 representative items, and golden exemplars remain pending** the owner's review of the

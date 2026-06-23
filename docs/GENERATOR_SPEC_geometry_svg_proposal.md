@@ -1,12 +1,14 @@
 # Geometry (SVG diagrams) — Generator Pilot PROPOSAL
 
-> **STATUS UPDATE (2026-06-22): `gen.geometry.angles-figures` v1.2.2 — PENDING-REVIEW (gated); OBJECTIVE DEFINITIONS APPROVED.**
-> v1.2.1 was REJECTED by the owner; the family was retained and continued as **v1.2.2** (same adaptive-placement
-> diagrams) behind an **approval-lifecycle visibility gate** (`approvalStatus: pending-review`): geometry is shown
-> only in the Studio's review/developer mode (URL `?review`, labelled "machine-validated — pending curriculum
-> approval") and is **excluded from normal users and production exports/samples** until final curriculum approval
-> (`DECISION_LOG.md` #37, #38). v1.2.1 preserved (tag `geometry-v1.2.1-rejected`). The banner below documents the
-> v1.2.1 = v1.2.2 visual-layout revision.
+> **STATUS UPDATE (2026-06-23): `gen.geometry.angles-figures` v1.2.3 — PENDING-REVIEW (gated); OBJECTIVE DEFINITIONS APPROVED.**
+> v1.2.1 was rejected; the family was retained and gated as v1.2.2 (`DECISION_LOG.md` #37, #38). The v1.2.2 review
+> package was then REJECTED (#39) — leaders were styled like rays, some were zero-length, and the audit had stale
+> version text. Corrected as **v1.2.3** (v1.2.2 preserved, tag `geometry-v1.2.2`): leaders are now visually
+> secondary (`#555`, 1.5px, dashed, round-cap), non-degenerate (≥26px), and radial inside the wedge so they never
+> cross a ray/side/arc/vertex; plus a generation manifest (`docs/review/geometry_manifest.json`) and blocking
+> artifact-integrity + leader-contract tests. It is shown only in the Studio's review/developer mode (URL
+> `?review`, "machine-validated — pending curriculum approval") and is **excluded from normal users and production
+> exports/samples** until final curriculum approval. The banner below documents the earlier visual-layout history.
 >
 > _(prior:)_ v1.2.1 is a **visual-layout-only** revision (owner REVISE): the mathematics, SVG arc semantics, reflex
 > handling, accessibility model, difficulty, worked solutions, misconceptions, validation architecture, and the
