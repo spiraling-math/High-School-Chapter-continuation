@@ -153,7 +153,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -278,7 +278,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -395,7 +395,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -546,7 +546,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -658,7 +658,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -794,7 +794,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -916,7 +916,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1090,7 +1090,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1227,7 +1227,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1329,7 +1329,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1458,7 +1458,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1597,7 +1597,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1733,7 +1733,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -1847,7 +1847,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2006,7 +2006,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2149,7 +2149,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2276,7 +2276,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2408,7 +2408,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2537,7 +2537,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2657,7 +2657,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2806,7 +2806,7 @@
           "scaffolding": 0.1
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -2945,7 +2945,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3072,7 +3072,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3220,7 +3220,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3359,7 +3359,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3494,7 +3494,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3609,7 +3609,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3745,7 +3745,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3852,7 +3852,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",
@@ -3970,7 +3970,7 @@
           "scaffolding": 0.5
         }
       },
-      "validation": "valid",
+      "validation": "pass",
       "validationChecks": [
         "objective-mapping",
         "interaction-type",

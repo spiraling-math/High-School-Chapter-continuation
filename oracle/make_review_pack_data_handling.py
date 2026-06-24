@@ -176,7 +176,7 @@ def main() -> int:
         "misconceptionsShown": sorted({d["misconceptionId"] for r in records for d in r["distractors"]}
                                       | {p["misconceptionId"] for r in records for p in r["pitfalls"]}),
         "requiredTokens": len(required), "coveredTokens": len(required & covered),
-        "missingCoverage": missing, "allValid": all(r["validation"] == "valid" for r in records),
+        "missingCoverage": missing, "allValid": all(r["validation"] == "pass" for r in records),
     }
     pack = {"summary": summary, "records": records}
     with open(os.path.join(REVIEW_DIR, "stats_data_handling_review_pack.json"), "w", encoding="utf-8") as fh:

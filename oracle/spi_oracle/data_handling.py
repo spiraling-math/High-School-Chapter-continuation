@@ -1254,7 +1254,7 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             add("mc-probability-options-in-range", allin, "all probability options lie in [0,1]")
 
     statuses = [c["result"] for c in checks]
-    return {"status": "valid" if all(s == "pass" for s in statuses) else "invalid",
+    return {"status": "pass" if all(s == "pass" for s in statuses) else "fail",
             "validatorVersion": VALIDATOR_VERSION, "checks": checks}
 
 

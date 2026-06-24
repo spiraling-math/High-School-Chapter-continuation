@@ -107,7 +107,7 @@ def main() -> int:
                 failing.append({"seed": s, "mode": mode, "error": repr(e)})
                 continue
             v = dh.validate(item)
-            if v["status"] != "valid":
+            if v["status"] != "pass":
                 invalid += 1
                 if len(failing) < 200:
                     failing.append({"seed": s, "mode": mode, "checks": [c for c in v["checks"] if c["result"] == "fail"]})

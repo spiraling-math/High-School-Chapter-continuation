@@ -32,7 +32,7 @@
   "artifacts": {
     "golden": {
       "path": "oracle/golden/data_handling.golden.json",
-      "sha256": "3ecd76aa6a5a6d6cac75da3bb159913806d762f9a81b4a5303b7276a2214245b",
+      "sha256": "d052b372b10b4ccc48a1e31c37ca57a1899def3a8115e97d3f025122baf09d93",
       "present": true
     },
     "parity": {
@@ -47,7 +47,7 @@
     },
     "reviewPackJson": {
       "path": "docs/review/stats_data_handling_review_pack.json",
-      "sha256": "ef9ec9a4110ea456935f0a27a40fb9c4c8fad728235bec0f02c8bf5b83506f6a",
+      "sha256": "c40f49dc3d40cd11af24baec0fcfd6701d9ab803428a24b03f2b3cf378fab96e",
       "present": true
     },
     "reviewPackMd": {
@@ -72,7 +72,7 @@
     },
     "oracle": {
       "path": "oracle/spi_oracle/data_handling.py",
-      "sha256": "b632bc5e96a66f76a7a5977e511981f9a418f2bb52de7cbf94a2026f77d84a8e",
+      "sha256": "24e5d54ecca594dd2f43da136e6c8af7cce095495d5be77e7e1951535f0d6075",
       "present": true
     },
     "misconceptions": {

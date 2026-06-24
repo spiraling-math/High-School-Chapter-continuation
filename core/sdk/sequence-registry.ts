@@ -16,6 +16,7 @@ import * as geometric from "../../domains/sequences/geometric.ts";
 import * as linear from "../../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../../domains/geometry/angles.ts";
 import * as coordinateLines from "../../domains/geometry/coordinate-lines.ts";
+import * as dataHandling from "../../domains/statistics/data-handling.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -105,6 +106,32 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => coordinateLines.generate(s, c as coordinateLines.Config),
     validate: coordinateLines.validate,
     serialize: coordinateLines.serialize,
+  },
+  {
+    id: dataHandling.GENERATOR_ID,
+    version: dataHandling.GENERATOR_VERSION,
+    label: "Statistics & data handling (charts + tables)",
+    // PENDING-REVIEW at v1.0.0: machine-validated TS mirror of the Python oracle (byte-parity
+    // gated by oracle/golden/data_handling.*), but NOT yet curriculum-approved. Available only
+    // in the Studio's review/developer mode; gated OUT of normal Studio use and production
+    // exports/samples until the owner's review-pack decision.
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "read_bar_chart", label: "Read a bar chart", mc: true },
+      { value: "read_pictogram", label: "Read a pictogram", mc: true },
+      { value: "read_table_value", label: "Read a table value", mc: true },
+      { value: "read_line_graph", label: "Read a line graph", mc: true },
+      { value: "complete_frequency_table", label: "Complete a frequency table", mc: false },
+      { value: "mean_from_list", label: "Mean of a list", mc: true },
+      { value: "median_from_list", label: "Median of a list", mc: true },
+      { value: "mode_from_list", label: "Mode of a list", mc: true },
+      { value: "range_from_list", label: "Range of a list", mc: true },
+      { value: "mean_from_freq_table", label: "Mean from a frequency table", mc: true },
+      { value: "single_event_probability", label: "Single-event probability", mc: true },
+    ],
+    generate: (s, c) => dataHandling.generate(s, c as dataHandling.Config),
+    validate: dataHandling.validate,
+    serialize: dataHandling.serialize,
   },
 ];
 
