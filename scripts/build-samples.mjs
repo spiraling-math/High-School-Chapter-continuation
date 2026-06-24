@@ -18,6 +18,7 @@ import { validate } from "../domains/sequences/validate.ts";
 import * as geometric from "../domains/sequences/geometric.ts";
 import * as linear from "../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../domains/geometry/angles.ts";
+import * as coordinateLines from "../domains/geometry/coordinate-lines.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -49,6 +50,12 @@ for (const [task, mode] of [["one_step_add", "multiple-choice"], ["one_step_mul"
 for (const [task, mode] of [["straight_line_missing_angle", "multiple-choice"], ["triangle_missing_angle", "multiple-choice"], ["isosceles_base_angle", "multiple-choice"], ["vertically_opposite_angle", "free-response"], ["angles_at_point_missing", "multiple-choice"]]) {
   const item = geometryAngles.generate(13, { task, interactionType: mode });
   records.push(makeRecord(item, geometryAngles.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
+}
+// Include coordinate geometry & straight-line graphs — curriculum-approved at v1.0.2
+// (DECISION_LOG.md #44). plot_point is free-response only; the others are multiple-choice.
+for (const [task, mode] of [["read_point", "multiple-choice"], ["plot_point", "free-response"], ["gradient_two_points", "multiple-choice"], ["midpoint", "multiple-choice"], ["interpret_mx_c", "multiple-choice"], ["equation_from_graph", "multiple-choice"], ["equation_from_two_points", "multiple-choice"]]) {
+  const item = coordinateLines.generate(13, { task, interactionType: mode });
+  records.push(makeRecord(item, coordinateLines.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
 }
 
 const katexCss = inlineKatexCss();

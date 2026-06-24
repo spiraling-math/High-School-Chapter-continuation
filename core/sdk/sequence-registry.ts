@@ -86,13 +86,13 @@ export const GENERATORS: GeneratorModule[] = [
     id: coordinateLines.GENERATOR_ID,
     version: coordinateLines.GENERATOR_VERSION,
     label: "Coordinate geometry & straight-line graphs (SVG)",
-    // Objectives curriculum-approved-for-implementation; the generator is implemented
-    // oracle-first and registered pending-review (DECISION_LOG.md #41), corrected to v1.0.1
-    // (curriculum REVISE #42) and v1.0.2 (visual-rendering/export REJECT #43: per-root
-    // CSS-var render-mode isolation + materialized export via core/visual-style/cartesian-theme).
-    // v1.0.0/v1.0.1 preserved (tags). Gated out of normal Studio use and production
-    // exports/samples until the owner's final APPROVE/REJECT. Items begin at machine-validated.
-    approvalStatus: "pending-review",
+    // Curriculum-APPROVED at v1.0.2 (DECISION_LOG.md #44, 2026-06-24): selectable in normal
+    // Studio use and included in production exports/samples. History: implemented #41,
+    // curriculum REVISE #42 -> v1.0.1, visual/export REJECT #43 -> v1.0.2 (per-root CSS-var
+    // render-mode isolation + materialized export via core/visual-style/cartesian-theme).
+    // Only v1.0.2 is registered; v1.0.0/v1.0.1 preserved (tags), unapproved, not selectable.
+    // Newly generated items begin at machine-validated; approval does not auto-approve future items.
+    approvalStatus: "approved",
     tasks: [
       { value: "read_point", label: "Read a point", mc: true },
       { value: "plot_point", label: "Plot a point", mc: false },

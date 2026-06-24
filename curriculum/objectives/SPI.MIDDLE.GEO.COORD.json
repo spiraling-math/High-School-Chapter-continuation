@@ -30,7 +30,7 @@
       { "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.1", "label": "Demonstrate familiarity with Cartesian coordinates in two dimensions" },
       { "framework": "Singapore Lower Secondary Mathematics", "code": "Sec 1", "label": "Coordinates and the Cartesian plane" }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -61,7 +61,7 @@
     "relatedObjectives": ["SPI.MIDDLE.GEO.COORD.PLOT_POINT.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School coordinate geometry (reading coordinates)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.1", "label": "Cartesian coordinates in two dimensions" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -92,7 +92,7 @@
     "relatedObjectives": ["SPI.MIDDLE.GEO.COORD.READ_POINT.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School coordinate geometry (plotting coordinates)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.1", "label": "Cartesian coordinates in two dimensions" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -123,7 +123,7 @@
     "relatedObjectives": ["SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01", "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School coordinate geometry (gradient of a straight line)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.2", "label": "Find the gradient of a straight line" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -154,7 +154,7 @@
     "relatedObjectives": ["SPI.MIDDLE.GEO.COORD.READ_POINT.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School coordinate geometry (midpoint of a segment)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.2", "label": "Calculate the coordinates of the midpoint of a line segment" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -186,7 +186,7 @@
     "crossDomainRelationships": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School straight-line graphs (the form y = mx + c)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.2", "label": "Interpret the gradient and intercept of y = mx + c" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -218,7 +218,7 @@
     "crossDomainRelationships": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School straight-line graphs (equation from a graph)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.2", "label": "Find the equation of a straight line from a graph" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -250,7 +250,7 @@
     "crossDomainRelationships": ["SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-coordinate-geometry", "locator": "Middle School straight-line graphs (equation through two points)" }],
     "externalAlignments": [{ "framework": "Cambridge IGCSE Mathematics (0580)", "code": "C3.2", "label": "Find the equation of a straight line through two points" }],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   }
 ]

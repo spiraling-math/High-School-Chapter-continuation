@@ -48,7 +48,7 @@ class TestCoordinateCurriculum(unittest.TestCase):
         for obj in self.objectives:
             self.assertEqual(self._validate(obj), [], f"{obj['objectiveId']} must validate")
             self.assertEqual(obj["strand"], NEW_STRAND)
-            self.assertEqual(obj["reviewStatus"], "approved-for-implementation")
+            self.assertEqual(obj["reviewStatus"], "approved")  # curriculum-approved at v1.0.2 (DECISION_LOG #44)
 
     def test_answer_types_are_mathematical_only(self):
         for obj in self.objectives:

@@ -74,7 +74,7 @@ test("coordinate-lines objective metadata follows the owner decisions", () => {
   for (const id of COORD) {
     const o = byId.get(id)!;
     assert.equal(o.strand, "coordinate-geometry-straight-line-graphs", `${id} strand`);
-    assert.equal(o.reviewStatus, "approved-for-implementation", `${id} reviewStatus`);
+    assert.equal(o.reviewStatus, "approved", `${id} reviewStatus`);
     // answerTypes are MATHEMATICAL only; multiple-choice is an interaction, never an answer type.
     assert.ok(!o.answerTypes.includes("multiple-choice"), `${id} must not list multiple-choice as an answer type`);
     assert.deepEqual(o.answerTypes, expectAnswerTypes[id], `${id} answerTypes`);
