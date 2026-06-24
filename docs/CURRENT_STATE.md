@@ -1,18 +1,20 @@
 # Current State
 
-Last updated: 2026-06-23.
+Last updated: 2026-06-24.
 
-## `gen.geometry.coordinate-lines` v1.0.1 — IMPLEMENTED; PENDING FINAL CURRICULUM REVIEW (gated)
+## `gen.geometry.coordinate-lines` v1.0.2 — IMPLEMENTED; PENDING FINAL CURRICULUM REVIEW (gated)
 
 Coordinate geometry & straight-line graphs (Middle-School Geometry/Algebra bridge) — built
 oracle-first after the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec
-(`DECISION_LOG.md` #41), then corrected to **v1.0.1** after the owner's curriculum-review
-**REVISE** (`DECISION_LOG.md` #42): the read_point worked-solution axis wording was corrected
-(+ a blocking explanation-semantic test), the review pack now de-duplicates and enforces full
-interaction + difficulty-band coverage with the CARTESIAN_PLANE objective + prerequisite
-graph, and the 10,000-seed distribution report was strengthened (per-task band %, FR-vs-MC,
-integer-vs-rational, gradient signs, scaffold counts, redraw/rejection rate). v1.0.0 is
-preserved unchanged (tag `coordinate-lines-v1.0.0`). 7 tasks (read_point, plot_point [FR-only], gradient_two_points,
+(`DECISION_LOG.md` #41); corrected to **v1.0.1** after a curriculum-review REVISE
+(`DECISION_LOG.md` #42: read_point solution wording, review-pack de-duplication + coverage,
+strengthened report); then corrected to **v1.0.2** after a visual-rendering/export REJECT
+(`DECISION_LOG.md` #43): the premium render modes are now isolated with **per-root CSS custom
+properties** + one common `.cx-figure` ruleset (shared `core/visual-style/cartesian-theme`),
+the high-resolution colour export **materialises** the selected palette inside the cloned SVG
+(verified 6000×4200 premium/accessible/monochrome PNGs, premium ≠ mono), real-browser
+computed-style + export tests pass, and the artifact metadata is reconciled. v1.0.0/v1.0.1
+preserved unchanged (tags `coordinate-lines-v1.0.0`, `coordinate-lines-v1.0.1`). 7 tasks (read_point, plot_point [FR-only], gradient_two_points,
 midpoint, interpret_mx_c, equation_from_graph, equation_from_two_points) 1:1 with 8
 objectives `SPI.MIDDLE.GEO.COORD.*` (incl. the foundational CARTESIAN_PLANE) in a new strand
 `coordinate-geometry-straight-line-graphs`. Exact-Fraction model; deterministic Cartesian
@@ -26,12 +28,15 @@ authoritative. **Independent Python oracle + byte-identical TypeScript mirror** 
 300-entry parity fixtures match byte-for-byte). Registered `approvalStatus: pending-review`
 — gated out of normal Studio + production exports/samples until the owner's review-pack
 decision. Verified: typecheck; full TS suite; 4 oracle suites; conformance; 10,000-seed
-sweep 0 invalid; review pack (29 svgs, all 11 misconceptions, 0 leakage), visual audit +
-premium gallery (3 modes + dark + stress test + zoom + 6000×4200 export), generation
-manifest + blocking artifact-integrity tests, reusable answer-checkers. Approved
-arithmetic/geometric/linear/geometry output byte-for-byte UNCHANGED. Items begin
-machine-validated; no auto-approval/publication. **Awaiting the owner's APPROVE or REJECT of
-v1.0.1.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
+sweep 0 invalid; review pack (29 review items = **25 figures** + 4 text-only interpret_mx_c
+items; all 11 misconceptions, 0 leakage); visual audit + premium gallery (premium light/dark,
+accessible-colour, monochrome print — per-root CSS-var isolation; reversed-order test; stress
+test; zoom; materialized 6000×4200 export); browser computed-style + style-isolation tests;
+generation manifest + blocking artifact-integrity tests; reusable answer-checkers + the shared
+`core/visual-style/cartesian-theme`. The actual SVG directory count, the manifest `svgCount`,
+and the review-pack summary all agree (**25**). Approved arithmetic/geometric/linear/geometry
+output byte-for-byte UNCHANGED. Items begin machine-validated; no auto-approval/publication.
+**Awaiting the owner's APPROVE or REJECT of v1.0.2.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
 After this family, Statistics & Data Handling is the queued next proposal.
 
 ## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)

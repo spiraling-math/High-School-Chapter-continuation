@@ -36,7 +36,11 @@ ARTIFACTS = {
     "parityFixture": "oracle/golden/coordinate_lines.parity.json",
     "distributionReport": "docs/review/coordinate_lines_distribution.json",
     "hiresSample": "docs/review/coordinate_lines_8k_sample.svg",
+    "browserVerification": "docs/review/coordinate_lines_browser_verification.json",
 }
+
+BROWSER_VERIFICATION = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    "docs", "review", "coordinate_lines_browser_verification.json")
 
 COMMANDS = [
     "python oracle/run_coordinate_lines.py                  # golden + parity fixtures + 10k sweep + distribution report",
@@ -67,6 +71,13 @@ def _sha256_svgs() -> str:
     return h.hexdigest()
 
 
+def _raster_export_hashes():
+    if not os.path.exists(BROWSER_VERIFICATION):
+        return None
+    bv = json.load(open(BROWSER_VERIFICATION, encoding="utf-8"))
+    return {m: {"width": e["width"], "height": e["height"], "sha256": e["sha256"]} for m, e in bv.get("exports", {}).items()}
+
+
 def build() -> None:
     manifest = {
         "schema": "spi-math-coordinate-lines-manifest/1",
@@ -80,6 +91,9 @@ def build() -> None:
         "sha256": {key: _sha256_file(rel) for key, rel in ARTIFACTS.items()},
         "sha256SvgDir": _sha256_svgs(),
         "svgCount": len([n for n in os.listdir(SVG_DIR) if n.endswith(".svg")]) if os.path.isdir(SVG_DIR) else 0,
+        # SHA-256 of the three 6000x4200 colour PNGs rasterised in-browser from the canonical SVG
+        # (the SVG is authoritative; PNGs are derived). Recorded for the owner's export-hash deliverable.
+        "rasterExports": _raster_export_hashes(),
     }
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, indent=2)

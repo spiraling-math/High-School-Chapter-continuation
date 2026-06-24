@@ -1,10 +1,10 @@
 {
   "schema": "spi-math-coordinate-lines-manifest/1",
   "generatorId": "gen.geometry.coordinate-lines",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
-  "gitCommit": "7bed7c598322471fc88bdf39bb582e9cb9dd7b72",
-  "generatedAt": "2026-06-24T07:01:40+00:00",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
+  "gitCommit": "a815176600e36b0db32ea7c49e9b62df88a1d528",
+  "generatedAt": "2026-06-24T13:47:09+00:00",
   "pngExport": {
     "maxEnvelope": "7680x4320",
     "scale": 6,
@@ -19,14 +19,32 @@
     "python oracle/make_coordinate_lines_manifest.py        # this manifest"
   ],
   "sha256": {
-    "reviewPackMd": "0807159a71d9da2f0eb388a3cb97f0ebb49e91697d0f2b69d257662d539b296d",
-    "reviewPackJson": "5bff9ddf43c90d97c4f10d9be113cef5dbd2f43c3f27e1993e0fcacc9e7f9cb7",
-    "visualAudit": "408dd240946bddc95202200d820d07a85c891d5ada02d2704c68d681fc6a19c6",
-    "goldenFixture": "0de56f57ad629f3cc934fb4f03f81da172d64fc6b4e1745b56174b9aaef8adc4",
-    "parityFixture": "09bbd55a68d343900f57fea9d1e82e6d8a2e253225ffa4db3cd6ac7b330e772e",
-    "distributionReport": "ef31c81bb0038446af8d686a5f9912cbd816d259eaaefa306a031c0a1cbd0142",
-    "hiresSample": "392db6fd83b3b355fc1ec796fe80e333a1291237abbdd31900e484108799c003"
+    "reviewPackMd": "504c6f32541bf2e4f3196b2de65147c8dae89737b9c71411326a28f3c6f61a13",
+    "reviewPackJson": "c6f6fb344cdcee5bdba393b072769c3052f1e08f676ea36ab452b8efbc85ba9c",
+    "visualAudit": "a3c6df5071eff27415f2f3b545a6c3d3267819892202161988ea2e35efe6105d",
+    "goldenFixture": "c6e00616b6207e8646da322222478c31cc6d5cb8b7bdac963f38fc6bd118fb74",
+    "parityFixture": "8063cddddb7a7c919943cd47a036459e1c3a2da1b1588624cfa1c44fd70c019a",
+    "distributionReport": "ddce5212585406d3b2000705ad408d254ba6fdda43e8c734e6673b467c926a93",
+    "hiresSample": "392db6fd83b3b355fc1ec796fe80e333a1291237abbdd31900e484108799c003",
+    "browserVerification": "9bb6b30a5c9b8fa9b0195ecdf5d0667fd17b37cfce3eb084bc929555ef93a68f"
   },
   "sha256SvgDir": "6bec5be76c2a65ec670ed3950b5e0150c37a4a920d5e06e69e54f936328e613c",
-  "svgCount": 25
+  "svgCount": 25,
+  "rasterExports": {
+    "premium": {
+      "width": 6000,
+      "height": 4200,
+      "sha256": "424d61c2aad4d26dcf76ee433c6f14f72b0667f9e33f734cc17c89e157aeef37"
+    },
+    "accessible": {
+      "width": 6000,
+      "height": 4200,
+      "sha256": "45e7d9c8c5a4e28a2d7d9aca451fce23de24ccf53cc83c6d9877bea3e1f1cd11"
+    },
+    "print": {
+      "width": 6000,
+      "height": 4200,
+      "sha256": "1cc12dce14ff2b8f951299bda2f742ea2dfda69a5b1cc760289b6d595f755269"
+    }
+  }
 }

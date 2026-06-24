@@ -1,6 +1,6 @@
 {
   "generatorId": "gen.geometry.coordinate-lines",
-  "generatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
   "sweep": 10000,
   "invalid": 0,
   "perTask": {
@@ -191,5 +191,8 @@
       "rejectionRatePerAccept": 0.165,
       "fractionNeedingRedraw": 0.139
     }
-  }
+  },
+  "calibrationNotes": [
+    "NON-BLOCKING (owner #43 point 7): interpret_mx_c concentrates ~81% in band 3 because ~75% of sampled gradients are fractional (reading a fractional-gradient equation is genuinely band 3). All declared bands remain reachable. Recorded for a later difficulty-model review; the approved mathematics is NOT changed to balance percentages."
+  ]
 }

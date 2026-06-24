@@ -127,8 +127,8 @@ only the approved v1.2.3 is.
 
 | Generator | Version | `approvalStatus` | Visible to | Review artifacts |
 | --- | --- | --- | --- | --- |
-| `gen.geometry.coordinate-lines` | 1.0.1 | **pending-review** | Studio review mode only; **excluded** from normal users + production exports/samples | `docs/review/coordinate_lines_review_pack.{md,json}` + `coordinate_lines_visual_audit.html` + `coordinate_lines_manifest.json` |
-| `gen.geometry.coordinate-lines` | 1.0.0 | superseded by 1.0.1 (preserved; never approved) | — | tag `coordinate-lines-v1.0.0` |
+| `gen.geometry.coordinate-lines` | 1.0.2 | **pending-review** | Studio review mode only; **excluded** from normal users + production exports/samples | `docs/review/coordinate_lines_review_pack.{md,json}` + `coordinate_lines_visual_audit.html` + `coordinate_lines_browser_verification.json` + `coordinate_lines_manifest.json` |
+| `gen.geometry.coordinate-lines` | 1.0.0, 1.0.1 | superseded by 1.0.2 (preserved; never approved) | — | tags `coordinate-lines-v1.0.0`, `coordinate-lines-v1.0.1` |
 
 `gen.geometry.coordinate-lines` (Coordinate geometry & straight-line graphs) was implemented
 oracle-first after the owner's APPROVE-WITH-REQUIRED-REVISIONS of the spec

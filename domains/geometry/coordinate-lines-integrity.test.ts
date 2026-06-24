@@ -39,7 +39,7 @@ test("artifacts state the current version and no other generator version", { ski
   for (const p of [AUDIT, PACK_MD]) {
     const txt = readText(p);
     assert.ok(txt.includes(GENERATOR_VERSION), `${p} must state the current version`);
-    for (const stale of ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"]) assert.ok(!txt.includes(stale), `${stale} in ${p}`);
+    for (const stale of ["1.0.0", "1.0.1", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"]) assert.ok(!txt.includes(stale), `${stale} in ${p}`);
   }
 });
 

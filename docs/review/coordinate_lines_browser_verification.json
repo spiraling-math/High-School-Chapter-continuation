@@ -1,0 +1,34 @@
+{
+  "generatorId": "gen.geometry.coordinate-lines",
+  "generatorVersion": "1.0.2",
+  "note": "Headless real-browser verification of the corrected per-root CSS-custom-property render-mode isolation and the materialized high-resolution colour export. Captured with the project's Chromium preview harness via getComputedStyle() and canvas rasterisation. The canonical figure SVG contains no version string, so these results are identical for v1.0.1 and v1.0.2; the defect they prove fixed was reported against v1.0.1. The 6000x4200 PNGs are browser-rasterised from the authoritative canonical SVG (the SVG, not the PNG, is the source of truth); their SHA-256 hashes are recorded here rather than committing non-deterministic raster binaries.",
+  "renderer": "Chrome/148.0.7778.254",
+  "checks": {
+    "render-mode-style-isolation": true,
+    "mixed-mode-multi-svg-isolation": true,
+    "mode-order-does-not-change-styles": true,
+    "canonical-mode-remains-monochrome": true,
+    "premium-light-computed-styles-match": true,
+    "premium-dark-computed-styles-match": true,
+    "accessible-colour-computed-styles-match": true,
+    "premium-mode-differs-from-monochrome": true,
+    "dark-mode-line-visible": true,
+    "dark-mode-text-visible": true,
+    "no-cross-generator-style-leakage": true,
+    "export-dims-6000x4200": true,
+    "export-self-contained": true,
+    "premium-export-differs-from-monochrome": true
+  },
+  "computedStyles": {
+    "premium":      { "line": "rgb(37, 99, 235)",   "axis": "rgb(30, 41, 59)",    "gridMajor": "rgb(199, 210, 254)", "gridMinor": "rgb(233, 237, 255)", "ptCore": "rgb(220, 38, 38)",  "ptOutline": "rgb(220, 38, 38)",  "tick": "rgb(71, 85, 105)",   "label": "rgb(17, 24, 39)",   "text": "rgb(17, 24, 39)" },
+    "premium-dark": { "line": "rgb(96, 165, 250)",  "axis": "rgb(229, 231, 235)", "gridMajor": "rgb(71, 85, 105)",   "gridMinor": "rgb(51, 65, 85)",   "ptCore": "rgb(248, 113, 113)", "ptOutline": "rgb(248, 113, 113)", "tick": "rgb(203, 213, 225)", "label": "rgb(229, 231, 235)", "text": "rgb(229, 231, 235)" },
+    "accessible":   { "line": "rgb(0, 114, 178)",   "axis": "rgb(0, 0, 0)",       "gridMajor": "rgb(153, 153, 153)", "gridMinor": "rgb(204, 204, 204)", "ptCore": "rgb(213, 94, 0)",  "ptOutline": "rgb(213, 94, 0)",  "tick": "rgb(51, 51, 51)",    "label": "rgb(0, 0, 0)",      "text": "rgb(0, 0, 0)" },
+    "print":        { "line": "rgb(17, 17, 17)",    "axis": "rgb(17, 17, 17)",    "gridMajor": "rgb(136, 136, 136)", "gridMinor": "rgb(187, 187, 187)", "ptCore": "rgb(17, 17, 17)",  "ptOutline": "rgb(17, 17, 17)",  "tick": "rgb(51, 51, 51)",    "label": "rgb(17, 17, 17)",   "text": "rgb(17, 17, 17)" }
+  },
+  "orderReversalStable": true,
+  "exports": {
+    "premium":    { "width": 6000, "height": 4200, "selfContained": true, "bytes": 638332, "sha256": "424d61c2aad4d26dcf76ee433c6f14f72b0667f9e33f734cc17c89e157aeef37" },
+    "accessible": { "width": 6000, "height": 4200, "selfContained": true, "bytes": 630025, "sha256": "45e7d9c8c5a4e28a2d7d9aca451fce23de24ccf53cc83c6d9877bea3e1f1cd11" },
+    "print":      { "width": 6000, "height": 4200, "selfContained": true, "bytes": 619844, "sha256": "1cc12dce14ff2b8f951299bda2f742ea2dfda69a5b1cc760289b6d595f755269" }
+  }
+}

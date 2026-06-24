@@ -211,7 +211,7 @@ class TestArtifactIntegrity(unittest.TestCase):
         for rel in (self.AUDIT, self.PACK_MD):
             txt = self._read(rel)
             self.assertIn(cl.GENERATOR_VERSION, txt, f"{rel} must state the current version")
-            for stale in ("1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"):
+            for stale in ("1.0.0", "1.0.1", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"):
                 self.assertNotIn(stale, txt, f"unexpected version {stale} in {rel}")
 
     def test_manifest_hashes_match_files(self):
@@ -222,6 +222,38 @@ class TestArtifactIntegrity(unittest.TestCase):
             with open(os.path.join(ROOT, rel.replace("/", os.sep)), "rb") as fh:
                 digest = hashlib.sha256(fh.read()).hexdigest()
             self.assertEqual(digest, man["sha256"][key], f"manifest hash stale for {rel}")
+
+
+_SVG_DIR = os.path.join(ROOT, "docs", "review", "coordinate_lines_svgs")
+_MANIFEST_F = os.path.join(ROOT, "docs", "review", "coordinate_lines_manifest.json")
+_CURRENT_STATE = os.path.join(ROOT, "docs", "CURRENT_STATE.md")
+
+
+@unittest.skipUnless(os.path.exists(_MANIFEST_F) and os.path.exists(_PACK), "artifacts not built")
+class TestMetadataReconciliation(unittest.TestCase):
+    """The actual SVG directory count, the manifest svgCount, the review-pack summary, and
+    CURRENT_STATE.md must agree exactly (owner #43 point 6)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.dir_count = len([f for f in os.listdir(_SVG_DIR) if f.endswith(".svg")])
+        cls.manifest = json.load(open(_MANIFEST_F, encoding="utf-8"))
+        cls.pack = json.load(open(_PACK, encoding="utf-8"))
+        cls.current_state = open(_CURRENT_STATE, encoding="utf-8").read()
+
+    def test_artifact_count_matches_manifest(self):
+        self.assertEqual(self.manifest.get("svgCount"), self.dir_count,
+                         f"manifest svgCount {self.manifest.get('svgCount')} != directory {self.dir_count}")
+
+    def test_review_summary_count_matches_directory(self):
+        self.assertEqual(self.pack["summary"]["svgCount"], self.dir_count,
+                         f"review-pack svgCount {self.pack['summary']['svgCount']} != directory {self.dir_count}")
+
+    def test_current_state_version_matches_generator(self):
+        self.assertIn(cl.GENERATOR_VERSION, self.current_state, "CURRENT_STATE must state the current version")
+        # CURRENT_STATE must not assert a stale/incorrect SVG count for the family.
+        self.assertNotRegex(self.current_state, r"29 (svgs|SVGs)", "CURRENT_STATE must not conflate items with SVG files")
+        self.assertIn(f"{self.dir_count} figures", self.current_state, "CURRENT_STATE states the reconciled figure count")
 
 
 if __name__ == "__main__":

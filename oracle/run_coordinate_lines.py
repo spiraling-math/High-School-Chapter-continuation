@@ -117,7 +117,12 @@ def main() -> int:
 
     report = {"generatorId": cl.GENERATOR_ID, "generatorVersion": cl.GENERATOR_VERSION,
               "sweep": SWEEP, "invalid": len(failing), "perTask": {}, "gradient": grad,
-              "midpoint": mid, "scaffold": scaffold, "redraw": redraw}
+              "midpoint": mid, "scaffold": scaffold, "redraw": redraw,
+              "calibrationNotes": [
+                  "NON-BLOCKING (owner #43 point 7): interpret_mx_c concentrates ~81% in band 3 because "
+                  "~75% of sampled gradients are fractional (reading a fractional-gradient equation is genuinely "
+                  "band 3). All declared bands remain reachable. Recorded for a later difficulty-model review; "
+                  "the approved mathematics is NOT changed to balance percentages."]}
     for t in cl.TASKS:
         info = per_task[t]
         n = info["fr"] + info["mc"]

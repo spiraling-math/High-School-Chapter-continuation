@@ -1,29 +1,30 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Coordinate-lines visual audit + premium gallery v1.0.1</title>
+<title>Coordinate-lines visual audit v1.0.2</title>
+<style id="cx-common">.cx-figure .cx-axis{stroke:var(--cx-axis);stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:var(--cx-tick);stroke-width:2}.cx-figure .cx-grid-major{stroke:var(--cx-grid-major);stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:var(--cx-grid-minor);stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:var(--cx-line);stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:var(--cx-pt-outline-fill);stroke:var(--cx-pt-outline-stroke);stroke-width:4}.cx-figure .cx-pt-core{fill:var(--cx-pt-core)}.cx-figure .cx-guide{stroke:var(--cx-guide);stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:var(--cx-text)}.cx-figure .cx-ticklbl{font-size:20px;fill:var(--cx-ticklbl)}.cx-figure .cx-lbl{font-size:28px;fill:var(--cx-text)}</style>
 <style>
  body{font-family:system-ui,sans-serif;margin:0;background:#fafafa;color:#111}
- header{padding:16px 24px;background:#0f172a;color:#fff}
- h1{font-size:20px;margin:0} h2{margin:28px 24px 8px;font-size:18px}
- .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;padding:0 24px}
+ header{padding:16px 24px;background:#0f172a;color:#fff} h1{font-size:19px;margin:0}
+ h2{margin:26px 24px 6px;font-size:17px}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px;padding:0 24px}
  .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px}
- .card h3{margin:0 0 4px;font-size:15px} .sub{font-size:12px;color:#475569;margin-bottom:8px}
- .fig svg{width:100%;height:auto;border:1px solid #f1f5f9;background:#fff}
- .dark{background:#0b1220;border-radius:8px} .dark svg{background:#0b1220}
+ .card h3{margin:0 0 4px;font-size:14px} .sub{font-size:12px;color:#475569;margin-bottom:6px}
+ .fig{border:1px solid #f1f5f9;border-radius:6px} .fig svg{width:100%;height:auto;display:block}
  .zoom{overflow:auto;max-height:520px} .zoom svg{width:240%;height:auto}
- .chip{display:inline-block;font-size:10px;padding:1px 5px;border-radius:4px;margin:1px}
- .chip.ok{background:#dcfce7;color:#166534} .chip.bad{background:#fee2e2;color:#991b1b}
- code{background:#f1f5f9;padding:1px 4px;border-radius:4px} .noeq{padding:30px;color:#475569;font-style:italic}
- footer{margin:30px;font-size:12px;color:#475569}
- button{margin:8px 24px;padding:8px 14px;font-size:14px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;cursor:pointer}
+ table.cs{width:100%;font-size:11px;border-collapse:collapse;margin-top:8px}
+ table.cs th,table.cs td{border:1px solid #eee;padding:2px 5px;text-align:left} table.cs td.sw{font-family:monospace}
+ code{background:#f1f5f9;padding:1px 4px;border-radius:4px}
+ button{margin:8px 24px 0;padding:8px 14px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;cursor:pointer}
+ #status{margin:8px 24px;font-size:13px} footer{margin:30px;font-size:12px;color:#475569}
+ #hidden{position:absolute;left:-99999px;top:0}
 </style></head><body>
-<header><h1>Coordinate geometry &amp; straight-line graphs — visual audit &amp; premium gallery (v1.0.1)</h1>
-<div style="font-size:12px;opacity:.8">The canonical monochrome SVG is authoritative; colour modes are presentation skins over the same geometry. Colour never carries meaning alone.</div></header>
+<header><h1>Coordinate geometry &amp; straight-line graphs — visual audit &amp; premium gallery (v1.0.2)</h1>
+<div style="font-size:12px;opacity:.85">Per-root CSS custom properties + one common ruleset → each figure is style-isolated. The monochrome canonical SVG is authoritative; colour is a presentation skin and never carries meaning alone.</div></header>
 
 <h2>1. Per-task canonical figures (monochrome, to scale, answer-free)</h2>
-<div class="grid"><section class="card"><h3>read_point — seed 13 (free-response)</h3><div class="sub">answer: <code>(1, -3)</code> · band 1<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span> <span class="chip ok">media-to-scale=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A single point P plotted on a labelled Cartesian grid with equal x and y scales.">
+<div class="grid"><section class="card"><h3>read_point — seed 13</h3><div class="sub">answer <code>(1, -3)</code> · band 1</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A single point P plotted on a labelled Cartesian grid with equal x and y scales.">
 <title>Reading coordinates</title>
 <desc>A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
 <line class="cx-grid-minor" x1="624" y1="40" x2="624" y2="660"/>
@@ -66,10 +67,10 @@
 <circle class="cx-pt-outline" cx="562" cy="536" r="9"/>
 <circle class="cx-pt-core" cx="562" cy="536" r="5"/>
 <text class="cx-lbl" x="548" y="524" text-anchor="end">P</text>
-</svg></div></section><section class="card"><h3>plot_point — seed 7 (free-response)</h3><div class="sub">answer: <code>(-10, -9)</code> · band 2<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span> <span class="chip ok">media-to-scale=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A blank labelled Cartesian grid for plotting a point.">
+</svg></div></section><section class="card"><h3>plot_point — seed 7</h3><div class="sub">answer <code>(-10, -9)</code> · band 2</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A blank labelled Cartesian grid for plotting a point.">
 <title>Plotting a point</title>
 <desc>A labelled Cartesian grid with numbered axes and equal x and y scales. No point is plotted yet; plot the point given in the question.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="192" y1="42" x2="192" y2="658"/>
 <line class="cx-grid-minor" x1="248" y1="42" x2="248" y2="658"/>
 <line class="cx-grid-minor" x1="304" y1="42" x2="304" y2="658"/>
@@ -143,10 +144,10 @@
 <line class="cx-tick" x1="774" y1="210" x2="786" y2="210"/>
 <text class="cx-ticklbl" x="768" y="217" text-anchor="end">-2</text>
 <text class="cx-ticklbl" x="768" y="124" text-anchor="end">0</text>
-</svg></div></section><section class="card"><h3>gradient_two_points — seed 3 (multiple-choice)</h3><div class="sub">answer: <code>-5/3</code> · band 4<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">vertical-line-excluded=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.">
+</svg></div></section><section class="card"><h3>gradient_two_points — seed 3</h3><div class="sub">answer <code>-5/3</code> · band 4</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.">
 <title>Two plotted points</title>
 <desc>Point A is at (-9, 8) and point B is at (-3, -2), plotted on a labelled Cartesian grid with equal x and y scales.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="245" y1="44" x2="245" y2="656"/>
 <line class="cx-grid-minor" x1="296" y1="44" x2="296" y2="656"/>
 <line class="cx-grid-minor" x1="347" y1="44" x2="347" y2="656"/>
@@ -226,10 +227,10 @@
 <circle class="cx-pt-outline" cx="577" cy="605" r="9"/>
 <circle class="cx-pt-core" cx="577" cy="605" r="5"/>
 <text class="cx-lbl" x="563" y="593" text-anchor="end">B</text>
-</svg></div></section><section class="card"><h3>midpoint — seed 9 (multiple-choice)</h3><div class="sub">answer: <code>(-7, 7)</code> · band 2<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span> <span class="chip ok">media-to-scale=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.">
+</svg></div></section><section class="card"><h3>midpoint — seed 9</h3><div class="sub">answer <code>(-7, 7)</code> · band 2</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.">
 <title>A line segment</title>
 <desc>The endpoints of a line segment are A at (-6, 7) and B at (-8, 7), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="194" y1="44" x2="194" y2="656"/>
 <line class="cx-grid-minor" x1="262" y1="44" x2="262" y2="656"/>
 <line class="cx-grid-minor" x1="330" y1="44" x2="330" y2="656"/>
@@ -319,10 +320,10 @@
 <circle class="cx-pt-outline" cx="228" cy="112" r="9"/>
 <circle class="cx-pt-core" cx="228" cy="112" r="5"/>
 <text class="cx-lbl" x="242" y="100" text-anchor="start">B</text>
-</svg></div></section><section class="card"><h3>interpret_mx_c — seed 5 (multiple-choice)</h3><div class="sub">answer: <code>m = 4/3, c = -5</code> · band 3<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-absent-for-text-task=pass</span> <span class="chip ok">a11y-fields-present=pass</span> <span class="chip ok">a11y-non-color=pass</span></div><div class="fig"><div class="noeq">No figure (text item): For the straight line y = (4/3)x - 5, write down the gradient m and the y-intercept c.</div></div></section><section class="card"><h3>equation_from_graph — seed 11 (multiple-choice)</h3><div class="sub">answer: <code>y = (1/3)x + 2</code> · band 3<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">vertical-line-excluded=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A straight line drawn on a labelled Cartesian grid with equal x and y scales.">
+</svg></div></section><section class="card"><h3>equation_from_graph — seed 11</h3><div class="sub">answer <code>y = (1/3)x + 2</code> · band 3</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A straight line drawn on a labelled Cartesian grid with equal x and y scales.">
 <title>A straight-line graph</title>
 <desc>A straight line is drawn on a labelled Cartesian grid with equal x and y scales. It passes through the lattice points (-9, -1) and (9, 5). Determine its equation in the form y = mx + c.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="63" y1="166" x2="63" y2="534"/>
 <line class="cx-grid-minor" x1="109" y1="166" x2="109" y2="534"/>
 <line class="cx-grid-minor" x1="155" y1="166" x2="155" y2="534"/>
@@ -424,10 +425,10 @@
 <text class="cx-ticklbl" x="488" y="468" text-anchor="end">0</text>
 <line class="cx-line" x1="40" y1="503" x2="960" y2="197"/>
 <text class="cx-lbl" x="950" y="187" text-anchor="end">l</text>
-</svg></div></section><section class="card"><h3>equation_from_two_points — seed 2 (multiple-choice)</h3><div class="sub">answer: <code>y = (-2/3)x + 22/3</code> · band 5<br><span class="chip ok">params-in-domain=pass</span> <span class="chip ok">interaction-type=pass</span> <span class="chip ok">objective-mapping=pass</span> <span class="chip ok">answer-type-consistency=pass</span> <span class="chip ok">vertical-line-excluded=pass</span> <span class="chip ok">closure-agreement=pass</span> <span class="chip ok">media-present=pass</span> <span class="chip ok">svg-realises-data=pass</span></div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+</svg></div></section><section class="card"><h3>equation_from_two_points — seed 2</h3><div class="sub">answer <code>y = (-2/3)x + 22/3</code> · band 5</div><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -504,11 +505,11 @@
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
 </svg></div></section></div>
 
-<h2>2. Premium gallery — three coordinated render modes (same geometry)</h2>
-<div class="grid"><section class="card"><h3>Premium colour (light)</h3><div class="sub">rich-but-restrained palette; crisp points; glow outside the stroke</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<h2>2. Premium gallery — four coordinated modes on one page (computed styles below each card)</h2>
+<div class="grid" id="gallery"><section class="card" data-mode="print"><h3>Print (monochrome, authoritative)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -583,10 +584,10 @@
 <circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
 <circle class="cx-pt-core" cx="407" cy="102" r="5"/>
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
-<style>.cx-line{stroke:#2563eb}.cx-pt-core{fill:#dc2626}.cx-pt-outline{stroke:#dc2626}.cx-grid-major{stroke:#c7d2fe}.cx-grid-minor{stroke:#e9edff}.cx-axis{stroke:#1e293b}.cx-guide{stroke:#7c3aed}</style></svg></div></section><section class="card"><h3>Premium colour (dark)</h3><div class="sub">same geometry on a dark background</div><div class="fig"><div class="dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+</svg></div><table class="cs" data-mode="print"><thead><tr><th>element</th><th>computed</th></tr></thead><tbody></tbody></table></section><section class="card" data-mode="premium"><h3>Premium colour (light)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -661,10 +662,10 @@
 <circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
 <circle class="cx-pt-core" cx="407" cy="102" r="5"/>
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
-<style>.cx-line{stroke:#2563eb}.cx-pt-core{fill:#dc2626}.cx-pt-outline{stroke:#dc2626}.cx-grid-major{stroke:#c7d2fe}.cx-grid-minor{stroke:#e9edff}.cx-axis{stroke:#1e293b}.cx-guide{stroke:#7c3aed}text{fill:#e5e7eb}.cx-ticklbl{fill:#cbd5e1}.cx-axis{stroke:#e5e7eb}.cx-grid-major{stroke:#475569}.cx-grid-minor{stroke:#334155}.cx-pt-outline{fill:#0b1220}</style></svg></div></div></section><section class="card"><h3>Accessible colour (CVD-safe)</h3><div class="sub">Okabe-Ito palette; colour paired with dash + marker; strong contrast</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+</svg></div><table class="cs" data-mode="premium"><thead><tr><th>element</th><th>computed</th></tr></thead><tbody></tbody></table></section><section class="card" data-mode="premium-dark"><h3>Premium colour (dark)</h3><div class="fig" style="background:#0b1220"><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -739,10 +740,325 @@
 <circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
 <circle class="cx-pt-core" cx="407" cy="102" r="5"/>
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
-<style>.cx-line{stroke:#0072B2;stroke-dasharray:none}.cx-pt-core{fill:#D55E00}.cx-pt-outline{stroke:#D55E00}.cx-grid-major{stroke:#999}.cx-grid-minor{stroke:#ccc}.cx-axis{stroke:#000}.cx-guide{stroke:#009E73}</style></svg></div></section><section class="card"><h3>Print (monochrome, authoritative)</h3><div class="sub">the canonical SVG; what production student/print exports inline</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+</svg></div><table class="cs" data-mode="premium-dark"><thead><tr><th>element</th><th>computed</th></tr></thead><tbody></tbody></table></section><section class="card" data-mode="accessible"><h3>Accessible colour (CVD-safe)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
+<line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
+<line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
+<line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
+<line class="cx-grid-minor" x1="562" y1="40" x2="562" y2="660"/>
+<line class="cx-grid-minor" x1="624" y1="40" x2="624" y2="660"/>
+<line class="cx-grid-minor" x1="345" y1="629" x2="655" y2="629"/>
+<line class="cx-grid-minor" x1="345" y1="567" x2="655" y2="567"/>
+<line class="cx-grid-minor" x1="345" y1="505" x2="655" y2="505"/>
+<line class="cx-grid-minor" x1="345" y1="443" x2="655" y2="443"/>
+<line class="cx-grid-minor" x1="345" y1="381" x2="655" y2="381"/>
+<line class="cx-grid-minor" x1="345" y1="319" x2="655" y2="319"/>
+<line class="cx-grid-minor" x1="345" y1="257" x2="655" y2="257"/>
+<line class="cx-grid-minor" x1="345" y1="195" x2="655" y2="195"/>
+<line class="cx-grid-minor" x1="345" y1="133" x2="655" y2="133"/>
+<line class="cx-grid-minor" x1="345" y1="71" x2="655" y2="71"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="345" y2="660"/>
+<line class="cx-grid-major" x1="407" y1="40" x2="407" y2="660"/>
+<line class="cx-grid-major" x1="531" y1="40" x2="531" y2="660"/>
+<line class="cx-grid-major" x1="593" y1="40" x2="593" y2="660"/>
+<line class="cx-grid-major" x1="655" y1="40" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="660" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="536" x2="655" y2="536"/>
+<line class="cx-grid-major" x1="345" y1="474" x2="655" y2="474"/>
+<line class="cx-grid-major" x1="345" y1="412" x2="655" y2="412"/>
+<line class="cx-grid-major" x1="345" y1="350" x2="655" y2="350"/>
+<line class="cx-grid-major" x1="345" y1="288" x2="655" y2="288"/>
+<line class="cx-grid-major" x1="345" y1="226" x2="655" y2="226"/>
+<line class="cx-grid-major" x1="345" y1="164" x2="655" y2="164"/>
+<line class="cx-grid-major" x1="345" y1="102" x2="655" y2="102"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="655" y2="40"/>
+<line class="cx-axis" x1="345" y1="598" x2="655" y2="598"/>
+<line class="cx-axis" x1="469" y1="660" x2="469" y2="40"/>
+<path class="cx-axis" d="M 643 591 L 655 598 L 643 605"/>
+<path class="cx-axis" d="M 462 52 L 469 40 L 476 52"/>
+<text class="cx-lbl" x="651" y="628" text-anchor="end">x</text>
+<text class="cx-lbl" x="481" y="46" text-anchor="start">y</text>
+<line class="cx-tick" x1="345" y1="592" x2="345" y2="604"/>
+<text class="cx-ticklbl" x="345" y="624" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="407" y1="592" x2="407" y2="604"/>
+<text class="cx-ticklbl" x="407" y="624" text-anchor="middle">-1</text>
+<line class="cx-tick" x1="531" y1="592" x2="531" y2="604"/>
+<text class="cx-ticklbl" x="531" y="624" text-anchor="middle">1</text>
+<line class="cx-tick" x1="593" y1="592" x2="593" y2="604"/>
+<text class="cx-ticklbl" x="593" y="624" text-anchor="middle">2</text>
+<line class="cx-tick" x1="655" y1="592" x2="655" y2="604"/>
+<text class="cx-ticklbl" x="655" y="624" text-anchor="middle">3</text>
+<line class="cx-tick" x1="463" y1="660" x2="475" y2="660"/>
+<text class="cx-ticklbl" x="457" y="667" text-anchor="end">-1</text>
+<line class="cx-tick" x1="463" y1="536" x2="475" y2="536"/>
+<text class="cx-ticklbl" x="457" y="543" text-anchor="end">1</text>
+<line class="cx-tick" x1="463" y1="474" x2="475" y2="474"/>
+<text class="cx-ticklbl" x="457" y="481" text-anchor="end">2</text>
+<line class="cx-tick" x1="463" y1="412" x2="475" y2="412"/>
+<text class="cx-ticklbl" x="457" y="419" text-anchor="end">3</text>
+<line class="cx-tick" x1="463" y1="350" x2="475" y2="350"/>
+<text class="cx-ticklbl" x="457" y="357" text-anchor="end">4</text>
+<line class="cx-tick" x1="463" y1="288" x2="475" y2="288"/>
+<text class="cx-ticklbl" x="457" y="295" text-anchor="end">5</text>
+<line class="cx-tick" x1="463" y1="226" x2="475" y2="226"/>
+<text class="cx-ticklbl" x="457" y="233" text-anchor="end">6</text>
+<line class="cx-tick" x1="463" y1="164" x2="475" y2="164"/>
+<text class="cx-ticklbl" x="457" y="171" text-anchor="end">7</text>
+<line class="cx-tick" x1="463" y1="102" x2="475" y2="102"/>
+<text class="cx-ticklbl" x="457" y="109" text-anchor="end">8</text>
+<line class="cx-tick" x1="463" y1="40" x2="475" y2="40"/>
+<text class="cx-ticklbl" x="457" y="47" text-anchor="end">9</text>
+<text class="cx-ticklbl" x="457" y="624" text-anchor="end">0</text>
+<line class="cx-line" x1="345" y1="61" x2="655" y2="267"/>
+<circle class="cx-pt-outline" cx="593" cy="226" r="9"/>
+<circle class="cx-pt-core" cx="593" cy="226" r="5"/>
+<text class="cx-lbl" x="579" y="214" text-anchor="end">A</text>
+<circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
+<circle class="cx-pt-core" cx="407" cy="102" r="5"/>
+<text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
+</svg></div><table class="cs" data-mode="accessible"><thead><tr><th>element</th><th>computed</th></tr></thead><tbody></tbody></table></section></div>
+
+<h2>3. Reversed card order (same figures) — proves order does not change styles</h2>
+<div class="grid" id="galleryRev"><section class="card" data-mode="accessible"><h3>Accessible colour (CVD-safe)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<title>A line through two points</title>
+<desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
+
+<line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
+<line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
+<line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
+<line class="cx-grid-minor" x1="562" y1="40" x2="562" y2="660"/>
+<line class="cx-grid-minor" x1="624" y1="40" x2="624" y2="660"/>
+<line class="cx-grid-minor" x1="345" y1="629" x2="655" y2="629"/>
+<line class="cx-grid-minor" x1="345" y1="567" x2="655" y2="567"/>
+<line class="cx-grid-minor" x1="345" y1="505" x2="655" y2="505"/>
+<line class="cx-grid-minor" x1="345" y1="443" x2="655" y2="443"/>
+<line class="cx-grid-minor" x1="345" y1="381" x2="655" y2="381"/>
+<line class="cx-grid-minor" x1="345" y1="319" x2="655" y2="319"/>
+<line class="cx-grid-minor" x1="345" y1="257" x2="655" y2="257"/>
+<line class="cx-grid-minor" x1="345" y1="195" x2="655" y2="195"/>
+<line class="cx-grid-minor" x1="345" y1="133" x2="655" y2="133"/>
+<line class="cx-grid-minor" x1="345" y1="71" x2="655" y2="71"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="345" y2="660"/>
+<line class="cx-grid-major" x1="407" y1="40" x2="407" y2="660"/>
+<line class="cx-grid-major" x1="531" y1="40" x2="531" y2="660"/>
+<line class="cx-grid-major" x1="593" y1="40" x2="593" y2="660"/>
+<line class="cx-grid-major" x1="655" y1="40" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="660" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="536" x2="655" y2="536"/>
+<line class="cx-grid-major" x1="345" y1="474" x2="655" y2="474"/>
+<line class="cx-grid-major" x1="345" y1="412" x2="655" y2="412"/>
+<line class="cx-grid-major" x1="345" y1="350" x2="655" y2="350"/>
+<line class="cx-grid-major" x1="345" y1="288" x2="655" y2="288"/>
+<line class="cx-grid-major" x1="345" y1="226" x2="655" y2="226"/>
+<line class="cx-grid-major" x1="345" y1="164" x2="655" y2="164"/>
+<line class="cx-grid-major" x1="345" y1="102" x2="655" y2="102"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="655" y2="40"/>
+<line class="cx-axis" x1="345" y1="598" x2="655" y2="598"/>
+<line class="cx-axis" x1="469" y1="660" x2="469" y2="40"/>
+<path class="cx-axis" d="M 643 591 L 655 598 L 643 605"/>
+<path class="cx-axis" d="M 462 52 L 469 40 L 476 52"/>
+<text class="cx-lbl" x="651" y="628" text-anchor="end">x</text>
+<text class="cx-lbl" x="481" y="46" text-anchor="start">y</text>
+<line class="cx-tick" x1="345" y1="592" x2="345" y2="604"/>
+<text class="cx-ticklbl" x="345" y="624" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="407" y1="592" x2="407" y2="604"/>
+<text class="cx-ticklbl" x="407" y="624" text-anchor="middle">-1</text>
+<line class="cx-tick" x1="531" y1="592" x2="531" y2="604"/>
+<text class="cx-ticklbl" x="531" y="624" text-anchor="middle">1</text>
+<line class="cx-tick" x1="593" y1="592" x2="593" y2="604"/>
+<text class="cx-ticklbl" x="593" y="624" text-anchor="middle">2</text>
+<line class="cx-tick" x1="655" y1="592" x2="655" y2="604"/>
+<text class="cx-ticklbl" x="655" y="624" text-anchor="middle">3</text>
+<line class="cx-tick" x1="463" y1="660" x2="475" y2="660"/>
+<text class="cx-ticklbl" x="457" y="667" text-anchor="end">-1</text>
+<line class="cx-tick" x1="463" y1="536" x2="475" y2="536"/>
+<text class="cx-ticklbl" x="457" y="543" text-anchor="end">1</text>
+<line class="cx-tick" x1="463" y1="474" x2="475" y2="474"/>
+<text class="cx-ticklbl" x="457" y="481" text-anchor="end">2</text>
+<line class="cx-tick" x1="463" y1="412" x2="475" y2="412"/>
+<text class="cx-ticklbl" x="457" y="419" text-anchor="end">3</text>
+<line class="cx-tick" x1="463" y1="350" x2="475" y2="350"/>
+<text class="cx-ticklbl" x="457" y="357" text-anchor="end">4</text>
+<line class="cx-tick" x1="463" y1="288" x2="475" y2="288"/>
+<text class="cx-ticklbl" x="457" y="295" text-anchor="end">5</text>
+<line class="cx-tick" x1="463" y1="226" x2="475" y2="226"/>
+<text class="cx-ticklbl" x="457" y="233" text-anchor="end">6</text>
+<line class="cx-tick" x1="463" y1="164" x2="475" y2="164"/>
+<text class="cx-ticklbl" x="457" y="171" text-anchor="end">7</text>
+<line class="cx-tick" x1="463" y1="102" x2="475" y2="102"/>
+<text class="cx-ticklbl" x="457" y="109" text-anchor="end">8</text>
+<line class="cx-tick" x1="463" y1="40" x2="475" y2="40"/>
+<text class="cx-ticklbl" x="457" y="47" text-anchor="end">9</text>
+<text class="cx-ticklbl" x="457" y="624" text-anchor="end">0</text>
+<line class="cx-line" x1="345" y1="61" x2="655" y2="267"/>
+<circle class="cx-pt-outline" cx="593" cy="226" r="9"/>
+<circle class="cx-pt-core" cx="593" cy="226" r="5"/>
+<text class="cx-lbl" x="579" y="214" text-anchor="end">A</text>
+<circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
+<circle class="cx-pt-core" cx="407" cy="102" r="5"/>
+<text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
+</svg></div></section><section class="card" data-mode="premium-dark"><h3>Premium colour (dark)</h3><div class="fig" style="background:#0b1220"><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<title>A line through two points</title>
+<desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
+
+<line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
+<line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
+<line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
+<line class="cx-grid-minor" x1="562" y1="40" x2="562" y2="660"/>
+<line class="cx-grid-minor" x1="624" y1="40" x2="624" y2="660"/>
+<line class="cx-grid-minor" x1="345" y1="629" x2="655" y2="629"/>
+<line class="cx-grid-minor" x1="345" y1="567" x2="655" y2="567"/>
+<line class="cx-grid-minor" x1="345" y1="505" x2="655" y2="505"/>
+<line class="cx-grid-minor" x1="345" y1="443" x2="655" y2="443"/>
+<line class="cx-grid-minor" x1="345" y1="381" x2="655" y2="381"/>
+<line class="cx-grid-minor" x1="345" y1="319" x2="655" y2="319"/>
+<line class="cx-grid-minor" x1="345" y1="257" x2="655" y2="257"/>
+<line class="cx-grid-minor" x1="345" y1="195" x2="655" y2="195"/>
+<line class="cx-grid-minor" x1="345" y1="133" x2="655" y2="133"/>
+<line class="cx-grid-minor" x1="345" y1="71" x2="655" y2="71"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="345" y2="660"/>
+<line class="cx-grid-major" x1="407" y1="40" x2="407" y2="660"/>
+<line class="cx-grid-major" x1="531" y1="40" x2="531" y2="660"/>
+<line class="cx-grid-major" x1="593" y1="40" x2="593" y2="660"/>
+<line class="cx-grid-major" x1="655" y1="40" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="660" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="536" x2="655" y2="536"/>
+<line class="cx-grid-major" x1="345" y1="474" x2="655" y2="474"/>
+<line class="cx-grid-major" x1="345" y1="412" x2="655" y2="412"/>
+<line class="cx-grid-major" x1="345" y1="350" x2="655" y2="350"/>
+<line class="cx-grid-major" x1="345" y1="288" x2="655" y2="288"/>
+<line class="cx-grid-major" x1="345" y1="226" x2="655" y2="226"/>
+<line class="cx-grid-major" x1="345" y1="164" x2="655" y2="164"/>
+<line class="cx-grid-major" x1="345" y1="102" x2="655" y2="102"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="655" y2="40"/>
+<line class="cx-axis" x1="345" y1="598" x2="655" y2="598"/>
+<line class="cx-axis" x1="469" y1="660" x2="469" y2="40"/>
+<path class="cx-axis" d="M 643 591 L 655 598 L 643 605"/>
+<path class="cx-axis" d="M 462 52 L 469 40 L 476 52"/>
+<text class="cx-lbl" x="651" y="628" text-anchor="end">x</text>
+<text class="cx-lbl" x="481" y="46" text-anchor="start">y</text>
+<line class="cx-tick" x1="345" y1="592" x2="345" y2="604"/>
+<text class="cx-ticklbl" x="345" y="624" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="407" y1="592" x2="407" y2="604"/>
+<text class="cx-ticklbl" x="407" y="624" text-anchor="middle">-1</text>
+<line class="cx-tick" x1="531" y1="592" x2="531" y2="604"/>
+<text class="cx-ticklbl" x="531" y="624" text-anchor="middle">1</text>
+<line class="cx-tick" x1="593" y1="592" x2="593" y2="604"/>
+<text class="cx-ticklbl" x="593" y="624" text-anchor="middle">2</text>
+<line class="cx-tick" x1="655" y1="592" x2="655" y2="604"/>
+<text class="cx-ticklbl" x="655" y="624" text-anchor="middle">3</text>
+<line class="cx-tick" x1="463" y1="660" x2="475" y2="660"/>
+<text class="cx-ticklbl" x="457" y="667" text-anchor="end">-1</text>
+<line class="cx-tick" x1="463" y1="536" x2="475" y2="536"/>
+<text class="cx-ticklbl" x="457" y="543" text-anchor="end">1</text>
+<line class="cx-tick" x1="463" y1="474" x2="475" y2="474"/>
+<text class="cx-ticklbl" x="457" y="481" text-anchor="end">2</text>
+<line class="cx-tick" x1="463" y1="412" x2="475" y2="412"/>
+<text class="cx-ticklbl" x="457" y="419" text-anchor="end">3</text>
+<line class="cx-tick" x1="463" y1="350" x2="475" y2="350"/>
+<text class="cx-ticklbl" x="457" y="357" text-anchor="end">4</text>
+<line class="cx-tick" x1="463" y1="288" x2="475" y2="288"/>
+<text class="cx-ticklbl" x="457" y="295" text-anchor="end">5</text>
+<line class="cx-tick" x1="463" y1="226" x2="475" y2="226"/>
+<text class="cx-ticklbl" x="457" y="233" text-anchor="end">6</text>
+<line class="cx-tick" x1="463" y1="164" x2="475" y2="164"/>
+<text class="cx-ticklbl" x="457" y="171" text-anchor="end">7</text>
+<line class="cx-tick" x1="463" y1="102" x2="475" y2="102"/>
+<text class="cx-ticklbl" x="457" y="109" text-anchor="end">8</text>
+<line class="cx-tick" x1="463" y1="40" x2="475" y2="40"/>
+<text class="cx-ticklbl" x="457" y="47" text-anchor="end">9</text>
+<text class="cx-ticklbl" x="457" y="624" text-anchor="end">0</text>
+<line class="cx-line" x1="345" y1="61" x2="655" y2="267"/>
+<circle class="cx-pt-outline" cx="593" cy="226" r="9"/>
+<circle class="cx-pt-core" cx="593" cy="226" r="5"/>
+<text class="cx-lbl" x="579" y="214" text-anchor="end">A</text>
+<circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
+<circle class="cx-pt-core" cx="407" cy="102" r="5"/>
+<text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
+</svg></div></section><section class="card" data-mode="premium"><h3>Premium colour (light)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<title>A line through two points</title>
+<desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
+
+<line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
+<line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
+<line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
+<line class="cx-grid-minor" x1="562" y1="40" x2="562" y2="660"/>
+<line class="cx-grid-minor" x1="624" y1="40" x2="624" y2="660"/>
+<line class="cx-grid-minor" x1="345" y1="629" x2="655" y2="629"/>
+<line class="cx-grid-minor" x1="345" y1="567" x2="655" y2="567"/>
+<line class="cx-grid-minor" x1="345" y1="505" x2="655" y2="505"/>
+<line class="cx-grid-minor" x1="345" y1="443" x2="655" y2="443"/>
+<line class="cx-grid-minor" x1="345" y1="381" x2="655" y2="381"/>
+<line class="cx-grid-minor" x1="345" y1="319" x2="655" y2="319"/>
+<line class="cx-grid-minor" x1="345" y1="257" x2="655" y2="257"/>
+<line class="cx-grid-minor" x1="345" y1="195" x2="655" y2="195"/>
+<line class="cx-grid-minor" x1="345" y1="133" x2="655" y2="133"/>
+<line class="cx-grid-minor" x1="345" y1="71" x2="655" y2="71"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="345" y2="660"/>
+<line class="cx-grid-major" x1="407" y1="40" x2="407" y2="660"/>
+<line class="cx-grid-major" x1="531" y1="40" x2="531" y2="660"/>
+<line class="cx-grid-major" x1="593" y1="40" x2="593" y2="660"/>
+<line class="cx-grid-major" x1="655" y1="40" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="660" x2="655" y2="660"/>
+<line class="cx-grid-major" x1="345" y1="536" x2="655" y2="536"/>
+<line class="cx-grid-major" x1="345" y1="474" x2="655" y2="474"/>
+<line class="cx-grid-major" x1="345" y1="412" x2="655" y2="412"/>
+<line class="cx-grid-major" x1="345" y1="350" x2="655" y2="350"/>
+<line class="cx-grid-major" x1="345" y1="288" x2="655" y2="288"/>
+<line class="cx-grid-major" x1="345" y1="226" x2="655" y2="226"/>
+<line class="cx-grid-major" x1="345" y1="164" x2="655" y2="164"/>
+<line class="cx-grid-major" x1="345" y1="102" x2="655" y2="102"/>
+<line class="cx-grid-major" x1="345" y1="40" x2="655" y2="40"/>
+<line class="cx-axis" x1="345" y1="598" x2="655" y2="598"/>
+<line class="cx-axis" x1="469" y1="660" x2="469" y2="40"/>
+<path class="cx-axis" d="M 643 591 L 655 598 L 643 605"/>
+<path class="cx-axis" d="M 462 52 L 469 40 L 476 52"/>
+<text class="cx-lbl" x="651" y="628" text-anchor="end">x</text>
+<text class="cx-lbl" x="481" y="46" text-anchor="start">y</text>
+<line class="cx-tick" x1="345" y1="592" x2="345" y2="604"/>
+<text class="cx-ticklbl" x="345" y="624" text-anchor="middle">-2</text>
+<line class="cx-tick" x1="407" y1="592" x2="407" y2="604"/>
+<text class="cx-ticklbl" x="407" y="624" text-anchor="middle">-1</text>
+<line class="cx-tick" x1="531" y1="592" x2="531" y2="604"/>
+<text class="cx-ticklbl" x="531" y="624" text-anchor="middle">1</text>
+<line class="cx-tick" x1="593" y1="592" x2="593" y2="604"/>
+<text class="cx-ticklbl" x="593" y="624" text-anchor="middle">2</text>
+<line class="cx-tick" x1="655" y1="592" x2="655" y2="604"/>
+<text class="cx-ticklbl" x="655" y="624" text-anchor="middle">3</text>
+<line class="cx-tick" x1="463" y1="660" x2="475" y2="660"/>
+<text class="cx-ticklbl" x="457" y="667" text-anchor="end">-1</text>
+<line class="cx-tick" x1="463" y1="536" x2="475" y2="536"/>
+<text class="cx-ticklbl" x="457" y="543" text-anchor="end">1</text>
+<line class="cx-tick" x1="463" y1="474" x2="475" y2="474"/>
+<text class="cx-ticklbl" x="457" y="481" text-anchor="end">2</text>
+<line class="cx-tick" x1="463" y1="412" x2="475" y2="412"/>
+<text class="cx-ticklbl" x="457" y="419" text-anchor="end">3</text>
+<line class="cx-tick" x1="463" y1="350" x2="475" y2="350"/>
+<text class="cx-ticklbl" x="457" y="357" text-anchor="end">4</text>
+<line class="cx-tick" x1="463" y1="288" x2="475" y2="288"/>
+<text class="cx-ticklbl" x="457" y="295" text-anchor="end">5</text>
+<line class="cx-tick" x1="463" y1="226" x2="475" y2="226"/>
+<text class="cx-ticklbl" x="457" y="233" text-anchor="end">6</text>
+<line class="cx-tick" x1="463" y1="164" x2="475" y2="164"/>
+<text class="cx-ticklbl" x="457" y="171" text-anchor="end">7</text>
+<line class="cx-tick" x1="463" y1="102" x2="475" y2="102"/>
+<text class="cx-ticklbl" x="457" y="109" text-anchor="end">8</text>
+<line class="cx-tick" x1="463" y1="40" x2="475" y2="40"/>
+<text class="cx-ticklbl" x="457" y="47" text-anchor="end">9</text>
+<text class="cx-ticklbl" x="457" y="624" text-anchor="end">0</text>
+<line class="cx-line" x1="345" y1="61" x2="655" y2="267"/>
+<circle class="cx-pt-outline" cx="593" cy="226" r="9"/>
+<circle class="cx-pt-core" cx="593" cy="226" r="5"/>
+<text class="cx-lbl" x="579" y="214" text-anchor="end">A</text>
+<circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
+<circle class="cx-pt-core" cx="407" cy="102" r="5"/>
+<text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
+</svg></div></section><section class="card" data-mode="print"><h3>Print (monochrome, authoritative)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<title>A line through two points</title>
+<desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -819,9 +1135,8 @@
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
 </svg></div></section></div>
 
-<h2>3. Many-line / many-point stress test (legend; colour + dash + marker)</h2>
-<div class="grid"><section class="card"><h3>Stress test — premium colour</h3><div class="sub">six lines + four points, auto-assigned distinguishable colours, a legend, and end-labels</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<h2>4. Many-line / many-point stress test (legend; colour + dash + marker)</h2>
+<div class="grid"><section class="card" data-mode="premium"><h3>Premium colour (light)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
 <line class="cx-grid-minor" x1="215" y1="46" x2="215" y2="654"/>
 <line class="cx-grid-minor" x1="253" y1="46" x2="253" y2="654"/>
 <line class="cx-grid-minor" x1="291" y1="46" x2="291" y2="654"/>
@@ -925,33 +1240,30 @@
 <line class="cx-tick" x1="494" y1="46" x2="506" y2="46"/>
 <text class="cx-ticklbl" x="488" y="53" text-anchor="end">8</text>
 <text class="cx-ticklbl" x="488" y="376" text-anchor="end">0</text>
-<defs><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<line x1="196" y1="654" x2="804" y2="46" style="stroke:#2563eb;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="196" y1="654" x2="804" y2="46" style="stroke:#2563eb;stroke-width:3;fill:none"/>
 <text x="810" y="46" style="font-size:20px;fill:#2563eb">L1</text>
-<line x1="196" y1="84" x2="804" y2="388" style="stroke:#dc2626;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="196" y1="84" x2="804" y2="388" style="stroke:#dc2626;stroke-width:3;fill:none"/>
 <text x="810" y="388" style="font-size:20px;fill:#dc2626">L2</text>
-<line x1="424" y1="654" x2="728" y2="46" style="stroke:#059669;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="424" y1="654" x2="728" y2="46" style="stroke:#059669;stroke-width:3;fill:none"/>
 <text x="734" y="46" style="font-size:20px;fill:#059669">L3</text>
-<line x1="196" y1="375" x2="804" y2="173" style="stroke:#d97706;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="196" y1="375" x2="804" y2="173" style="stroke:#d97706;stroke-width:3;fill:none"/>
 <text x="810" y="173" style="font-size:20px;fill:#d97706">L4</text>
-<line x1="443" y1="46" x2="747" y2="654" style="stroke:#7c3aed;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="443" y1="46" x2="747" y2="654" style="stroke:#7c3aed;stroke-width:3;fill:none"/>
 <text x="753" y="654" style="font-size:20px;fill:#7c3aed">L5</text>
-<line x1="323" y1="654" x2="728" y2="46" style="stroke:#0891b2;stroke-width:3;fill:none" filter="url(#glow)"/>
+<line x1="323" y1="654" x2="728" y2="46" style="stroke:#0891b2;stroke-width:3;fill:none"/>
 <text x="734" y="46" style="font-size:20px;fill:#0891b2">L6</text>
-<circle cx="310" cy="540" r="9" style="fill:#fff;stroke:#d97706;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#d97706"/>
-<circle cx="652" cy="122" r="9" style="fill:#fff;stroke:#7c3aed;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#7c3aed"/>
-<circle cx="386" cy="198" r="9" style="fill:#fff;stroke:#0891b2;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#0891b2"/>
-<circle cx="728" cy="464" r="9" style="fill:#fff;stroke:#be185d;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#be185d"/>
+<circle cx="310" cy="540" r="9" style="fill:#ffffff;stroke:#059669;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#059669"/>
+<circle cx="652" cy="122" r="9" style="fill:#ffffff;stroke:#d97706;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#d97706"/>
+<circle cx="386" cy="198" r="9" style="fill:#ffffff;stroke:#7c3aed;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#7c3aed"/>
+<circle cx="728" cy="464" r="9" style="fill:#ffffff;stroke:#0891b2;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#0891b2"/>
 <g transform="translate(40,40)">
-<line x1="0" y1="0" x2="34" y2="0" style="stroke:#2563eb;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:#333">line L1</text>
-<line x1="0" y1="24" x2="34" y2="24" style="stroke:#dc2626;stroke-width:3"/><text x="42" y="30" style="font-size:18px;fill:#333">line L2</text>
-<line x1="0" y1="48" x2="34" y2="48" style="stroke:#059669;stroke-width:3"/><text x="42" y="54" style="font-size:18px;fill:#333">line L3</text>
-<line x1="0" y1="72" x2="34" y2="72" style="stroke:#d97706;stroke-width:3"/><text x="42" y="78" style="font-size:18px;fill:#333">line L4</text>
-<line x1="0" y1="96" x2="34" y2="96" style="stroke:#7c3aed;stroke-width:3"/><text x="42" y="102" style="font-size:18px;fill:#333">line L5</text>
-<line x1="0" y1="120" x2="34" y2="120" style="stroke:#0891b2;stroke-width:3"/><text x="42" y="126" style="font-size:18px;fill:#333">line L6</text>
-</g>
-</svg></div></section><section class="card"><h3>Stress test — accessible colour</h3><div class="sub">CVD-safe palette + distinct dash patterns + markers (no colour-only meaning)</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<line x1="0" y1="0" x2="34" y2="0" style="stroke:#2563eb;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:var(--cx-text)">line L1</text>
+<line x1="0" y1="24" x2="34" y2="24" style="stroke:#dc2626;stroke-width:3"/><text x="42" y="30" style="font-size:18px;fill:var(--cx-text)">line L2</text>
+<line x1="0" y1="48" x2="34" y2="48" style="stroke:#059669;stroke-width:3"/><text x="42" y="54" style="font-size:18px;fill:var(--cx-text)">line L3</text>
+<line x1="0" y1="72" x2="34" y2="72" style="stroke:#d97706;stroke-width:3"/><text x="42" y="78" style="font-size:18px;fill:var(--cx-text)">line L4</text>
+<line x1="0" y1="96" x2="34" y2="96" style="stroke:#7c3aed;stroke-width:3"/><text x="42" y="102" style="font-size:18px;fill:var(--cx-text)">line L5</text>
+<line x1="0" y1="120" x2="34" y2="120" style="stroke:#0891b2;stroke-width:3"/><text x="42" y="126" style="font-size:18px;fill:var(--cx-text)">line L6</text>
+</g></svg></div></section><section class="card" data-mode="accessible"><h3>Accessible colour (CVD-safe)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
 <line class="cx-grid-minor" x1="215" y1="46" x2="215" y2="654"/>
 <line class="cx-grid-minor" x1="253" y1="46" x2="253" y2="654"/>
 <line class="cx-grid-minor" x1="291" y1="46" x2="291" y2="654"/>
@@ -1055,33 +1367,30 @@
 <line class="cx-tick" x1="494" y1="46" x2="506" y2="46"/>
 <text class="cx-ticklbl" x="488" y="53" text-anchor="end">8</text>
 <text class="cx-ticklbl" x="488" y="376" text-anchor="end">0</text>
-<defs><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<line x1="196" y1="654" x2="804" y2="46" style="stroke:#0072B2;stroke-width:3;fill:none" filter="url(#glow)"/>
-<text x="810" y="46" style="font-size:20px;fill:#0072B2">L1</text>
-<line x1="196" y1="84" x2="804" y2="388" style="stroke:#D55E00;stroke-width:3;fill:none;stroke-dasharray:8 5" filter="url(#glow)"/>
-<text x="810" y="388" style="font-size:20px;fill:#D55E00">L2</text>
-<line x1="424" y1="654" x2="728" y2="46" style="stroke:#009E73;stroke-width:3;fill:none;stroke-dasharray:2 4" filter="url(#glow)"/>
-<text x="734" y="46" style="font-size:20px;fill:#009E73">L3</text>
-<line x1="196" y1="375" x2="804" y2="173" style="stroke:#CC79A7;stroke-width:3;fill:none;stroke-dasharray:10 4 2 4" filter="url(#glow)"/>
-<text x="810" y="173" style="font-size:20px;fill:#CC79A7">L4</text>
-<line x1="443" y1="46" x2="747" y2="654" style="stroke:#56B4E9;stroke-width:3;fill:none;stroke-dasharray:6 3" filter="url(#glow)"/>
-<text x="753" y="654" style="font-size:20px;fill:#56B4E9">L5</text>
-<line x1="323" y1="654" x2="728" y2="46" style="stroke:#E69F00;stroke-width:3;fill:none;stroke-dasharray:1 5" filter="url(#glow)"/>
-<text x="734" y="46" style="font-size:20px;fill:#E69F00">L6</text>
-<circle cx="310" cy="540" r="9" style="fill:#fff;stroke:#CC79A7;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#CC79A7"/>
-<circle cx="652" cy="122" r="9" style="fill:#fff;stroke:#56B4E9;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#56B4E9"/>
-<circle cx="386" cy="198" r="9" style="fill:#fff;stroke:#E69F00;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#E69F00"/>
-<circle cx="728" cy="464" r="9" style="fill:#fff;stroke:#000000;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#000000"/>
+<line x1="196" y1="654" x2="804" y2="46" style="stroke:#0072b2;stroke-width:3;fill:none"/>
+<text x="810" y="46" style="font-size:20px;fill:#0072b2">L1</text>
+<line x1="196" y1="84" x2="804" y2="388" style="stroke:#d55e00;stroke-width:3;fill:none;stroke-dasharray:8 5"/>
+<text x="810" y="388" style="font-size:20px;fill:#d55e00">L2</text>
+<line x1="424" y1="654" x2="728" y2="46" style="stroke:#009e73;stroke-width:3;fill:none;stroke-dasharray:2 4"/>
+<text x="734" y="46" style="font-size:20px;fill:#009e73">L3</text>
+<line x1="196" y1="375" x2="804" y2="173" style="stroke:#cc79a7;stroke-width:3;fill:none;stroke-dasharray:10 4 2 4"/>
+<text x="810" y="173" style="font-size:20px;fill:#cc79a7">L4</text>
+<line x1="443" y1="46" x2="747" y2="654" style="stroke:#56b4e9;stroke-width:3;fill:none;stroke-dasharray:6 3"/>
+<text x="753" y="654" style="font-size:20px;fill:#56b4e9">L5</text>
+<line x1="323" y1="654" x2="728" y2="46" style="stroke:#e69f00;stroke-width:3;fill:none;stroke-dasharray:1 5"/>
+<text x="734" y="46" style="font-size:20px;fill:#e69f00">L6</text>
+<circle cx="310" cy="540" r="9" style="fill:#ffffff;stroke:#009e73;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#009e73"/>
+<circle cx="652" cy="122" r="9" style="fill:#ffffff;stroke:#cc79a7;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#cc79a7"/>
+<circle cx="386" cy="198" r="9" style="fill:#ffffff;stroke:#56b4e9;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#56b4e9"/>
+<circle cx="728" cy="464" r="9" style="fill:#ffffff;stroke:#e69f00;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#e69f00"/>
 <g transform="translate(40,40)">
-<line x1="0" y1="0" x2="34" y2="0" style="stroke:#0072B2;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:#333">line L1</text>
-<line x1="0" y1="24" x2="34" y2="24" style="stroke:#D55E00;stroke-width:3;stroke-dasharray:8 5"/><text x="42" y="30" style="font-size:18px;fill:#333">line L2</text>
-<line x1="0" y1="48" x2="34" y2="48" style="stroke:#009E73;stroke-width:3;stroke-dasharray:2 4"/><text x="42" y="54" style="font-size:18px;fill:#333">line L3</text>
-<line x1="0" y1="72" x2="34" y2="72" style="stroke:#CC79A7;stroke-width:3;stroke-dasharray:10 4 2 4"/><text x="42" y="78" style="font-size:18px;fill:#333">line L4</text>
-<line x1="0" y1="96" x2="34" y2="96" style="stroke:#56B4E9;stroke-width:3;stroke-dasharray:6 3"/><text x="42" y="102" style="font-size:18px;fill:#333">line L5</text>
-<line x1="0" y1="120" x2="34" y2="120" style="stroke:#E69F00;stroke-width:3;stroke-dasharray:1 5"/><text x="42" y="126" style="font-size:18px;fill:#333">line L6</text>
-</g>
-</svg></div></section><section class="card"><h3>Stress test — print monochrome</h3><div class="sub">distinct dash patterns + markers carry all meaning with no colour</div><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<line x1="0" y1="0" x2="34" y2="0" style="stroke:#0072b2;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:var(--cx-text)">line L1</text>
+<line x1="0" y1="24" x2="34" y2="24" style="stroke:#d55e00;stroke-width:3;stroke-dasharray:8 5"/><text x="42" y="30" style="font-size:18px;fill:var(--cx-text)">line L2</text>
+<line x1="0" y1="48" x2="34" y2="48" style="stroke:#009e73;stroke-width:3;stroke-dasharray:2 4"/><text x="42" y="54" style="font-size:18px;fill:var(--cx-text)">line L3</text>
+<line x1="0" y1="72" x2="34" y2="72" style="stroke:#cc79a7;stroke-width:3;stroke-dasharray:10 4 2 4"/><text x="42" y="78" style="font-size:18px;fill:var(--cx-text)">line L4</text>
+<line x1="0" y1="96" x2="34" y2="96" style="stroke:#56b4e9;stroke-width:3;stroke-dasharray:6 3"/><text x="42" y="102" style="font-size:18px;fill:var(--cx-text)">line L5</text>
+<line x1="0" y1="120" x2="34" y2="120" style="stroke:#e69f00;stroke-width:3;stroke-dasharray:1 5"/><text x="42" y="126" style="font-size:18px;fill:var(--cx-text)">line L6</text>
+</g></svg></div></section><section class="card" data-mode="print"><h3>Print (monochrome, authoritative)</h3><div class="fig"><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Stress test: six straight lines and four points on one grid.">
 <line class="cx-grid-minor" x1="215" y1="46" x2="215" y2="654"/>
 <line class="cx-grid-minor" x1="253" y1="46" x2="253" y2="654"/>
 <line class="cx-grid-minor" x1="291" y1="46" x2="291" y2="654"/>
@@ -1185,37 +1494,36 @@
 <line class="cx-tick" x1="494" y1="46" x2="506" y2="46"/>
 <text class="cx-ticklbl" x="488" y="53" text-anchor="end">8</text>
 <text class="cx-ticklbl" x="488" y="376" text-anchor="end">0</text>
-<line x1="196" y1="654" x2="804" y2="46" style="stroke:#111;stroke-width:3;fill:none" />
+<line x1="196" y1="654" x2="804" y2="46" style="stroke:#111;stroke-width:3;fill:none"/>
 <text x="810" y="46" style="font-size:20px;fill:#111">L1</text>
-<line x1="196" y1="84" x2="804" y2="388" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5" />
+<line x1="196" y1="84" x2="804" y2="388" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5"/>
 <text x="810" y="388" style="font-size:20px;fill:#111">L2</text>
-<line x1="424" y1="654" x2="728" y2="46" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:2 4" />
+<line x1="424" y1="654" x2="728" y2="46" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:2 4"/>
 <text x="734" y="46" style="font-size:20px;fill:#111">L3</text>
-<line x1="196" y1="375" x2="804" y2="173" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:10 4 2 4" />
+<line x1="196" y1="375" x2="804" y2="173" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:10 4 2 4"/>
 <text x="810" y="173" style="font-size:20px;fill:#111">L4</text>
-<line x1="443" y1="46" x2="747" y2="654" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:6 3" />
+<line x1="443" y1="46" x2="747" y2="654" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:6 3"/>
 <text x="753" y="654" style="font-size:20px;fill:#111">L5</text>
-<line x1="323" y1="654" x2="728" y2="46" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:1 5" />
+<line x1="323" y1="654" x2="728" y2="46" style="stroke:#111;stroke-width:3;fill:none;stroke-dasharray:1 5"/>
 <text x="734" y="46" style="font-size:20px;fill:#111">L6</text>
-<circle cx="310" cy="540" r="9" style="fill:#fff;stroke:#111;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#111"/>
-<circle cx="652" cy="122" r="9" style="fill:#fff;stroke:#111;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#111"/>
-<circle cx="386" cy="198" r="9" style="fill:#fff;stroke:#111;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#111"/>
-<circle cx="728" cy="464" r="9" style="fill:#fff;stroke:#111;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#111"/>
+<circle cx="310" cy="540" r="9" style="fill:#ffffff;stroke:#111;stroke-width:4"/><circle cx="310" cy="540" r="5" style="fill:#111"/>
+<circle cx="652" cy="122" r="9" style="fill:#ffffff;stroke:#111;stroke-width:4"/><circle cx="652" cy="122" r="5" style="fill:#111"/>
+<circle cx="386" cy="198" r="9" style="fill:#ffffff;stroke:#111;stroke-width:4"/><circle cx="386" cy="198" r="5" style="fill:#111"/>
+<circle cx="728" cy="464" r="9" style="fill:#ffffff;stroke:#111;stroke-width:4"/><circle cx="728" cy="464" r="5" style="fill:#111"/>
 <g transform="translate(40,40)">
-<line x1="0" y1="0" x2="34" y2="0" style="stroke:#111;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:#333">line L1</text>
-<line x1="0" y1="24" x2="34" y2="24" style="stroke:#111;stroke-width:3;stroke-dasharray:8 5"/><text x="42" y="30" style="font-size:18px;fill:#333">line L2</text>
-<line x1="0" y1="48" x2="34" y2="48" style="stroke:#111;stroke-width:3;stroke-dasharray:2 4"/><text x="42" y="54" style="font-size:18px;fill:#333">line L3</text>
-<line x1="0" y1="72" x2="34" y2="72" style="stroke:#111;stroke-width:3;stroke-dasharray:10 4 2 4"/><text x="42" y="78" style="font-size:18px;fill:#333">line L4</text>
-<line x1="0" y1="96" x2="34" y2="96" style="stroke:#111;stroke-width:3;stroke-dasharray:6 3"/><text x="42" y="102" style="font-size:18px;fill:#333">line L5</text>
-<line x1="0" y1="120" x2="34" y2="120" style="stroke:#111;stroke-width:3;stroke-dasharray:1 5"/><text x="42" y="126" style="font-size:18px;fill:#333">line L6</text>
-</g>
-</svg></div></section></div>
+<line x1="0" y1="0" x2="34" y2="0" style="stroke:#111;stroke-width:3"/><text x="42" y="6" style="font-size:18px;fill:var(--cx-text)">line L1</text>
+<line x1="0" y1="24" x2="34" y2="24" style="stroke:#111;stroke-width:3;stroke-dasharray:8 5"/><text x="42" y="30" style="font-size:18px;fill:var(--cx-text)">line L2</text>
+<line x1="0" y1="48" x2="34" y2="48" style="stroke:#111;stroke-width:3;stroke-dasharray:2 4"/><text x="42" y="54" style="font-size:18px;fill:var(--cx-text)">line L3</text>
+<line x1="0" y1="72" x2="34" y2="72" style="stroke:#111;stroke-width:3;stroke-dasharray:10 4 2 4"/><text x="42" y="78" style="font-size:18px;fill:var(--cx-text)">line L4</text>
+<line x1="0" y1="96" x2="34" y2="96" style="stroke:#111;stroke-width:3;stroke-dasharray:6 3"/><text x="42" y="102" style="font-size:18px;fill:var(--cx-text)">line L5</text>
+<line x1="0" y1="120" x2="34" y2="120" style="stroke:#111;stroke-width:3;stroke-dasharray:1 5"/><text x="42" y="126" style="font-size:18px;fill:var(--cx-text)">line L6</text>
+</g></svg></div></section></div>
 
-<h2>4. Vector zoom + high-resolution export</h2>
-<div class="grid"><section class="card"><h3>Zoom (vector sharpness)</h3><div class="sub">the canonical SVG scaled 2.4x — strokes, points, and labels stay perfectly sharp (no rasterisation)</div><div class="fig"><div class="zoom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<h2>5. Vector zoom + high-resolution materialized colour export</h2>
+<div class="grid"><section class="card"><h3>Zoom (vector sharpness)</h3><div class="sub">premium presentation scaled 2.4x — strokes/points/labels stay sharp</div><div class="zoom"><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -1290,13 +1598,18 @@
 <circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
 <circle class="cx-pt-core" cx="407" cy="102" r="5"/>
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
-</svg></div></div></section>
-<section class="card"><h3>High-resolution raster export</h3>
-<div class="sub">Envelope 7680x4320 → integer scale 6 → <b>6000×4200</b>, derived from the canonical SVG (<code>coordinate_lines_8k_sample.svg</code>). The SVG is the authoritative 8K-like deliverable; the PNG is rasterised from it with exact coordinate preservation (pngCoord = 6·svgCoord).</div>
-<div class="fig" id="src"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+</svg></div></section>
+<section class="card"><h3>High-resolution raster export (6000×4200)</h3>
+<div class="sub">The selected mode's concrete palette is materialised INSIDE the cloned SVG before rasterising — no external CSS. The mathematical SVG (<code>coordinate_lines_8k_sample.svg</code>) is the authoritative 8K-like deliverable.</div>
+<button onclick="dl('premium')">Download premium 6000×4200 PNG</button>
+<button onclick="dl('accessible')">Download accessible 6000×4200 PNG</button>
+<button onclick="dl('print')">Download monochrome 6000×4200 PNG</button></section></div>
+
+<div id="status"></div>
+<div id="hidden"><div id="canonical-src"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
 <title>A line through two points</title>
 <desc>Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+
 <line class="cx-grid-minor" x1="376" y1="40" x2="376" y2="660"/>
 <line class="cx-grid-minor" x1="438" y1="40" x2="438" y2="660"/>
 <line class="cx-grid-minor" x1="500" y1="40" x2="500" y2="660"/>
@@ -1371,16 +1684,95 @@
 <circle class="cx-pt-outline" cx="407" cy="102" r="9"/>
 <circle class="cx-pt-core" cx="407" cy="102" r="5"/>
 <text class="cx-lbl" x="421" y="90" text-anchor="start">B</text>
-</svg></div>
-<button onclick="dl()">Download 6000×4200 PNG</button></section>
-</div>
+</svg></div></div>
 
-<footer id="audit-meta" data-generator-id="gen.geometry.coordinate-lines" data-generator-version="1.0.1" data-git-commit="7bed7c598322471fc88bdf39bb582e9cb9dd7b72" data-generated="2026-06-24T07:01:40+00:00">
-Build: gen.geometry.coordinate-lines v1.0.1 · commit 7bed7c5983 · 2026-06-24T07:01:40+00:00. Reviewed by the curriculum authority before any production exposure.</footer>
+<footer id="audit-meta" data-generator-id="gen.geometry.coordinate-lines" data-generator-version="1.0.2" data-git-commit="a815176600e36b0db32ea7c49e9b62df88a1d528" data-generated="2026-06-24T13:47:09+00:00">
+Build: gen.geometry.coordinate-lines v1.0.2 · commit a815176600e36b0db32ea7c49e9b62df88a1d528 · 2026-06-24T13:47:09+00:00. Reviewed by the curriculum authority before any production exposure.</footer>
+
 <script>
-function dl(){const s=document.querySelector('#src svg').cloneNode(true);s.setAttribute('width',6000);s.setAttribute('height',4200);
-const xml=new XMLSerializer().serializeToString(s);const img=new Image();
-img.onload=function(){const cv=document.createElement('canvas');cv.width=6000;cv.height=4200;const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(img,0,0);const a=document.createElement('a');a.download='coordinate_lines_6000x4200.png';a.href=cv.toDataURL('image/png');a.click();};
-img.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(xml)));}
+const THEME = {"resolved": {"print": ".cx-figure .cx-axis{stroke:#111111;stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:#111111;stroke-width:2}.cx-figure .cx-grid-major{stroke:#888888;stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:#bbbbbb;stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:#111111;stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:#ffffff;stroke:#111111;stroke-width:4}.cx-figure .cx-pt-core{fill:#111111}.cx-figure .cx-guide{stroke:#555555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:#111111}.cx-figure .cx-ticklbl{font-size:20px;fill:#333333}.cx-figure .cx-lbl{font-size:28px;fill:#111111}", "premium": ".cx-figure .cx-axis{stroke:#1e293b;stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:#1e293b;stroke-width:2}.cx-figure .cx-grid-major{stroke:#c7d2fe;stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:#e9edff;stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:#2563eb;stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:#ffffff;stroke:#dc2626;stroke-width:4}.cx-figure .cx-pt-core{fill:#dc2626}.cx-figure .cx-guide{stroke:#7c3aed;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:#111827}.cx-figure .cx-ticklbl{font-size:20px;fill:#475569}.cx-figure .cx-lbl{font-size:28px;fill:#111827}", "premium-dark": ".cx-figure .cx-axis{stroke:#e5e7eb;stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:#e5e7eb;stroke-width:2}.cx-figure .cx-grid-major{stroke:#475569;stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:#334155;stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:#60a5fa;stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:#0b1220;stroke:#f87171;stroke-width:4}.cx-figure .cx-pt-core{fill:#f87171}.cx-figure .cx-guide{stroke:#c4b5fd;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:#e5e7eb}.cx-figure .cx-ticklbl{font-size:20px;fill:#cbd5e1}.cx-figure .cx-lbl{font-size:28px;fill:#e5e7eb}", "accessible": ".cx-figure .cx-axis{stroke:#000000;stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:#000000;stroke-width:2}.cx-figure .cx-grid-major{stroke:#999999;stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:#cccccc;stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:#0072b2;stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:#ffffff;stroke:#d55e00;stroke-width:4}.cx-figure .cx-pt-core{fill:#d55e00}.cx-figure .cx-guide{stroke:#009e73;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:#000000}.cx-figure .cx-ticklbl{font-size:20px;fill:#333333}.cx-figure .cx-lbl{font-size:28px;fill:#000000}"}, "bg": {"print": "#ffffff", "premium": "#ffffff", "premium-dark": "#0b1220", "accessible": "#ffffff"}, "vars": {"print": {"--cx-axis": "#111111", "--cx-tick": "#111111", "--cx-grid-major": "#888888", "--cx-grid-minor": "#bbbbbb", "--cx-line": "#111111", "--cx-pt-core": "#111111", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#111111", "--cx-guide": "#555555", "--cx-text": "#111111", "--cx-ticklbl": "#333333", "--cx-bg": "#ffffff"}, "premium": {"--cx-axis": "#1e293b", "--cx-tick": "#1e293b", "--cx-grid-major": "#c7d2fe", "--cx-grid-minor": "#e9edff", "--cx-line": "#2563eb", "--cx-pt-core": "#dc2626", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#dc2626", "--cx-guide": "#7c3aed", "--cx-text": "#111827", "--cx-ticklbl": "#475569", "--cx-bg": "#ffffff"}, "premium-dark": {"--cx-axis": "#e5e7eb", "--cx-tick": "#e5e7eb", "--cx-grid-major": "#475569", "--cx-grid-minor": "#334155", "--cx-line": "#60a5fa", "--cx-pt-core": "#f87171", "--cx-pt-outline-fill": "#0b1220", "--cx-pt-outline-stroke": "#f87171", "--cx-guide": "#c4b5fd", "--cx-text": "#e5e7eb", "--cx-ticklbl": "#cbd5e1", "--cx-bg": "#0b1220"}, "accessible": {"--cx-axis": "#000000", "--cx-tick": "#000000", "--cx-grid-major": "#999999", "--cx-grid-minor": "#cccccc", "--cx-line": "#0072b2", "--cx-pt-core": "#d55e00", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#d55e00", "--cx-guide": "#009e73", "--cx-text": "#000000", "--cx-ticklbl": "#333333", "--cx-bg": "#ffffff"}}};
+const EXPORT_W = 6000, EXPORT_H = 4200;
+const CANON = document.querySelector('#canonical-src svg');
+
+// Materialise a self-contained export SVG: strip canonical <style>, add cx-figure + a baked
+// concrete ruleset for the mode (no var(), no external CSS), and explicit pixel dimensions.
+function exportSvgString(mode, w, h) {
+  let s = new XMLSerializer().serializeToString(CANON);
+  s = s.replace(/<style>[\s\S]*?<\/style>/, '');
+  s = s.replace('<svg ', '<svg class="cx-figure" width="'+w+'" height="'+h+'" ');
+  s = s.replace(/(<svg[^>]*>)/, '$1<style>'+THEME.resolved[mode]+'</style>');
+  return s;
+}
+function rasterise(mode) {
+  return new Promise((resolve) => {
+    const s = exportSvgString(mode, EXPORT_W, EXPORT_H);
+    const img = new Image();
+    img.onload = function() {
+      const cv = document.createElement('canvas'); cv.width = EXPORT_W; cv.height = EXPORT_H;
+      const cx = cv.getContext('2d'); cx.fillStyle = THEME.bg[mode]; cx.fillRect(0,0,cv.width,cv.height);
+      cx.drawImage(img, 0, 0, EXPORT_W, EXPORT_H);
+      resolve({cv, cx});
+    };
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(s)));
+  });
+}
+async function dl(mode) {
+  const {cv} = await rasterise(mode);
+  const a = document.createElement('a'); a.download = 'coordinate_lines_'+mode+'_'+EXPORT_W+'x'+EXPORT_H+'.png';
+  a.href = cv.toDataURL('image/png'); a.click();
+}
+// Exposed for the headless browser tests.
+window.__cx = {
+  exportDataURL: async (mode) => (await rasterise(mode)).cv.toDataURL('image/png'),
+  // Small raster (colours are size-independent) + the canonical 6000x4200 export dimensions.
+  sample: (mode) => new Promise((res, rej) => {
+    const ww = 900, hh = 630; const s = exportSvgString(mode, ww, hh); const img = new Image();
+    img.onload = () => { const cv = document.createElement('canvas'); cv.width = ww; cv.height = hh;
+      const cx = cv.getContext('2d'); cx.fillStyle = THEME.bg[mode]; cx.fillRect(0,0,ww,hh); cx.drawImage(img,0,0,ww,hh);
+      const d = cx.getImageData(0,0,ww,hh).data; const seen = new Set();
+      for (let i=0;i<d.length;i+=4) { if (d[i+3] > 200) seen.add(d[i]+','+d[i+1]+','+d[i+2]); }
+      const big = exportSvgString(mode, EXPORT_W, EXPORT_H).match(/width="(\d+)" height="(\d+)"/);
+      res({ exportWidth: +big[1], exportHeight: +big[2], colours: [...seen],
+             selfContained: !/<link|@import|url\(/.test(exportSvgString(mode, EXPORT_W, EXPORT_H)) }); };
+    img.onerror = rej; img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(s)));
+  }),
+  // Kick off the three full 6000x4200 rasters in the page (persist across evals for chunked capture).
+  startFull: () => { window.__png = {}; ['premium','accessible','print'].forEach((m) => rasterise(m).then(({cv}) => { window.__png[m] = cv.toDataURL('image/png'); })); return 'started'; },
+  exportInfo: async (mode) => {
+    const {cv, cx} = await rasterise(mode);
+    // sample a band of pixels and return the set of opaque colours seen (excludes pure bg)
+    const seen = {};
+    const d = cx.getImageData(0,0,cv.width, Math.min(cv.height, 4200)).data;
+    for (let i=0;i<d.length;i+=4*997) { const k = d[i]+','+d[i+1]+','+d[i+2]; seen[k]=(seen[k]||0)+1; }
+    return { width: cv.width, height: cv.height, colours: Object.keys(seen) };
+  },
+  computed: () => {
+    const out = {};
+    for (const card of document.querySelectorAll('#gallery .card, #galleryRev .card')) {
+      const mode = card.dataset.mode, where = card.parentElement.id;
+      const g = (sel) => { const e = card.querySelector('svg '+sel); return e ? getComputedStyle(e) : null; };
+      const line = g('.cx-line'), axis = g('.cx-axis'), gmaj = g('.cx-grid-major'), gmin = g('.cx-grid-minor');
+      const core = g('.cx-pt-core'), outl = g('.cx-pt-outline'), tick = g('.cx-ticklbl'), lbl = g('.cx-lbl'), txt = g('text');
+      (out[where] = out[where] || {})[mode] = {
+        line: line && line.stroke, axis: axis && axis.stroke, gridMajor: gmaj && gmaj.stroke,
+        gridMinor: gmin && gmin.stroke, ptCore: core && core.fill, ptOutline: outl && outl.stroke,
+        tick: tick && tick.fill, label: lbl && lbl.fill, text: txt && txt.fill,
+      };
+    }
+    return out;
+  },
+};
+// Fill the computed-style tables beneath each gallery card.
+addEventListener('load', () => {
+  for (const card of document.querySelectorAll('#gallery .card')) {
+    const tb = card.querySelector('table.cs tbody'); if (!tb) continue;
+    const rows = [['line','.cx-line','stroke'],['axis','.cx-axis','stroke'],['major grid','.cx-grid-major','stroke'],
+      ['minor grid','.cx-grid-minor','stroke'],['point core','.cx-pt-core','fill'],['point outline','.cx-pt-outline','stroke'],
+      ['tick label','.cx-ticklbl','fill'],['axis/point label','.cx-lbl','fill']];
+    for (const [name,sel,prop] of rows) { const e=card.querySelector('svg '+sel);
+      const v = e ? getComputedStyle(e)[prop] : '—'; tb.insertAdjacentHTML('beforeend','<tr><td>'+name+'</td><td class="sw">'+v+'</td></tr>'); }
+  }
+  document.getElementById('status').textContent = 'Computed-style tables rendered. window.__cx ready for headless tests.';
+});
 </script>
 </body></html>

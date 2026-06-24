@@ -40,8 +40,8 @@ from difficulty import band_from_score, round3  # noqa: E402
 from coordinate_misconceptions import MISCONCEPTIONS, rules_for, adapter_for  # noqa: E402
 
 GENERATOR_ID = "gen.geometry.coordinate-lines"
-GENERATOR_VERSION = "1.0.1"
-VALIDATOR_VERSION = "1.0.1"
+GENERATOR_VERSION = "1.0.2"
+VALIDATOR_VERSION = "1.0.2"
 CALCULATOR_POLICY = "calculator-not-required"
 
 TASKS = ("read_point", "plot_point", "gradient_two_points", "midpoint",

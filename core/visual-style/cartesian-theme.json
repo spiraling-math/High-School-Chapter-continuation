@@ -1,0 +1,28 @@
+{
+  "schema": "spi-math-cartesian-theme/1",
+  "description": "Per-root presentation theme for coordinate-lines figures. Each render mode is a set of CSS CUSTOM PROPERTIES applied to a figure's OWN root SVG (class cx-figure). One immutable common ruleset (commonCss) reads those variables. Because custom properties cascade only into their own subtree, every figure is isolated: several modes on one page, reordered cards, multiple questions per worksheet, and SVGs from other generator families never interfere. The monochrome 'print' mode reproduces the canonical authoritative look.",
+  "variables": ["--cx-axis", "--cx-tick", "--cx-grid-major", "--cx-grid-minor", "--cx-line", "--cx-pt-core", "--cx-pt-outline-fill", "--cx-pt-outline-stroke", "--cx-guide", "--cx-text", "--cx-ticklbl", "--cx-bg"],
+  "modes": {
+    "print": {
+      "--cx-axis": "#111111", "--cx-tick": "#111111", "--cx-grid-major": "#888888", "--cx-grid-minor": "#bbbbbb",
+      "--cx-line": "#111111", "--cx-pt-core": "#111111", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#111111",
+      "--cx-guide": "#555555", "--cx-text": "#111111", "--cx-ticklbl": "#333333", "--cx-bg": "#ffffff"
+    },
+    "premium": {
+      "--cx-axis": "#1e293b", "--cx-tick": "#1e293b", "--cx-grid-major": "#c7d2fe", "--cx-grid-minor": "#e9edff",
+      "--cx-line": "#2563eb", "--cx-pt-core": "#dc2626", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#dc2626",
+      "--cx-guide": "#7c3aed", "--cx-text": "#111827", "--cx-ticklbl": "#475569", "--cx-bg": "#ffffff"
+    },
+    "premium-dark": {
+      "--cx-axis": "#e5e7eb", "--cx-tick": "#e5e7eb", "--cx-grid-major": "#475569", "--cx-grid-minor": "#334155",
+      "--cx-line": "#60a5fa", "--cx-pt-core": "#f87171", "--cx-pt-outline-fill": "#0b1220", "--cx-pt-outline-stroke": "#f87171",
+      "--cx-guide": "#c4b5fd", "--cx-text": "#e5e7eb", "--cx-ticklbl": "#cbd5e1", "--cx-bg": "#0b1220"
+    },
+    "accessible": {
+      "--cx-axis": "#000000", "--cx-tick": "#000000", "--cx-grid-major": "#999999", "--cx-grid-minor": "#cccccc",
+      "--cx-line": "#0072b2", "--cx-pt-core": "#d55e00", "--cx-pt-outline-fill": "#ffffff", "--cx-pt-outline-stroke": "#d55e00",
+      "--cx-guide": "#009e73", "--cx-text": "#000000", "--cx-ticklbl": "#333333", "--cx-bg": "#ffffff"
+    }
+  },
+  "commonCss": ".cx-figure .cx-axis{stroke:var(--cx-axis);stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:var(--cx-tick);stroke-width:2}.cx-figure .cx-grid-major{stroke:var(--cx-grid-major);stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:var(--cx-grid-minor);stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:var(--cx-line);stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:var(--cx-pt-outline-fill);stroke:var(--cx-pt-outline-stroke);stroke-width:4}.cx-figure .cx-pt-core{fill:var(--cx-pt-core)}.cx-figure .cx-guide{stroke:var(--cx-guide);stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:var(--cx-text)}.cx-figure .cx-ticklbl{font-size:20px;fill:var(--cx-ticklbl)}.cx-figure .cx-lbl{font-size:28px;fill:var(--cx-text)}"
+}

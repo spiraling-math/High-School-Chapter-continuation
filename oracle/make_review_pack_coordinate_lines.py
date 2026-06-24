@@ -207,9 +207,14 @@ def build() -> None:
         "answerTypesAreMathematicalOnly": all("multiple-choice" not in o["answerTypes"] for o in OBJECTIVES.values()),
     }
 
+    item_count = sum(len(c["items"]) for c in combos)
+    svg_count = sum(1 for c in combos for it in c["items"] if "svgFile" in it)
     pack = {
         "generatorId": cl.GENERATOR_ID, "generatorVersion": cl.GENERATOR_VERSION, "validatorVersion": cl.VALIDATOR_VERSION,
         "stage": "SPI-Math Middle School -> Geometry/Algebra bridge", "strand": "coordinate-geometry-straight-line-graphs",
+        "summary": {"itemCount": item_count, "svgCount": svg_count,
+                    "textOnlyItemCount": item_count - svg_count,
+                    "note": f"{item_count} review items = {svg_count} figures + {item_count - svg_count} text-only interpret_mx_c items"},
         "curriculum": curriculum, "combos": combos, "diagnostics": diag,
     }
     with open(os.path.join(REVIEW_DIR, "coordinate_lines_review_pack.json"), "w", encoding="utf-8") as fh:

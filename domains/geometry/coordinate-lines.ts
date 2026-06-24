@@ -20,8 +20,8 @@ type Frac = Rational;
 const F = (x: number): Rational => new Rational(x, 1);
 
 export const GENERATOR_ID = "gen.geometry.coordinate-lines";
-export const GENERATOR_VERSION = "1.0.1";
-export const VALIDATOR_VERSION = "1.0.1";
+export const GENERATOR_VERSION = "1.0.2";
+export const VALIDATOR_VERSION = "1.0.2";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 export const TASKS = ["read_point", "plot_point", "gradient_two_points", "midpoint",

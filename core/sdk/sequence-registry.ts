@@ -88,9 +88,10 @@ export const GENERATORS: GeneratorModule[] = [
     label: "Coordinate geometry & straight-line graphs (SVG)",
     // Objectives curriculum-approved-for-implementation; the generator is implemented
     // oracle-first and registered pending-review (DECISION_LOG.md #41), corrected to v1.0.1
-    // after the owner's curriculum-review REVISE (#42; v1.0.0 preserved, tag
-    // coordinate-lines-v1.0.0). Gated out of normal Studio use and production exports/samples
-    // until the owner's final APPROVE/REJECT. Items begin at machine-validated.
+    // (curriculum REVISE #42) and v1.0.2 (visual-rendering/export REJECT #43: per-root
+    // CSS-var render-mode isolation + materialized export via core/visual-style/cartesian-theme).
+    // v1.0.0/v1.0.1 preserved (tags). Gated out of normal Studio use and production
+    // exports/samples until the owner's final APPROVE/REJECT. Items begin at machine-validated.
     approvalStatus: "pending-review",
     tasks: [
       { value: "read_point", label: "Read a point", mc: true },
