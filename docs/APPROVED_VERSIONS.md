@@ -186,6 +186,20 @@ approved-exemplar status is recorded here.
 | `gen.geometry.coordinate-lines` 1.0.2 | `oracle/golden/coordinate_lines.golden.json` | golden seeds + the 29 review-pack items (25 figures + 4 text-only) |
 | Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md`, `docs/review/coordinate_lines_review_pack.md` | all listed items |
 
+## Pending-review generators (built, gated, awaiting owner review)
+
+- **`gen.stats.data-handling` 1.0.0 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45).
+  Built oracle-first after the owner's APPROVE-WITH-REQUIRED-REVISIONS (decisions A–P). **Not yet
+  curriculum-approved and NOT selectable** in normal Generator Studio or production samples (gated;
+  0 stats records in `bank.json`). The eleven `SPI.MIDDLE.STAT.*` objectives are
+  `reviewStatus: approved-for-implementation` (they become curriculum-approved only after the owner
+  reviews the implemented generator + review pack). Independent Python oracle + byte-for-byte TS
+  mirror; golden(19)+parity(300) byte-identical; 10,000-seed sweep 0 invalid; conformant. Review
+  artifacts: `docs/review/stats_data_handling_{review_pack.md,review_pack.json,visual_audit.html,distribution.json,browser_verification.json,manifest.json}`
+  (SHA-256 attested; Python artifact-integrity test). The additive `core/visual-style/data-chart-theme`
+  reuses the approved cartesian-theme (coordinate-lines v1.0.2 output unchanged). **Next owner decision:
+  APPROVE / REVISE / REJECT.**
+
 ## Lifecycle policy (unchanged)
 
 - **Newly generated items always begin at `machine-validated`.** Approval of a

@@ -1,6 +1,35 @@
 # Current State
 
-Last updated: 2026-06-24.
+Last updated: 2026-06-25.
+
+## `gen.stats.data-handling` v1.0.0 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
+
+Statistics & Data Handling — the next architecture-proving family, built **oracle-first** after
+the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec (`DECISION_LOG.md` #45; decisions
+A–P applied). **11 tasks** under the new `statistics` domain / `data-handling-and-probability`
+strand, 1:1 with the eleven `SPI.MIDDLE.STAT.*` objectives (`reviewStatus: approved-for-implementation`)
+via the single-source `OBJECTIVE_BY_TASK` (`core/curriculum/stats-objective-ids.ts`): read a value
+from a bar chart / pictogram / frequency table / line graph; complete a frequency table
+(free-response only, one blank); mean / median / mode (unique) / range of a list; mean from a
+frequency table; single-event probability (reduced fraction). All maths is **exact** (integer /
+exact-rational / fraction); deferred features (pie/scatter/regression/histogram/stem-and-leaf/box/
+quartiles/std-dev/grouped-means/multimodal/set-mode) are deterministically excluded.
+
+Independent Python oracle (`oracle/spi_oracle/data_handling.py`) + **byte-for-byte TS mirror**
+(`domains/statistics/data-handling.ts`) — golden(19)+parity(300) byte-identical; 10,000-seed sweep
+**0 invalid**; reproducible; conformant to the item schema. Charts use INDEPENDENT linear axis
+scaling with a {1,2,5,10} count-axis step; semantic HTML tables are the authoritative table
+renderer. Premium presentation via a NEW **additive** `core/visual-style/data-chart-theme`
+(reuses the approved cartesian-theme — coordinate-lines unchanged): four modes (premium /
+premium-dark / accessible / print), per-root style isolation (real-browser 14/14), 6000×4200
+self-contained export. `MISC.STAT.*` registry (27 rules, all shown). Difficulty uses six
+schema-valid axes incl. a dedicated `scaffolding` axis; **every declared band is reachable**.
+
+**Registry: `approvalStatus: pending-review`** — gated OUT of normal Generator Studio and
+production samples (0 stats records in `bank.json`); items begin machine-validated; nothing
+auto-published. **Next:** owner **APPROVE / REVISE / REJECT** of the implemented generator + review
+pack (`docs/review/stats_data_handling_*`). Provisional note: some reading/range tasks lean to the
+upper declared band (owner M — provisional pending review; reachability gate met).
 
 ## `gen.geometry.coordinate-lines` v1.0.2 — CURRICULUM-APPROVED (2026-06-24)
 
