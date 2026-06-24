@@ -1,0 +1,1304 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'>
+<title>stats data-handling — visual audit</title>
+<style>
+body{font-family:sans-serif;margin:24px;background:#f6f7f9;color:#111}
+h1,h2{font-weight:650} .grid{display:flex;gap:16px;flex-wrap:wrap}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px;width:330px}
+.card.dark{background:#0b1220;color:#e5e7eb}
+.card svg{width:100%;height:auto;display:block}
+.mode{font-size:12px;color:#6b7280;margin-bottom:4px}
+table.cx-table,table.cx-list{border-collapse:collapse;margin:6px 0;font-size:14px}
+table.cx-table th,table.cx-table td,table.cx-list td{border:1px solid #cbd5e1;padding:4px 10px;text-align:center}
+.cx-blank input{width:64px}
+.cx-figure .cx-axis{stroke:var(--cx-axis);stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:var(--cx-tick);stroke-width:2}.cx-figure .cx-grid-major{stroke:var(--cx-grid-major);stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:var(--cx-grid-minor);stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:var(--cx-line);stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:var(--cx-pt-outline-fill);stroke:var(--cx-pt-outline-stroke);stroke-width:4}.cx-figure .cx-pt-core{fill:var(--cx-pt-core)}.cx-figure .cx-guide{stroke:var(--cx-guide);stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:var(--cx-text)}.cx-figure .cx-ticklbl{font-size:20px;fill:var(--cx-ticklbl)}.cx-figure .cx-lbl{font-size:28px;fill:var(--cx-text)}.cx-figure .cx-bar{fill:var(--cx-bar-fill);stroke:var(--cx-bar-stroke);stroke-width:2}.cx-figure .cx-symbol{fill:var(--cx-symbol-fill);stroke:var(--cx-symbol-stroke);stroke-width:1.5}.cx-figure .cx-catlbl{font-size:20px;fill:var(--cx-catlbl)}.cx-figure .cx-axislbl{font-size:22px;fill:var(--cx-axislbl)}.cx-figure .cx-keylbl{font-size:20px;fill:var(--cx-keylbl)}
+</style></head><body>
+<h1>gen.stats.data-handling — visual audit</h1>
+<p>Generator 1.0.0; validator 1.0.0. Four render modes via per-root CSS custom properties (class <code>cx-figure</code>) + one common ruleset (cartesian shared + data-chart additive). Colour never carries meaning alone: every category/series is labelled; the monochrome <b>print</b> mode is the colour-free authoritative rendering.</p>
+<h2>bar5 — read_bar_chart</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+</div>
+<h2>bar1 — read_bar_chart</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">1</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">3</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">6</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="153" y="70" width="100" height="520"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="319" y="157" width="100" height="433"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="485" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="651" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Bird</text>
+<rect class="cx-bar" data-cat="4" x="817" y="417" width="100" height="173"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Rabbit</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">1</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">3</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">6</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="153" y="70" width="100" height="520"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="319" y="157" width="100" height="433"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="485" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="651" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Bird</text>
+<rect class="cx-bar" data-cat="4" x="817" y="417" width="100" height="173"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Rabbit</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">1</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">3</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">6</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="153" y="70" width="100" height="520"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="319" y="157" width="100" height="433"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="485" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="651" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Bird</text>
+<rect class="cx-bar" data-cat="4" x="817" y="417" width="100" height="173"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Rabbit</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">1</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">3</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">6</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="153" y="70" width="100" height="520"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="319" y="157" width="100" height="433"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="485" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="651" y="243" width="100" height="347"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Bird</text>
+<rect class="cx-bar" data-cat="4" x="817" y="417" width="100" height="173"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Rabbit</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+</div>
+<h2>bar2 — read_bar_chart</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
+<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
+<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
+<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="395" x2="950" y2="395"/>
+<line class="cx-tick" x1="114" y1="395" x2="120" y2="395"/>
+<text class="cx-ticklbl" x="108" y="402" text-anchor="end">6</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">8</text>
+<line class="cx-grid-major" x1="120" y1="265" x2="950" y2="265"/>
+<line class="cx-tick" x1="114" y1="265" x2="120" y2="265"/>
+<text class="cx-ticklbl" x="108" y="272" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="200" x2="950" y2="200"/>
+<line class="cx-tick" x1="114" y1="200" x2="120" y2="200"/>
+<text class="cx-ticklbl" x="108" y="207" text-anchor="end">12</text>
+<line class="cx-grid-major" x1="120" y1="135" x2="950" y2="135"/>
+<line class="cx-tick" x1="114" y1="135" x2="120" y2="135"/>
+<text class="cx-ticklbl" x="108" y="142" text-anchor="end">14</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">16</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="460" width="125" height="130"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="525" width="124" height="65"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="200" width="125" height="390"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
+<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
+<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
+<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="395" x2="950" y2="395"/>
+<line class="cx-tick" x1="114" y1="395" x2="120" y2="395"/>
+<text class="cx-ticklbl" x="108" y="402" text-anchor="end">6</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">8</text>
+<line class="cx-grid-major" x1="120" y1="265" x2="950" y2="265"/>
+<line class="cx-tick" x1="114" y1="265" x2="120" y2="265"/>
+<text class="cx-ticklbl" x="108" y="272" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="200" x2="950" y2="200"/>
+<line class="cx-tick" x1="114" y1="200" x2="120" y2="200"/>
+<text class="cx-ticklbl" x="108" y="207" text-anchor="end">12</text>
+<line class="cx-grid-major" x1="120" y1="135" x2="950" y2="135"/>
+<line class="cx-tick" x1="114" y1="135" x2="120" y2="135"/>
+<text class="cx-ticklbl" x="108" y="142" text-anchor="end">14</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">16</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="460" width="125" height="130"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="525" width="124" height="65"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="200" width="125" height="390"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
+<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
+<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
+<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="395" x2="950" y2="395"/>
+<line class="cx-tick" x1="114" y1="395" x2="120" y2="395"/>
+<text class="cx-ticklbl" x="108" y="402" text-anchor="end">6</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">8</text>
+<line class="cx-grid-major" x1="120" y1="265" x2="950" y2="265"/>
+<line class="cx-tick" x1="114" y1="265" x2="120" y2="265"/>
+<text class="cx-ticklbl" x="108" y="272" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="200" x2="950" y2="200"/>
+<line class="cx-tick" x1="114" y1="200" x2="120" y2="200"/>
+<text class="cx-ticklbl" x="108" y="207" text-anchor="end">12</text>
+<line class="cx-grid-major" x1="120" y1="135" x2="950" y2="135"/>
+<line class="cx-tick" x1="114" y1="135" x2="120" y2="135"/>
+<text class="cx-ticklbl" x="108" y="142" text-anchor="end">14</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">16</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="460" width="125" height="130"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="525" width="124" height="65"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="200" width="125" height="390"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
+<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
+<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
+<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
+<line class="cx-grid-major" x1="120" y1="395" x2="950" y2="395"/>
+<line class="cx-tick" x1="114" y1="395" x2="120" y2="395"/>
+<text class="cx-ticklbl" x="108" y="402" text-anchor="end">6</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">8</text>
+<line class="cx-grid-major" x1="120" y1="265" x2="950" y2="265"/>
+<line class="cx-tick" x1="114" y1="265" x2="120" y2="265"/>
+<text class="cx-ticklbl" x="108" y="272" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="200" x2="950" y2="200"/>
+<line class="cx-tick" x1="114" y1="200" x2="120" y2="200"/>
+<text class="cx-ticklbl" x="108" y="207" text-anchor="end">12</text>
+<line class="cx-grid-major" x1="120" y1="135" x2="950" y2="135"/>
+<line class="cx-tick" x1="114" y1="135" x2="120" y2="135"/>
+<text class="cx-ticklbl" x="108" y="142" text-anchor="end">14</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">16</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="460" width="125" height="130"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="525" width="124" height="65"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="200" width="125" height="390"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+</div>
+<h2>bar10 — read_bar_chart</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="486" x2="950" y2="486"/>
+<line class="cx-tick" x1="114" y1="486" x2="120" y2="486"/>
+<text class="cx-ticklbl" x="108" y="493" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
+<line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
+<text class="cx-ticklbl" x="108" y="389" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
+<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
+<text class="cx-ticklbl" x="108" y="285" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="174" x2="950" y2="174"/>
+<line class="cx-tick" x1="114" y1="174" x2="120" y2="174"/>
+<text class="cx-ticklbl" x="108" y="181" text-anchor="end">40</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">50</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (children)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="351" width="124" height="239"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Apple</text>
+<rect class="cx-bar" data-cat="1" x="369" y="288" width="125" height="302"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Banana</text>
+<rect class="cx-bar" data-cat="2" x="577" y="403" width="124" height="187"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Grape</text>
+<rect class="cx-bar" data-cat="3" x="784" y="143" width="125" height="447"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Orange</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="486" x2="950" y2="486"/>
+<line class="cx-tick" x1="114" y1="486" x2="120" y2="486"/>
+<text class="cx-ticklbl" x="108" y="493" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
+<line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
+<text class="cx-ticklbl" x="108" y="389" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
+<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
+<text class="cx-ticklbl" x="108" y="285" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="174" x2="950" y2="174"/>
+<line class="cx-tick" x1="114" y1="174" x2="120" y2="174"/>
+<text class="cx-ticklbl" x="108" y="181" text-anchor="end">40</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">50</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (children)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="351" width="124" height="239"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Apple</text>
+<rect class="cx-bar" data-cat="1" x="369" y="288" width="125" height="302"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Banana</text>
+<rect class="cx-bar" data-cat="2" x="577" y="403" width="124" height="187"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Grape</text>
+<rect class="cx-bar" data-cat="3" x="784" y="143" width="125" height="447"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Orange</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="486" x2="950" y2="486"/>
+<line class="cx-tick" x1="114" y1="486" x2="120" y2="486"/>
+<text class="cx-ticklbl" x="108" y="493" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
+<line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
+<text class="cx-ticklbl" x="108" y="389" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
+<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
+<text class="cx-ticklbl" x="108" y="285" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="174" x2="950" y2="174"/>
+<line class="cx-tick" x1="114" y1="174" x2="120" y2="174"/>
+<text class="cx-ticklbl" x="108" y="181" text-anchor="end">40</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">50</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (children)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="351" width="124" height="239"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Apple</text>
+<rect class="cx-bar" data-cat="1" x="369" y="288" width="125" height="302"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Banana</text>
+<rect class="cx-bar" data-cat="2" x="577" y="403" width="124" height="187"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Grape</text>
+<rect class="cx-bar" data-cat="3" x="784" y="143" width="125" height="447"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Orange</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="486" x2="950" y2="486"/>
+<line class="cx-tick" x1="114" y1="486" x2="120" y2="486"/>
+<text class="cx-ticklbl" x="108" y="493" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
+<line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
+<text class="cx-ticklbl" x="108" y="389" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
+<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
+<text class="cx-ticklbl" x="108" y="285" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="174" x2="950" y2="174"/>
+<line class="cx-tick" x1="114" y1="174" x2="120" y2="174"/>
+<text class="cx-ticklbl" x="108" y="181" text-anchor="end">40</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">50</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (children)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="351" width="124" height="239"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Apple</text>
+<rect class="cx-bar" data-cat="1" x="369" y="288" width="125" height="302"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Banana</text>
+<rect class="cx-bar" data-cat="2" x="577" y="403" width="124" height="187"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Grape</text>
+<rect class="cx-bar" data-cat="3" x="784" y="143" width="125" height="447"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Orange</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+</div>
+<h2>pictoWhole — read_pictogram</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A pictogram titled Favourite pet, where one symbol represents 5 students. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 students.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Cat</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="412" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="456" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Dog</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="456" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Fish</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="324" text-anchor="start">Bird</text>
+<rect class="cx-symbol" data-cat="3" x="280" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="324" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="368" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="412" y="300" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A pictogram titled Favourite pet, where one symbol represents 5 students. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 students.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Cat</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="412" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="456" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Dog</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="456" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Fish</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="324" text-anchor="start">Bird</text>
+<rect class="cx-symbol" data-cat="3" x="280" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="324" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="368" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="412" y="300" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A pictogram titled Favourite pet, where one symbol represents 5 students. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 students.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Cat</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="412" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="456" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Dog</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="456" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Fish</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="324" text-anchor="start">Bird</text>
+<rect class="cx-symbol" data-cat="3" x="280" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="324" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="368" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="412" y="300" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A pictogram titled Favourite pet, where one symbol represents 5 students. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 students.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Cat</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="412" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="456" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Dog</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="456" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Fish</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="324" text-anchor="start">Bird</text>
+<rect class="cx-symbol" data-cat="3" x="280" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="324" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="368" y="300" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="3" x="412" y="300" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+</div>
+<h2>pictoHalf — read_pictogram</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A pictogram titled Favourite fruit, where one symbol represents 10 children. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 10 children.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Apple</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Banana</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" data-half="1" x="456" y="160" width="17" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Grape</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A pictogram titled Favourite fruit, where one symbol represents 10 children. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 10 children.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Apple</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Banana</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" data-half="1" x="456" y="160" width="17" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Grape</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A pictogram titled Favourite fruit, where one symbol represents 10 children. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 10 children.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Apple</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Banana</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" data-half="1" x="456" y="160" width="17" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Grape</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A pictogram titled Favourite fruit, where one symbol represents 10 children. Read the frequency for the named category.</desc>
+
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 10 children.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Apple</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Banana</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="412" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" data-half="1" x="456" y="160" width="17" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Grape</text>
+<rect class="cx-symbol" data-cat="2" x="280" y="230" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="2" x="324" y="230" width="34" height="34" rx="6"/>
+<text class="cx-axislbl" x="500" y="682" text-anchor="middle">Favourite fruit</text>
+</svg></div>
+</div>
+<h2>line — read_line_graph</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Temperature.">
+<title>Temperature</title>
+<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">30</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Temperature (degrees)</text>
+<polyline class="cx-line" points="203,70 369,191 535,261 701,226 867,365"/>
+<circle class="cx-pt-outline" cx="203" cy="70" r="7"/>
+<circle class="cx-pt-core" cx="203" cy="70" r="3"/>
+<line class="cx-tick" x1="203" y1="590" x2="203" y2="596"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Mon</text>
+<circle class="cx-pt-outline" cx="369" cy="191" r="7"/>
+<circle class="cx-pt-core" cx="369" cy="191" r="3"/>
+<line class="cx-tick" x1="369" y1="590" x2="369" y2="596"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Tue</text>
+<circle class="cx-pt-outline" cx="535" cy="261" r="7"/>
+<circle class="cx-pt-core" cx="535" cy="261" r="3"/>
+<line class="cx-tick" x1="535" y1="590" x2="535" y2="596"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Wed</text>
+<circle class="cx-pt-outline" cx="701" cy="226" r="7"/>
+<circle class="cx-pt-core" cx="701" cy="226" r="3"/>
+<line class="cx-tick" x1="701" y1="590" x2="701" y2="596"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Thu</text>
+<circle class="cx-pt-outline" cx="867" cy="365" r="7"/>
+<circle class="cx-pt-core" cx="867" cy="365" r="3"/>
+<line class="cx-tick" x1="867" y1="590" x2="867" y2="596"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Fri</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Temperature.">
+<title>Temperature</title>
+<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">30</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Temperature (degrees)</text>
+<polyline class="cx-line" points="203,70 369,191 535,261 701,226 867,365"/>
+<circle class="cx-pt-outline" cx="203" cy="70" r="7"/>
+<circle class="cx-pt-core" cx="203" cy="70" r="3"/>
+<line class="cx-tick" x1="203" y1="590" x2="203" y2="596"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Mon</text>
+<circle class="cx-pt-outline" cx="369" cy="191" r="7"/>
+<circle class="cx-pt-core" cx="369" cy="191" r="3"/>
+<line class="cx-tick" x1="369" y1="590" x2="369" y2="596"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Tue</text>
+<circle class="cx-pt-outline" cx="535" cy="261" r="7"/>
+<circle class="cx-pt-core" cx="535" cy="261" r="3"/>
+<line class="cx-tick" x1="535" y1="590" x2="535" y2="596"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Wed</text>
+<circle class="cx-pt-outline" cx="701" cy="226" r="7"/>
+<circle class="cx-pt-core" cx="701" cy="226" r="3"/>
+<line class="cx-tick" x1="701" y1="590" x2="701" y2="596"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Thu</text>
+<circle class="cx-pt-outline" cx="867" cy="365" r="7"/>
+<circle class="cx-pt-core" cx="867" cy="365" r="3"/>
+<line class="cx-tick" x1="867" y1="590" x2="867" y2="596"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Fri</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Temperature.">
+<title>Temperature</title>
+<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">30</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Temperature (degrees)</text>
+<polyline class="cx-line" points="203,70 369,191 535,261 701,226 867,365"/>
+<circle class="cx-pt-outline" cx="203" cy="70" r="7"/>
+<circle class="cx-pt-core" cx="203" cy="70" r="3"/>
+<line class="cx-tick" x1="203" y1="590" x2="203" y2="596"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Mon</text>
+<circle class="cx-pt-outline" cx="369" cy="191" r="7"/>
+<circle class="cx-pt-core" cx="369" cy="191" r="3"/>
+<line class="cx-tick" x1="369" y1="590" x2="369" y2="596"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Tue</text>
+<circle class="cx-pt-outline" cx="535" cy="261" r="7"/>
+<circle class="cx-pt-core" cx="535" cy="261" r="3"/>
+<line class="cx-tick" x1="535" y1="590" x2="535" y2="596"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Wed</text>
+<circle class="cx-pt-outline" cx="701" cy="226" r="7"/>
+<circle class="cx-pt-core" cx="701" cy="226" r="3"/>
+<line class="cx-tick" x1="701" y1="590" x2="701" y2="596"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Thu</text>
+<circle class="cx-pt-outline" cx="867" cy="365" r="7"/>
+<circle class="cx-pt-core" cx="867" cy="365" r="3"/>
+<line class="cx-tick" x1="867" y1="590" x2="867" y2="596"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Fri</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Temperature.">
+<title>Temperature</title>
+<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
+<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
+<text class="cx-ticklbl" x="108" y="510" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
+<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
+<text class="cx-ticklbl" x="108" y="424" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
+<text class="cx-ticklbl" x="108" y="337" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="243" x2="950" y2="243"/>
+<line class="cx-tick" x1="114" y1="243" x2="120" y2="243"/>
+<text class="cx-ticklbl" x="108" y="250" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="157" x2="950" y2="157"/>
+<line class="cx-tick" x1="114" y1="157" x2="120" y2="157"/>
+<text class="cx-ticklbl" x="108" y="164" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">30</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Temperature (degrees)</text>
+<polyline class="cx-line" points="203,70 369,191 535,261 701,226 867,365"/>
+<circle class="cx-pt-outline" cx="203" cy="70" r="7"/>
+<circle class="cx-pt-core" cx="203" cy="70" r="3"/>
+<line class="cx-tick" x1="203" y1="590" x2="203" y2="596"/>
+<text class="cx-catlbl" x="203" y="618" text-anchor="middle">Mon</text>
+<circle class="cx-pt-outline" cx="369" cy="191" r="7"/>
+<circle class="cx-pt-core" cx="369" cy="191" r="3"/>
+<line class="cx-tick" x1="369" y1="590" x2="369" y2="596"/>
+<text class="cx-catlbl" x="369" y="618" text-anchor="middle">Tue</text>
+<circle class="cx-pt-outline" cx="535" cy="261" r="7"/>
+<circle class="cx-pt-core" cx="535" cy="261" r="3"/>
+<line class="cx-tick" x1="535" y1="590" x2="535" y2="596"/>
+<text class="cx-catlbl" x="535" y="618" text-anchor="middle">Wed</text>
+<circle class="cx-pt-outline" cx="701" cy="226" r="7"/>
+<circle class="cx-pt-core" cx="701" cy="226" r="3"/>
+<line class="cx-tick" x1="701" y1="590" x2="701" y2="596"/>
+<text class="cx-catlbl" x="701" y="618" text-anchor="middle">Thu</text>
+<circle class="cx-pt-outline" cx="867" cy="365" r="7"/>
+<circle class="cx-pt-core" cx="867" cy="365" r="3"/>
+<line class="cx-tick" x1="867" y1="590" x2="867" y2="596"/>
+<text class="cx-catlbl" x="867" y="618" text-anchor="middle">Fri</text>
+</svg></div>
+</div>
+<h2>Per-root isolation — four modes of the same figure in one container</h2><div class='grid'>
+<div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card dark'><div class='mode'>premium-dark</div><svg class="cx-figure" style="--cx-axis:#e5e7eb;--cx-tick:#e5e7eb;--cx-grid-major:#475569;--cx-grid-minor:#334155;--cx-line:#60a5fa;--cx-pt-core:#f87171;--cx-pt-outline-fill:#0b1220;--cx-pt-outline-stroke:#f87171;--cx-guide:#c4b5fd;--cx-text:#e5e7eb;--cx-ticklbl:#cbd5e1;--cx-bg:#0b1220;--cx-bar-fill:#60a5fa;--cx-bar-stroke:#bfdbfe;--cx-symbol-fill:#a5b4fc;--cx-symbol-stroke:#e0e7ff;--cx-catlbl:#e5e7eb;--cx-axislbl:#e5e7eb;--cx-keylbl:#e5e7eb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>accessible</div><svg class="cx-figure" style="--cx-axis:#000000;--cx-tick:#000000;--cx-grid-major:#999999;--cx-grid-minor:#cccccc;--cx-line:#0072b2;--cx-pt-core:#d55e00;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#d55e00;--cx-guide:#009e73;--cx-text:#000000;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#0072b2;--cx-bar-stroke:#000000;--cx-symbol-fill:#009e73;--cx-symbol-stroke:#000000;--cx-catlbl:#000000;--cx-axislbl:#000000;--cx-keylbl:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<div class='card'><div class='mode'>print</div><svg class="cx-figure" style="--cx-axis:#111111;--cx-tick:#111111;--cx-grid-major:#888888;--cx-grid-minor:#bbbbbb;--cx-line:#111111;--cx-pt-core:#111111;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#111111;--cx-guide:#555555;--cx-text:#111111;--cx-ticklbl:#333333;--cx-bg:#ffffff;--cx-bar-fill:#bbbbbb;--cx-bar-stroke:#111111;--cx-symbol-fill:#555555;--cx-symbol-stroke:#111111;--cx-catlbl:#111111;--cx-axislbl:#111111;--cx-keylbl:#111111" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+</div>
+<h2>Semantic tables (authoritative)</h2>
+<h3>read_table_value</h3><table class="cx-table">
+<caption>Favourite pet</caption>
+<thead><tr><th scope="col">Category</th><th scope="col">Frequency</th></tr></thead>
+<tbody>
+<tr><th scope="row">Cat</th><td>25</td></tr>
+<tr><th scope="row">Dog</th><td>18</td></tr>
+<tr><th scope="row">Fish</th><td>14</td></tr>
+<tr class="cx-total"><th scope="row">Total</th><td>57</td></tr>
+</tbody></table>
+<h3>complete_frequency_table</h3><table class="cx-table">
+<caption>Favourite pet</caption>
+<thead><tr><th scope="col">Category</th><th scope="col">Frequency</th></tr></thead>
+<tbody>
+<tr><th scope="row">Cat</th><td>18</td></tr>
+<tr><th scope="row">Dog</th><td class="cx-blank"><input type="text" inputmode="numeric" aria-label="Frequency for Dog"></td></tr>
+<tr><th scope="row">Fish</th><td>10</td></tr>
+<tr class="cx-total"><th scope="row">Total</th><td>41</td></tr>
+</tbody></table>
+<h3>mean_from_freq_table</h3><table class="cx-table">
+<caption>Test scores</caption>
+<thead><tr><th scope="col">Value</th><th scope="col">Frequency</th></tr></thead>
+<tbody>
+<tr><th scope="row">2</th><td>5</td></tr>
+<tr><th scope="row">3</th><td>4</td></tr>
+<tr><th scope="row">4</th><td>3</td></tr>
+</tbody></table>
+<h3>single_event_probability</h3><table class="cx-table">
+<caption>Contents of a bag of counters</caption>
+<thead><tr><th scope="col">Type</th><th scope="col">How many</th></tr></thead>
+<tbody>
+<tr><th scope="row">Red</th><td>6</td></tr>
+<tr><th scope="row">Blue</th><td>5</td></tr>
+<tr class="cx-total"><th scope="row">Total</th><td>11</td></tr>
+</tbody></table>
+<h3>mean_from_list</h3><table class="cx-list">
+<caption>Test scores</caption>
+<tbody><tr>
+<td>12</td>
+<td>8</td>
+<td>4</td>
+<td>6</td>
+<td>0</td>
+<td>8</td>
+</tr></tbody></table>
+<h2>Materialised export (premium, 6000×4200, self-contained)</h2>
+<div id='exp' style='width:330px'><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
+<title>Favourite pet</title>
+<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>
+
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
+<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
+<text class="cx-ticklbl" x="108" y="374" text-anchor="end">15</text>
+<line class="cx-grid-major" x1="120" y1="293" x2="950" y2="293"/>
+<line class="cx-tick" x1="114" y1="293" x2="120" y2="293"/>
+<text class="cx-ticklbl" x="108" y="300" text-anchor="end">20</text>
+<line class="cx-grid-major" x1="120" y1="219" x2="950" y2="219"/>
+<line class="cx-tick" x1="114" y1="219" x2="120" y2="219"/>
+<text class="cx-ticklbl" x="108" y="226" text-anchor="end">25</text>
+<line class="cx-grid-major" x1="120" y1="144" x2="950" y2="144"/>
+<line class="cx-tick" x1="114" y1="144" x2="120" y2="144"/>
+<text class="cx-ticklbl" x="108" y="151" text-anchor="end">30</text>
+<line class="cx-grid-major" x1="120" y1="70" x2="950" y2="70"/>
+<line class="cx-tick" x1="114" y1="70" x2="120" y2="70"/>
+<text class="cx-ticklbl" x="108" y="77" text-anchor="end">35</text>
+<text class="cx-axislbl" x="36" y="330" text-anchor="middle" transform="rotate(-90 36 330)">Frequency (students)</text>
+<rect class="cx-bar" data-cat="0" x="162" y="70" width="124" height="520"/>
+<text class="cx-catlbl" x="224" y="618" text-anchor="middle">Cat</text>
+<rect class="cx-bar" data-cat="1" x="369" y="70" width="125" height="520"/>
+<text class="cx-catlbl" x="431" y="618" text-anchor="middle">Dog</text>
+<rect class="cx-bar" data-cat="2" x="577" y="397" width="124" height="193"/>
+<text class="cx-catlbl" x="639" y="618" text-anchor="middle">Fish</text>
+<rect class="cx-bar" data-cat="3" x="784" y="248" width="125" height="342"/>
+<text class="cx-catlbl" x="846" y="618" text-anchor="middle">Bird</text>
+<text class="cx-axislbl" x="535" y="682" text-anchor="middle">Favourite pet</text>
+</svg></div>
+<script>
+window.__dc = {
+  modes: ["premium", "premium-dark", "accessible", "print"],
+  exportSvg: "<svg class=\"cx-figure\" width=\"6000\" height=\"4200\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Favourite pet.\"><style>.cx-figure .cx-axis{stroke:#1e293b;stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:#1e293b;stroke-width:2}.cx-figure .cx-grid-major{stroke:#c7d2fe;stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:#e9edff;stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:#2563eb;stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:#ffffff;stroke:#dc2626;stroke-width:4}.cx-figure .cx-pt-core{fill:#dc2626}.cx-figure .cx-guide{stroke:#7c3aed;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:#111827}.cx-figure .cx-ticklbl{font-size:20px;fill:#475569}.cx-figure .cx-lbl{font-size:28px;fill:#111827}.cx-figure .cx-bar{fill:#3b82f6;stroke:#1e3a8a;stroke-width:2}.cx-figure .cx-symbol{fill:#6366f1;stroke:#312e81;stroke-width:1.5}.cx-figure .cx-catlbl{font-size:20px;fill:#111827}.cx-figure .cx-axislbl{font-size:22px;fill:#111827}.cx-figure .cx-keylbl{font-size:20px;fill:#111827}</style>\n<title>Favourite pet</title>\n<desc>A bar chart titled Favourite pet. Read the frequency for the named category from the labelled axis.</desc>\n\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (students)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"162\" y=\"70\" width=\"124\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"224\" y=\"618\" text-anchor=\"middle\">Cat</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"369\" y=\"70\" width=\"125\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"431\" y=\"618\" text-anchor=\"middle\">Dog</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"577\" y=\"397\" width=\"124\" height=\"193\"/>\n<text class=\"cx-catlbl\" x=\"639\" y=\"618\" text-anchor=\"middle\">Fish</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"784\" y=\"248\" width=\"125\" height=\"342\"/>\n<text class=\"cx-catlbl\" x=\"846\" y=\"618\" text-anchor=\"middle\">Bird</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Favourite pet</text>\n</svg>",
+  computed: function(){ var out={}; document.querySelectorAll('.card svg').forEach(function(s,i){
+    var bar=s.querySelector('.cx-bar'); var cs=bar?getComputedStyle(bar):null;
+    out[i]={fill: cs?cs.fill:null, stroke: cs?cs.stroke:null}; }); return out; },
+  exportDataURL: function(scale){ scale=scale||6; return new Promise(function(res,rej){
+    var svg=window.__dc.exportSvg; var img=new Image();
+    var url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    img.onload=function(){ var c=document.createElement('canvas'); c.width=1000*scale; c.height=700*scale;
+      var ctx=c.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,c.width,c.height);
+      ctx.drawImage(img,0,0,c.width,c.height); res(c.toDataURL('image/png').length); };
+    img.onerror=function(e){ rej(''+e); }; img.src=url; }); }
+};
+</script>
+<footer style='margin-top:24px;color:#6b7280;font-size:12px'>Build: gen.stats.data-handling 1.0.0; modes premium, premium-dark, accessible, print; per-root cx-figure isolation; export 6000×4200.</footer>
+</body></html>

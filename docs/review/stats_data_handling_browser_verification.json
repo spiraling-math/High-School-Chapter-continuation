@@ -1,0 +1,110 @@
+{
+  "generatorId": "gen.stats.data-handling",
+  "generatorVersion": "1.0.0",
+  "tool": "chromium-getComputedStyle + canvas rasterize (preview)",
+  "checks": [
+    {
+      "name": "premium-bar-fill",
+      "result": "pass"
+    },
+    {
+      "name": "premium-dark-bar-fill",
+      "result": "pass"
+    },
+    {
+      "name": "accessible-bar-fill-okabe-ito",
+      "result": "pass"
+    },
+    {
+      "name": "print-bar-fill-monochrome",
+      "result": "pass"
+    },
+    {
+      "name": "four-modes-distinct-fills",
+      "result": "pass"
+    },
+    {
+      "name": "catlbl-distinct-per-mode",
+      "result": "pass"
+    },
+    {
+      "name": "per-root-isolation-no-cross-mode-leakage",
+      "result": "pass"
+    },
+    {
+      "name": "export-self-contained-premium",
+      "result": "pass"
+    },
+    {
+      "name": "export-self-contained-accessible",
+      "result": "pass"
+    },
+    {
+      "name": "export-self-contained-print",
+      "result": "pass"
+    },
+    {
+      "name": "export-no-unresolved-vars",
+      "result": "pass"
+    },
+    {
+      "name": "export-rasterizes-6000x4200",
+      "result": "pass"
+    },
+    {
+      "name": "canonical-svg-monochrome-authoritative",
+      "result": "pass"
+    },
+    {
+      "name": "colour-not-sole-indicator-labels-present",
+      "result": "pass"
+    }
+  ],
+  "allPass": true,
+  "computedStyles": {
+    "premium": {
+      "barFill": "rgb(59, 130, 246)",
+      "barStroke": "rgb(30, 58, 138)",
+      "catlbl": "rgb(17, 24, 39)"
+    },
+    "premium-dark": {
+      "barFill": "rgb(96, 165, 250)",
+      "barStroke": "rgb(191, 219, 254)",
+      "catlbl": "rgb(229, 231, 235)"
+    },
+    "accessible": {
+      "barFill": "rgb(0, 114, 178)",
+      "barStroke": "rgb(0, 0, 0)",
+      "catlbl": "rgb(0, 0, 0)"
+    },
+    "print": {
+      "barFill": "rgb(187, 187, 187)",
+      "barStroke": "rgb(17, 17, 17)",
+      "catlbl": "rgb(17, 17, 17)"
+    }
+  },
+  "rasterConfirmation": {
+    "premium6000x4200PngBase64Len": 836542,
+    "premium1000x700PngBase64Len": 50586
+  },
+  "exports": {
+    "premium": {
+      "width": 6000,
+      "height": 4200,
+      "selfContained": true,
+      "sha256": "151a4db09f1421b91175779a02d8a40032062d61a0b8fbb8ed6e00a50a800513"
+    },
+    "accessible": {
+      "width": 6000,
+      "height": 4200,
+      "selfContained": true,
+      "sha256": "58b9e0e9b0884e1d6d8140f8d314b0d50cd805452fe5ec281297a6e048950f50"
+    },
+    "print": {
+      "width": 6000,
+      "height": 4200,
+      "selfContained": true,
+      "sha256": "121bad3406883f613ca0929b8c4c1a2e59d74e6a2a67181f0babafc147018c0c"
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "generatorId": "gen.stats.data-handling",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "objectiveIds": [
+    "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+    "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+    "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
+    "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+    "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
+    "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+    "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+    "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
+    "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
+    "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
+    "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01"
+  ],
+  "tasks": [
+    "read_bar_chart",
+    "read_pictogram",
+    "read_table_value",
+    "read_line_graph",
+    "complete_frequency_table",
+    "mean_from_list",
+    "median_from_list",
+    "mode_from_list",
+    "range_from_list",
+    "mean_from_freq_table",
+    "single_event_probability"
+  ],
+  "artifacts": {
+    "golden": {
+      "path": "oracle/golden/data_handling.golden.json",
+      "sha256": "3ecd76aa6a5a6d6cac75da3bb159913806d762f9a81b4a5303b7276a2214245b",
+      "present": true
+    },
+    "parity": {
+      "path": "oracle/golden/data_handling.parity.json",
+      "sha256": "f8073f60686943a1184c8d06140f82a838a258b2e181f1433f510254b5ec0240",
+      "present": true
+    },
+    "distribution": {
+      "path": "docs/review/stats_data_handling_distribution.json",
+      "sha256": "584513774efed604bbb6258edd7e8ae746aa91e2aa76027bc3003b713a8415cf",
+      "present": true
+    },
+    "reviewPackJson": {
+      "path": "docs/review/stats_data_handling_review_pack.json",
+      "sha256": "ef9ec9a4110ea456935f0a27a40fb9c4c8fad728235bec0f02c8bf5b83506f6a",
+      "present": true
+    },
+    "reviewPackMd": {
+      "path": "docs/review/stats_data_handling_review_pack.md",
+      "sha256": "3a38664d39f1503fec9d3677acec18b1689b20ba14e0f1df0ebfdacadd912078",
+      "present": true
+    },
+    "visualAudit": {
+      "path": "docs/review/stats_data_handling_visual_audit.html",
+      "sha256": "795403408bd24fa3224a789e0334fa5cc5f52b55b3bc80ed964259f3221b2a6d",
+      "present": true
+    },
+    "browserVerification": {
+      "path": "docs/review/stats_data_handling_browser_verification.json",
+      "sha256": "cb5daa4c06fd4b54d7a85e11218d2c69b0448c5ec645f8b411c827fe9fcbc67c",
+      "present": true
+    },
+    "objectives": {
+      "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
+      "sha256": "60f107788300f2e04545e65c61bd287314bacad0b3b570a83492c290c770bd4f",
+      "present": true
+    },
+    "oracle": {
+      "path": "oracle/spi_oracle/data_handling.py",
+      "sha256": "b632bc5e96a66f76a7a5977e511981f9a418f2bb52de7cbf94a2026f77d84a8e",
+      "present": true
+    },
+    "misconceptions": {
+      "path": "oracle/spi_oracle/data_handling_misconceptions.py",
+      "sha256": "cafb5c1900d44b079de2578f38f66adeab96d92b6d566054187c3818b0d8ac51",
+      "present": true
+    },
+    "dataChartTheme": {
+      "path": "core/visual-style/data-chart-theme.json",
+      "sha256": "7c308740a9085f26e024dad74795a679b196d10992c30dd54d7e642032465014",
+      "present": true
+    }
+  },
+  "rasterExports": {
+    "premium": {
+      "sha256": "151a4db09f1421b91175779a02d8a40032062d61a0b8fbb8ed6e00a50a800513",
+      "width": 6000,
+      "height": 4200
+    },
+    "accessible": {
+      "sha256": "58b9e0e9b0884e1d6d8140f8d314b0d50cd805452fe5ec281297a6e048950f50",
+      "width": 6000,
+      "height": 4200
+    },
+    "print": {
+      "sha256": "121bad3406883f613ca0929b8c4c1a2e59d74e6a2a67181f0babafc147018c0c",
+      "width": 6000,
+      "height": 4200
+    }
+  }
+}

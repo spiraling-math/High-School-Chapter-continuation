@@ -1,0 +1,4003 @@
+{
+  "summary": {
+    "generatorId": "gen.stats.data-handling",
+    "generatorVersion": "1.0.0",
+    "validatorVersion": "1.0.0",
+    "itemCount": 30,
+    "svgItems": 9,
+    "tableItems": 21,
+    "tasksCovered": [
+      "complete_frequency_table",
+      "mean_from_freq_table",
+      "mean_from_list",
+      "median_from_list",
+      "mode_from_list",
+      "range_from_list",
+      "read_bar_chart",
+      "read_line_graph",
+      "read_pictogram",
+      "read_table_value",
+      "single_event_probability"
+    ],
+    "answerTypes": [
+      "exact-rational",
+      "fraction",
+      "integer",
+      "table-completion"
+    ],
+    "misconceptionsShown": [
+      "MISC.STAT.AVG_USES_MEDIAN",
+      "MISC.STAT.AVG_USES_MODE",
+      "MISC.STAT.FREQ_IGNORES_TOTAL",
+      "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
+      "MISC.STAT.LINE_SWAPS_AXES",
+      "MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES",
+      "MISC.STAT.MEANFT_NO_WEIGHT",
+      "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+      "MISC.STAT.MEAN_NO_DIVIDE",
+      "MISC.STAT.MEDIAN_NO_ORDER",
+      "MISC.STAT.MEDIAN_WRONG_MIDDLE",
+      "MISC.STAT.MODE_USES_FREQUENCY",
+      "MISC.STAT.MODE_USES_HIGHEST",
+      "MISC.STAT.PICTO_COUNTS_SYMBOLS",
+      "MISC.STAT.PICTO_IGNORES_HALF",
+      "MISC.STAT.PROB_COMPLEMENT",
+      "MISC.STAT.PROB_ODDS",
+      "MISC.STAT.PROB_OFF_BY_ONE",
+      "MISC.STAT.PROB_UNREDUCED",
+      "MISC.STAT.RANGE_ADDS",
+      "MISC.STAT.RANGE_IS_MAX",
+      "MISC.STAT.READ_MISCOUNT_SCALE",
+      "MISC.STAT.READ_OFF_BY_STEP",
+      "MISC.STAT.READ_WRONG_CATEGORY",
+      "MISC.STAT.TABLE_ADJACENT_ROW",
+      "MISC.STAT.TABLE_READS_LARGEST",
+      "MISC.STAT.TABLE_READS_TOTAL"
+    ],
+    "requiredTokens": 80,
+    "coveredTokens": 80,
+    "missingCoverage": [],
+    "allValid": true
+  },
+  "records": [
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 1,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Test scores",
+          "unit": "marks",
+          "values": [
+            20,
+            20,
+            6,
+            13,
+            15,
+            9
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Test scores",
+        "unit": "marks",
+        "values": [
+          20,
+          20,
+          6,
+          13,
+          15,
+          9
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Test scores</caption>\n<tbody><tr>\n<td>20</td>\n<td>20</td>\n<td>6</td>\n<td>13</td>\n<td>15</td>\n<td>9</td>\n</tr></tbody></table>",
+      "answer": "14",
+      "answerCanonical": 14,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "6, 9, 13, 15, 20, 20"
+        },
+        {
+          "number": 2,
+          "transformation": "Find the middle value",
+          "intermediateResult": "14"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Test scores.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "20"
+            ],
+            [
+              "20"
+            ],
+            [
+              "6"
+            ],
+            [
+              "13"
+            ],
+            [
+              "15"
+            ],
+            [
+              "9"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(1,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
+      "task": "range_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 1,
+      "params": {
+        "task": "range_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "goals",
+          "values": [
+            13,
+            18,
+            24,
+            9
+          ]
+        },
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "goals",
+        "values": [
+          13,
+          18,
+          24,
+          9
+        ]
+      },
+      "prompt": "Work out the range of the data.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>13</td>\n<td>18</td>\n<td>24</td>\n<td>9</td>\n</tr></tbody></table>",
+      "answer": "15",
+      "answerCanonical": 15,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Identify the largest and smallest values",
+          "intermediateResult": "largest 24, smallest 9"
+        },
+        {
+          "number": 2,
+          "transformation": "Subtract",
+          "intermediateResult": "24 \u2212 9 = 15"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 24,
+          "display": "24",
+          "misconceptionId": "MISC.STAT.RANGE_IS_MAX",
+          "rationale": "Gives the largest value instead of the difference."
+        },
+        {
+          "id": "d2",
+          "value": 33,
+          "display": "33",
+          "misconceptionId": "MISC.STAT.RANGE_ADDS",
+          "rationale": "Adds the largest and smallest values instead of subtracting."
+        },
+        {
+          "id": "d3",
+          "value": 13,
+          "display": "13",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "13"
+            ],
+            [
+              "18"
+            ],
+            [
+              "24"
+            ],
+            [
+              "9"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.35,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.2,
+          "informationDensity": 0,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(1,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
+      "task": "range_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 2,
+      "params": {
+        "task": "range_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "goals",
+          "values": [
+            27,
+            19,
+            15,
+            11,
+            24,
+            4
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "goals",
+        "values": [
+          27,
+          19,
+          15,
+          11,
+          24,
+          4
+        ]
+      },
+      "prompt": "Work out the range of the data.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>27</td>\n<td>19</td>\n<td>15</td>\n<td>11</td>\n<td>24</td>\n<td>4</td>\n</tr></tbody></table>",
+      "answer": "23",
+      "answerCanonical": 23,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Identify the largest and smallest values",
+          "intermediateResult": "largest 27, smallest 4"
+        },
+        {
+          "number": 2,
+          "transformation": "Subtract",
+          "intermediateResult": "27 \u2212 4 = 23"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "27"
+            ],
+            [
+              "19"
+            ],
+            [
+              "15"
+            ],
+            [
+              "11"
+            ],
+            [
+              "24"
+            ],
+            [
+              "4"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.45,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.2,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
+      "task": "read_table_value",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 2,
+      "params": {
+        "task": "read_table_value",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey",
+            "Netball",
+            "Rugby"
+          ],
+          "frequencies": [
+            15,
+            5,
+            18,
+            10,
+            25
+          ]
+        },
+        "queryIndex": 0,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey",
+          "Netball",
+          "Rugby"
+        ],
+        "frequencies": [
+          15,
+          5,
+          18,
+          10,
+          25
+        ]
+      },
+      "prompt": "How many pupils are in the category \u201cFootball\u201d?",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Sport played</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Football</th><td>15</td></tr>\n<tr><th scope=\"row\">Tennis</th><td>5</td></tr>\n<tr><th scope=\"row\">Hockey</th><td>18</td></tr>\n<tr><th scope=\"row\">Netball</th><td>10</td></tr>\n<tr><th scope=\"row\">Rugby</th><td>25</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>73</td></tr>\n</tbody></table>",
+      "answer": "15",
+      "answerCanonical": 15,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "15"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 73,
+          "display": "73",
+          "misconceptionId": "MISC.STAT.TABLE_READS_TOTAL",
+          "rationale": "Reads the total instead of the row that was asked for."
+        },
+        {
+          "id": "d2",
+          "value": 5,
+          "display": "5",
+          "misconceptionId": "MISC.STAT.TABLE_ADJACENT_ROW",
+          "rationale": "Reads the frequency from the wrong row of the table."
+        },
+        {
+          "id": "d3",
+          "value": 25,
+          "display": "25",
+          "misconceptionId": "MISC.STAT.TABLE_READS_LARGEST",
+          "rationale": "Reads the largest frequency in the table instead of the named category."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Sport played.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "15"
+            ],
+            [
+              "Tennis",
+              "5"
+            ],
+            [
+              "Hockey",
+              "18"
+            ],
+            [
+              "Netball",
+              "10"
+            ],
+            [
+              "Rugby",
+              "25"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.5,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.1,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
+      "task": "mode_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 3,
+      "params": {
+        "task": "mode_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "values",
+          "values": [
+            7,
+            5,
+            10,
+            5,
+            5
+          ]
+        },
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "values",
+        "values": [
+          7,
+          5,
+          10,
+          5,
+          5
+        ]
+      },
+      "prompt": "Write down the mode of the data.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>7</td>\n<td>5</td>\n<td>10</td>\n<td>5</td>\n<td>5</td>\n</tr></tbody></table>",
+      "answer": "5",
+      "answerCanonical": 5,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count how many times each value occurs",
+          "intermediateResult": "Tally the values."
+        },
+        {
+          "number": 2,
+          "transformation": "Identify the most common value",
+          "intermediateResult": "5"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "7"
+            ],
+            [
+              "5"
+            ],
+            [
+              "10"
+            ],
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 1,
+        "axes": {
+          "numericalComplexity": 0.183,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.2,
+          "informationDensity": 0,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(3,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+      "task": "mean_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "exact-rational",
+      "seed": 3,
+      "params": {
+        "task": "mean_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "goals",
+          "values": [
+            -1,
+            -4,
+            13,
+            6,
+            15
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "goals",
+        "values": [
+          -1,
+          -4,
+          13,
+          6,
+          15
+        ]
+      },
+      "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>-1</td>\n<td>-4</td>\n<td>13</td>\n<td>6</td>\n<td>15</td>\n</tr></tbody></table>",
+      "answer": "29/5",
+      "answerCanonical": {
+        "num": 29,
+        "den": 5
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Add the values",
+          "intermediateResult": "-1 + -4 + 13 + 6 + 15 = 29"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by how many values",
+          "intermediateResult": "29 \u00f7 5 = 29/5"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 29,
+          "display": "29",
+          "misconceptionId": "MISC.STAT.MEAN_NO_DIVIDE",
+          "rationale": "Adds the values but forgets to divide by how many there are."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 29,
+            "den": 4
+          },
+          "display": "29/4",
+          "misconceptionId": "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+          "rationale": "Divides by the wrong number of values."
+        },
+        {
+          "id": "d3",
+          "value": -1,
+          "display": "-1",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "-1"
+            ],
+            [
+              "-4"
+            ],
+            [
+              "13"
+            ],
+            [
+              "6"
+            ],
+            [
+              "15"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 3,
+        "axes": {
+          "numericalComplexity": 0.55,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(3,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
+      "task": "single_event_probability",
+      "interaction": "free-response",
+      "answerType": "fraction",
+      "seed": 4,
+      "params": {
+        "task": "single_event_probability",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Contents of a bag of counters",
+          "unit": "counter",
+          "categories": [
+            "Red",
+            "Blue"
+          ],
+          "frequencies": [
+            1,
+            0
+          ]
+        },
+        "itemNoun": "counter",
+        "context": "One counter is chosen at random from a bag of counters containing the counters shown (each counter is equally likely).",
+        "outcomeSpace": {
+          "favourable": 0,
+          "total": 1,
+          "targetCategoryIndex": 1
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Contents of a bag of counters",
+        "unit": "counter",
+        "categories": [
+          "Red",
+          "Blue"
+        ],
+        "frequencies": [
+          1,
+          0
+        ]
+      },
+      "prompt": "One counter is chosen at random from a bag of counters containing the counters shown (each counter is equally likely). What is the probability that the counter chosen is Blue? Give your answer as a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Contents of a bag of counters</caption>\n<thead><tr><th scope=\"col\">Type</th><th scope=\"col\">How many</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Red</th><td>1</td></tr>\n<tr><th scope=\"row\">Blue</th><td>0</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>1</td></tr>\n</tbody></table>",
+      "answer": "0",
+      "answerCanonical": {
+        "num": 0,
+        "den": 1
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count favourable and total outcomes",
+          "intermediateResult": "0 favourable out of 1"
+        },
+        {
+          "number": 2,
+          "transformation": "Write as a fraction in simplest form",
+          "intermediateResult": "0"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Contents of a bag of counters.",
+        "dataTable": {
+          "columns": [
+            "Type",
+            "How many"
+          ],
+          "rows": [
+            [
+              "Red",
+              "1"
+            ],
+            [
+              "Blue",
+              "0"
+            ],
+            [
+              "Total",
+              "1"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.063,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.4,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "probability-in-range",
+        "probability-reduced",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
+          "title": "Leaves the fraction unsimplified",
+          "observableError": "Writes a correct but unsimplified fraction.",
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(4,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
+      "task": "single_event_probability",
+      "interaction": "multiple-choice",
+      "answerType": "fraction",
+      "seed": 4,
+      "params": {
+        "task": "single_event_probability",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Contents of a box of beads",
+          "unit": "bead",
+          "categories": [
+            "Red",
+            "Blue",
+            "White",
+            "Black"
+          ],
+          "frequencies": [
+            5,
+            3,
+            5,
+            6
+          ]
+        },
+        "itemNoun": "bead",
+        "context": "One bead is chosen at random from a box of beads containing the beads shown (each bead is equally likely).",
+        "outcomeSpace": {
+          "favourable": 5,
+          "total": 19,
+          "targetCategoryIndex": 2
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Contents of a box of beads",
+        "unit": "bead",
+        "categories": [
+          "Red",
+          "Blue",
+          "White",
+          "Black"
+        ],
+        "frequencies": [
+          5,
+          3,
+          5,
+          6
+        ]
+      },
+      "prompt": "One bead is chosen at random from a box of beads containing the beads shown (each bead is equally likely). What is the probability that the bead chosen is White? Give your answer as a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Contents of a box of beads</caption>\n<thead><tr><th scope=\"col\">Type</th><th scope=\"col\">How many</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Red</th><td>5</td></tr>\n<tr><th scope=\"row\">Blue</th><td>3</td></tr>\n<tr><th scope=\"row\">White</th><td>5</td></tr>\n<tr><th scope=\"row\">Black</th><td>6</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>19</td></tr>\n</tbody></table>",
+      "answer": "5/19",
+      "answerCanonical": {
+        "num": 5,
+        "den": 19
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count favourable and total outcomes",
+          "intermediateResult": "5 favourable out of 19"
+        },
+        {
+          "number": 2,
+          "transformation": "Write as a fraction in simplest form",
+          "intermediateResult": "5/19"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": {
+            "num": 14,
+            "den": 19
+          },
+          "display": "14/19",
+          "misconceptionId": "MISC.STAT.PROB_COMPLEMENT",
+          "rationale": "Counts the outcomes that are not wanted instead of the ones that are."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 5,
+            "den": 14
+          },
+          "display": "5/14",
+          "misconceptionId": "MISC.STAT.PROB_ODDS",
+          "rationale": "Compares wanted outcomes to unwanted outcomes instead of to the total."
+        },
+        {
+          "id": "d3",
+          "value": {
+            "num": 4,
+            "den": 19
+          },
+          "display": "4/19",
+          "misconceptionId": "MISC.STAT.PROB_OFF_BY_ONE",
+          "rationale": "Counts one too few or one too many of the wanted outcomes."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Contents of a box of beads.",
+        "dataTable": {
+          "columns": [
+            "Type",
+            "How many"
+          ],
+          "rows": [
+            [
+              "Red",
+              "5"
+            ],
+            [
+              "Blue",
+              "3"
+            ],
+            [
+              "White",
+              "5"
+            ],
+            [
+              "Black",
+              "6"
+            ],
+            [
+              "Total",
+              "19"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 3,
+        "axes": {
+          "numericalComplexity": 1,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.4,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "probability-in-range",
+        "probability-reduced",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "mc-probability-options-in-range"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
+          "title": "Leaves the fraction unsimplified",
+          "observableError": "Writes a correct but unsimplified fraction.",
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(4,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+      "task": "mean_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 5,
+      "params": {
+        "task": "mean_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "goals",
+          "values": [
+            17,
+            7,
+            9
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "goals",
+        "values": [
+          17,
+          7,
+          9
+        ]
+      },
+      "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>17</td>\n<td>7</td>\n<td>9</td>\n</tr></tbody></table>",
+      "answer": "11",
+      "answerCanonical": 11,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Add the values",
+          "intermediateResult": "17 + 7 + 9 = 33"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by how many values",
+          "intermediateResult": "33 \u00f7 3 = 11"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 33,
+          "display": "33",
+          "misconceptionId": "MISC.STAT.MEAN_NO_DIVIDE",
+          "rationale": "Adds the values but forgets to divide by how many there are."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 33,
+            "den": 2
+          },
+          "display": "33/2",
+          "misconceptionId": "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+          "rationale": "Divides by the wrong number of values."
+        },
+        {
+          "id": "d3",
+          "value": 17,
+          "display": "17",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "17"
+            ],
+            [
+              "7"
+            ],
+            [
+              "9"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(5,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+      "task": "mean_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 6,
+      "params": {
+        "task": "mean_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Shoe sizes",
+          "unit": "sizes",
+          "values": [
+            8,
+            -5,
+            -6
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Shoe sizes",
+        "unit": "sizes",
+        "values": [
+          8,
+          -5,
+          -6
+        ]
+      },
+      "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Shoe sizes</caption>\n<tbody><tr>\n<td>8</td>\n<td>-5</td>\n<td>-6</td>\n</tr></tbody></table>",
+      "answer": "-1",
+      "answerCanonical": -1,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Add the values",
+          "intermediateResult": "8 + -5 + -6 = -3"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by how many values",
+          "intermediateResult": "-3 \u00f7 3 = -1"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Shoe sizes.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "8"
+            ],
+            [
+              "-5"
+            ],
+            [
+              "-6"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(6,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 7,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Books read",
+          "unit": "readers",
+          "categories": [
+            "Mystery",
+            "Fantasy",
+            "Comic",
+            "Science",
+            "History"
+          ],
+          "frequencies": [
+            5,
+            4,
+            4,
+            2,
+            5
+          ]
+        },
+        "queryIndex": 3,
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Books read",
+        "unit": "readers",
+        "categories": [
+          "Mystery",
+          "Fantasy",
+          "Comic",
+          "Science",
+          "History"
+        ],
+        "frequencies": [
+          5,
+          4,
+          4,
+          2,
+          5
+        ]
+      },
+      "prompt": "How many readers are in the category \u201cScience\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Books read.\">\n<title>Books read</title>\n<desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">1</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">3</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">5</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (readers)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Mystery</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Fantasy</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Comic</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"382\" width=\"100\" height=\"208\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Science</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">History</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Books read</text>\n</svg>",
+      "answer": "2",
+      "answerCanonical": 2,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "2"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Books read. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Mystery",
+              "5"
+            ],
+            [
+              "Fantasy",
+              "4"
+            ],
+            [
+              "Comic",
+              "4"
+            ],
+            [
+              "Science",
+              "2"
+            ],
+            [
+              "History",
+              "5"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 1,
+        "axes": {
+          "numericalComplexity": 0.1,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.667,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(7,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+      "task": "read_pictogram",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 7,
+      "params": {
+        "task": "read_pictogram",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey"
+          ],
+          "frequencies": [
+            25,
+            35,
+            55
+          ],
+          "pictogramKey": 10
+        },
+        "queryIndex": 2,
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey"
+        ],
+        "frequencies": [
+          25,
+          35,
+          55
+        ],
+        "pictogramKey": 10
+      },
+      "prompt": "Use the key to find the number of pupils for \u201cHockey\u201d.",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Sport played.\">\n<title>Sport played</title>\n<desc>A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 10 pupils.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Football</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" data-half=\"1\" x=\"368\" y=\"90\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Tennis</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" data-half=\"1\" x=\"412\" y=\"160\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Hockey</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" data-half=\"1\" x=\"500\" y=\"230\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "answer": "55",
+      "answerCanonical": 55,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count the symbols",
+          "intermediateResult": "5 whole and a half symbol(s)"
+        },
+        {
+          "number": 2,
+          "transformation": "Apply the key",
+          "intermediateResult": "5 \u00d7 10 + 5 = 55"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 5,
+          "display": "5",
+          "misconceptionId": "MISC.STAT.PICTO_COUNTS_SYMBOLS",
+          "rationale": "Counts the symbols without using the key."
+        },
+        {
+          "id": "d2",
+          "value": 50,
+          "display": "50",
+          "misconceptionId": "MISC.STAT.PICTO_IGNORES_HALF",
+          "rationale": "Leaves out the value of the half symbol."
+        },
+        {
+          "id": "d3",
+          "value": 35,
+          "display": "35",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Symbols (1 symbol = 10 pupils)"
+          ],
+          "rows": [
+            [
+              "Football",
+              "2 and a half symbol(s)"
+            ],
+            [
+              "Tennis",
+              "3 and a half symbol(s)"
+            ],
+            [
+              "Hockey",
+              "5 and a half symbol(s)"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.6,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.25,
+          "reasoningSteps": 0.15,
+          "informationDensity": 0,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(7,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+      "task": "read_pictogram",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 8,
+      "params": {
+        "task": "read_pictogram",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Favourite fruit",
+          "unit": "children",
+          "categories": [
+            "Apple",
+            "Banana",
+            "Grape",
+            "Orange",
+            "Pear"
+          ],
+          "frequencies": [
+            15,
+            15,
+            25,
+            10,
+            15
+          ],
+          "pictogramKey": 5
+        },
+        "queryIndex": 0,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Favourite fruit",
+        "unit": "children",
+        "categories": [
+          "Apple",
+          "Banana",
+          "Grape",
+          "Orange",
+          "Pear"
+        ],
+        "frequencies": [
+          15,
+          15,
+          25,
+          10,
+          15
+        ],
+        "pictogramKey": 5
+      },
+      "prompt": "Use the key to find the number of children for \u201cApple\u201d.",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Favourite fruit.\">\n<title>Favourite fruit</title>\n<desc>A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 children.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Apple</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Banana</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Grape</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"324\" text-anchor=\"start\">Orange</text>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"280\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"324\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"394\" text-anchor=\"start\">Pear</text>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"280\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"324\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"368\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Favourite fruit</text>\n</svg>",
+      "answer": "15",
+      "answerCanonical": 15,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count the symbols",
+          "intermediateResult": "3 whole symbol(s)"
+        },
+        {
+          "number": 2,
+          "transformation": "Apply the key",
+          "intermediateResult": "3 \u00d7 5 = 15"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Symbols (1 symbol = 5 children)"
+          ],
+          "rows": [
+            [
+              "Apple",
+              "3 symbol(s)"
+            ],
+            [
+              "Banana",
+              "3 symbol(s)"
+            ],
+            [
+              "Grape",
+              "5 symbol(s)"
+            ],
+            [
+              "Orange",
+              "2 symbol(s)"
+            ],
+            [
+              "Pear",
+              "3 symbol(s)"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.4,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.25,
+          "reasoningSteps": 0.15,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
+      "task": "read_table_value",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 9,
+      "params": {
+        "task": "read_table_value",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Books read",
+          "unit": "readers",
+          "categories": [
+            "Mystery",
+            "Fantasy",
+            "Comic"
+          ],
+          "frequencies": [
+            21,
+            19,
+            18
+          ]
+        },
+        "queryIndex": 0,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Books read",
+        "unit": "readers",
+        "categories": [
+          "Mystery",
+          "Fantasy",
+          "Comic"
+        ],
+        "frequencies": [
+          21,
+          19,
+          18
+        ]
+      },
+      "prompt": "How many readers are in the category \u201cMystery\u201d?",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Books read</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Mystery</th><td>21</td></tr>\n<tr><th scope=\"row\">Fantasy</th><td>19</td></tr>\n<tr><th scope=\"row\">Comic</th><td>18</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>58</td></tr>\n</tbody></table>",
+      "answer": "21",
+      "answerCanonical": 21,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "21"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Books read.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Mystery",
+              "21"
+            ],
+            [
+              "Fantasy",
+              "19"
+            ],
+            [
+              "Comic",
+              "18"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.42,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.1,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+      "task": "read_line_graph",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 9,
+      "params": {
+        "task": "read_line_graph",
+        "dataset": {
+          "kind": "list",
+          "title": "Plant height",
+          "unit": "cm",
+          "seriesLabels": [
+            "Day 1",
+            "Day 2",
+            "Day 3",
+            "Day 4",
+            "Day 5",
+            "Day 6"
+          ],
+          "values": [
+            12,
+            11,
+            13,
+            10,
+            5,
+            17
+          ]
+        },
+        "queryIndex": 3,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Plant height",
+        "unit": "cm",
+        "seriesLabels": [
+          "Day 1",
+          "Day 2",
+          "Day 3",
+          "Day 4",
+          "Day 5",
+          "Day 6"
+        ],
+        "values": [
+          12,
+          11,
+          13,
+          10,
+          5,
+          17
+        ]
+      },
+      "prompt": "What is the value at Day 4?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Plant height.\">\n<title>Plant height</title>\n<desc>A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">20</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Plant height (cm)</text>\n<polyline class=\"cx-line\" points=\"189,278 328,304 466,252 604,330 743,460 881,148\"/>\n<circle class=\"cx-pt-outline\" cx=\"189\" cy=\"278\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"189\" cy=\"278\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"189\" y1=\"590\" x2=\"189\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"189\" y=\"618\" text-anchor=\"middle\">Day 1</text>\n<circle class=\"cx-pt-outline\" cx=\"328\" cy=\"304\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"328\" cy=\"304\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"328\" y1=\"590\" x2=\"328\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"328\" y=\"618\" text-anchor=\"middle\">Day 2</text>\n<circle class=\"cx-pt-outline\" cx=\"466\" cy=\"252\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"466\" cy=\"252\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"466\" y1=\"590\" x2=\"466\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"466\" y=\"618\" text-anchor=\"middle\">Day 3</text>\n<circle class=\"cx-pt-outline\" cx=\"604\" cy=\"330\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"604\" cy=\"330\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"604\" y1=\"590\" x2=\"604\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"604\" y=\"618\" text-anchor=\"middle\">Day 4</text>\n<circle class=\"cx-pt-outline\" cx=\"743\" cy=\"460\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"743\" cy=\"460\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"743\" y1=\"590\" x2=\"743\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"743\" y=\"618\" text-anchor=\"middle\">Day 5</text>\n<circle class=\"cx-pt-outline\" cx=\"881\" cy=\"148\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"881\" cy=\"148\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"881\" y1=\"590\" x2=\"881\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"881\" y=\"618\" text-anchor=\"middle\">Day 6</text>\n</svg>",
+      "answer": "10",
+      "answerCanonical": 10,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "10"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 15,
+          "display": "15",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
+        },
+        {
+          "id": "d2",
+          "value": 4,
+          "display": "4",
+          "misconceptionId": "MISC.STAT.LINE_SWAPS_AXES",
+          "rationale": "Reads the value off the horizontal axis instead of the vertical axis."
+        },
+        {
+          "id": "d3",
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.",
+        "dataTable": {
+          "columns": [
+            "Position",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Day 1",
+              "12"
+            ],
+            [
+              "Day 2",
+              "11"
+            ],
+            [
+              "Day 3",
+              "13"
+            ],
+            [
+              "Day 4",
+              "10"
+            ],
+            [
+              "Day 5",
+              "5"
+            ],
+            [
+              "Day 6",
+              "17"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.34,
+          "readingDemand": 0.3,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+      "task": "read_line_graph",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 12,
+      "params": {
+        "task": "read_line_graph",
+        "dataset": {
+          "kind": "list",
+          "title": "Temperature",
+          "unit": "degrees",
+          "seriesLabels": [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat"
+          ],
+          "values": [
+            10,
+            5,
+            30,
+            28,
+            24,
+            31
+          ]
+        },
+        "queryIndex": 0,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Temperature",
+        "unit": "degrees",
+        "seriesLabels": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat"
+        ],
+        "values": [
+          10,
+          5,
+          30,
+          28,
+          24,
+          31
+        ]
+      },
+      "prompt": "What is the value at Mon?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Temperature.\">\n<title>Temperature</title>\n<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Temperature (degrees)</text>\n<polyline class=\"cx-line\" points=\"189,441 328,516 466,144 604,174 743,233 881,129\"/>\n<circle class=\"cx-pt-outline\" cx=\"189\" cy=\"441\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"189\" cy=\"441\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"189\" y1=\"590\" x2=\"189\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"189\" y=\"618\" text-anchor=\"middle\">Mon</text>\n<circle class=\"cx-pt-outline\" cx=\"328\" cy=\"516\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"328\" cy=\"516\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"328\" y1=\"590\" x2=\"328\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"328\" y=\"618\" text-anchor=\"middle\">Tue</text>\n<circle class=\"cx-pt-outline\" cx=\"466\" cy=\"144\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"466\" cy=\"144\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"466\" y1=\"590\" x2=\"466\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"466\" y=\"618\" text-anchor=\"middle\">Wed</text>\n<circle class=\"cx-pt-outline\" cx=\"604\" cy=\"174\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"604\" cy=\"174\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"604\" y1=\"590\" x2=\"604\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"604\" y=\"618\" text-anchor=\"middle\">Thu</text>\n<circle class=\"cx-pt-outline\" cx=\"743\" cy=\"233\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"743\" cy=\"233\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"743\" y1=\"590\" x2=\"743\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"743\" y=\"618\" text-anchor=\"middle\">Fri</text>\n<circle class=\"cx-pt-outline\" cx=\"881\" cy=\"129\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"881\" cy=\"129\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"881\" y1=\"590\" x2=\"881\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"881\" y=\"618\" text-anchor=\"middle\">Sat</text>\n</svg>",
+      "answer": "10",
+      "answerCanonical": 10,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "10"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.",
+        "dataTable": {
+          "columns": [
+            "Position",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Mon",
+              "10"
+            ],
+            [
+              "Tue",
+              "5"
+            ],
+            [
+              "Wed",
+              "30"
+            ],
+            [
+              "Thu",
+              "28"
+            ],
+            [
+              "Fri",
+              "24"
+            ],
+            [
+              "Sat",
+              "31"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.62,
+          "readingDemand": 0.3,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(12,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
+      "task": "complete_frequency_table",
+      "interaction": "free-response",
+      "answerType": "table-completion",
+      "seed": 14,
+      "params": {
+        "task": "complete_frequency_table",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey",
+            "Netball"
+          ],
+          "frequencies": [
+            8,
+            5,
+            9,
+            13
+          ]
+        },
+        "blank": {
+          "kind": "total"
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey",
+          "Netball"
+        ],
+        "frequencies": [
+          8,
+          5,
+          9,
+          13
+        ]
+      },
+      "prompt": "Find the missing value in the frequency table.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Sport played</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Football</th><td>8</td></tr>\n<tr><th scope=\"row\">Tennis</th><td>5</td></tr>\n<tr><th scope=\"row\">Hockey</th><td>9</td></tr>\n<tr><th scope=\"row\">Netball</th><td>13</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td class=\"cx-blank\"><input type=\"text\" inputmode=\"numeric\" aria-label=\"Total frequency\"></td></tr>\n</tbody></table>",
+      "answer": "35",
+      "answerCanonical": {
+        "cells": [
+          {
+            "location": "Total",
+            "value": 35
+          }
+        ]
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Add the frequencies",
+          "intermediateResult": "8 + 5 + 9 + 13 = 35"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Sport played.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "8"
+            ],
+            [
+              "Tennis",
+              "5"
+            ],
+            [
+              "Hockey",
+              "9"
+            ],
+            [
+              "Netball",
+              "13"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.583,
+          "readingDemand": 0.3,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.3,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "blank-cell-blank-in-student",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
+          "title": "Adds instead of subtracting",
+          "observableError": "Adds the known frequencies to the total instead of subtracting.",
+          "feedback": "The frequencies add up to the total, so subtract the ones you know from the total."
+        },
+        {
+          "misconceptionId": "MISC.STAT.FREQ_IGNORES_TOTAL",
+          "title": "Ignores the total",
+          "observableError": "Adds up the other frequencies but ignores the given total.",
+          "feedback": "Use the total: the missing frequency is the total minus the frequencies you already have."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(14,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 16,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Test scores",
+          "unit": "marks",
+          "values": [
+            8,
+            7,
+            1,
+            19,
+            11,
+            4,
+            19
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Test scores",
+        "unit": "marks",
+        "values": [
+          8,
+          7,
+          1,
+          19,
+          11,
+          4,
+          19
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Test scores</caption>\n<tbody><tr>\n<td>8</td>\n<td>7</td>\n<td>1</td>\n<td>19</td>\n<td>11</td>\n<td>4</td>\n<td>19</td>\n</tr></tbody></table>",
+      "answer": "8",
+      "answerCanonical": 8,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "1, 4, 7, 8, 11, 19, 19"
+        },
+        {
+          "number": 2,
+          "transformation": "Find the middle value",
+          "intermediateResult": "8"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Test scores.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "8"
+            ],
+            [
+              "7"
+            ],
+            [
+              "1"
+            ],
+            [
+              "19"
+            ],
+            [
+              "11"
+            ],
+            [
+              "4"
+            ],
+            [
+              "19"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(16,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 19,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey",
+            "Netball",
+            "Rugby"
+          ],
+          "frequencies": [
+            16,
+            6,
+            11,
+            9,
+            9
+          ]
+        },
+        "queryIndex": 4,
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey",
+          "Netball",
+          "Rugby"
+        ],
+        "frequencies": [
+          16,
+          6,
+          11,
+          9,
+          9
+        ]
+      },
+      "prompt": "How many pupils are in the category \u201cRugby\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"525\" x2=\"950\" y2=\"525\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"525\" x2=\"120\" y2=\"525\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"532\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"395\" x2=\"950\" y2=\"395\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"395\" x2=\"120\" y2=\"395\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"402\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"265\" x2=\"950\" y2=\"265\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"265\" x2=\"120\" y2=\"265\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"272\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">12</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"135\" x2=\"950\" y2=\"135\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"135\" x2=\"120\" y2=\"135\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"142\" text-anchor=\"end\">14</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">16</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"395\" width=\"100\" height=\"195\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"232\" width=\"100\" height=\"358\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Netball</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Rugby</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "answer": "9",
+      "answerCanonical": 9,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "9"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "16"
+            ],
+            [
+              "Tennis",
+              "6"
+            ],
+            [
+              "Hockey",
+              "11"
+            ],
+            [
+              "Netball",
+              "9"
+            ],
+            [
+              "Rugby",
+              "9"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.32,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.667,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
+      "task": "complete_frequency_table",
+      "interaction": "free-response",
+      "answerType": "table-completion",
+      "seed": 21,
+      "params": {
+        "task": "complete_frequency_table",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey"
+          ],
+          "frequencies": [
+            8,
+            10,
+            17
+          ]
+        },
+        "blank": {
+          "kind": "frequency",
+          "index": 1
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey"
+        ],
+        "frequencies": [
+          8,
+          10,
+          17
+        ]
+      },
+      "prompt": "Find the missing value in the frequency table.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Sport played</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Football</th><td>8</td></tr>\n<tr><th scope=\"row\">Tennis</th><td class=\"cx-blank\"><input type=\"text\" inputmode=\"numeric\" aria-label=\"Frequency for Tennis\"></td></tr>\n<tr><th scope=\"row\">Hockey</th><td>17</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>35</td></tr>\n</tbody></table>",
+      "answer": "10",
+      "answerCanonical": {
+        "cells": [
+          {
+            "location": "Tennis",
+            "value": 10
+          }
+        ]
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Subtract the known frequencies from the total",
+          "intermediateResult": "35 \u2212 25 = 10"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Sport played.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "8"
+            ],
+            [
+              "Tennis",
+              "10"
+            ],
+            [
+              "Hockey",
+              "17"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.583,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.3,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "blank-cell-blank-in-student",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
+          "title": "Adds instead of subtracting",
+          "observableError": "Adds the known frequencies to the total instead of subtracting.",
+          "feedback": "The frequencies add up to the total, so subtract the ones you know from the total."
+        },
+        {
+          "misconceptionId": "MISC.STAT.FREQ_IGNORES_TOTAL",
+          "title": "Ignores the total",
+          "observableError": "Adds up the other frequencies but ignores the given total.",
+          "feedback": "Use the total: the missing frequency is the total minus the frequencies you already have."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(21,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
+      "task": "mode_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 22,
+      "params": {
+        "task": "mode_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "values",
+          "values": [
+            3,
+            1,
+            8,
+            1,
+            7,
+            1
+          ]
+        },
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "values",
+        "values": [
+          3,
+          1,
+          8,
+          1,
+          7,
+          1
+        ]
+      },
+      "prompt": "Write down the mode of the data.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>3</td>\n<td>1</td>\n<td>8</td>\n<td>1</td>\n<td>7</td>\n<td>1</td>\n</tr></tbody></table>",
+      "answer": "1",
+      "answerCanonical": 1,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count how many times each value occurs",
+          "intermediateResult": "Tally the values."
+        },
+        {
+          "number": 2,
+          "transformation": "Identify the most common value",
+          "intermediateResult": "1"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 8,
+          "display": "8",
+          "misconceptionId": "MISC.STAT.MODE_USES_HIGHEST",
+          "rationale": "Gives the largest value instead of the most common one."
+        },
+        {
+          "id": "d2",
+          "value": 3,
+          "display": "3",
+          "misconceptionId": "MISC.STAT.MODE_USES_FREQUENCY",
+          "rationale": "Gives how many times the mode occurs instead of the value itself."
+        },
+        {
+          "id": "d3",
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.AVG_USES_MEDIAN",
+          "rationale": "Gives the middle value instead of the most common one."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Goals scored.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "3"
+            ],
+            [
+              "1"
+            ],
+            [
+              "8"
+            ],
+            [
+              "1"
+            ],
+            [
+              "7"
+            ],
+            [
+              "1"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.217,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.2,
+          "informationDensity": 0.333,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(22,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 25,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Numbers of pets",
+          "unit": "pets",
+          "values": [
+            15,
+            6,
+            3,
+            9,
+            10,
+            7
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Numbers of pets",
+        "unit": "pets",
+        "values": [
+          15,
+          6,
+          3,
+          9,
+          10,
+          7
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Numbers of pets</caption>\n<tbody><tr>\n<td>15</td>\n<td>6</td>\n<td>3</td>\n<td>9</td>\n<td>10</td>\n<td>7</td>\n</tr></tbody></table>",
+      "answer": "8",
+      "answerCanonical": 8,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "3, 6, 7, 9, 10, 15"
+        },
+        {
+          "number": 2,
+          "transformation": "Find the middle value",
+          "intermediateResult": "8"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 6,
+          "display": "6",
+          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
+          "rationale": "Takes the middle value without putting the list in order first."
+        },
+        {
+          "id": "d2",
+          "value": 7,
+          "display": "7",
+          "misconceptionId": "MISC.STAT.MEDIAN_WRONG_MIDDLE",
+          "rationale": "Picks one of the two middle values instead of their average."
+        },
+        {
+          "id": "d3",
+          "value": 15,
+          "display": "15",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Numbers of pets.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "15"
+            ],
+            [
+              "6"
+            ],
+            [
+              "3"
+            ],
+            [
+              "9"
+            ],
+            [
+              "10"
+            ],
+            [
+              "7"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(25,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
+      "task": "mean_from_freq_table",
+      "interaction": "free-response",
+      "answerType": "exact-rational",
+      "seed": 30,
+      "params": {
+        "task": "mean_from_freq_table",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Daily steps",
+          "unit": "thousand steps",
+          "categories": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "frequencies": [
+            1,
+            3,
+            6,
+            3
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Daily steps",
+        "unit": "thousand steps",
+        "categories": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "frequencies": [
+          1,
+          3,
+          6,
+          3
+        ]
+      },
+      "prompt": "Calculate the mean from the frequency table. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Daily steps</caption>\n<thead><tr><th scope=\"col\">Value</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">0</th><td>1</td></tr>\n<tr><th scope=\"row\">1</th><td>3</td></tr>\n<tr><th scope=\"row\">2</th><td>6</td></tr>\n<tr><th scope=\"row\">3</th><td>3</td></tr>\n</tbody></table>",
+      "answer": "24/13",
+      "answerCanonical": {
+        "num": 24,
+        "den": 13
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Multiply each value by its frequency and add",
+          "intermediateResult": "0\u00d71 + 1\u00d73 + 2\u00d76 + 3\u00d73 = 24"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by the total frequency",
+          "intermediateResult": "24 \u00f7 13 = 24/13"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Daily steps.",
+        "dataTable": {
+          "columns": [
+            "Value",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "0",
+              "1"
+            ],
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "6"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 4,
+        "axes": {
+          "numericalComplexity": 0.8,
+          "readingDemand": 0.45,
+          "interpretationDemand": 0.55,
+          "reasoningSteps": 0.7,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(30,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
+      "task": "mean_from_freq_table",
+      "interaction": "multiple-choice",
+      "answerType": "exact-rational",
+      "seed": 30,
+      "params": {
+        "task": "mean_from_freq_table",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Daily steps",
+          "unit": "thousand steps",
+          "categories": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "frequencies": [
+            1,
+            3,
+            6,
+            3
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Daily steps",
+        "unit": "thousand steps",
+        "categories": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "frequencies": [
+          1,
+          3,
+          6,
+          3
+        ]
+      },
+      "prompt": "Calculate the mean from the frequency table. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Daily steps</caption>\n<thead><tr><th scope=\"col\">Value</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">0</th><td>1</td></tr>\n<tr><th scope=\"row\">1</th><td>3</td></tr>\n<tr><th scope=\"row\">2</th><td>6</td></tr>\n<tr><th scope=\"row\">3</th><td>3</td></tr>\n</tbody></table>",
+      "answer": "24/13",
+      "answerCanonical": {
+        "num": 24,
+        "den": 13
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Multiply each value by its frequency and add",
+          "intermediateResult": "0\u00d71 + 1\u00d73 + 2\u00d76 + 3\u00d73 = 24"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by the total frequency",
+          "intermediateResult": "24 \u00f7 13 = 24/13"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 6,
+          "display": "6",
+          "misconceptionId": "MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES",
+          "rationale": "Divides the total by the number of rows instead of the total frequency."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 3,
+            "den": 2
+          },
+          "display": "3/2",
+          "misconceptionId": "MISC.STAT.MEANFT_NO_WEIGHT",
+          "rationale": "Averages the listed values without using the frequencies."
+        },
+        {
+          "id": "d3",
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+          "rationale": "Divides by the wrong number of values."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Daily steps.",
+        "dataTable": {
+          "columns": [
+            "Value",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "0",
+              "1"
+            ],
+            [
+              "1",
+              "3"
+            ],
+            [
+              "2",
+              "6"
+            ],
+            [
+              "3",
+              "3"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 4,
+        "axes": {
+          "numericalComplexity": 0.8,
+          "readingDemand": 0.45,
+          "interpretationDemand": 0.55,
+          "reasoningSteps": 0.7,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(30,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 34,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey"
+          ],
+          "frequencies": [
+            8,
+            7,
+            12
+          ]
+        },
+        "queryIndex": 2,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey"
+        ],
+        "frequencies": [
+          8,
+          7,
+          12
+        ]
+      },
+      "prompt": "How many pupils are in the category \u201cHockey\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"503\" x2=\"950\" y2=\"503\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"503\" x2=\"120\" y2=\"503\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"510\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"417\" x2=\"950\" y2=\"417\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"417\" x2=\"120\" y2=\"417\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"424\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"243\" x2=\"950\" y2=\"243\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"243\" x2=\"120\" y2=\"243\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"250\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"157\" x2=\"950\" y2=\"157\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"157\" x2=\"120\" y2=\"157\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"164\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">12</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"243\" width=\"167\" height=\"347\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"287\" width=\"166\" height=\"303\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"70\" width=\"167\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "answer": "12",
+      "answerCanonical": 12,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "12"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 14,
+          "display": "14",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
+        },
+        {
+          "id": "d2",
+          "value": 7,
+          "display": "7",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
+        },
+        {
+          "id": "d3",
+          "value": 6,
+          "display": "6",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "8"
+            ],
+            [
+              "Tennis",
+              "7"
+            ],
+            [
+              "Hockey",
+              "12"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 1,
+        "axes": {
+          "numericalComplexity": 0.24,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(34,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 35,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Colour of car",
+          "unit": "cars",
+          "categories": [
+            "Red",
+            "Blue",
+            "Black",
+            "White",
+            "Silver"
+          ],
+          "frequencies": [
+            17,
+            13,
+            16,
+            28,
+            31
+          ]
+        },
+        "queryIndex": 1,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Colour of car",
+        "unit": "cars",
+        "categories": [
+          "Red",
+          "Blue",
+          "Black",
+          "White",
+          "Silver"
+        ],
+        "frequencies": [
+          17,
+          13,
+          16,
+          28,
+          31
+        ]
+      },
+      "prompt": "How many cars are in the category \u201cBlue\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Colour of car.\">\n<title>Colour of car</title>\n<desc>A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (cars)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"337\" width=\"100\" height=\"253\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Red</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"397\" width=\"100\" height=\"193\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Blue</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"352\" width=\"100\" height=\"238\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Black</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">White</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"129\" width=\"100\" height=\"461\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Silver</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
+      "answer": "13",
+      "answerCanonical": 13,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "13"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Red",
+              "17"
+            ],
+            [
+              "Blue",
+              "13"
+            ],
+            [
+              "Black",
+              "16"
+            ],
+            [
+              "White",
+              "28"
+            ],
+            [
+              "Silver",
+              "31"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.62,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(35,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 39,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Sport played",
+          "unit": "pupils",
+          "categories": [
+            "Football",
+            "Tennis",
+            "Hockey"
+          ],
+          "frequencies": [
+            49,
+            37,
+            10
+          ]
+        },
+        "queryIndex": 0,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Sport played",
+        "unit": "pupils",
+        "categories": [
+          "Football",
+          "Tennis",
+          "Hockey"
+        ],
+        "frequencies": [
+          49,
+          37,
+          10
+        ]
+      },
+      "prompt": "How many pupils are in the category \u201cFootball\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">40</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">50</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"80\" width=\"167\" height=\"510\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"205\" width=\"166\" height=\"385\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"486\" width=\"167\" height=\"104\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "answer": "49",
+      "answerCanonical": 49,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the named category/position",
+          "intermediateResult": "Find the matching bar, row, or marked point."
+        },
+        {
+          "number": 2,
+          "transformation": "Read the value from the labelled axis",
+          "intermediateResult": "49"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Football",
+              "49"
+            ],
+            [
+              "Tennis",
+              "37"
+            ],
+            [
+              "Hockey",
+              "10"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.98,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(39,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
+      "task": "single_event_probability",
+      "interaction": "free-response",
+      "answerType": "fraction",
+      "seed": 104,
+      "params": {
+        "task": "single_event_probability",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Contents of a set of cards",
+          "unit": "card",
+          "categories": [
+            "Star",
+            "Circle",
+            "Square",
+            "Triangle"
+          ],
+          "frequencies": [
+            0,
+            0,
+            2,
+            0
+          ]
+        },
+        "itemNoun": "card",
+        "context": "One card is chosen at random from a set of cards containing the cards shown (each card is equally likely).",
+        "outcomeSpace": {
+          "favourable": 2,
+          "total": 2,
+          "targetCategoryIndex": 2
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Contents of a set of cards",
+        "unit": "card",
+        "categories": [
+          "Star",
+          "Circle",
+          "Square",
+          "Triangle"
+        ],
+        "frequencies": [
+          0,
+          0,
+          2,
+          0
+        ]
+      },
+      "prompt": "One card is chosen at random from a set of cards containing the cards shown (each card is equally likely). What is the probability that the card chosen is Square? Give your answer as a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Contents of a set of cards</caption>\n<thead><tr><th scope=\"col\">Type</th><th scope=\"col\">How many</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Star</th><td>0</td></tr>\n<tr><th scope=\"row\">Circle</th><td>0</td></tr>\n<tr><th scope=\"row\">Square</th><td>2</td></tr>\n<tr><th scope=\"row\">Triangle</th><td>0</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>2</td></tr>\n</tbody></table>",
+      "answer": "1",
+      "answerCanonical": {
+        "num": 1,
+        "den": 1
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count favourable and total outcomes",
+          "intermediateResult": "2 favourable out of 2"
+        },
+        {
+          "number": 2,
+          "transformation": "Write as a fraction in simplest form",
+          "intermediateResult": "1"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Contents of a set of cards.",
+        "dataTable": {
+          "columns": [
+            "Type",
+            "How many"
+          ],
+          "rows": [
+            [
+              "Star",
+              "0"
+            ],
+            [
+              "Circle",
+              "0"
+            ],
+            [
+              "Square",
+              "2"
+            ],
+            [
+              "Triangle",
+              "0"
+            ],
+            [
+              "Total",
+              "2"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.125,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.4,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0.667,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "probability-in-range",
+        "probability-reduced",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
+          "title": "Leaves the fraction unsimplified",
+          "observableError": "Writes a correct but unsimplified fraction.",
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(104,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
+      "task": "range_from_list",
+      "interaction": "free-response",
+      "answerType": "integer",
+      "seed": 166,
+      "params": {
+        "task": "range_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Numbers of pets",
+          "unit": "values",
+          "values": [
+            6,
+            6,
+            6
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Numbers of pets",
+        "unit": "values",
+        "values": [
+          6,
+          6,
+          6
+        ]
+      },
+      "prompt": "Work out the range of the data.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Numbers of pets</caption>\n<tbody><tr>\n<td>6</td>\n<td>6</td>\n<td>6</td>\n</tr></tbody></table>",
+      "answer": "0",
+      "answerCanonical": 0,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Identify the largest and smallest values",
+          "intermediateResult": "largest 6, smallest 6"
+        },
+        {
+          "number": 2,
+          "transformation": "Subtract",
+          "intermediateResult": "6 \u2212 6 = 0"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A list of values titled Numbers of pets.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "6"
+            ],
+            [
+              "6"
+            ],
+            [
+              "6"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 1,
+        "axes": {
+          "numericalComplexity": 0.1,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.2,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(166,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
+      "task": "single_event_probability",
+      "interaction": "free-response",
+      "answerType": "fraction",
+      "seed": 228,
+      "params": {
+        "task": "single_event_probability",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Contents of a set of cards",
+          "unit": "card",
+          "categories": [
+            "Star",
+            "Circle"
+          ],
+          "frequencies": [
+            6,
+            6
+          ]
+        },
+        "itemNoun": "card",
+        "context": "One card is chosen at random from a set of cards containing the cards shown (each card is equally likely).",
+        "outcomeSpace": {
+          "favourable": 6,
+          "total": 12,
+          "targetCategoryIndex": 1
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Contents of a set of cards",
+        "unit": "card",
+        "categories": [
+          "Star",
+          "Circle"
+        ],
+        "frequencies": [
+          6,
+          6
+        ]
+      },
+      "prompt": "One card is chosen at random from a set of cards containing the cards shown (each card is equally likely). What is the probability that the card chosen is Circle? Give your answer as a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Contents of a set of cards</caption>\n<thead><tr><th scope=\"col\">Type</th><th scope=\"col\">How many</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Star</th><td>6</td></tr>\n<tr><th scope=\"row\">Circle</th><td>6</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>12</td></tr>\n</tbody></table>",
+      "answer": "1/2",
+      "answerCanonical": {
+        "num": 1,
+        "den": 2
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count favourable and total outcomes",
+          "intermediateResult": "6 favourable out of 12"
+        },
+        {
+          "number": 2,
+          "transformation": "Write as a fraction in simplest form",
+          "intermediateResult": "1/2"
+        }
+      ],
+      "distractors": [],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Contents of a set of cards.",
+        "dataTable": {
+          "columns": [
+            "Type",
+            "How many"
+          ],
+          "rows": [
+            [
+              "Star",
+              "6"
+            ],
+            [
+              "Circle",
+              "6"
+            ],
+            [
+              "Total",
+              "12"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 3,
+        "axes": {
+          "numericalComplexity": 0.85,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.4,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "valid",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "probability-in-range",
+        "probability-reduced",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid"
+      ],
+      "pitfalls": [
+        {
+          "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
+          "title": "Leaves the fraction unsimplified",
+          "observableError": "Writes a correct but unsimplified fraction.",
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+        }
+      ],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(228,{'interactionType':'free-response'})))\""
+    }
+  ]
+}

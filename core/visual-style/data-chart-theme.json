@@ -1,0 +1,25 @@
+{
+  "schema": "spi-math-data-chart-theme/1",
+  "extends": "spi-math-cartesian-theme/1",
+  "description": "ADDITIVE per-root presentation theme for gen.stats.data-handling figures (bar charts, pictograms, line graphs). It REUSES the approved cartesian-theme: the same cx-figure root isolation, the same shared axis/tick/grid/line/point/text CSS custom properties, and the same presentationSvg()/exportSvg() materialised-export contract — the coordinate-lines v1.0.2 visual contract is NOT modified. It ADDS variables + one additive common ruleset for statistics primitives (chart bars, pictogram symbols, category labels, axis-title labels, key labels). Colour never carries meaning alone: every bar/category/series is also labelled on the axis, and the monochrome 'print' mode is the colour-free authoritative rendering.",
+  "variables": ["--cx-bar-fill", "--cx-bar-stroke", "--cx-symbol-fill", "--cx-symbol-stroke", "--cx-catlbl", "--cx-axislbl", "--cx-keylbl"],
+  "modes": {
+    "print": {
+      "--cx-bar-fill": "#bbbbbb", "--cx-bar-stroke": "#111111", "--cx-symbol-fill": "#555555", "--cx-symbol-stroke": "#111111",
+      "--cx-catlbl": "#111111", "--cx-axislbl": "#111111", "--cx-keylbl": "#111111"
+    },
+    "premium": {
+      "--cx-bar-fill": "#3b82f6", "--cx-bar-stroke": "#1e3a8a", "--cx-symbol-fill": "#6366f1", "--cx-symbol-stroke": "#312e81",
+      "--cx-catlbl": "#111827", "--cx-axislbl": "#111827", "--cx-keylbl": "#111827"
+    },
+    "premium-dark": {
+      "--cx-bar-fill": "#60a5fa", "--cx-bar-stroke": "#bfdbfe", "--cx-symbol-fill": "#a5b4fc", "--cx-symbol-stroke": "#e0e7ff",
+      "--cx-catlbl": "#e5e7eb", "--cx-axislbl": "#e5e7eb", "--cx-keylbl": "#e5e7eb"
+    },
+    "accessible": {
+      "--cx-bar-fill": "#0072b2", "--cx-bar-stroke": "#000000", "--cx-symbol-fill": "#009e73", "--cx-symbol-stroke": "#000000",
+      "--cx-catlbl": "#000000", "--cx-axislbl": "#000000", "--cx-keylbl": "#000000"
+    }
+  },
+  "commonCss": ".cx-figure .cx-bar{fill:var(--cx-bar-fill);stroke:var(--cx-bar-stroke);stroke-width:2}.cx-figure .cx-symbol{fill:var(--cx-symbol-fill);stroke:var(--cx-symbol-stroke);stroke-width:1.5}.cx-figure .cx-catlbl{font-size:20px;fill:var(--cx-catlbl)}.cx-figure .cx-axislbl{font-size:22px;fill:var(--cx-axislbl)}.cx-figure .cx-keylbl{font-size:20px;fill:var(--cx-keylbl)}"
+}
