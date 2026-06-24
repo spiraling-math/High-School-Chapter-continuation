@@ -41,7 +41,7 @@ if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
 from seeded_random import Mulberry32  # noqa: E402
-from difficulty import band_from_score, round3  # noqa: E402
+from difficulty import band_from_score, round3, clamp01  # noqa: E402
 from data_handling_misconceptions import MISCONCEPTIONS, rules_for, adapter_for  # noqa: E402
 
 GENERATOR_ID = "gen.stats.data-handling"
@@ -517,7 +517,7 @@ def _encode_answer(task: str, params: Dict[str, Any], correct: Any) -> Dict[str,
     if kind == "fraction":
         f = correct
         return {"type": "fraction", "canonical": enc_rat(f), "display": disp_rat(f),
-                "accepts": {"decimal": False, "mustBeReduced": True}}
+                "accepts": {"fraction": False, "decimal": False, "mixed": False}}
     if kind == "table-completion":
         blank = params["blank"]
         loc = "Total" if blank["kind"] == "total" else params["dataset"]["categories"][blank["index"]]
@@ -546,51 +546,86 @@ _WEIGHTS = {
 
 
 def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    """Feature-driven difficulty (owner M). Axes vary with the concrete instance so every
+    declared band is reachable; scaffolding is carried ONLY by the scaffolding axis, never
+    folded into reasoningSteps. Ranges/weights are provisional pending the distribution
+    report. Bands: band = 1 + floor(score*5); clamped into the objective's declared range."""
     ds = params["dataset"]
-    n = len(ds.get("categories") or ds.get("values") or [])
     scaffold = bool(params.get("scaffold", False))
     axes: Dict[str, float] = {k: 0.0 for k in _WEIGHTS}
-    axes["informationDensity"] = round3(min(1.0, n / 6))
-    axes["scaffolding"] = 0.2 if scaffold else 0.6   # less scaffolding => harder
-    if task in ("read_bar_chart", "read_pictogram", "read_table_value", "read_line_graph"):
-        axes["readingDemand"] = 0.5
-        axes["interpretationDemand"] = 0.35
-        axes["numericalComplexity"] = 0.2
-        axes["reasoningSteps"] = 0.2
-        if task == "read_pictogram":
-            axes["numericalComplexity"] = 0.45 if ds.get("pictogramKey", 1) > 1 else 0.25
-            axes["interpretationDemand"] = 0.5
+    axes["scaffolding"] = 0.1 if scaffold else 0.5
+
+    if task in ("read_bar_chart", "read_table_value", "read_line_graph"):
+        vals = ds.get("values") or ds["frequencies"]
+        n = len(vals)
+        axes["numericalComplexity"] = min(1.0, max(vals) / 50)
+        axes["readingDemand"] = 0.15 + 0.05 * (n - 3)
+        axes["interpretationDemand"] = {"read_bar_chart": 0.15, "read_table_value": 0.1, "read_line_graph": 0.2}[task]
+        axes["reasoningSteps"] = 0.1
+        denom0 = 5 if task == "read_line_graph" else 3
+        axes["informationDensity"] = min(1.0, max(0, n - denom0) / 3)
+    elif task == "read_pictogram":
+        freqs, key = ds["frequencies"], ds["pictogramKey"]
+        n = len(freqs)
+        anyhalf = any((f % key) == (key // 2) and key % 2 == 0 for f in freqs)
+        axes["numericalComplexity"] = {2: 0.2, 5: 0.4, 10: 0.5}[key] + (0.1 if anyhalf else 0.0)
+        axes["readingDemand"] = 0.15 + 0.05 * (n - 3)
+        axes["interpretationDemand"] = 0.25
+        axes["reasoningSteps"] = 0.15
+        axes["informationDensity"] = min(1.0, (n - 3) / 3)
     elif task == "complete_frequency_table":
-        axes["readingDemand"] = 0.5
-        axes["reasoningSteps"] = 0.4
-        axes["numericalComplexity"] = 0.45
-        axes["interpretationDemand"] = 0.4
-    elif task in ("mode_from_list", "range_from_list"):
-        axes["numericalComplexity"] = 0.3
-        axes["reasoningSteps"] = 0.3
+        freqs = ds["frequencies"]
+        n = len(freqs)
+        axes["numericalComplexity"] = min(1.0, sum(freqs) / 60)
+        axes["readingDemand"] = 0.25 + 0.05 * (n - 3)
         axes["interpretationDemand"] = 0.3
-        axes["readingDemand"] = 0.3
+        axes["reasoningSteps"] = 0.3
+        axes["informationDensity"] = min(1.0, (n - 3) / 3)
+    elif task in ("mode_from_list", "range_from_list"):
+        vals = ds["values"]
+        n = len(vals)
+        spread = (max(vals) - min(vals))
+        axes["numericalComplexity"] = min(0.45, 0.1 + spread / 60)
+        axes["readingDemand"] = 0.2
+        axes["interpretationDemand"] = 0.2
+        axes["reasoningSteps"] = 0.2
+        denom = 4 if task == "range_from_list" else 5
+        axes["informationDensity"] = min(1.0, max(0, n - denom) / 3)
     elif task in ("mean_from_list", "median_from_list"):
         f = _solve(task, params)
-        axes["numericalComplexity"] = 0.55 if (isinstance(f, Fraction) and f.denominator > 1) else 0.4
-        axes["reasoningSteps"] = 0.5
-        axes["interpretationDemand"] = 0.35
-        axes["readingDemand"] = 0.3
+        n = len(ds["values"])
+        frac = isinstance(f, Fraction) and f.denominator > 1
+        axes["numericalComplexity"] = 0.3 + (0.25 if frac else 0.0)
+        axes["readingDemand"] = 0.2
+        axes["interpretationDemand"] = 0.3
+        axes["reasoningSteps"] = 0.35
+        axes["informationDensity"] = min(1.0, (n - 3) / 3)
     elif task == "mean_from_freq_table":
-        axes["numericalComplexity"] = 0.7
-        axes["reasoningSteps"] = 0.65
-        axes["interpretationDemand"] = 0.5
-        axes["readingDemand"] = 0.45
-    elif task == "single_event_probability":
-        axes["numericalComplexity"] = 0.5
-        axes["reasoningSteps"] = 0.45
+        f = _solve(task, params)
+        n = len(ds["categories"])
+        frac = isinstance(f, Fraction) and f.denominator > 1
+        axes["numericalComplexity"] = 0.55 + (0.25 if frac else 0.0)
+        axes["readingDemand"] = 0.4 + 0.05 * (n - 3)
         axes["interpretationDemand"] = 0.55
-        axes["readingDemand"] = 0.4
+        axes["reasoningSteps"] = 0.7
+        axes["informationDensity"] = min(1.0, (n - 3) / 3)
+    elif task == "single_event_probability":
+        os_ = params["outcomeSpace"]
+        n = len(ds["categories"])
+        f = _solve(task, params)
+        reduces = f.denominator != os_["total"] and f not in (Fraction(0), Fraction(1))
+        axes["numericalComplexity"] = min(1.0, os_["total"] / 16) + (0.1 if reduces else 0.0)
+        axes["readingDemand"] = 0.25
+        axes["interpretationDemand"] = 0.4
+        axes["reasoningSteps"] = 0.35
+        axes["informationDensity"] = min(1.0, (n - 2) / 3)
+
+    axes = {k: clamp01(v) for k, v in axes.items()}
     score = sum(_WEIGHTS[k] * axes[k] for k in _WEIGHTS)
     band = band_from_score(score)
     lo, hi = TASK_BANDS[task]
     band = max(lo, min(hi, band))
-    return {"overallBand": band, "axes": {k: round3(v) for k, v in axes.items()}, "score": round3(score)}
+    return {"overallBand": band, "axes": {k: round3(v) for k, v in axes.items()}}
 
 
 # --------------------------------------------------------------------------- #
@@ -606,6 +641,39 @@ def _data_rows(ds: Dict[str, Any], task: str) -> str:
         return "; ".join(f"value {v} occurs {f}" for v, f in zip(ds["categories"], ds["frequencies"]))
     pairs = zip(ds["categories"], ds["frequencies"])
     return "; ".join(f"{k}: {v}" for k, v in pairs)
+
+
+def _data_table_obj(task: str, ds: Dict[str, Any]) -> Dict[str, Any]:
+    """Accessible structured equivalent of the figure/table (owner F/L).
+
+    For COMPUTED tasks the rows are the raw input data (allowed). For pictograms the
+    rows describe the SYMBOLS shown, not the computed value (owner G)."""
+    if task == "read_line_graph":
+        return {"columns": ["Position", "Value"],
+                "rows": [[lab, str(v)] for lab, v in zip(ds["seriesLabels"], ds["values"])]}
+    if task in ("mean_from_list", "median_from_list", "mode_from_list", "range_from_list"):
+        return {"columns": ["Value"], "rows": [[str(v)] for v in ds["values"]]}
+    if task == "mean_from_freq_table":
+        return {"columns": ["Value", "Frequency"],
+                "rows": [[str(v), str(f)] for v, f in zip(ds["categories"], ds["frequencies"])]}
+    if task == "read_pictogram":
+        key = ds["pictogramKey"]
+        rows = []
+        for cat, fr in zip(ds["categories"], ds["frequencies"]):
+            whole = fr // key
+            half = (fr % key) == (key // 2) and key % 2 == 0
+            rows.append([cat, f"{whole}" + (" and a half" if half else "") + " symbol(s)"])
+        return {"columns": ["Category", f"Symbols (1 symbol = {key} {ds['unit']})"], "rows": rows}
+    if task == "single_event_probability":
+        rows = [[cat, str(fr)] for cat, fr in zip(ds["categories"], ds["frequencies"])]
+        rows.append(["Total", str(sum(ds["frequencies"]))])
+        return {"columns": ["Type", "How many"], "rows": rows}
+    # bar chart / frequency table value / complete frequency table
+    blank = None
+    rows = []
+    for i, (cat, fr) in enumerate(zip(ds["categories"], ds["frequencies"])):
+        rows.append([cat, str(fr)])
+    return {"columns": ["Category", "Frequency"], "rows": rows}
 
 
 def _accessibility(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
@@ -633,7 +701,8 @@ def _accessibility(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         alt = f"Data list: {title}."
         spoken = f"A list of values titled {title}."
         data_table = f"List data — {_data_rows(ds, task)}."
-    return {"title": title, "alt": alt, "desc": spoken, "spoken": spoken, "dataTable": data_table}
+    return {"title": title, "alt": alt, "desc": spoken, "spoken": spoken,
+            "dataTable": _data_table_obj(task, ds)}
 
 
 # --------------------------------------------------------------------------- #
@@ -643,8 +712,7 @@ def _prompt(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     ds = params["dataset"]
     has_fig = task in SVG_TASKS or task in TABLE_TASKS
     blocks: List[Dict[str, Any]] = []
-    if task in SVG_TASKS or task in ("read_table_value", "complete_frequency_table", "mean_from_freq_table", "single_event_probability") or task in ("mean_from_list", "median_from_list", "mode_from_list", "range_from_list"):
-        blocks.append({"ref": "fig-1"})
+    blocks.append({"kind": "media-ref", "ref": "fig-1"})
     if task in ("read_bar_chart", "read_table_value"):
         cat = ds["categories"][params["queryIndex"]]
         instr = f"How many {ds['unit']} are in the category “{cat}”?"
@@ -670,7 +738,7 @@ def _prompt(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         ctx = params["context"]
         tgt = ds["categories"][params["outcomeSpace"]["targetCategoryIndex"]]
         instr = f"{ctx} What is the probability that the {params['itemNoun']} chosen is {tgt}? Give your answer as a fraction in its simplest form."
-    blocks.append({"text": instr})
+    blocks.append({"kind": "text", "text": instr})
     return {"blocks": blocks, "instruction": instr}
 
 
@@ -727,7 +795,7 @@ def _solution(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         os_ = params["outcomeSpace"]
         step("Count favourable and total outcomes", f"{os_['favourable']} favourable out of {os_['total']}")
         step("Write as a fraction in simplest form", disp_rat(correct))
-    return {"steps": steps, "answer": _encode_answer(task, params, correct)["display"]}
+    return {"steps": steps}
 
 
 # --------------------------------------------------------------------------- #
@@ -785,7 +853,7 @@ def _draw_read_pictogram(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     ds = {"kind": "frequency", "title": title, "unit": unit, "categories": cats,
           "frequencies": freqs, "pictogramKey": key}
     qi = _n(rng, n)
-    return {"task": "read_pictogram", "dataset": ds, "queryIndex": qi, "scaffold": False}
+    return {"task": "read_pictogram", "dataset": ds, "queryIndex": qi, "scaffold": _n(rng, 2) == 0}
 
 
 def _draw_read_table_value(rng: Mulberry32) -> Optional[Dict[str, Any]]:
@@ -803,7 +871,7 @@ def _draw_read_line_graph(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     vals = [lo + _n(rng, hi - lo + 1) for _ in range(n)]
     ds = {"kind": "list", "title": title, "unit": unit, "seriesLabels": pool[:n], "values": vals}
     qi = _n(rng, n)
-    return {"task": "read_line_graph", "dataset": ds, "queryIndex": qi, "scaffold": False}
+    return {"task": "read_line_graph", "dataset": ds, "queryIndex": qi, "scaffold": _n(rng, 2) == 0}
 
 
 def _draw_complete_frequency_table(rng: Mulberry32) -> Optional[Dict[str, Any]]:
@@ -857,7 +925,7 @@ def _draw_mode_from_list(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     if len(top) < 2 or top[0][1] == top[1][1]:
         return None  # not a unique mode -> redraw
     ds = {"kind": "list", "title": _pick_theme(rng, _LIST_THEMES)[0], "unit": "values", "values": vals}
-    return {"task": "mode_from_list", "dataset": ds, "scaffold": False}
+    return {"task": "mode_from_list", "dataset": ds, "scaffold": _n(rng, 2) == 0}
 
 
 def _draw_range_from_list(rng: Mulberry32) -> Optional[Dict[str, Any]]:
@@ -868,12 +936,12 @@ def _draw_range_from_list(rng: Mulberry32) -> Optional[Dict[str, Any]]:
         ds = {"kind": "list", "title": _pick_theme(rng, _LIST_THEMES)[0], "unit": "values", "values": [v] * n}
     else:
         ds = _draw_list(rng, 1, 30, 4, 7)
-    return {"task": "range_from_list", "dataset": ds, "scaffold": False}
+    return {"task": "range_from_list", "dataset": ds, "scaffold": _n(rng, 2) == 0}
 
 
 def _draw_mean_from_freq_table(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     title, unit = _pick_theme(rng, _LIST_THEMES)
-    n = 3 + _n(rng, 3)
+    n = 3 + _n(rng, 4)
     base = _n(rng, 3)
     values = [base + i for i in range(n)]
     freqs = [1 + _n(rng, 6) for _ in range(n)]
@@ -1040,8 +1108,9 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
                       "dataTableFallback": acc["dataTable"], "spec": {"premium": _premium_spec(task, params)}})
     else:
         html = _table_html(task, params, reveal=False)
-        media.append({"id": "fig-1", "kind": "html-table", "html": html, "toScale": True,
-                      "altText": acc["alt"], "longDescription": acc["spoken"],
+        media.append({"id": "fig-1", "kind": "table",
+                      "spec": {"format": "semantic-html", "html": html},
+                      "toScale": True, "altText": acc["alt"], "longDescription": acc["spoken"],
                       "dataTableFallback": acc["dataTable"]})
     item["media"] = media
 
@@ -1147,12 +1216,13 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             stored_spec = (m.get("spec") or {}).get("premium")
             add("premium-spec-parity", stored_spec == _premium_spec(task, params), "premium spec recomputed byte-for-byte")
         else:
-            add("media-kind", m.get("kind") == "html-table", str(m.get("kind")))
+            add("media-kind", m.get("kind") == "table", str(m.get("kind")))
+            stored_html = (m.get("spec") or {}).get("html", "")
             rebuilt_html = _table_html(task, params, reveal=False)
-            add("html-table-realises-data", rebuilt_html == m.get("html"), "recomputed HTML table matches stored table byte-for-byte")
-            add("table-round-trip", _table_round_trip(task, params, m.get("html", "")), "table cells round-trip to the dataset")
+            add("html-table-realises-data", rebuilt_html == stored_html, "recomputed HTML table matches stored table byte-for-byte")
+            add("table-round-trip", _table_round_trip(task, params, stored_html), "table cells round-trip to the dataset")
             if task == "complete_frequency_table":
-                html = m.get("html") or ""
+                html = stored_html
                 # Structural check only: exactly one blank input cell. Raw data that
                 # coincidentally equals the missing value is NOT leakage (owner L).
                 add("blank-cell-blank-in-student",
@@ -1256,7 +1326,7 @@ def _no_derived_statistic(task: str, params: Dict[str, Any], media: List[Dict[st
     # The computed result must not be PRINTED as a dedicated annotation. Raw data equal to
     # the answer is allowed (owner L); we only forbid a result-bearing annotation class.
     for m in media:
-        blob = m.get("svg") or m.get("html") or ""
+        blob = m.get("svg") or (m.get("spec") or {}).get("html") or ""
         if 'class="cx-answer"' in blob or 'data-answer' in blob or 'class="cx-result"' in blob:
             return False
     return True
@@ -1264,7 +1334,7 @@ def _no_derived_statistic(task: str, params: Dict[str, Any], media: List[Dict[st
 
 def _no_solution_overlay(media: List[Dict[str, Any]]) -> bool:
     for m in media:
-        blob = m.get("svg") or m.get("html") or ""
+        blob = m.get("svg") or (m.get("spec") or {}).get("html") or ""
         if 'class="cx-solution"' in blob or "Solution:" in blob or 'data-reveal="1"' in blob:
             return False
     return True

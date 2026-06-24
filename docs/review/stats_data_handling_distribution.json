@@ -1,0 +1,417 @@
+{
+  "generatorId": "gen.stats.data-handling",
+  "generatorVersion": "1.0.0",
+  "sweepSeeds": 10000,
+  "modes": [
+    "free-response",
+    "multiple-choice"
+  ],
+  "invalid": 0,
+  "tasks": {
+    "read_bar_chart": {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "items": 1364,
+      "freeResponse": 896,
+      "multipleChoice": 468,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 393,
+        "2": 971
+      },
+      "bandPct": {
+        "1": 28.8,
+        "2": 71.2
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "integer": 1364
+      },
+      "integerResults": 1364,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 684,
+      "unscaffolded": 680,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 5.301,
+      "maxDrawAttemptsMC": 39
+    },
+    "read_pictogram": {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+      "items": 1487,
+      "freeResponse": 925,
+      "multipleChoice": 562,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 110,
+        "2": 1377
+      },
+      "bandPct": {
+        "1": 7.4,
+        "2": 92.6
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [
+        2
+      ],
+      "answerTypes": {
+        "integer": 1487
+      },
+      "integerResults": 1487,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 750,
+      "unscaffolded": 737,
+      "wholePictograms": 342,
+      "halfPictograms": 1145,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 3.828,
+      "maxDrawAttemptsMC": 25
+    },
+    "read_table_value": {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
+      "items": 1832,
+      "freeResponse": 900,
+      "multipleChoice": 932,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 139,
+        "2": 1693
+      },
+      "bandPct": {
+        "1": 7.6,
+        "2": 92.4
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [
+        2
+      ],
+      "answerTypes": {
+        "integer": 1832
+      },
+      "integerResults": 1832,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 0,
+      "unscaffolded": 1832,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 2.296,
+      "maxDrawAttemptsMC": 14
+    },
+    "read_line_graph": {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+      "items": 1367,
+      "freeResponse": 935,
+      "multipleChoice": 432,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 541,
+        "2": 826
+      },
+      "bandPct": {
+        "1": 39.6,
+        "2": 60.4
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "integer": 1367
+      },
+      "integerResults": 1367,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 665,
+      "unscaffolded": 702,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 5.213,
+      "maxDrawAttemptsMC": 35
+    },
+    "complete_frequency_table": {
+      "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
+      "items": 894,
+      "freeResponse": 894,
+      "multipleChoice": 0,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 401,
+        "3": 493
+      },
+      "bandPct": {
+        "2": 44.9,
+        "3": 55.1
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "table-completion": 894
+      },
+      "integerResults": 894,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 0,
+      "unscaffolded": 894,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": null,
+      "avgDrawAttemptsMC": null,
+      "maxDrawAttemptsMC": null
+    },
+    "mean_from_list": {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+      "items": 3098,
+      "freeResponse": 965,
+      "multipleChoice": 2133,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 2149,
+        "3": 949
+      },
+      "bandPct": {
+        "2": 69.4,
+        "3": 30.6
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "exact-rational": 2372,
+        "integer": 726
+      },
+      "integerResults": 726,
+      "rationalResults": 2372,
+      "oddListLengths": 1555,
+      "evenListLengths": 1543,
+      "scaffolded": 1525,
+      "unscaffolded": 1573,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 1.035,
+      "maxDrawAttemptsMC": 3
+    },
+    "median_from_list": {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "items": 1385,
+      "freeResponse": 850,
+      "multipleChoice": 535,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 1113,
+        "3": 272
+      },
+      "bandPct": {
+        "2": 80.4,
+        "3": 19.6
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "integer": 877,
+        "exact-rational": 508
+      },
+      "integerResults": 877,
+      "rationalResults": 508,
+      "oddListLengths": 422,
+      "evenListLengths": 963,
+      "scaffolded": 0,
+      "unscaffolded": 1385,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 4.028,
+      "maxDrawAttemptsMC": 29
+    },
+    "mode_from_list": {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
+      "items": 978,
+      "freeResponse": 888,
+      "multipleChoice": 90,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 249,
+        "2": 729
+      },
+      "bandPct": {
+        "1": 25.5,
+        "2": 74.5
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "integer": 978
+      },
+      "integerResults": 978,
+      "rationalResults": 0,
+      "oddListLengths": 651,
+      "evenListLengths": 327,
+      "scaffolded": 483,
+      "unscaffolded": 495,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 21.236,
+      "maxDrawAttemptsMC": 141
+    },
+    "range_from_list": {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
+      "items": 2420,
+      "freeResponse": 923,
+      "multipleChoice": 1497,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 166,
+        "2": 2254
+      },
+      "bandPct": {
+        "1": 6.9,
+        "2": 93.1
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [
+        2
+      ],
+      "answerTypes": {
+        "integer": 2420
+      },
+      "integerResults": 2420,
+      "rationalResults": 0,
+      "oddListLengths": 1275,
+      "evenListLengths": 1145,
+      "scaffolded": 1194,
+      "unscaffolded": 1226,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 1.511,
+      "maxDrawAttemptsMC": 7
+    },
+    "mean_from_freq_table": {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
+      "items": 2908,
+      "freeResponse": 909,
+      "multipleChoice": 1999,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 737,
+        "4": 2171
+      },
+      "bandPct": {
+        "3": 25.3,
+        "4": 74.7
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "exact-rational": 2755,
+        "integer": 153
+      },
+      "integerResults": 153,
+      "rationalResults": 2755,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 0,
+      "unscaffolded": 2908,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 0,
+      "probabilityInterior": 0,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 1.174,
+      "maxDrawAttemptsMC": 5
+    },
+    "single_event_probability": {
+      "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
+      "items": 2267,
+      "freeResponse": 915,
+      "multipleChoice": 1352,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 695,
+        "3": 1572
+      },
+      "bandPct": {
+        "2": 30.7,
+        "3": 69.3
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "answerTypes": {
+        "fraction": 2267
+      },
+      "integerResults": 2267,
+      "rationalResults": 0,
+      "oddListLengths": 0,
+      "evenListLengths": 0,
+      "scaffolded": 0,
+      "unscaffolded": 2267,
+      "wholePictograms": 0,
+      "halfPictograms": 0,
+      "probabilityEndpoint": 239,
+      "probabilityInterior": 2028,
+      "avgDrawAttemptsFR": 1.0,
+      "avgDrawAttemptsMC": 1.675,
+      "maxDrawAttemptsMC": 9
+    }
+  }
+}
