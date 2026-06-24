@@ -1,10 +1,10 @@
 {
   "schema": "spi-math-coordinate-lines-manifest/1",
   "generatorId": "gen.geometry.coordinate-lines",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
-  "gitCommit": "dcbea066d500ae550fe30ba849c7305d3baf74eb",
-  "generatedAt": "2026-06-23T19:58:23+00:00",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
+  "gitCommit": "7bed7c598322471fc88bdf39bb582e9cb9dd7b72",
+  "generatedAt": "2026-06-24T07:01:40+00:00",
   "pngExport": {
     "maxEnvelope": "7680x4320",
     "scale": 6,
@@ -19,14 +19,14 @@
     "python oracle/make_coordinate_lines_manifest.py        # this manifest"
   ],
   "sha256": {
-    "reviewPackMd": "586f1cd1bd327b8f5850d7c257e03702cc352c82c7982879787325eedfe8485f",
-    "reviewPackJson": "0f6583d8eec38a5bbbc2fd14c2d349f61ec61e471760290b8aecd65125557c43",
-    "visualAudit": "af7fde7507a25492137b88a0b3d8f8c47fce1a6f26a2893dfcd3a3eabe092e55",
-    "goldenFixture": "eafbcf3388dd3ffbd7722b0962f950bd7b6276b85fe32d3407f4801993c56e7b",
-    "parityFixture": "4e07e1642061018842256d7c8e460223b89eab8a6bcd5f7942465882f911c412",
-    "distributionReport": "f42c02c3be290f55425ff9418ff1f869f0d23c8df08b36f13bda8d3c4fc027f3",
+    "reviewPackMd": "0807159a71d9da2f0eb388a3cb97f0ebb49e91697d0f2b69d257662d539b296d",
+    "reviewPackJson": "5bff9ddf43c90d97c4f10d9be113cef5dbd2f43c3f27e1993e0fcacc9e7f9cb7",
+    "visualAudit": "408dd240946bddc95202200d820d07a85c891d5ada02d2704c68d681fc6a19c6",
+    "goldenFixture": "0de56f57ad629f3cc934fb4f03f81da172d64fc6b4e1745b56174b9aaef8adc4",
+    "parityFixture": "09bbd55a68d343900f57fea9d1e82e6d8a2e253225ffa4db3cd6ac7b330e772e",
+    "distributionReport": "ef31c81bb0038446af8d686a5f9912cbd816d259eaaefa306a031c0a1cbd0142",
     "hiresSample": "392db6fd83b3b355fc1ec796fe80e333a1291237abbdd31900e484108799c003"
   },
-  "sha256SvgDir": "b6f7d91d764a8e26a348b9ebfaf75ece87d0138e4b2df0753d7bdffc3b82e56a",
-  "svgCount": 29
+  "sha256SvgDir": "6bec5be76c2a65ec670ed3950b5e0150c37a4a920d5e06e69e54f936328e613c",
+  "svgCount": 25
 }

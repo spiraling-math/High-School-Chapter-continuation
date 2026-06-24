@@ -35,10 +35,11 @@ test("audit commit equals the manifest build commit", { skip: !have }, () => {
   assert.match(String(com), /^[0-9a-f]{7,40}$/);
 });
 
-test("no other generator version text in the artifacts", { skip: !have }, () => {
+test("artifacts state the current version and no other generator version", { skip: !have }, () => {
   for (const p of [AUDIT, PACK_MD]) {
     const txt = readText(p);
-    for (const stale of ["1.0.1", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"]) assert.ok(!txt.includes(stale), `${stale} in ${p}`);
+    assert.ok(txt.includes(GENERATOR_VERSION), `${p} must state the current version`);
+    for (const stale of ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"]) assert.ok(!txt.includes(stale), `${stale} in ${p}`);
   }
 });
 

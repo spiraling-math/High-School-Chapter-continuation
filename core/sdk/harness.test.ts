@@ -34,7 +34,7 @@ test("the registered generators are the expected set", () => {
     "gen.sequences.geometric@1.1.0",
     "gen.algebra.linear-equations@1.0.1",
     "gen.geometry.angles-figures@1.2.3",
-    "gen.geometry.coordinate-lines@1.0.0",
+    "gen.geometry.coordinate-lines@1.0.1",
   ]);
 });
 

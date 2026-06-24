@@ -2,11 +2,17 @@
 
 Last updated: 2026-06-23.
 
-## `gen.geometry.coordinate-lines` v1.0.0 — IMPLEMENTED oracle-first; PENDING-REVIEW (gated)
+## `gen.geometry.coordinate-lines` v1.0.1 — IMPLEMENTED; PENDING FINAL CURRICULUM REVIEW (gated)
 
 Coordinate geometry & straight-line graphs (Middle-School Geometry/Algebra bridge) — built
 oracle-first after the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec
-(`DECISION_LOG.md` #41). 7 tasks (read_point, plot_point [FR-only], gradient_two_points,
+(`DECISION_LOG.md` #41), then corrected to **v1.0.1** after the owner's curriculum-review
+**REVISE** (`DECISION_LOG.md` #42): the read_point worked-solution axis wording was corrected
+(+ a blocking explanation-semantic test), the review pack now de-duplicates and enforces full
+interaction + difficulty-band coverage with the CARTESIAN_PLANE objective + prerequisite
+graph, and the 10,000-seed distribution report was strengthened (per-task band %, FR-vs-MC,
+integer-vs-rational, gradient signs, scaffold counts, redraw/rejection rate). v1.0.0 is
+preserved unchanged (tag `coordinate-lines-v1.0.0`). 7 tasks (read_point, plot_point [FR-only], gradient_two_points,
 midpoint, interpret_mx_c, equation_from_graph, equation_from_two_points) 1:1 with 8
 objectives `SPI.MIDDLE.GEO.COORD.*` (incl. the foundational CARTESIAN_PLANE) in a new strand
 `coordinate-geometry-straight-line-graphs`. Exact-Fraction model; deterministic Cartesian
@@ -24,8 +30,8 @@ sweep 0 invalid; review pack (29 svgs, all 11 misconceptions, 0 leakage), visual
 premium gallery (3 modes + dark + stress test + zoom + 6000×4200 export), generation
 manifest + blocking artifact-integrity tests, reusable answer-checkers. Approved
 arithmetic/geometric/linear/geometry output byte-for-byte UNCHANGED. Items begin
-machine-validated; no auto-approval/publication. **Awaiting the owner's APPROVE / REVISE /
-REJECT of the implemented family.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
+machine-validated; no auto-approval/publication. **Awaiting the owner's APPROVE or REJECT of
+v1.0.1.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
 After this family, Statistics & Data Handling is the queued next proposal.
 
 ## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)

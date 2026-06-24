@@ -40,8 +40,8 @@ from difficulty import band_from_score, round3  # noqa: E402
 from coordinate_misconceptions import MISCONCEPTIONS, rules_for, adapter_for  # noqa: E402
 
 GENERATOR_ID = "gen.geometry.coordinate-lines"
-GENERATOR_VERSION = "1.0.0"
-VALIDATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
+VALIDATOR_VERSION = "1.0.1"
 CALCULATOR_POLICY = "calculator-not-required"
 
 TASKS = ("read_point", "plot_point", "gradient_two_points", "midpoint",
@@ -638,7 +638,10 @@ def _solution(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         steps.append({"number": n, "transformation": t, "intermediateResult": r})
 
     if task == "read_point":
-        step(1, "Read across to the y-axis for x, then up or down to the x-axis for y", disp_pt(Fraction(params["x"]), Fraction(params["y"])))
+        if params.get("scaffold"):
+            step(1, "Project the point vertically to the x-axis to read x, and horizontally to the y-axis to read y", disp_pt(Fraction(params["x"]), Fraction(params["y"])))
+        else:
+            step(1, "Read the horizontal position for the x-coordinate, then the vertical position for the y-coordinate. Write the coordinates as (x, y)", disp_pt(Fraction(params["x"]), Fraction(params["y"])))
     elif task == "plot_point":
         step(1, "Count along the x-axis, then up or down the y-axis, and mark the point", disp_pt(Fraction(params["x"]), Fraction(params["y"])))
     elif task == "gradient_two_points":

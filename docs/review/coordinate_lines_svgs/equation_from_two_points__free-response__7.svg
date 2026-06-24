@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.">
+<title>A line through two points</title>
+<desc>Point A is at (2, -1) and point B is at (6, -7), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
+<line class="cx-grid-minor" x1="262" y1="44" x2="262" y2="656"/>
+<line class="cx-grid-minor" x1="330" y1="44" x2="330" y2="656"/>
+<line class="cx-grid-minor" x1="398" y1="44" x2="398" y2="656"/>
+<line class="cx-grid-minor" x1="466" y1="44" x2="466" y2="656"/>
+<line class="cx-grid-minor" x1="534" y1="44" x2="534" y2="656"/>
+<line class="cx-grid-minor" x1="602" y1="44" x2="602" y2="656"/>
+<line class="cx-grid-minor" x1="670" y1="44" x2="670" y2="656"/>
+<line class="cx-grid-minor" x1="738" y1="44" x2="738" y2="656"/>
+<line class="cx-grid-minor" x1="228" y1="622" x2="772" y2="622"/>
+<line class="cx-grid-minor" x1="228" y1="554" x2="772" y2="554"/>
+<line class="cx-grid-minor" x1="228" y1="486" x2="772" y2="486"/>
+<line class="cx-grid-minor" x1="228" y1="418" x2="772" y2="418"/>
+<line class="cx-grid-minor" x1="228" y1="350" x2="772" y2="350"/>
+<line class="cx-grid-minor" x1="228" y1="282" x2="772" y2="282"/>
+<line class="cx-grid-minor" x1="228" y1="214" x2="772" y2="214"/>
+<line class="cx-grid-minor" x1="228" y1="146" x2="772" y2="146"/>
+<line class="cx-grid-minor" x1="228" y1="78" x2="772" y2="78"/>
+<line class="cx-grid-major" x1="228" y1="44" x2="228" y2="656"/>
+<line class="cx-grid-major" x1="364" y1="44" x2="364" y2="656"/>
+<line class="cx-grid-major" x1="432" y1="44" x2="432" y2="656"/>
+<line class="cx-grid-major" x1="500" y1="44" x2="500" y2="656"/>
+<line class="cx-grid-major" x1="568" y1="44" x2="568" y2="656"/>
+<line class="cx-grid-major" x1="636" y1="44" x2="636" y2="656"/>
+<line class="cx-grid-major" x1="704" y1="44" x2="704" y2="656"/>
+<line class="cx-grid-major" x1="772" y1="44" x2="772" y2="656"/>
+<line class="cx-grid-major" x1="228" y1="656" x2="772" y2="656"/>
+<line class="cx-grid-major" x1="228" y1="588" x2="772" y2="588"/>
+<line class="cx-grid-major" x1="228" y1="520" x2="772" y2="520"/>
+<line class="cx-grid-major" x1="228" y1="452" x2="772" y2="452"/>
+<line class="cx-grid-major" x1="228" y1="384" x2="772" y2="384"/>
+<line class="cx-grid-major" x1="228" y1="316" x2="772" y2="316"/>
+<line class="cx-grid-major" x1="228" y1="248" x2="772" y2="248"/>
+<line class="cx-grid-major" x1="228" y1="180" x2="772" y2="180"/>
+<line class="cx-grid-major" x1="228" y1="44" x2="772" y2="44"/>
+<line class="cx-axis" x1="228" y1="112" x2="772" y2="112"/>
+<line class="cx-axis" x1="296" y1="656" x2="296" y2="44"/>
+<path class="cx-axis" d="M 760 105 L 772 112 L 760 119"/>
+<path class="cx-axis" d="M 289 56 L 296 44 L 303 56"/>
+<text class="cx-lbl" x="768" y="142" text-anchor="end">x</text>
+<text class="cx-lbl" x="308" y="50" text-anchor="start">y</text>
+<line class="cx-tick" x1="228" y1="106" x2="228" y2="118"/>
+<text class="cx-ticklbl" x="228" y="138" text-anchor="middle">-1</text>
+<line class="cx-tick" x1="364" y1="106" x2="364" y2="118"/>
+<text class="cx-ticklbl" x="364" y="138" text-anchor="middle">1</text>
+<line class="cx-tick" x1="432" y1="106" x2="432" y2="118"/>
+<text class="cx-ticklbl" x="432" y="138" text-anchor="middle">2</text>
+<line class="cx-tick" x1="500" y1="106" x2="500" y2="118"/>
+<text class="cx-ticklbl" x="500" y="138" text-anchor="middle">3</text>
+<line class="cx-tick" x1="568" y1="106" x2="568" y2="118"/>
+<text class="cx-ticklbl" x="568" y="138" text-anchor="middle">4</text>
+<line class="cx-tick" x1="636" y1="106" x2="636" y2="118"/>
+<text class="cx-ticklbl" x="636" y="138" text-anchor="middle">5</text>
+<line class="cx-tick" x1="704" y1="106" x2="704" y2="118"/>
+<text class="cx-ticklbl" x="704" y="138" text-anchor="middle">6</text>
+<line class="cx-tick" x1="772" y1="106" x2="772" y2="118"/>
+<text class="cx-ticklbl" x="772" y="138" text-anchor="middle">7</text>
+<line class="cx-tick" x1="290" y1="656" x2="302" y2="656"/>
+<text class="cx-ticklbl" x="284" y="663" text-anchor="end">-8</text>
+<line class="cx-tick" x1="290" y1="588" x2="302" y2="588"/>
+<text class="cx-ticklbl" x="284" y="595" text-anchor="end">-7</text>
+<line class="cx-tick" x1="290" y1="520" x2="302" y2="520"/>
+<text class="cx-ticklbl" x="284" y="527" text-anchor="end">-6</text>
+<line class="cx-tick" x1="290" y1="452" x2="302" y2="452"/>
+<text class="cx-ticklbl" x="284" y="459" text-anchor="end">-5</text>
+<line class="cx-tick" x1="290" y1="384" x2="302" y2="384"/>
+<text class="cx-ticklbl" x="284" y="391" text-anchor="end">-4</text>
+<line class="cx-tick" x1="290" y1="316" x2="302" y2="316"/>
+<text class="cx-ticklbl" x="284" y="323" text-anchor="end">-3</text>
+<line class="cx-tick" x1="290" y1="248" x2="302" y2="248"/>
+<text class="cx-ticklbl" x="284" y="255" text-anchor="end">-2</text>
+<line class="cx-tick" x1="290" y1="180" x2="302" y2="180"/>
+<text class="cx-ticklbl" x="284" y="187" text-anchor="end">-1</text>
+<line class="cx-tick" x1="290" y1="44" x2="302" y2="44"/>
+<text class="cx-ticklbl" x="284" y="51" text-anchor="end">1</text>
+<text class="cx-ticklbl" x="284" y="138" text-anchor="end">0</text>
+<line class="cx-line" x1="341" y1="44" x2="749" y2="656"/>
+<circle class="cx-pt-outline" cx="432" cy="180" r="9"/>
+<circle class="cx-pt-core" cx="432" cy="180" r="5"/>
+<text class="cx-lbl" x="446" y="168" text-anchor="start">A</text>
+<circle class="cx-pt-outline" cx="704" cy="588" r="9"/>
+<circle class="cx-pt-core" cx="704" cy="588" r="5"/>
+<text class="cx-lbl" x="690" y="576" text-anchor="end">B</text>
+</svg>

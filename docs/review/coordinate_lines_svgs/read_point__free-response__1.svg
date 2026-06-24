@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.">
-<title>A line segment</title>
-<desc>The endpoints of a line segment are A at (1, -10) and B at (3, -6), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A single point P plotted on a labelled Cartesian grid with equal x and y scales.">
+<title>Reading coordinates</title>
+<desc>A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.</desc>
 <style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-guide{stroke:#555;stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}text{font-family:sans-serif;font-size:28px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-lbl{font-size:28px;fill:#111}</style>
 <line class="cx-grid-minor" x1="398" y1="44" x2="398" y2="656"/>
 <line class="cx-grid-minor" x1="449" y1="44" x2="449" y2="656"/>
@@ -63,10 +63,9 @@
 <line class="cx-tick" x1="418" y1="197" x2="430" y2="197"/>
 <text class="cx-ticklbl" x="412" y="204" text-anchor="end">-2</text>
 <text class="cx-ticklbl" x="412" y="121" text-anchor="end">0</text>
-<circle class="cx-pt-outline" cx="475" cy="605" r="9"/>
-<circle class="cx-pt-core" cx="475" cy="605" r="5"/>
-<text class="cx-lbl" x="489" y="593" text-anchor="start">A</text>
-<circle class="cx-pt-outline" cx="577" cy="401" r="9"/>
-<circle class="cx-pt-core" cx="577" cy="401" r="5"/>
-<text class="cx-lbl" x="563" y="389" text-anchor="end">B</text>
+<line class="cx-guide" x1="577" y1="605" x2="577" y2="95"/>
+<line class="cx-guide" x1="577" y1="605" x2="424" y2="605"/>
+<circle class="cx-pt-outline" cx="577" cy="605" r="9"/>
+<circle class="cx-pt-core" cx="577" cy="605" r="5"/>
+<text class="cx-lbl" x="563" y="593" text-anchor="end">P</text>
 </svg>

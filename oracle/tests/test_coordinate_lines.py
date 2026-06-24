@@ -21,6 +21,106 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.dirname(HERE))
 
 from spi_oracle import coordinate_lines as cl  # noqa: E402
+from spi_oracle.coordinate_misconceptions import MISCONCEPTIONS  # noqa: E402
+
+# Patterns that assign a coordinate to the WRONG axis (a reversed axis-coordinate mapping).
+# The v1.0.0 read_point solution ("Read across to the y-axis for x, then up or down to the
+# x-axis for y") did exactly this; v1.0.1 corrects it.
+_REVERSED = [
+    re.compile(r"y[-\s]?axis\s+for\s+(the\s+)?x\b", re.I),
+    re.compile(r"x[-\s]?axis\s+for\s+(the\s+)?y\b", re.I),
+    re.compile(r"across\s+to\s+the\s+y[-\s]?axis", re.I),
+    re.compile(r"up\s+or\s+down\s+to\s+the\s+x[-\s]?axis", re.I),
+    re.compile(r"x[-\s]?coordinate\s+(from|on|along|up|down|vertical)", re.I),
+    re.compile(r"y[-\s]?coordinate\s+(across|along\s+the\s+horizontal)", re.I),
+    re.compile(r"read\s+(the\s+)?x[-\s]?coordinate\s+(up|down|vertical)", re.I),
+    re.compile(r"read\s+(the\s+)?y[-\s]?coordinate\s+(across|horizontal)", re.I),
+]
+
+
+def reverses_axes(text: str) -> bool:
+    return any(p.search(text) for p in _REVERSED)
+
+
+class TestExplanationSemantics(unittest.TestCase):
+    def _solution_text(self, item) -> str:
+        return " ".join(f"{s.get('transformation','')} {s.get('intermediateResult','')}" for s in item["solution"]["steps"])
+
+    def test_detector_rejects_the_old_wording(self):
+        self.assertTrue(reverses_axes("Read across to the y-axis for x, then up or down to the x-axis for y"))
+        self.assertFalse(reverses_axes("Read the horizontal position for the x-coordinate, then the vertical position for the y-coordinate."))
+
+    def test_no_read_point_solution_reverses_axes(self):
+        saw_scaffold, saw_plain = False, False
+        for s in range(1, 600):
+            it = cl.generate(s, {"task": "read_point", "interactionType": "free-response"})
+            txt = self._solution_text(it)
+            self.assertFalse(reverses_axes(txt), f"seed {s} reverses axes: {txt!r}")
+            if it["params"]["scaffold"]:
+                saw_scaffold = True
+                self.assertIn("Project the point vertically to the x-axis", txt)
+            else:
+                saw_plain = True
+                self.assertIn("horizontal position for the x-coordinate", txt)
+        self.assertTrue(saw_scaffold and saw_plain, "both scaffolded and unscaffolded read_point solutions exercised")
+
+    def test_misconception_text_does_not_reverse_axes(self):
+        for mid, m in MISCONCEPTIONS.items():
+            self.assertFalse(reverses_axes(m["feedback"]), f"{mid} feedback reverses axes: {m['feedback']!r}")
+            self.assertFalse(reverses_axes(m["observableError"]), f"{mid} rationale reverses axes")
+
+    def test_all_distractor_rationales_clean(self):
+        for s in range(1, 400):
+            it = cl.generate(s, {"interactionType": "multiple-choice"})
+            for d in it.get("distractors", []):
+                self.assertFalse(reverses_axes(d["rationale"]), f"seed {s} distractor reverses axes")
+
+
+_PACK = os.path.join(os.path.dirname(os.path.dirname(HERE)), "docs", "review", "coordinate_lines_review_pack.json")
+
+
+@unittest.skipUnless(os.path.exists(_PACK), "review pack not built")
+class TestReviewPackCoverage(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with open(_PACK, encoding="utf-8") as fh:
+            cls.pack = json.load(fh)
+        cls.items = [it for combo in cls.pack["combos"] for it in combo["items"]]
+
+    def test_no_duplicate_task_interaction_seed(self):
+        keys = [(it["task"], it["interactionType"], it["seed"]) for it in self.items]
+        dups = sorted({k for k in keys if keys.count(k) > 1})
+        self.assertEqual(dups, [], f"duplicate (task,interaction,seed): {dups}")
+
+    def test_no_duplicate_canonical_items(self):
+        sigs = [cl.serialize(cl.generate(it["seed"], {"task": it["task"], "interactionType": it["interactionType"]})) for it in self.items]
+        self.assertEqual(len(sigs), len(set(sigs)), "duplicate canonical items in the pack")
+
+    def test_interaction_coverage(self):
+        supported = {
+            "read_point": {"free-response", "multiple-choice"}, "plot_point": {"free-response"},
+            "gradient_two_points": {"free-response", "multiple-choice"}, "midpoint": {"free-response", "multiple-choice"},
+            "interpret_mx_c": {"free-response", "multiple-choice"}, "equation_from_graph": {"free-response", "multiple-choice"},
+            "equation_from_two_points": {"free-response", "multiple-choice"},
+        }
+        present = {t: set() for t in supported}
+        for it in self.items:
+            present[it["task"]].add(it["interactionType"])
+        for t, modes in supported.items():
+            self.assertTrue(modes.issubset(present[t]), f"{t} missing interactions {modes - present[t]}")
+
+    def test_band_coverage(self):
+        required = {"plot_point": {1, 2}, "gradient_two_points": {2, 3, 4},
+                    "equation_from_graph": {3, 4}, "equation_from_two_points": {3, 4, 5}}
+        present = {t: set() for t in required}
+        for it in self.items:
+            if it["task"] in required:
+                present[it["task"]].add(it["band"])
+        for t, bands in required.items():
+            self.assertTrue(bands.issubset(present[t]), f"{t} missing bands {bands - present[t]}")
+
+    def test_cartesian_plane_objective_present(self):
+        self.assertIn("SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01", json.dumps(self.pack))
 
 
 class TestInteractionRules(unittest.TestCase):
@@ -106,9 +206,12 @@ class TestArtifactIntegrity(unittest.TestCase):
         self.assertRegex(com, r"^[0-9a-f]{7,40}$")
 
     def test_no_other_generator_version_text(self):
+        # The artifacts reference only the CURRENT version; the superseded v1.0.0 and other
+        # families' versions must not appear.
         for rel in (self.AUDIT, self.PACK_MD):
             txt = self._read(rel)
-            for stale in ("1.0.1", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"):
+            self.assertIn(cl.GENERATOR_VERSION, txt, f"{rel} must state the current version")
+            for stale in ("1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.2.2", "1.2.3"):
                 self.assertNotIn(stale, txt, f"unexpected version {stale} in {rel}")
 
     def test_manifest_hashes_match_files(self):

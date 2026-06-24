@@ -1,28 +1,110 @@
 {
   "generatorId": "gen.geometry.coordinate-lines",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "stage": "SPI-Math Middle School -> Geometry/Algebra bridge",
   "strand": "coordinate-geometry-straight-line-graphs",
-  "objectives": {
-    "read_point": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
-    "plot_point": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
-    "gradient_two_points": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-    "midpoint": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
-    "interpret_mx_c": "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
-    "equation_from_graph": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01",
-    "equation_from_two_points": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01"
+  "curriculum": {
+    "foundationalObjective": {
+      "objectiveId": "SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01",
+      "wording": "Identify and use the x-axis, y-axis, origin, and four quadrants of the Cartesian plane, including interpreting positive and negative coordinates.",
+      "answerTypes": [
+        "coordinate"
+      ]
+    },
+    "objectives": {
+      "SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01": {
+        "wording": "Identify and use the x-axis, y-axis, origin, and four quadrants of the Cartesian plane, including interpreting positive and negative coordinates.",
+        "answerTypes": [
+          "coordinate"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.READ_POINT.01": {
+        "wording": "Read the coordinates of a point plotted on a labelled Cartesian grid and state them as an ordered pair, with the x-coordinate first.",
+        "answerTypes": [
+          "coordinate"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01": {
+        "wording": "Plot a point accurately on a labelled Cartesian grid from a given ordered pair.",
+        "answerTypes": [
+          "coordinate"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01",
+          "SPI.MIDDLE.GEO.COORD.READ_POINT.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01": {
+        "wording": "Calculate the gradient of the non-vertical line through two lattice points as an exact integer or fraction.",
+        "answerTypes": [
+          "integer",
+          "exact-rational"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
+          "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.MIDPOINT.01": {
+        "wording": "Calculate the midpoint of the line segment joining two points and state it as an exact ordered pair.",
+        "answerTypes": [
+          "ordered-pair"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
+          "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01": {
+        "wording": "Identify the gradient m and y-intercept c in a linear equation written in the form y = mx + c.",
+        "answerTypes": [
+          "equation"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01": {
+        "wording": "Determine the equation y = mx + c of a non-vertical straight line shown on a coordinate grid.",
+        "answerTypes": [
+          "equation"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
+          "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01"
+        ]
+      },
+      "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01": {
+        "wording": "Determine the equation y = mx + c of the non-vertical line passing through two given points.",
+        "answerTypes": [
+          "equation"
+        ],
+        "prerequisites": [
+          "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
+          "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
+          "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01"
+        ]
+      }
+    },
+    "answerTypesAreMathematicalOnly": true
   },
   "combos": [
     {
       "task": "read_point",
       "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
-      "note": "all four quadrants; scaffolded (with projection guides, lower band) and unscaffolded",
+      "note": "free-response AND multiple-choice; all four quadrants; scaffolded (projection guides, lower band) and unscaffolded",
       "items": [
         {
           "seed": 1,
           "task": "read_point",
-          "interactionType": "multiple-choice",
+          "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
           "band": 2,
           "answerType": "coordinate",
@@ -35,17 +117,17 @@
             "seed": 1,
             "config": {
               "task": "read_point",
-              "interactionType": "multiple-choice"
+              "interactionType": "free-response"
             }
           },
           "solution": [
             {
               "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
+              "transformation": "Project the point vertically to the x-axis to read x, and horizontally to the y-axis to read y",
               "intermediateResult": "(3, -10)"
             }
           ],
-          "svgFile": "read_point__multiple-choice__1.svg",
+          "svgFile": "read_point__free-response__1.svg",
           "altText": "A single point P plotted on a labelled Cartesian grid with equal x and y scales.",
           "longDescription": "A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.",
           "dataTableFallback": {
@@ -60,97 +142,12 @@
               ]
             ]
           },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": -10,
-                  "den": 1
-                },
-                "y": {
-                  "num": 3,
-                  "den": 1
-                }
-              },
-              "display": "(-10, 3)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": 3,
-                  "den": 1
-                },
-                "y": {
-                  "num": -10,
-                  "den": 1
-                }
-              },
-              "display": "(3, -10)",
-              "correct": true
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": 3,
-                  "den": 1
-                },
-                "y": {
-                  "num": 10,
-                  "den": 1
-                }
-              },
-              "display": "(3, 10)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": -3,
-                  "den": 1
-                },
-                "y": {
-                  "num": -10,
-                  "den": 1
-                }
-              },
-              "display": "(-3, -10)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(-10, 3)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            },
-            {
-              "display": "(3, 10)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X",
-              "rationale": "Read the y-coordinate with the wrong sign (reflected across the x-axis).",
-              "feedback": "Read the y-coordinate by its height above or below the x-axis; below the axis is negative."
-            },
-            {
-              "display": "(-3, -10)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y",
-              "rationale": "Read the x-coordinate with the wrong sign (reflected across the y-axis).",
-              "feedback": "Read the x-coordinate by its distance left or right of the y-axis; left of the axis is negative."
-            }
-          ]
+          "toScale": true
         },
         {
           "seed": 2,
           "task": "read_point",
-          "interactionType": "multiple-choice",
+          "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
           "band": 1,
           "answerType": "coordinate",
@@ -163,17 +160,17 @@
             "seed": 2,
             "config": {
               "task": "read_point",
-              "interactionType": "multiple-choice"
+              "interactionType": "free-response"
             }
           },
           "solution": [
             {
               "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
+              "transformation": "Read the horizontal position for the x-coordinate, then the vertical position for the y-coordinate. Write the coordinates as (x, y)",
               "intermediateResult": "(5, -4)"
             }
           ],
-          "svgFile": "read_point__multiple-choice__2.svg",
+          "svgFile": "read_point__free-response__2.svg",
           "altText": "A single point P plotted on a labelled Cartesian grid with equal x and y scales.",
           "longDescription": "A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.",
           "dataTableFallback": {
@@ -188,348 +185,7 @@
               ]
             ]
           },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": 5,
-                  "den": 1
-                },
-                "y": {
-                  "num": -4,
-                  "den": 1
-                }
-              },
-              "display": "(5, -4)",
-              "correct": true
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": -4,
-                  "den": 1
-                },
-                "y": {
-                  "num": 5,
-                  "den": 1
-                }
-              },
-              "display": "(-4, 5)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": -5,
-                  "den": 1
-                },
-                "y": {
-                  "num": -4,
-                  "den": 1
-                }
-              },
-              "display": "(-5, -4)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": 5,
-                  "den": 1
-                },
-                "y": {
-                  "num": 4,
-                  "den": 1
-                }
-              },
-              "display": "(5, 4)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(-4, 5)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            },
-            {
-              "display": "(5, 4)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X",
-              "rationale": "Read the y-coordinate with the wrong sign (reflected across the x-axis).",
-              "feedback": "Read the y-coordinate by its height above or below the x-axis; below the axis is negative."
-            },
-            {
-              "display": "(-5, -4)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y",
-              "rationale": "Read the x-coordinate with the wrong sign (reflected across the y-axis).",
-              "feedback": "Read the x-coordinate by its distance left or right of the y-axis; left of the axis is negative."
-            }
-          ]
-        },
-        {
-          "seed": 5,
-          "task": "read_point",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
-          "band": 2,
-          "answerType": "coordinate",
-          "answerDisplay": "(4, 6)",
-          "prompt": "Write the coordinates of the point P shown on the grid, as an ordered pair.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 5,
-            "config": {
-              "task": "read_point",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
-              "intermediateResult": "(4, 6)"
-            }
-          ],
-          "svgFile": "read_point__multiple-choice__5.svg",
-          "altText": "A single point P plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "position"
-            ],
-            "rows": [
-              [
-                "P",
-                "x = 4, y = 6"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": -4,
-                  "den": 1
-                },
-                "y": {
-                  "num": 6,
-                  "den": 1
-                }
-              },
-              "display": "(-4, 6)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": 6,
-                  "den": 1
-                },
-                "y": {
-                  "num": 4,
-                  "den": 1
-                }
-              },
-              "display": "(6, 4)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": 4,
-                  "den": 1
-                },
-                "y": {
-                  "num": 6,
-                  "den": 1
-                }
-              },
-              "display": "(4, 6)",
-              "correct": true
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": 4,
-                  "den": 1
-                },
-                "y": {
-                  "num": -6,
-                  "den": 1
-                }
-              },
-              "display": "(4, -6)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(6, 4)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            },
-            {
-              "display": "(4, -6)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X",
-              "rationale": "Read the y-coordinate with the wrong sign (reflected across the x-axis).",
-              "feedback": "Read the y-coordinate by its height above or below the x-axis; below the axis is negative."
-            },
-            {
-              "display": "(-4, 6)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y",
-              "rationale": "Read the x-coordinate with the wrong sign (reflected across the y-axis).",
-              "feedback": "Read the x-coordinate by its distance left or right of the y-axis; left of the axis is negative."
-            }
-          ]
-        },
-        {
-          "seed": 7,
-          "task": "read_point",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
-          "band": 2,
-          "answerType": "coordinate",
-          "answerDisplay": "(-10, -9)",
-          "prompt": "Write the coordinates of the point P shown on the grid, as an ordered pair.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 7,
-            "config": {
-              "task": "read_point",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
-              "intermediateResult": "(-10, -9)"
-            }
-          ],
-          "svgFile": "read_point__multiple-choice__7.svg",
-          "altText": "A single point P plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "position"
-            ],
-            "rows": [
-              [
-                "P",
-                "x = -10, y = -9"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": 10,
-                  "den": 1
-                },
-                "y": {
-                  "num": -9,
-                  "den": 1
-                }
-              },
-              "display": "(10, -9)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": -10,
-                  "den": 1
-                },
-                "y": {
-                  "num": -9,
-                  "den": 1
-                }
-              },
-              "display": "(-10, -9)",
-              "correct": true
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": -9,
-                  "den": 1
-                },
-                "y": {
-                  "num": -10,
-                  "den": 1
-                }
-              },
-              "display": "(-9, -10)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": -10,
-                  "den": 1
-                },
-                "y": {
-                  "num": 9,
-                  "den": 1
-                }
-              },
-              "display": "(-10, 9)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(-9, -10)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            },
-            {
-              "display": "(-10, 9)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X",
-              "rationale": "Read the y-coordinate with the wrong sign (reflected across the x-axis).",
-              "feedback": "Read the y-coordinate by its height above or below the x-axis; below the axis is negative."
-            },
-            {
-              "display": "(10, -9)",
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y",
-              "rationale": "Read the x-coordinate with the wrong sign (reflected across the y-axis).",
-              "feedback": "Read the x-coordinate by its distance left or right of the y-axis; left of the axis is negative."
-            }
-          ]
+          "toScale": true
         },
         {
           "seed": 8,
@@ -553,7 +209,7 @@
           "solution": [
             {
               "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
+              "transformation": "Read the horizontal position for the x-coordinate, then the vertical position for the y-coordinate. Write the coordinates as (x, y)",
               "intermediateResult": "(-7, 3)"
             }
           ],
@@ -660,19 +316,19 @@
           ]
         },
         {
-          "seed": 11,
+          "seed": 1,
           "task": "read_point",
           "interactionType": "multiple-choice",
           "objective": "SPI.MIDDLE.GEO.COORD.READ_POINT.01",
-          "band": 1,
+          "band": 2,
           "answerType": "coordinate",
-          "answerDisplay": "(2, 7)",
+          "answerDisplay": "(3, -10)",
           "prompt": "Write the coordinates of the point P shown on the grid, as an ordered pair.",
           "validation": "pass",
           "failingChecks": [],
           "reproduce": {
             "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 11,
+            "seed": 1,
             "config": {
               "task": "read_point",
               "interactionType": "multiple-choice"
@@ -681,11 +337,11 @@
           "solution": [
             {
               "number": 1,
-              "transformation": "Read across to the y-axis for x, then up or down to the x-axis for y",
-              "intermediateResult": "(2, 7)"
+              "transformation": "Project the point vertically to the x-axis to read x, and horizontally to the y-axis to read y",
+              "intermediateResult": "(3, -10)"
             }
           ],
-          "svgFile": "read_point__multiple-choice__11.svg",
+          "svgFile": "read_point__multiple-choice__1.svg",
           "altText": "A single point P plotted on a labelled Cartesian grid with equal x and y scales.",
           "longDescription": "A point labelled P is plotted on a labelled Cartesian grid with equal x and y scales. Read its x-coordinate from the horizontal axis and its y-coordinate from the vertical axis.",
           "dataTableFallback": {
@@ -696,7 +352,7 @@
             "rows": [
               [
                 "P",
-                "x = 2, y = 7"
+                "x = 3, y = -10"
               ]
             ]
           },
@@ -706,81 +362,81 @@
               "label": "A",
               "value": {
                 "x": {
-                  "num": -2,
+                  "num": -10,
                   "den": 1
                 },
                 "y": {
-                  "num": 7,
+                  "num": 3,
                   "den": 1
                 }
               },
-              "display": "(-2, 7)",
+              "display": "(-10, 3)",
               "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
+              "misconceptionId": "MISC.COORD.AXIS_SWAP"
             },
             {
               "label": "B",
               "value": {
                 "x": {
-                  "num": 2,
+                  "num": 3,
                   "den": 1
                 },
                 "y": {
-                  "num": -7,
+                  "num": -10,
                   "den": 1
                 }
               },
-              "display": "(2, -7)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
+              "display": "(3, -10)",
+              "correct": true
             },
             {
               "label": "C",
               "value": {
                 "x": {
-                  "num": 7,
+                  "num": 3,
                   "den": 1
                 },
                 "y": {
-                  "num": 2,
+                  "num": 10,
                   "den": 1
                 }
               },
-              "display": "(7, 2)",
+              "display": "(3, 10)",
               "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
+              "misconceptionId": "MISC.COORD.POINT_REFLECT_X"
             },
             {
               "label": "D",
               "value": {
                 "x": {
-                  "num": 2,
+                  "num": -3,
                   "den": 1
                 },
                 "y": {
-                  "num": 7,
+                  "num": -10,
                   "den": 1
                 }
               },
-              "display": "(2, 7)",
-              "correct": true
+              "display": "(-3, -10)",
+              "correct": false,
+              "misconceptionId": "MISC.COORD.POINT_REFLECT_Y"
             }
           ],
           "distractors": [
             {
-              "display": "(7, 2)",
+              "display": "(-10, 3)",
               "misconceptionId": "MISC.COORD.AXIS_SWAP",
               "rationale": "Wrote the coordinates in the wrong order (y before x).",
               "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
             },
             {
-              "display": "(2, -7)",
+              "display": "(3, 10)",
               "misconceptionId": "MISC.COORD.POINT_REFLECT_X",
               "rationale": "Read the y-coordinate with the wrong sign (reflected across the x-axis).",
               "feedback": "Read the y-coordinate by its height above or below the x-axis; below the axis is negative."
             },
             {
-              "display": "(-2, 7)",
+              "display": "(-3, -10)",
               "misconceptionId": "MISC.COORD.POINT_REFLECT_Y",
               "rationale": "Read the x-coordinate with the wrong sign (reflected across the y-axis).",
               "feedback": "Read the x-coordinate by its distance left or right of the y-axis; left of the axis is negative."
@@ -792,8 +448,55 @@
     {
       "task": "plot_point",
       "objective": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
-      "note": "free-response only; the student SVG is a blank labelled grid (target point ABSENT); the correct point appears only in the answer key / worked solution",
+      "note": "free-response ONLY; the student SVG is a blank labelled grid (target point ABSENT); the correct point appears only in the answer key / worked solution; bands 1 and 2",
       "items": [
+        {
+          "seed": 11,
+          "task": "plot_point",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
+          "band": 1,
+          "answerType": "coordinate",
+          "answerDisplay": "(0, 1)",
+          "prompt": "Plot the point (0, 1) on the grid.",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 11,
+            "config": {
+              "task": "plot_point",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Count along the x-axis, then up or down the y-axis, and mark the point",
+              "intermediateResult": "(0, 1)"
+            }
+          ],
+          "svgFile": "plot_point__free-response__11.svg",
+          "altText": "A blank labelled Cartesian grid for plotting a point.",
+          "longDescription": "A labelled Cartesian grid with numbered axes and equal x and y scales. No point is plotted yet; plot the point given in the question.",
+          "dataTableFallback": {
+            "columns": [
+              "axis",
+              "range"
+            ],
+            "rows": [
+              [
+                "x",
+                "-10 to 10"
+              ],
+              [
+                "y",
+                "-10 to 10"
+              ]
+            ]
+          },
+          "toScale": true
+        },
         {
           "seed": 1,
           "task": "plot_point",
@@ -840,155 +543,118 @@
             ]
           },
           "toScale": true
-        },
-        {
-          "seed": 2,
-          "task": "plot_point",
-          "interactionType": "free-response",
-          "objective": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
-          "band": 2,
-          "answerType": "coordinate",
-          "answerDisplay": "(5, -4)",
-          "prompt": "Plot the point (5, -4) on the grid.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 2,
-            "config": {
-              "task": "plot_point",
-              "interactionType": "free-response"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Count along the x-axis, then up or down the y-axis, and mark the point",
-              "intermediateResult": "(5, -4)"
-            }
-          ],
-          "svgFile": "plot_point__free-response__2.svg",
-          "altText": "A blank labelled Cartesian grid for plotting a point.",
-          "longDescription": "A labelled Cartesian grid with numbered axes and equal x and y scales. No point is plotted yet; plot the point given in the question.",
-          "dataTableFallback": {
-            "columns": [
-              "axis",
-              "range"
-            ],
-            "rows": [
-              [
-                "x",
-                "-10 to 10"
-              ],
-              [
-                "y",
-                "-10 to 10"
-              ]
-            ]
-          },
-          "toScale": true
-        },
-        {
-          "seed": 3,
-          "task": "plot_point",
-          "interactionType": "free-response",
-          "objective": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
-          "band": 2,
-          "answerType": "coordinate",
-          "answerDisplay": "(5, -10)",
-          "prompt": "Plot the point (5, -10) on the grid.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 3,
-            "config": {
-              "task": "plot_point",
-              "interactionType": "free-response"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Count along the x-axis, then up or down the y-axis, and mark the point",
-              "intermediateResult": "(5, -10)"
-            }
-          ],
-          "svgFile": "plot_point__free-response__3.svg",
-          "altText": "A blank labelled Cartesian grid for plotting a point.",
-          "longDescription": "A labelled Cartesian grid with numbered axes and equal x and y scales. No point is plotted yet; plot the point given in the question.",
-          "dataTableFallback": {
-            "columns": [
-              "axis",
-              "range"
-            ],
-            "rows": [
-              [
-                "x",
-                "-10 to 10"
-              ],
-              [
-                "y",
-                "-10 to 10"
-              ]
-            ]
-          },
-          "toScale": true
-        },
-        {
-          "seed": 4,
-          "task": "plot_point",
-          "interactionType": "free-response",
-          "objective": "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01",
-          "band": 2,
-          "answerType": "coordinate",
-          "answerDisplay": "(9, -4)",
-          "prompt": "Plot the point (9, -4) on the grid.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 4,
-            "config": {
-              "task": "plot_point",
-              "interactionType": "free-response"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Count along the x-axis, then up or down the y-axis, and mark the point",
-              "intermediateResult": "(9, -4)"
-            }
-          ],
-          "svgFile": "plot_point__free-response__4.svg",
-          "altText": "A blank labelled Cartesian grid for plotting a point.",
-          "longDescription": "A labelled Cartesian grid with numbered axes and equal x and y scales. No point is plotted yet; plot the point given in the question.",
-          "dataTableFallback": {
-            "columns": [
-              "axis",
-              "range"
-            ],
-            "rows": [
-              [
-                "x",
-                "-10 to 10"
-              ],
-              [
-                "y",
-                "-10 to 10"
-              ]
-            ]
-          },
-          "toScale": true
         }
       ]
     },
     {
       "task": "gradient_two_points",
       "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-      "note": "positive/negative/zero, integer + fractional gradients; zero gradient is FREE-RESPONSE ONLY; one scaffolded figure (unlabelled rise/run step)",
+      "note": "free-response (incl. zero gradient, which is FR-only) AND multiple-choice; positive/negative, integer + fractional gradients; one scaffolded figure (unlabelled rise/run step); bands 2-4",
       "items": [
+        {
+          "seed": 35,
+          "task": "gradient_two_points",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
+          "band": 2,
+          "answerType": "integer",
+          "answerDisplay": "0",
+          "prompt": "Find the gradient of the line through A (5, -2) and B (8, -2).",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 35,
+            "config": {
+              "task": "gradient_two_points",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Find the rise (change in y) and the run (change in x)",
+              "intermediateResult": "rise = 0, run = 3"
+            },
+            {
+              "number": 2,
+              "transformation": "Divide the rise by the run and simplify",
+              "intermediateResult": "gradient = 0"
+            }
+          ],
+          "svgFile": "gradient_two_points__free-response__35.svg",
+          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
+          "longDescription": "Point A is at (5, -2) and point B is at (8, -2), plotted on a labelled Cartesian grid with equal x and y scales.",
+          "dataTableFallback": {
+            "columns": [
+              "point",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "A",
+                "(5, -2)"
+              ],
+              [
+                "B",
+                "(8, -2)"
+              ]
+            ]
+          },
+          "toScale": true
+        },
+        {
+          "seed": 1,
+          "task": "gradient_two_points",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
+          "band": 3,
+          "answerType": "exact-rational",
+          "answerDisplay": "-5/3",
+          "prompt": "Find the gradient of the line through A (4, 10) and B (10, 0).",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 1,
+            "config": {
+              "task": "gradient_two_points",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Find the rise (change in y) and the run (change in x)",
+              "intermediateResult": "rise = -10, run = 6"
+            },
+            {
+              "number": 2,
+              "transformation": "Divide the rise by the run and simplify",
+              "intermediateResult": "gradient = -5/3"
+            }
+          ],
+          "svgFile": "gradient_two_points__free-response__1.svg",
+          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
+          "longDescription": "Point A is at (4, 10) and point B is at (10, 0), plotted on a labelled Cartesian grid with equal x and y scales.",
+          "dataTableFallback": {
+            "columns": [
+              "point",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "A",
+                "(4, 10)"
+              ],
+              [
+                "B",
+                "(10, 0)"
+              ]
+            ]
+          },
+          "toScale": true
+        },
         {
           "seed": 4,
           "task": "gradient_two_points",
@@ -1096,119 +762,6 @@
             },
             {
               "display": "-5/4",
-              "misconceptionId": "MISC.COORD.GRADIENT_SUM_BOTH",
-              "rationale": "Added the coordinates instead of subtracting them.",
-              "feedback": "Gradient uses the DIFFERENCES: (y2 - y1) divided by (x2 - x1), not the sums."
-            }
-          ]
-        },
-        {
-          "seed": 5,
-          "task": "gradient_two_points",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-          "band": 3,
-          "answerType": "exact-rational",
-          "answerDisplay": "4/3",
-          "prompt": "Find the gradient of the line through A (4, -5) and B (1, -9).",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 5,
-            "config": {
-              "task": "gradient_two_points",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Find the rise (change in y) and the run (change in x)",
-              "intermediateResult": "rise = -4, run = -3"
-            },
-            {
-              "number": 2,
-              "transformation": "Divide the rise by the run and simplify",
-              "intermediateResult": "gradient = 4/3"
-            }
-          ],
-          "svgFile": "gradient_two_points__multiple-choice__5.svg",
-          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "Point A is at (4, -5) and point B is at (1, -9), plotted on a labelled Cartesian grid with equal x and y scales.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(4, -5)"
-              ],
-              [
-                "B",
-                "(1, -9)"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "num": -14,
-                "den": 5
-              },
-              "display": "-14/5",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SUM_BOTH"
-            },
-            {
-              "label": "B",
-              "value": {
-                "num": 4,
-                "den": 3
-              },
-              "display": "4/3",
-              "correct": true
-            },
-            {
-              "label": "C",
-              "value": {
-                "num": -4,
-                "den": 3
-              },
-              "display": "-4/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN"
-            },
-            {
-              "label": "D",
-              "value": {
-                "num": 3,
-                "den": 4
-              },
-              "display": "3/4",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "3/4",
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED",
-              "rationale": "Divided the change in x by the change in y instead of the other way round.",
-              "feedback": "Gradient is rise over run: divide the change in y by the change in x."
-            },
-            {
-              "display": "-4/3",
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN",
-              "rationale": "Subtracted the coordinates in inconsistent orders, flipping the sign of the gradient.",
-              "feedback": "Subtract the x-coordinates and the y-coordinates in the SAME order; keep the signs consistent."
-            },
-            {
-              "display": "-14/5",
               "misconceptionId": "MISC.COORD.GRADIENT_SUM_BOTH",
               "rationale": "Added the coordinates instead of subtracting them.",
               "feedback": "Gradient uses the DIFFERENCES: (y2 - y1) divided by (x2 - x1), not the sums."
@@ -1329,119 +882,6 @@
           ]
         },
         {
-          "seed": 2,
-          "task": "gradient_two_points",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-          "band": 3,
-          "answerType": "exact-rational",
-          "answerDisplay": "-2/3",
-          "prompt": "Find the gradient of the line through A (2, 6) and B (-1, 8).",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 2,
-            "config": {
-              "task": "gradient_two_points",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Find the rise (change in y) and the run (change in x)",
-              "intermediateResult": "rise = 2, run = -3"
-            },
-            {
-              "number": 2,
-              "transformation": "Divide the rise by the run and simplify",
-              "intermediateResult": "gradient = -2/3"
-            }
-          ],
-          "svgFile": "gradient_two_points__multiple-choice__2.svg",
-          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(2, 6)"
-              ],
-              [
-                "B",
-                "(-1, 8)"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "num": 14,
-                "den": 1
-              },
-              "display": "14",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SUM_BOTH"
-            },
-            {
-              "label": "B",
-              "value": {
-                "num": -2,
-                "den": 3
-              },
-              "display": "-2/3",
-              "correct": true
-            },
-            {
-              "label": "C",
-              "value": {
-                "num": 2,
-                "den": 3
-              },
-              "display": "2/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN"
-            },
-            {
-              "label": "D",
-              "value": {
-                "num": -3,
-                "den": 2
-              },
-              "display": "-3/2",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "-3/2",
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED",
-              "rationale": "Divided the change in x by the change in y instead of the other way round.",
-              "feedback": "Gradient is rise over run: divide the change in y by the change in x."
-            },
-            {
-              "display": "2/3",
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN",
-              "rationale": "Subtracted the coordinates in inconsistent orders, flipping the sign of the gradient.",
-              "feedback": "Subtract the x-coordinates and the y-coordinates in the SAME order; keep the signs consistent."
-            },
-            {
-              "display": "14",
-              "misconceptionId": "MISC.COORD.GRADIENT_SUM_BOTH",
-              "rationale": "Added the coordinates instead of subtracting them.",
-              "feedback": "Gradient uses the DIFFERENCES: (y2 - y1) divided by (x2 - x1), not the sums."
-            }
-          ]
-        },
-        {
           "seed": 7,
           "task": "gradient_two_points",
           "interactionType": "multiple-choice",
@@ -1555,71 +995,19 @@
           ]
         },
         {
-          "seed": 35,
+          "seed": 3,
           "task": "gradient_two_points",
           "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-          "band": 2,
-          "answerType": "integer",
-          "answerDisplay": "0",
-          "prompt": "Find the gradient of the line through A (5, -2) and B (8, -2).",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 35,
-            "config": {
-              "task": "gradient_two_points",
-              "interactionType": "free-response"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Find the rise (change in y) and the run (change in x)",
-              "intermediateResult": "rise = 0, run = 3"
-            },
-            {
-              "number": 2,
-              "transformation": "Divide the rise by the run and simplify",
-              "intermediateResult": "gradient = 0"
-            }
-          ],
-          "svgFile": "gradient_two_points__free-response__35.svg",
-          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "Point A is at (5, -2) and point B is at (8, -2), plotted on a labelled Cartesian grid with equal x and y scales.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(5, -2)"
-              ],
-              [
-                "B",
-                "(8, -2)"
-              ]
-            ]
-          },
-          "toScale": true
-        },
-        {
-          "seed": 1,
-          "task": "gradient_two_points",
-          "interactionType": "free-response",
-          "objective": "SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01",
-          "band": 3,
+          "band": 4,
           "answerType": "exact-rational",
           "answerDisplay": "-5/3",
-          "prompt": "Find the gradient of the line through A (4, 10) and B (10, 0).",
+          "prompt": "Find the gradient of the line through A (-9, 8) and B (-3, -2).",
           "validation": "pass",
           "failingChecks": [],
           "reproduce": {
             "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 1,
+            "seed": 3,
             "config": {
               "task": "gradient_two_points",
               "interactionType": "free-response"
@@ -1637,9 +1025,9 @@
               "intermediateResult": "gradient = -5/3"
             }
           ],
-          "svgFile": "gradient_two_points__free-response__1.svg",
+          "svgFile": "gradient_two_points__free-response__3.svg",
           "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "Point A is at (4, 10) and point B is at (10, 0), plotted on a labelled Cartesian grid with equal x and y scales.",
+          "longDescription": "Point A is at (-9, 8) and point B is at (-3, -2), plotted on a labelled Cartesian grid with equal x and y scales.",
           "dataTableFallback": {
             "columns": [
               "point",
@@ -1648,11 +1036,11 @@
             "rows": [
               [
                 "A",
-                "(4, 10)"
+                "(-9, 8)"
               ],
               [
                 "B",
-                "(10, 0)"
+                "(-3, -2)"
               ]
             ]
           },
@@ -1663,8 +1051,65 @@
     {
       "task": "midpoint",
       "objective": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
-      "note": "integer and half-integer midpoints; the midpoint is NOT marked in the figure (endpoints only)",
+      "note": "free-response AND multiple-choice; integer and half-integer midpoints; the midpoint is NOT marked in the figure (endpoints only)",
       "items": [
+        {
+          "seed": 2,
+          "task": "midpoint",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
+          "band": 2,
+          "answerType": "ordered-pair",
+          "answerDisplay": "(0, -3/2)",
+          "prompt": "Find the midpoint of the line segment joining A (5, -4) and B (-5, 1).",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 2,
+            "config": {
+              "task": "midpoint",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Average the x-coordinates",
+              "intermediateResult": "(5 + -5) / 2 = 0"
+            },
+            {
+              "number": 2,
+              "transformation": "Average the y-coordinates",
+              "intermediateResult": "(-4 + 1) / 2 = -3/2"
+            },
+            {
+              "number": 3,
+              "transformation": "Write the midpoint as an ordered pair",
+              "intermediateResult": "(0, -3/2)"
+            }
+          ],
+          "svgFile": "midpoint__free-response__2.svg",
+          "altText": "Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.",
+          "longDescription": "The endpoints of a line segment are A at (5, -4) and B at (-5, 1), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.",
+          "dataTableFallback": {
+            "columns": [
+              "endpoint",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "A",
+                "(5, -4)"
+              ],
+              [
+                "B",
+                "(-5, 1)"
+              ]
+            ]
+          },
+          "toScale": true
+        },
         {
           "seed": 1,
           "task": "midpoint",
@@ -1801,148 +1246,6 @@
             },
             {
               "display": "(0, 2)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            }
-          ]
-        },
-        {
-          "seed": 6,
-          "task": "midpoint",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
-          "band": 2,
-          "answerType": "ordered-pair",
-          "answerDisplay": "(2, -8)",
-          "prompt": "Find the midpoint of the line segment joining A (1, -10) and B (3, -6).",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 6,
-            "config": {
-              "task": "midpoint",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Average the x-coordinates",
-              "intermediateResult": "(1 + 3) / 2 = 2"
-            },
-            {
-              "number": 2,
-              "transformation": "Average the y-coordinates",
-              "intermediateResult": "(-10 + -6) / 2 = -8"
-            },
-            {
-              "number": 3,
-              "transformation": "Write the midpoint as an ordered pair",
-              "intermediateResult": "(2, -8)"
-            }
-          ],
-          "svgFile": "midpoint__multiple-choice__6.svg",
-          "altText": "Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "The endpoints of a line segment are A at (1, -10) and B at (3, -6), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.",
-          "dataTableFallback": {
-            "columns": [
-              "endpoint",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(1, -10)"
-              ],
-              [
-                "B",
-                "(3, -6)"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": 1,
-                  "den": 1
-                },
-                "y": {
-                  "num": 2,
-                  "den": 1
-                }
-              },
-              "display": "(1, 2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": -8,
-                  "den": 1
-                },
-                "y": {
-                  "num": 2,
-                  "den": 1
-                }
-              },
-              "display": "(-8, 2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": 2,
-                  "den": 1
-                },
-                "y": {
-                  "num": -8,
-                  "den": 1
-                }
-              },
-              "display": "(2, -8)",
-              "correct": true
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": 4,
-                  "den": 1
-                },
-                "y": {
-                  "num": -16,
-                  "den": 1
-                }
-              },
-              "display": "(4, -16)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(1, 2)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE",
-              "rationale": "Halved the difference of the coordinates instead of their average.",
-              "feedback": "Midpoint averages the coordinates: add them and divide by 2, do not subtract."
-            },
-            {
-              "display": "(4, -16)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF",
-              "rationale": "Added the coordinates but did not divide by 2.",
-              "feedback": "After adding each pair of coordinates, divide by 2 to find the midpoint."
-            },
-            {
-              "display": "(-8, 2)",
               "misconceptionId": "MISC.COORD.AXIS_SWAP",
               "rationale": "Wrote the coordinates in the wrong order (y before x).",
               "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
@@ -2094,7 +1397,7 @@
         {
           "seed": 3,
           "task": "midpoint",
-          "interactionType": "multiple-choice",
+          "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
           "band": 3,
           "answerType": "ordered-pair",
@@ -2107,7 +1410,7 @@
             "seed": 3,
             "config": {
               "task": "midpoint",
-              "interactionType": "multiple-choice"
+              "interactionType": "free-response"
             }
           },
           "solution": [
@@ -2127,7 +1430,7 @@
               "intermediateResult": "(2, -19/2)"
             }
           ],
-          "svgFile": "midpoint__multiple-choice__3.svg",
+          "svgFile": "midpoint__free-response__3.svg",
           "altText": "Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.",
           "longDescription": "The endpoints of a line segment are A at (5, -10) and B at (-1, -9), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.",
           "dataTableFallback": {
@@ -2146,242 +1449,48 @@
               ]
             ]
           },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": 4,
-                  "den": 1
-                },
-                "y": {
-                  "num": -19,
-                  "den": 1
-                }
-              },
-              "display": "(4, -19)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": 2,
-                  "den": 1
-                },
-                "y": {
-                  "num": -19,
-                  "den": 2
-                }
-              },
-              "display": "(2, -19/2)",
-              "correct": true
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": -3,
-                  "den": 1
-                },
-                "y": {
-                  "num": 1,
-                  "den": 2
-                }
-              },
-              "display": "(-3, 1/2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE"
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": -19,
-                  "den": 2
-                },
-                "y": {
-                  "num": 2,
-                  "den": 1
-                }
-              },
-              "display": "(-19/2, 2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(-3, 1/2)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE",
-              "rationale": "Halved the difference of the coordinates instead of their average.",
-              "feedback": "Midpoint averages the coordinates: add them and divide by 2, do not subtract."
-            },
-            {
-              "display": "(4, -19)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF",
-              "rationale": "Added the coordinates but did not divide by 2.",
-              "feedback": "After adding each pair of coordinates, divide by 2 to find the midpoint."
-            },
-            {
-              "display": "(-19/2, 2)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            }
-          ]
-        },
-        {
-          "seed": 4,
-          "task": "midpoint",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.MIDPOINT.01",
-          "band": 3,
-          "answerType": "ordered-pair",
-          "answerDisplay": "(3/2, -13/2)",
-          "prompt": "Find the midpoint of the line segment joining A (9, -4) and B (-6, -9).",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 4,
-            "config": {
-              "task": "midpoint",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Average the x-coordinates",
-              "intermediateResult": "(9 + -6) / 2 = 3/2"
-            },
-            {
-              "number": 2,
-              "transformation": "Average the y-coordinates",
-              "intermediateResult": "(-4 + -9) / 2 = -13/2"
-            },
-            {
-              "number": 3,
-              "transformation": "Write the midpoint as an ordered pair",
-              "intermediateResult": "(3/2, -13/2)"
-            }
-          ],
-          "svgFile": "midpoint__multiple-choice__4.svg",
-          "altText": "Two endpoints A and B of a segment plotted on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "The endpoints of a line segment are A at (9, -4) and B at (-6, -9), plotted on a labelled Cartesian grid with equal x and y scales. The midpoint is not marked.",
-          "dataTableFallback": {
-            "columns": [
-              "endpoint",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(9, -4)"
-              ],
-              [
-                "B",
-                "(-6, -9)"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "x": {
-                  "num": 3,
-                  "den": 1
-                },
-                "y": {
-                  "num": -13,
-                  "den": 1
-                }
-              },
-              "display": "(3, -13)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF"
-            },
-            {
-              "label": "B",
-              "value": {
-                "x": {
-                  "num": -13,
-                  "den": 2
-                },
-                "y": {
-                  "num": 3,
-                  "den": 2
-                }
-              },
-              "display": "(-13/2, 3/2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.AXIS_SWAP"
-            },
-            {
-              "label": "C",
-              "value": {
-                "x": {
-                  "num": -15,
-                  "den": 2
-                },
-                "y": {
-                  "num": -5,
-                  "den": 2
-                }
-              },
-              "display": "(-15/2, -5/2)",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE"
-            },
-            {
-              "label": "D",
-              "value": {
-                "x": {
-                  "num": 3,
-                  "den": 2
-                },
-                "y": {
-                  "num": -13,
-                  "den": 2
-                }
-              },
-              "display": "(3/2, -13/2)",
-              "correct": true
-            }
-          ],
-          "distractors": [
-            {
-              "display": "(-15/2, -5/2)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_DIFFERENCE",
-              "rationale": "Halved the difference of the coordinates instead of their average.",
-              "feedback": "Midpoint averages the coordinates: add them and divide by 2, do not subtract."
-            },
-            {
-              "display": "(3, -13)",
-              "misconceptionId": "MISC.COORD.MIDPOINT_SUM_NO_HALF",
-              "rationale": "Added the coordinates but did not divide by 2.",
-              "feedback": "After adding each pair of coordinates, divide by 2 to find the midpoint."
-            },
-            {
-              "display": "(-13/2, 3/2)",
-              "misconceptionId": "MISC.COORD.AXIS_SWAP",
-              "rationale": "Wrote the coordinates in the wrong order (y before x).",
-              "feedback": "Write the x-coordinate first, then the y-coordinate: (x, y)."
-            }
-          ]
+          "toScale": true
         }
       ]
     },
     {
       "task": "interpret_mx_c",
       "objective": "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
-      "note": "text-only (no figure); integer + fractional gradients, negative intercept, and the constant case y = c; answer displayed as 'm = .., c = ..'",
+      "note": "free-response (incl. the constant case y = c) AND multiple-choice; text-only (no figure); integer + fractional gradients, negative intercept; answer displayed as 'm = .., c = ..'",
       "items": [
+        {
+          "seed": 35,
+          "task": "interpret_mx_c",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
+          "band": 2,
+          "answerType": "equation",
+          "answerDisplay": "m = 0, c = 4",
+          "prompt": "For the straight line y = 4, write down the gradient m and the y-intercept c.",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 35,
+            "config": {
+              "task": "interpret_mx_c",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "The gradient m is the coefficient of x",
+              "intermediateResult": "m = 0"
+            },
+            {
+              "number": 2,
+              "transformation": "The y-intercept c is the constant term",
+              "intermediateResult": "c = 4"
+            }
+          ],
+          "note": "text-only item (no figure)"
+        },
         {
           "seed": 7,
           "task": "interpret_mx_c",
@@ -2413,6 +1522,7 @@
               "intermediateResult": "c = 9"
             }
           ],
+          "note": "text-only item (no figure)",
           "options": [
             {
               "label": "A",
@@ -2530,6 +1640,7 @@
               "intermediateResult": "c = 1"
             }
           ],
+          "note": "text-only item (no figure)",
           "options": [
             {
               "label": "A",
@@ -2647,6 +1758,7 @@
               "intermediateResult": "c = -4"
             }
           ],
+          "note": "text-only item (no figure)",
           "options": [
             {
               "label": "A",
@@ -2730,155 +1842,6 @@
               "misconceptionId": "MISC.COORD.READS_X_INTERCEPT",
               "rationale": "Used the x-intercept instead of the y-intercept.",
               "feedback": "The y-intercept c is where the line meets the y-axis (x = 0), not where it meets the x-axis."
-            }
-          ]
-        },
-        {
-          "seed": 2,
-          "task": "interpret_mx_c",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
-          "band": 3,
-          "answerType": "equation",
-          "answerDisplay": "m = -2/3, c = -4",
-          "prompt": "For the straight line y = (-2/3)x - 4, write down the gradient m and the y-intercept c.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 2,
-            "config": {
-              "task": "interpret_mx_c",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "The gradient m is the coefficient of x",
-              "intermediateResult": "m = -2/3"
-            },
-            {
-              "number": 2,
-              "transformation": "The y-intercept c is the constant term",
-              "intermediateResult": "c = -4"
-            }
-          ],
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 3
-                },
-                "c": {
-                  "num": -4,
-                  "den": 1
-                }
-              },
-              "display": "m = -2/3, c = -4",
-              "correct": true
-            },
-            {
-              "label": "B",
-              "value": {
-                "m": {
-                  "num": -4,
-                  "den": 1
-                },
-                "c": {
-                  "num": -2,
-                  "den": 3
-                }
-              },
-              "display": "m = -4, c = -2/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.MC_SWAPPED"
-            },
-            {
-              "label": "C",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 3
-                },
-                "c": {
-                  "num": -6,
-                  "den": 1
-                }
-              },
-              "display": "m = -2/3, c = -6",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.READS_X_INTERCEPT"
-            },
-            {
-              "label": "D",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 3
-                },
-                "c": {
-                  "num": 4,
-                  "den": 1
-                }
-              },
-              "display": "m = -2/3, c = 4",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "m = -4, c = -2/3",
-              "misconceptionId": "MISC.COORD.MC_SWAPPED",
-              "rationale": "Read the gradient as the intercept and the intercept as the gradient.",
-              "feedback": "In y = mx + c the gradient m multiplies x; the intercept c is the constant term."
-            },
-            {
-              "display": "m = -2/3, c = 4",
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN",
-              "rationale": "Gave the y-intercept with the wrong sign.",
-              "feedback": "Read the y-intercept where the line crosses the y-axis, keeping its sign (below the origin is negative)."
-            },
-            {
-              "display": "m = -2/3, c = -6",
-              "misconceptionId": "MISC.COORD.READS_X_INTERCEPT",
-              "rationale": "Used the x-intercept instead of the y-intercept.",
-              "feedback": "The y-intercept c is where the line meets the y-axis (x = 0), not where it meets the x-axis."
-            }
-          ]
-        },
-        {
-          "seed": 35,
-          "task": "interpret_mx_c",
-          "interactionType": "free-response",
-          "objective": "SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01",
-          "band": 2,
-          "answerType": "equation",
-          "answerDisplay": "m = 0, c = 4",
-          "prompt": "For the straight line y = 4, write down the gradient m and the y-intercept c.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 35,
-            "config": {
-              "task": "interpret_mx_c",
-              "interactionType": "free-response"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "The gradient m is the coefficient of x",
-              "intermediateResult": "m = 0"
-            },
-            {
-              "number": 2,
-              "transformation": "The y-intercept c is the constant term",
-              "intermediateResult": "c = 4"
             }
           ]
         }
@@ -2887,8 +1850,65 @@
     {
       "task": "equation_from_graph",
       "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01",
-      "note": "the line carries a NEUTRAL label 'l' (no equation/gradient/intercept shown); positive/negative gradient, positive/negative/zero intercept (through the origin), fractional gradient",
+      "note": "free-response AND multiple-choice; the line carries a NEUTRAL label 'l' (no equation/gradient/intercept shown); positive/negative gradient, positive/negative/zero intercept (through the origin); bands 3-4",
       "items": [
+        {
+          "seed": 1,
+          "task": "equation_from_graph",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01",
+          "band": 4,
+          "answerType": "equation",
+          "answerDisplay": "y = (-5/3)x",
+          "prompt": "Find the equation of the line l shown on the grid, in the form y = mx + c.",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 1,
+            "config": {
+              "task": "equation_from_graph",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Read the gradient as rise over run between two lattice points",
+              "intermediateResult": "m = -5/3"
+            },
+            {
+              "number": 2,
+              "transformation": "Read where the line crosses the y-axis for the intercept",
+              "intermediateResult": "c = 0"
+            },
+            {
+              "number": 3,
+              "transformation": "Write the equation in the form y = mx + c",
+              "intermediateResult": "y = (-5/3)x"
+            }
+          ],
+          "svgFile": "equation_from_graph__free-response__1.svg",
+          "altText": "A straight line drawn on a labelled Cartesian grid with equal x and y scales.",
+          "longDescription": "A straight line is drawn on a labelled Cartesian grid with equal x and y scales. It passes through the lattice points (-6, 10) and (6, -10). Determine its equation in the form y = mx + c.",
+          "dataTableFallback": {
+            "columns": [
+              "the line passes through",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "point 1",
+                "(-6, 10)"
+              ],
+              [
+                "point 2",
+                "(6, -10)"
+              ]
+            ]
+          },
+          "toScale": true
+        },
         {
           "seed": 10,
           "task": "equation_from_graph",
@@ -3174,19 +2194,19 @@
           ]
         },
         {
-          "seed": 1,
+          "seed": 7,
           "task": "equation_from_graph",
           "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01",
-          "band": 4,
+          "band": 3,
           "answerType": "equation",
-          "answerDisplay": "y = (-5/3)x",
+          "answerDisplay": "y = -6x + 7",
           "prompt": "Find the equation of the line l shown on the grid, in the form y = mx + c.",
           "validation": "pass",
           "failingChecks": [],
           "reproduce": {
             "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 1,
+            "seed": 7,
             "config": {
               "task": "equation_from_graph",
               "interactionType": "free-response"
@@ -3196,22 +2216,22 @@
             {
               "number": 1,
               "transformation": "Read the gradient as rise over run between two lattice points",
-              "intermediateResult": "m = -5/3"
+              "intermediateResult": "m = -6"
             },
             {
               "number": 2,
               "transformation": "Read where the line crosses the y-axis for the intercept",
-              "intermediateResult": "c = 0"
+              "intermediateResult": "c = 7"
             },
             {
               "number": 3,
               "transformation": "Write the equation in the form y = mx + c",
-              "intermediateResult": "y = (-5/3)x"
+              "intermediateResult": "y = -6x + 7"
             }
           ],
-          "svgFile": "equation_from_graph__free-response__1.svg",
+          "svgFile": "equation_from_graph__free-response__7.svg",
           "altText": "A straight line drawn on a labelled Cartesian grid with equal x and y scales.",
-          "longDescription": "A straight line is drawn on a labelled Cartesian grid with equal x and y scales. It passes through the lattice points (-6, 10) and (6, -10). Determine its equation in the form y = mx + c.",
+          "longDescription": "A straight line is drawn on a labelled Cartesian grid with equal x and y scales. It passes through the lattice points (0, 7) and (2, -5). Determine its equation in the form y = mx + c.",
           "dataTableFallback": {
             "columns": [
               "the line passes through",
@@ -3220,11 +2240,11 @@
             "rows": [
               [
                 "point 1",
-                "(-6, 10)"
+                "(0, 7)"
               ],
               [
                 "point 2",
-                "(6, -10)"
+                "(2, -5)"
               ]
             ]
           },
@@ -3235,8 +2255,65 @@
     {
       "task": "equation_from_two_points",
       "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01",
-      "note": "the two given points are plotted (A, B) with the line through them; no equation label",
+      "note": "free-response AND multiple-choice; the two given points A, B are plotted with the line through them (no equation label); bands 3-5",
       "items": [
+        {
+          "seed": 5,
+          "task": "equation_from_two_points",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01",
+          "band": 5,
+          "answerType": "equation",
+          "answerDisplay": "y = (4/3)x - 31/3",
+          "prompt": "Find the equation of the line through A (4, -5) and B (1, -9), in the form y = mx + c.",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 5,
+            "config": {
+              "task": "equation_from_two_points",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
+            {
+              "number": 1,
+              "transformation": "Find the gradient from the two points",
+              "intermediateResult": "m = 4/3"
+            },
+            {
+              "number": 2,
+              "transformation": "Substitute one point to find the y-intercept c",
+              "intermediateResult": "c = -31/3"
+            },
+            {
+              "number": 3,
+              "transformation": "Write the equation in the form y = mx + c",
+              "intermediateResult": "y = (4/3)x - 31/3"
+            }
+          ],
+          "svgFile": "equation_from_two_points__free-response__5.svg",
+          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
+          "longDescription": "Point A is at (4, -5) and point B is at (1, -9), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
+          "dataTableFallback": {
+            "columns": [
+              "point",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "A",
+                "(4, -5)"
+              ],
+              [
+                "B",
+                "(1, -9)"
+              ]
+            ]
+          },
+          "toScale": true
+        },
         {
           "seed": 5,
           "task": "equation_from_two_points",
@@ -3373,148 +2450,6 @@
             },
             {
               "display": "y = (4/3)x + 31/3",
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN",
-              "rationale": "Gave the y-intercept with the wrong sign.",
-              "feedback": "Read the y-intercept where the line crosses the y-axis, keeping its sign (below the origin is negative)."
-            }
-          ]
-        },
-        {
-          "seed": 8,
-          "task": "equation_from_two_points",
-          "interactionType": "multiple-choice",
-          "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01",
-          "band": 3,
-          "answerType": "equation",
-          "answerDisplay": "y = 2x - 5",
-          "prompt": "Find the equation of the line through A (3, 1) and B (4, 3), in the form y = mx + c.",
-          "validation": "pass",
-          "failingChecks": [],
-          "reproduce": {
-            "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 8,
-            "config": {
-              "task": "equation_from_two_points",
-              "interactionType": "multiple-choice"
-            }
-          },
-          "solution": [
-            {
-              "number": 1,
-              "transformation": "Find the gradient from the two points",
-              "intermediateResult": "m = 2"
-            },
-            {
-              "number": 2,
-              "transformation": "Substitute one point to find the y-intercept c",
-              "intermediateResult": "c = -5"
-            },
-            {
-              "number": 3,
-              "transformation": "Write the equation in the form y = mx + c",
-              "intermediateResult": "y = 2x - 5"
-            }
-          ],
-          "svgFile": "equation_from_two_points__multiple-choice__8.svg",
-          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
-          "longDescription": "Point A is at (3, 1) and point B is at (4, 3), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
-          "dataTableFallback": {
-            "columns": [
-              "point",
-              "coordinates"
-            ],
-            "rows": [
-              [
-                "A",
-                "(3, 1)"
-              ],
-              [
-                "B",
-                "(4, 3)"
-              ]
-            ]
-          },
-          "toScale": true,
-          "options": [
-            {
-              "label": "A",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 1
-                },
-                "c": {
-                  "num": -5,
-                  "den": 1
-                }
-              },
-              "display": "y = -2x - 5",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN"
-            },
-            {
-              "label": "B",
-              "value": {
-                "m": {
-                  "num": 1,
-                  "den": 2
-                },
-                "c": {
-                  "num": -5,
-                  "den": 1
-                }
-              },
-              "display": "y = (1/2)x - 5",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED"
-            },
-            {
-              "label": "C",
-              "value": {
-                "m": {
-                  "num": 2,
-                  "den": 1
-                },
-                "c": {
-                  "num": -5,
-                  "den": 1
-                }
-              },
-              "display": "y = 2x - 5",
-              "correct": true
-            },
-            {
-              "label": "D",
-              "value": {
-                "m": {
-                  "num": 2,
-                  "den": 1
-                },
-                "c": {
-                  "num": 5,
-                  "den": 1
-                }
-              },
-              "display": "y = 2x + 5",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN"
-            }
-          ],
-          "distractors": [
-            {
-              "display": "y = (1/2)x - 5",
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED",
-              "rationale": "Divided the change in x by the change in y instead of the other way round.",
-              "feedback": "Gradient is rise over run: divide the change in y by the change in x."
-            },
-            {
-              "display": "y = -2x - 5",
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN",
-              "rationale": "Subtracted the coordinates in inconsistent orders, flipping the sign of the gradient.",
-              "feedback": "Subtract the x-coordinates and the y-coordinates in the SAME order; keep the signs consistent."
-            },
-            {
-              "display": "y = 2x + 5",
               "misconceptionId": "MISC.COORD.INTERCEPT_SIGN",
               "rationale": "Gave the y-intercept with the wrong sign.",
               "feedback": "Read the y-intercept where the line crosses the y-axis, keeping its sign (below the origin is negative)."
@@ -3664,44 +2599,44 @@
           ]
         },
         {
-          "seed": 2,
+          "seed": 8,
           "task": "equation_from_two_points",
-          "interactionType": "multiple-choice",
+          "interactionType": "free-response",
           "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01",
-          "band": 5,
+          "band": 3,
           "answerType": "equation",
-          "answerDisplay": "y = (-2/3)x + 22/3",
-          "prompt": "Find the equation of the line through A (2, 6) and B (-1, 8), in the form y = mx + c.",
+          "answerDisplay": "y = 2x - 5",
+          "prompt": "Find the equation of the line through A (3, 1) and B (4, 3), in the form y = mx + c.",
           "validation": "pass",
           "failingChecks": [],
           "reproduce": {
             "generatorId": "gen.geometry.coordinate-lines",
-            "seed": 2,
+            "seed": 8,
             "config": {
               "task": "equation_from_two_points",
-              "interactionType": "multiple-choice"
+              "interactionType": "free-response"
             }
           },
           "solution": [
             {
               "number": 1,
               "transformation": "Find the gradient from the two points",
-              "intermediateResult": "m = -2/3"
+              "intermediateResult": "m = 2"
             },
             {
               "number": 2,
               "transformation": "Substitute one point to find the y-intercept c",
-              "intermediateResult": "c = 22/3"
+              "intermediateResult": "c = -5"
             },
             {
               "number": 3,
               "transformation": "Write the equation in the form y = mx + c",
-              "intermediateResult": "y = (-2/3)x + 22/3"
+              "intermediateResult": "y = 2x - 5"
             }
           ],
-          "svgFile": "equation_from_two_points__multiple-choice__2.svg",
+          "svgFile": "equation_from_two_points__free-response__8.svg",
           "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
-          "longDescription": "Point A is at (2, 6) and point B is at (-1, 8), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
+          "longDescription": "Point A is at (3, 1) and point B is at (4, 3), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
           "dataTableFallback": {
             "columns": [
               "point",
@@ -3710,137 +2645,77 @@
             "rows": [
               [
                 "A",
-                "(2, 6)"
+                "(3, 1)"
               ],
               [
                 "B",
-                "(-1, 8)"
+                "(4, 3)"
               ]
             ]
           },
-          "toScale": true,
-          "options": [
+          "toScale": true
+        },
+        {
+          "seed": 7,
+          "task": "equation_from_two_points",
+          "interactionType": "free-response",
+          "objective": "SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01",
+          "band": 4,
+          "answerType": "equation",
+          "answerDisplay": "y = (-3/2)x + 2",
+          "prompt": "Find the equation of the line through A (2, -1) and B (6, -7), in the form y = mx + c.",
+          "validation": "pass",
+          "failingChecks": [],
+          "reproduce": {
+            "generatorId": "gen.geometry.coordinate-lines",
+            "seed": 7,
+            "config": {
+              "task": "equation_from_two_points",
+              "interactionType": "free-response"
+            }
+          },
+          "solution": [
             {
-              "label": "A",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 3
-                },
-                "c": {
-                  "num": 22,
-                  "den": 3
-                }
-              },
-              "display": "y = (-2/3)x + 22/3",
-              "correct": true
+              "number": 1,
+              "transformation": "Find the gradient from the two points",
+              "intermediateResult": "m = -3/2"
             },
             {
-              "label": "B",
-              "value": {
-                "m": {
-                  "num": 2,
-                  "den": 3
-                },
-                "c": {
-                  "num": 22,
-                  "den": 3
-                }
-              },
-              "display": "y = (2/3)x + 22/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN"
+              "number": 2,
+              "transformation": "Substitute one point to find the y-intercept c",
+              "intermediateResult": "c = 2"
             },
             {
-              "label": "C",
-              "value": {
-                "m": {
-                  "num": -2,
-                  "den": 3
-                },
-                "c": {
-                  "num": -22,
-                  "den": 3
-                }
-              },
-              "display": "y = (-2/3)x - 22/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN"
-            },
-            {
-              "label": "D",
-              "value": {
-                "m": {
-                  "num": -3,
-                  "den": 2
-                },
-                "c": {
-                  "num": 22,
-                  "den": 3
-                }
-              },
-              "display": "y = (-3/2)x + 22/3",
-              "correct": false,
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED"
+              "number": 3,
+              "transformation": "Write the equation in the form y = mx + c",
+              "intermediateResult": "y = (-3/2)x + 2"
             }
           ],
-          "distractors": [
-            {
-              "display": "y = (-3/2)x + 22/3",
-              "misconceptionId": "MISC.COORD.GRADIENT_INVERTED",
-              "rationale": "Divided the change in x by the change in y instead of the other way round.",
-              "feedback": "Gradient is rise over run: divide the change in y by the change in x."
-            },
-            {
-              "display": "y = (2/3)x + 22/3",
-              "misconceptionId": "MISC.COORD.GRADIENT_SIGN",
-              "rationale": "Subtracted the coordinates in inconsistent orders, flipping the sign of the gradient.",
-              "feedback": "Subtract the x-coordinates and the y-coordinates in the SAME order; keep the signs consistent."
-            },
-            {
-              "display": "y = (-2/3)x - 22/3",
-              "misconceptionId": "MISC.COORD.INTERCEPT_SIGN",
-              "rationale": "Gave the y-intercept with the wrong sign.",
-              "feedback": "Read the y-intercept where the line crosses the y-axis, keeping its sign (below the origin is negative)."
-            }
-          ]
+          "svgFile": "equation_from_two_points__free-response__7.svg",
+          "altText": "Two points A and B plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
+          "longDescription": "Point A is at (2, -1) and point B is at (6, -7), plotted on a labelled Cartesian grid with equal x and y scales. A straight line is drawn through them.",
+          "dataTableFallback": {
+            "columns": [
+              "point",
+              "coordinates"
+            ],
+            "rows": [
+              [
+                "A",
+                "(2, -1)"
+              ],
+              [
+                "B",
+                "(6, -7)"
+              ]
+            ]
+          },
+          "toScale": true
         }
       ]
     }
   ],
   "diagnostics": {
-    "bandsByTask": {
-      "read_point": [
-        1,
-        2
-      ],
-      "plot_point": [
-        1,
-        2
-      ],
-      "gradient_two_points": [
-        2,
-        3,
-        4
-      ],
-      "midpoint": [
-        2,
-        3
-      ],
-      "interpret_mx_c": [
-        2,
-        3
-      ],
-      "equation_from_graph": [
-        3,
-        4
-      ],
-      "equation_from_two_points": [
-        3,
-        4,
-        5
-      ]
-    },
     "gradientKinds": {
       "positive": 283,
       "negative": 275,
@@ -3901,6 +2776,38 @@
       "width": 6000,
       "height": 4200,
       "viewBox": "0 0 1000 700"
+    },
+    "realisedBandsByTask": {
+      "read_point": [
+        1,
+        2
+      ],
+      "plot_point": [
+        1,
+        2
+      ],
+      "gradient_two_points": [
+        2,
+        3,
+        4
+      ],
+      "midpoint": [
+        2,
+        3
+      ],
+      "interpret_mx_c": [
+        2,
+        3
+      ],
+      "equation_from_graph": [
+        3,
+        4
+      ],
+      "equation_from_two_points": [
+        3,
+        4,
+        5
+      ]
     }
   }
 }

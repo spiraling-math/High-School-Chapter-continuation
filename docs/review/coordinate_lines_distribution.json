@@ -1,28 +1,34 @@
 {
   "generatorId": "gen.geometry.coordinate-lines",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
   "sweep": 10000,
   "invalid": 0,
   "perTask": {
     "read_point": {
-      "count": 1421,
+      "count": 3064,
+      "freeResponse": 1421,
+      "multipleChoice": 1643,
       "objectiveRange": [
         1,
         2
       ],
       "bands": {
-        "1": 726,
-        "2": 695
+        "1": 1462,
+        "2": 1602
       },
       "bandPct": {
-        "1": 51.1,
-        "2": 48.9
+        "1": 47.7,
+        "2": 52.3
       },
       "unreachableBands": [],
-      "overConcentratedBands": []
+      "overConcentratedBands": [],
+      "integerAnswers": 3064,
+      "exactRationalAnswers": 0
     },
     "plot_point": {
       "count": 1475,
+      "freeResponse": 1475,
+      "multipleChoice": 0,
       "objectiveRange": [
         1,
         2
@@ -36,114 +42,154 @@
         "2": 68.5
       },
       "unreachableBands": [],
-      "overConcentratedBands": []
+      "overConcentratedBands": [],
+      "integerAnswers": 1475,
+      "exactRationalAnswers": 0
     },
     "gradient_two_points": {
-      "count": 1445,
+      "count": 2908,
+      "freeResponse": 1445,
+      "multipleChoice": 1463,
       "objectiveRange": [
         2,
         4
       ],
       "bands": {
-        "2": 377,
-        "3": 911,
-        "4": 157
-      },
-      "bandPct": {
-        "2": 26.1,
-        "3": 63.0,
-        "4": 10.9
-      },
-      "unreachableBands": [],
-      "overConcentratedBands": []
-    },
-    "midpoint": {
-      "count": 1474,
-      "objectiveRange": [
-        2,
-        3
-      ],
-      "bands": {
-        "2": 603,
-        "3": 871
-      },
-      "bandPct": {
-        "2": 40.9,
-        "3": 59.1
-      },
-      "unreachableBands": [],
-      "overConcentratedBands": []
-    },
-    "interpret_mx_c": {
-      "count": 1406,
-      "objectiveRange": [
-        2,
-        3
-      ],
-      "bands": {
-        "2": 323,
-        "3": 1083
+        "2": 668,
+        "3": 1905,
+        "4": 335
       },
       "bandPct": {
         "2": 23.0,
-        "3": 77.0
+        "3": 65.5,
+        "4": 11.5
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "integerAnswers": 668,
+      "exactRationalAnswers": 2240
+    },
+    "midpoint": {
+      "count": 3325,
+      "freeResponse": 1474,
+      "multipleChoice": 1851,
+      "objectiveRange": [
+        2,
+        3
+      ],
+      "bands": {
+        "2": 1367,
+        "3": 1958
+      },
+      "bandPct": {
+        "2": 41.1,
+        "3": 58.9
+      },
+      "unreachableBands": [],
+      "overConcentratedBands": [],
+      "integerAnswers": 767,
+      "exactRationalAnswers": 2558
+    },
+    "interpret_mx_c": {
+      "count": 3130,
+      "freeResponse": 1406,
+      "multipleChoice": 1724,
+      "objectiveRange": [
+        2,
+        3
+      ],
+      "bands": {
+        "2": 592,
+        "3": 2538
+      },
+      "bandPct": {
+        "2": 18.9,
+        "3": 81.1
       },
       "unreachableBands": [],
       "overConcentratedBands": [
         3
-      ]
+      ],
+      "integerAnswers": 644,
+      "exactRationalAnswers": 2486
     },
     "equation_from_graph": {
-      "count": 1460,
+      "count": 3131,
+      "freeResponse": 1460,
+      "multipleChoice": 1671,
       "objectiveRange": [
         3,
         4
       ],
       "bands": {
-        "3": 600,
-        "4": 860
+        "3": 1188,
+        "4": 1943
       },
       "bandPct": {
-        "3": 41.1,
-        "4": 58.9
+        "3": 37.9,
+        "4": 62.1
       },
       "unreachableBands": [],
-      "overConcentratedBands": []
+      "overConcentratedBands": [],
+      "integerAnswers": 697,
+      "exactRationalAnswers": 2434
     },
     "equation_from_two_points": {
-      "count": 1319,
+      "count": 2967,
+      "freeResponse": 1319,
+      "multipleChoice": 1648,
       "objectiveRange": [
         3,
         5
       ],
       "bands": {
-        "3": 124,
-        "4": 437,
-        "5": 758
+        "3": 187,
+        "4": 956,
+        "5": 1824
       },
       "bandPct": {
-        "3": 9.4,
-        "4": 33.1,
-        "5": 57.5
+        "3": 6.3,
+        "4": 32.2,
+        "5": 61.5
       },
       "unreachableBands": [],
-      "overConcentratedBands": []
+      "overConcentratedBands": [],
+      "integerAnswers": 444,
+      "exactRationalAnswers": 2523
     }
   },
   "gradient": {
-    "integer": 377,
-    "rational": 1068,
-    "positive": 712,
-    "negative": 703,
+    "integer": 668,
+    "rational": 2240,
+    "positive": 1447,
+    "negative": 1431,
     "zero": 30
   },
   "midpoint": {
-    "integer": 350,
-    "halfInteger": 1124
+    "integer": 767,
+    "halfInteger": 2558
+  },
+  "scaffold": {
+    "read_point": {
+      "scaffolded": 1553,
+      "unscaffolded": 1511
+    },
+    "gradient_two_points": {
+      "scaffolded": 1457,
+      "unscaffolded": 1451
+    }
   },
   "redraw": {
     "sampleSeeds": 2000,
-    "freeResponseAvgAttempts": 1.012,
-    "multipleChoiceAvgAttempts": 1.165
+    "freeResponse": {
+      "avgAttempts": 1.012,
+      "rejectionRatePerAccept": 0.012,
+      "fractionNeedingRedraw": 0.011
+    },
+    "multipleChoice": {
+      "avgAttempts": 1.165,
+      "rejectionRatePerAccept": 0.165,
+      "fractionNeedingRedraw": 0.139
+    }
   }
 }

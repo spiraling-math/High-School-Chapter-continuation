@@ -20,8 +20,8 @@ type Frac = Rational;
 const F = (x: number): Rational => new Rational(x, 1);
 
 export const GENERATOR_ID = "gen.geometry.coordinate-lines";
-export const GENERATOR_VERSION = "1.0.0";
-export const VALIDATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
+export const VALIDATOR_VERSION = "1.0.1";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 export const TASKS = ["read_point", "plot_point", "gradient_two_points", "midpoint",
@@ -471,7 +471,10 @@ function prompt(task: string, p: Json): Json {
 function solution(task: string, p: Json): Json {
   const steps: Json[] = [];
   const step = (n: number, t: string, r: string): void => { steps.push({ number: n, transformation: t, intermediateResult: r }); };
-  if (task === "read_point") step(1, "Read across to the y-axis for x, then up or down to the x-axis for y", dispPt(F(p.x), F(p.y)));
+  if (task === "read_point") {
+    if (p.scaffold) step(1, "Project the point vertically to the x-axis to read x, and horizontally to the y-axis to read y", dispPt(F(p.x), F(p.y)));
+    else step(1, "Read the horizontal position for the x-coordinate, then the vertical position for the y-coordinate. Write the coordinates as (x, y)", dispPt(F(p.x), F(p.y)));
+  }
   else if (task === "plot_point") step(1, "Count along the x-axis, then up or down the y-axis, and mark the point", dispPt(F(p.x), F(p.y)));
   else if (task === "gradient_two_points") {
     const rise = p.y2 - p.y1, run = p.x2 - p.x1, m = solveGradient(p);

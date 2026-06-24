@@ -71,54 +71,70 @@ def main() -> int:
     print("\n" + "=" * 70)
     print(f"Validation sweep + distribution report: {SWEEP} seeds x 2 modes")
     failing = []
-    per_task: dict = {t: {"count": 0, "bands": {}} for t in cl.TASKS}
+    per_task: dict = {t: {"fr": 0, "mc": 0, "bands": {}, "intAns": 0, "ratAns": 0} for t in cl.TASKS}
     grad = {"integer": 0, "rational": 0, "positive": 0, "negative": 0, "zero": 0}
     mid = {"integer": 0, "halfInteger": 0}
-    for s in range(1, SWEEP + 1):
-        it = cl.generate(s, {"interactionType": "free-response"})
-        if cl.validate(it)["status"] != "pass":
-            failing.append({"seed": s, "mode": "free-response", "task": it["params"]["task"]})
-        t = it["params"]["task"]
-        b = it["difficulty"]["overallBand"]
-        per_task[t]["count"] += 1
-        per_task[t]["bands"][b] = per_task[t]["bands"].get(b, 0) + 1
-        if t == "gradient_two_points":
-            m = cl._solve_gradient(it["params"])
-            grad["integer" if m.denominator == 1 else "rational"] += 1
-            grad["zero" if m == 0 else ("positive" if m > 0 else "negative")] += 1
-        if t == "midpoint":
-            mx, my = cl._solve_midpoint(it["params"])
-            mid["integer" if (mx.denominator == 1 and my.denominator == 1) else "halfInteger"] += 1
-        im = cl.generate(s, {"interactionType": "multiple-choice"})
-        if cl.validate(im)["status"] != "pass":
-            failing.append({"seed": s, "mode": "multiple-choice", "task": im["params"]["task"]})
-        if s <= 200 and cl.serialize(cl.generate(s, {"interactionType": "multiple-choice"})) != cl.serialize(im):
-            failing.append({"seed": s, "mode": "reproducibility"})
+    scaffold = {"read_point": {"scaffolded": 0, "unscaffolded": 0}, "gradient_two_points": {"scaffolded": 0, "unscaffolded": 0}}
 
-    # Redraw rate over a sample.
+    def _is_integer_answer(task, params) -> bool:
+        av = cl._answer_value(task, params)
+        if cl.ANSWER_KIND[task] == "gradient":
+            return av.denominator == 1
+        return av[0].denominator == 1 and av[1].denominator == 1  # coordinate / ordered-pair / (m, c)
+
+    for s in range(1, SWEEP + 1):
+        for mode in ("free-response", "multiple-choice"):
+            it = cl.generate(s, {"interactionType": mode})
+            if cl.validate(it)["status"] != "pass":
+                failing.append({"seed": s, "mode": mode, "task": it["params"]["task"]})
+            t = it["params"]["task"]
+            p = it["params"]
+            per_task[t]["fr" if mode == "free-response" else "mc"] += 1
+            b = it["difficulty"]["overallBand"]
+            per_task[t]["bands"][b] = per_task[t]["bands"].get(b, 0) + 1
+            per_task[t]["intAns" if _is_integer_answer(t, p) else "ratAns"] += 1
+            if t in scaffold:
+                scaffold[t]["scaffolded" if p.get("scaffold") else "unscaffolded"] += 1
+            if t == "gradient_two_points":
+                m = cl._solve_gradient(p)
+                grad["integer" if m.denominator == 1 else "rational"] += 1
+                grad["zero" if m == 0 else ("positive" if m > 0 else "negative")] += 1
+            if t == "midpoint":
+                mx, my = cl._solve_midpoint(p)
+                mid["integer" if (mx.denominator == 1 and my.denominator == 1) else "halfInteger"] += 1
+            if mode == "multiple-choice" and s <= 200 and cl.serialize(cl.generate(s, {"interactionType": "multiple-choice"})) != cl.serialize(it):
+                failing.append({"seed": s, "mode": "reproducibility"})
+
+    # Redraw + rejection rate over a sample.
     sample = 2000
-    fr_att = sum(_attempts(s, "free-response") for s in range(1, sample + 1)) / sample
-    mc_att = sum(_attempts(s, "multiple-choice") for s in range(1, sample + 1)) / sample
+    fr_att = [_attempts(s, "free-response") for s in range(1, sample + 1)]
+    mc_att = [_attempts(s, "multiple-choice") for s in range(1, sample + 1)]
+    redraw = {
+        "sampleSeeds": sample,
+        "freeResponse": {"avgAttempts": round(sum(fr_att) / sample, 3), "rejectionRatePerAccept": round(sum(a - 1 for a in fr_att) / sample, 3), "fractionNeedingRedraw": round(sum(1 for a in fr_att if a > 1) / sample, 3)},
+        "multipleChoice": {"avgAttempts": round(sum(mc_att) / sample, 3), "rejectionRatePerAccept": round(sum(a - 1 for a in mc_att) / sample, 3), "fractionNeedingRedraw": round(sum(1 for a in mc_att if a > 1) / sample, 3)},
+    }
 
     report = {"generatorId": cl.GENERATOR_ID, "generatorVersion": cl.GENERATOR_VERSION,
               "sweep": SWEEP, "invalid": len(failing), "perTask": {}, "gradient": grad,
-              "midpoint": mid, "redraw": {"sampleSeeds": sample,
-                                          "freeResponseAvgAttempts": round(fr_att, 3),
-                                          "multipleChoiceAvgAttempts": round(mc_att, 3)}}
+              "midpoint": mid, "scaffold": scaffold, "redraw": redraw}
     for t in cl.TASKS:
         info = per_task[t]
-        n = info["count"]
+        n = info["fr"] + info["mc"]
         lo, hi = cl.TASK_BANDS[t]
         bands = {b: info["bands"].get(b, 0) for b in range(1, 6) if info["bands"].get(b, 0)}
         pct = {b: round(100.0 * c / n, 1) for b, c in bands.items()} if n else {}
         unreachable = [b for b in range(lo, hi + 1) if info["bands"].get(b, 0) == 0]
-        over = [b for b, p in pct.items() if p > 70.0]
-        report["perTask"][t] = {"count": n, "objectiveRange": [lo, hi], "bands": bands,
-                                "bandPct": pct, "unreachableBands": unreachable, "overConcentratedBands": over}
-        print(f"  {t:26s} n={n:5d}  bands%={pct}  unreachable={unreachable}  over={over}")
+        over = [b for b, pp in pct.items() if pp > 70.0]
+        report["perTask"][t] = {"count": n, "freeResponse": info["fr"], "multipleChoice": info["mc"],
+                                "objectiveRange": [lo, hi], "bands": bands, "bandPct": pct,
+                                "unreachableBands": unreachable, "overConcentratedBands": over,
+                                "integerAnswers": info["intAns"], "exactRationalAnswers": info["ratAns"]}
+        print(f"  {t:26s} n={n:5d} FR={info['fr']:5d} MC={info['mc']:5d} bands%={pct} int/rat={info['intAns']}/{info['ratAns']} unreach={unreachable}")
     print(f"  gradient: {grad}")
     print(f"  midpoint: {mid}")
-    print(f"  redraw avg attempts: FR={fr_att:.2f}  MC={mc_att:.2f}")
+    print(f"  scaffold: {scaffold}")
+    print(f"  redraw: FR avg={redraw['freeResponse']['avgAttempts']} reject={redraw['freeResponse']['rejectionRatePerAccept']}  MC avg={redraw['multipleChoice']['avgAttempts']} reject={redraw['multipleChoice']['rejectionRatePerAccept']}")
 
     with open(os.path.join(REVIEW_DIR, "coordinate_lines_distribution.json"), "w", encoding="utf-8") as fh:
         json.dump(report, fh, indent=2)
