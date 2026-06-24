@@ -60,7 +60,7 @@
     "vocabulary": ["frequency table", "category", "frequency", "total"],
     "answerTypes": ["integer"], "calculatorPolicy": "calculator-not-required",
     "difficultyRange": { "min": 1, "max": 2 },
-    "commonMisconceptions": ["MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW"],
+    "commonMisconceptions": ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (frequency tables)" }],
     "reviewStatus": "approved-for-implementation", "version": "1.0.0"
@@ -236,7 +236,7 @@
     "vocabulary": ["probability", "equally likely", "favourable", "outcome", "simplest form"],
     "answerTypes": ["fraction"], "calculatorPolicy": "calculator-not-required",
     "difficultyRange": { "min": 2, "max": 3 },
-    "commonMisconceptions": ["MISC.STAT.PROB_UNREDUCED", "MISC.STAT.PROB_FAVOURABLE_OVER_FAILURE", "MISC.STAT.PROB_TOTAL_OVER_FAVOURABLE"],
+    "commonMisconceptions": ["MISC.STAT.PROB_COMPLEMENT", "MISC.STAT.PROB_ODDS", "MISC.STAT.PROB_OFF_BY_ONE"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.TABLE_VALUE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (single-event probability)" }],
     "reviewStatus": "approved-for-implementation", "version": "1.0.0"
