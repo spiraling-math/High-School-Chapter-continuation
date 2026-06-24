@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-24.
 
-## `gen.geometry.coordinate-lines` v1.0.2 — IMPLEMENTED; PENDING FINAL CURRICULUM REVIEW (gated)
+## `gen.geometry.coordinate-lines` v1.0.2 — CURRICULUM-APPROVED (2026-06-24)
 
 Coordinate geometry & straight-line graphs (Middle-School Geometry/Algebra bridge) — built
 oracle-first after the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec
@@ -25,9 +25,13 @@ guides); vertical lines excluded from the four finite-gradient tasks; MC only wi
 misconception-backed distractors (plot_point MC rejected). Premium colour layer
 (`media[].spec.premium`) + **6000×4200** PNG export (S=6); the monochrome canonical SVG stays
 authoritative. **Independent Python oracle + byte-identical TypeScript mirror** (golden +
-300-entry parity fixtures match byte-for-byte). Registered `approvalStatus: pending-review`
-— gated out of normal Studio + production exports/samples until the owner's review-pack
-decision. Verified: typecheck; full TS suite; 4 oracle suites; conformance; 10,000-seed
+300-entry parity fixtures match byte-for-byte). **CURRICULUM-APPROVED at v1.0.2
+(`DECISION_LOG.md` #44):** `approvalStatus: approved` — selectable in normal Studio use and
+included in production exports/samples (`scripts/build-samples.mjs` emits all 7 tasks; bank.json
+carries 7 records); the 8 `SPI.MIDDLE.GEO.COORD.*` objectives are `reviewStatus: approved`; the
+v1.0.2 fixtures, review pack, audit, gallery, distribution report, browser verification, and
+manifest are frozen immutable (tag `approved-coordinate-lines-v1.0.2`). Verified: typecheck;
+full TS suite; 4 oracle suites; conformance; 10,000-seed
 sweep 0 invalid; review pack (29 review items = **25 figures** + 4 text-only interpret_mx_c
 items; all 11 misconceptions, 0 leakage); visual audit + premium gallery (premium light/dark,
 accessible-colour, monochrome print — per-root CSS-var isolation; reversed-order test; stress
@@ -35,9 +39,11 @@ test; zoom; materialized 6000×4200 export); browser computed-style + style-isol
 generation manifest + blocking artifact-integrity tests; reusable answer-checkers + the shared
 `core/visual-style/cartesian-theme`. The actual SVG directory count, the manifest `svgCount`,
 and the review-pack summary all agree (**25**). Approved arithmetic/geometric/linear/geometry
-output byte-for-byte UNCHANGED. Items begin machine-validated; no auto-approval/publication.
-**Awaiting the owner's APPROVE or REJECT of v1.0.2.** Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
-After this family, Statistics & Data Handling is the queued next proposal.
+output byte-for-byte UNCHANGED. Newly generated items begin machine-validated; approval does
+not auto-approve/publish future items. Spec: `docs/GENERATOR_SPEC_coordinate_lines_PROPOSAL.md`.
+**Next:** a `Statistics and Data Handling` specification proposal (no implementation until the
+owner approves it). The interpret_mx_c band-3 concentration is logged as non-blocking
+difficulty-calibration debt (`DECISION_LOG.md` #44).
 
 ## Geometry SVG pilot — CURRICULUM-APPROVED v1.2.3 (2026-06-23)
 

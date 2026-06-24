@@ -13,14 +13,17 @@ committed golden/parity fixtures.
 | `gen.sequences.geometric` | **1.1.0** | curriculum-approved | `GENERATOR_SPEC_geometric_sequences_PROPOSAL.md` | `6efcde6` | 2026-06-20 |
 | `gen.algebra.linear-equations` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_linear_equations_proposal.md` | `0ebcb96` | 2026-06-21 |
 | `gen.geometry.angles-figures` | **1.2.3** | curriculum-approved | `GENERATOR_SPEC_geometry_svg_proposal.md` | `4c9705c` | 2026-06-23 |
+| `gen.geometry.coordinate-lines` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` | `660b50e` | 2026-06-24 |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
 | `gen.sequences.arithmetic` | 1.0.0, 1.0.1 | preserved (superseded by 1.1.0) | — | `5a962a7`, `4cbb6a1` | — |
 | `gen.algebra.linear-equations` | 1.0.0 | preserved (superseded by 1.0.1) | — | `1cfc76c` | — |
 | `gen.geometry.angles-figures` | 1.2.0 / 1.2.1 / 1.2.2 | preserved (superseded/rejected; never approved) | — | tags below | — |
+| `gen.geometry.coordinate-lines` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `coordinate-lines-v1.0.{0,1}` | — |
 
 Git tags identify the approved reference implementations:
 `approved-arith-v1.1.0`, `approved-geo-v1.0.0`, `approved-geo-v1.1.0`,
-`approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`).
+`approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`),
+`approved-coordinate-lines-v1.0.2` (= `coordinate-lines-v1.0.2`).
 
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).
@@ -65,10 +68,20 @@ objectives); they are not themselves bound to a generated task in this version.
 | `SPI.MIDDLE.GEO.ISOSCELES_BASE_ANGLES.01` | geometry isosceles_base_angle | 1.2.3 | approved |
 | `SPI.MIDDLE.GEO.VERTICALLY_OPPOSITE_ANGLES.01` | geometry vertically_opposite_angle | 1.2.3 | approved |
 | `SPI.MIDDLE.GEO.ANGLES_AT_POINT.01` | geometry angles_at_point_missing | 1.2.3 | approved |
+| `SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01` | coordinate-lines (foundational) | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.READ_POINT.01` | coordinate read_point | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.PLOT_POINT.01` | coordinate plot_point | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.GRADIENT_TWO_POINTS.01` | coordinate gradient_two_points | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.MIDPOINT.01` | coordinate midpoint | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01` | coordinate interpret_mx_c | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01` | coordinate equation_from_graph | 1.0.2 | approved |
+| `SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01` | coordinate equation_from_two_points | 1.0.2 | approved |
 
-The five `SPI.MIDDLE.GEO.*.01` objective **definitions** were curriculum-approved on
+The five `SPI.MIDDLE.GEO.*.01` angle objective **definitions** were curriculum-approved on
 2026-06-22 (`DECISION_LOG.md` #34); their **generator** `gen.geometry.angles-figures`
-**v1.2.3** was curriculum-approved on 2026-06-23 (`DECISION_LOG.md` #40) — see below.
+**v1.2.3** was curriculum-approved on 2026-06-23 (`DECISION_LOG.md` #40). The eight
+`SPI.MIDDLE.GEO.COORD.*` objective definitions and the generator `gen.geometry.coordinate-lines`
+**v1.0.2** were curriculum-approved on 2026-06-24 (`DECISION_LOG.md` #44) — see below.
 
 ## Geometry generator — curriculum-approved at v1.2.3 (2026-06-23, `DECISION_LOG.md` #40)
 
@@ -123,26 +136,39 @@ tests), which was **curriculum-approved** (#40). Each revision preserved its pre
 v1.2.0/1.2.1/1.2.2 stay in history (unapproved) and are **not registered/selectable** —
 only the approved v1.2.3 is.
 
-## Pending-review (machine-validated; gated to review/developer mode)
+## Coordinate-lines generator — curriculum-approved at v1.0.2 (2026-06-24, `DECISION_LOG.md` #44)
 
-| Generator | Version | `approvalStatus` | Visible to | Review artifacts |
-| --- | --- | --- | --- | --- |
-| `gen.geometry.coordinate-lines` | 1.0.2 | **pending-review** | Studio review mode only; **excluded** from normal users + production exports/samples | `docs/review/coordinate_lines_review_pack.{md,json}` + `coordinate_lines_visual_audit.html` + `coordinate_lines_browser_verification.json` + `coordinate_lines_manifest.json` |
-| `gen.geometry.coordinate-lines` | 1.0.0, 1.0.1 | superseded by 1.0.2 (preserved; never approved) | — | tags `coordinate-lines-v1.0.0`, `coordinate-lines-v1.0.1` |
+`gen.geometry.coordinate-lines` **v1.0.2** is curriculum-approved and is now selectable in
+normal Generator Studio use and included in production exports/samples (`approvalStatus:
+approved`; only v1.0.2 registered). The owner approved the generator, its specification, the
+validator contract, the canonical Cartesian SVG renderer, the exact-rational + ordered-pair
+answer models, the `y = mx + c` equivalence checker, the difficulty model, the worked-solution
+structures, the misconception/distractor rules, the accessibility model, the four rendering
+modes (premium / premium-dark / accessible-colour / monochrome-print), the **per-SVG
+style-isolation contract** (per-root CSS custom properties + one common `.cx-figure` ruleset,
+`core/visual-style/cartesian-theme`), the **6000×4200 high-resolution export contract**
+(materialized, self-contained), the seven-task scope + exclusions, and the reviewed items as
+golden exemplars. The eight `SPI.MIDDLE.GEO.COORD.*` objective definitions are
+`reviewStatus: approved`. History: implemented #41 → curriculum REVISE #42 → v1.0.1 →
+visual/export REJECT #43 → v1.0.2.
 
-`gen.geometry.coordinate-lines` (Coordinate geometry & straight-line graphs) was implemented
-oracle-first after the owner's APPROVE-WITH-REQUIRED-REVISIONS of the spec
-(`DECISION_LOG.md` #41), reviewed, and corrected to **v1.0.1** after the owner's
-curriculum-review REVISE (`DECISION_LOG.md` #42: read_point solution wording; review-pack
-de-duplication + interaction/band coverage enforcement + CARTESIAN_PLANE summary; strengthened
-distribution report). v1.0.0 is preserved unchanged (tag `coordinate-lines-v1.0.0`). Its **8 objectives** `SPI.MIDDLE.GEO.COORD.*` (CARTESIAN_PLANE +
-READ_POINT, PLOT_POINT, GRADIENT_TWO_POINTS, MIDPOINT, INTERPRET_MX_C, EQUATION_FROM_GRAPH,
-EQUATION_FROM_2PTS) carry `reviewStatus: approved-for-implementation` in a new strand
-`coordinate-geometry-straight-line-graphs`. The generator is self-verifying (byte-identical
-Python/TypeScript SVG + item parity; 10,000-seed sweep 0 invalid; schema + leakage +
-artifact-integrity gates) but **awaits the owner's APPROVE or REJECT of v1.0.1**; it
-is registered `pending-review` and is excluded from normal Studio use + production exports.
-This section moves into "Approved generators" only on that decision.
+**Frozen, immutable approval artifacts** (hash-attested by the generation manifest +
+artifact-integrity tests):
+
+| Artifact | Path |
+| --- | --- |
+| Golden fixture | `oracle/golden/coordinate_lines.golden.json` |
+| Parity fixture (Py/TS) | `oracle/golden/coordinate_lines.parity.json` |
+| Canonical SVG fixtures | `docs/review/coordinate_lines_svgs/` (25 files) + `coordinate_lines_8k_sample.svg` |
+| Review pack | `docs/review/coordinate_lines_review_pack.md` + `.json` |
+| Visual audit + premium gallery | `docs/review/coordinate_lines_visual_audit.html` |
+| Distribution report | `docs/review/coordinate_lines_distribution.json` |
+| Computed-style browser verification | `docs/review/coordinate_lines_browser_verification.json` |
+| Generation manifest (SHA-256 of all the above + the 3 export hashes) | `docs/review/coordinate_lines_manifest.json` |
+
+The three 6000×4200 export hashes (premium `424d61c2…`, accessible `45e7d9c8…`, print
+`1cc12dce…`) are recorded in the manifest's `rasterExports`. v1.0.0/v1.0.1 are preserved in
+history (unapproved, not registered/selectable; tags `coordinate-lines-v1.0.{0,1}`).
 
 ## Golden exemplars (curriculum-reviewed and approved)
 
@@ -157,7 +183,8 @@ approved-exemplar status is recorded here.
 | `gen.sequences.geometric` 1.1.0 | `oracle/golden/geometric_sequences.golden.json` | 1, 42, 123456789, 2147483647 |
 | `gen.algebra.linear-equations` 1.0.1 | `oracle/golden/linear_equations.golden.json` | 1, 42, 123456789, 2147483647 |
 | `gen.geometry.angles-figures` 1.2.3 | `oracle/golden/geometry_angles.golden.json` | golden seeds + the review-pack items |
-| Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md` | all listed items |
+| `gen.geometry.coordinate-lines` 1.0.2 | `oracle/golden/coordinate_lines.golden.json` | golden seeds + the 29 review-pack items (25 figures + 4 text-only) |
+| Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md`, `docs/review/coordinate_lines_review_pack.md` | all listed items |
 
 ## Lifecycle policy (unchanged)
 
@@ -172,10 +199,12 @@ approved-exemplar status is recorded here.
 The following are preserved unchanged and are protected by the test gate:
 
 - arithmetic v1.0.0 / v1.0.1 / v1.1.0, geometric v1.0.0 / v1.1.0,
-  **linear-equations v1.0.0 / v1.0.1**, and **geometry v1.2.3** output;
+  **linear-equations v1.0.0 / v1.0.1**, **geometry v1.2.3**, and
+  **coordinate-lines v1.0.2** output;
 - all golden and parity fixtures, including the frozen-immutable
-  `oracle/golden/linear_equations.{golden,parity}.json` (v1.0.1) and
-  `oracle/golden/geometry_angles.{golden,parity}.json` (v1.2.3, manifest-attested);
+  `oracle/golden/linear_equations.{golden,parity}.json` (v1.0.1),
+  `oracle/golden/geometry_angles.{golden,parity}.json` (v1.2.3, manifest-attested), and
+  `oracle/golden/coordinate_lines.{golden,parity}.json` (v1.0.2, manifest-attested);
 - the Python oracle and the TypeScript implementation (kept byte-for-byte in
   parity);
 - exact-rational normalization (`{num, den}`, den ≥ 1);
