@@ -1,10 +1,10 @@
 {
   "generatorId": "gen.measurement.mensuration",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "8a099cb0f5ad52a921751abbe908a7a01e5844e4",
+  "gitCommit": "f2212d39baf596922dc844d8b2fc3737455b789b",
   "approval": {
     "decision": "implementation-authorized-pending-review",
     "tag": "mensuration-v1.0.0",
@@ -41,42 +41,42 @@
   "artifacts": {
     "oracleUnits": {
       "path": "oracle/spi_oracle/mensuration_units.py",
-      "sha256": "ce404ea935fa5b8bdc40054b501269775c09e1a4203fac72cabb6b5d3d473832",
+      "sha256": "adf2ee58598fe14b3b2b804d21463a10d0a24060653d90451175e2f343a71ccc",
       "present": true
     },
     "oracle": {
       "path": "oracle/spi_oracle/mensuration.py",
-      "sha256": "72364be1d3a284ae16170fb42938b96d539cc73d80bf64c11b0ad0d07cc47840",
+      "sha256": "1f93c5bf5ff5751eaee1c2b89cd8e7b5bb99169c8876a4cf8c5e6677196b7bcc",
       "present": true
     },
     "misconceptions": {
       "path": "oracle/spi_oracle/mensuration_misconceptions.py",
-      "sha256": "4d45cbffe694e0f7b85b43e36ecb5e722d050bca859f8c38916d415ff742e53d",
+      "sha256": "f9875af4cb1ce2e738aa8f303f3413d1d387c955321f436a9f260e282d15efde",
       "present": true
     },
     "tsUnits": {
       "path": "domains/measurement/mensuration-units.ts",
-      "sha256": "1e8112edb5e22e77b918996baba0f572f94e825b67422d560153ce40a25f5142",
+      "sha256": "4708a2cd90f5b867f1ca02370188541f0ff6b9a3924e7b0d205dfa502d2e16b7",
       "present": true
     },
     "tsGenerator": {
       "path": "domains/measurement/mensuration.ts",
-      "sha256": "120fe7bdf0dab4c9eb41d8a500093912b05b513ad13f9ba99a4f1e87fe1fb02c",
+      "sha256": "99476fed6199d45cc9f46dc88391abfb89afd42c32f9ca7a96fb7db6165df0a1",
       "present": true
     },
     "tsMisconceptions": {
       "path": "domains/measurement/mensuration-misconceptions.ts",
-      "sha256": "348539cd71bbae90031919eeed1742dcbb013aecaa9b7cdd16243343e2fb54bc",
+      "sha256": "2019e463e79642c918c925278dc76a5fa21f574f81879418830b74cedfb6de15",
       "present": true
     },
     "golden": {
       "path": "oracle/golden/mensuration.golden.json",
-      "sha256": "46518d97fa8d9724ce606ef8d9c0733bf47050ea8a7db4accc4d7f148f715601",
+      "sha256": "bc37919ec838317e2933549527bb44cdba0bd2da516aef7200c3e1dba05b61b2",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/mensuration.parity.json",
-      "sha256": "251d524f41af7aa743eee0fbdfaa8a3973e4372d214ddcdf7beaa69497c0b384",
+      "sha256": "1722c599067baac2666b5a8f57ece28b938a0e5ec5eb970102df68dc404fadb5",
       "present": true
     },
     "objectives": {
@@ -106,27 +106,27 @@
     },
     "distribution": {
       "path": "docs/review/mensuration_distribution.json",
-      "sha256": "1c62dd690aef7f70a092db0a2e236174e0e8a960f4e7a6b9a709814bef0d4934",
+      "sha256": "ec62206dfe4ca521755ee71d9f2f1e6df78d863bc5ad98d17dc26ff5b09badc5",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/mensuration_review_pack.json",
-      "sha256": "226d13bd082e36a218d7a4fee7f9e35f86febc68d09f1ed933d153cc5e38b79d",
+      "sha256": "eaeebd9e6e5c15e5d7401435aa98bb0cdf6d993368f7295dcccf9acd1755c4db",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/mensuration_review_pack.md",
-      "sha256": "e0ef80dd47849b78f9cfde9b29b10bea998eac28c803650b7ecce7b4a003587b",
+      "sha256": "d545e7d44a9902b6120e887791311693db572fb21da8e170cc12edc32fa3bc97",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/mensuration_visual_audit.html",
-      "sha256": "c85f83ec5d63dead9fbc1b54ce40c600c682c68af77486312f49e3814c834a86",
+      "sha256": "4634a49e9037a3d2488e9eb8e77455c9028e8ed77fd81fdecd72ffdd483e0ee8",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/mensuration_browser_verification.json",
-      "sha256": "4d1116b1b9e5742e648368f820949e62de9ba300964dc15699ea5483de7b83d4",
+      "sha256": "126cbed37b1c42962379fcfc1f33770e3f5a600b3d9be5086de3b042788ef3f6",
       "present": true
     }
   }

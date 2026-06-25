@@ -217,33 +217,44 @@ TASK_DIAGNOSTICS: Dict[str, List[str]] = {
                       "MISC.MENS.LINEAR_UNITS_FOR_AREA", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
     "area_composite": ["MISC.MENS.SUBTRACTS_WRONG_RECTANGLE", "MISC.MENS.ADDS_DIMS_FOR_AREA",
                        "MISC.MENS.USES_PERIMETER_FOR_AREA", "MISC.MENS.LINEAR_UNITS_FOR_AREA", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
-    "missing_length_perimeter": ["MISC.MENS.USES_AREA_FOR_PERIMETER", "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER",
+    # Owner C4: only list rules that have a GENUINE deterministic pathway for the task (no inapplicable
+    # value rules with a null prediction). USES_AREA_FOR_PERIMETER / USES_PERIMETER_FOR_AREA do not map
+    # cleanly to the inverse tasks and are dropped from them; the unit diagnostics + the pedagogical
+    # note remain.
+    "missing_length_perimeter": ["MISC.MENS.SQUARE_UNITS_FOR_PERIMETER",
                                  "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
-    "missing_dimension_area": ["MISC.MENS.USES_PERIMETER_FOR_AREA", "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER",
+    "missing_dimension_area": ["MISC.MENS.SQUARE_UNITS_FOR_PERIMETER",
                                "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
     "missing_triangle_base_height": ["MISC.MENS.FORGETS_TO_HALVE", "MISC.MENS.USES_SLOPING_SIDE",
                                      "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
 }
 
+# Group -> diagnostic kind (owner C4 reporting buckets).
+_GROUP_KIND = {GROUP_MATH: "numeric", GROUP_UNIT: "unit", GROUP_PEDAGOGICAL: "pedagogical"}
+
 
 def diagnostics_for(task: str, params: Dict[str, Any], answer: Quantity) -> List[Dict[str, Any]]:
-    """Every applicable diagnostic for this item, each with its predicted wrong response + the
-    structural result code that response triggers (recomputed independently via the checker)."""
+    """Every APPLICABLE diagnostic for this item (owner C4). A numeric/unit diagnostic always carries
+    a non-null predicted response + the structural result code that response triggers (recomputed
+    independently). A pedagogical diagnostic is diagnosticOnly (no numeric-response claim). A
+    value/unit rule whose adapter returns null is INAPPLICABLE and is omitted entirely — never emitted
+    as a null prediction with a numeric code."""
     out: List[Dict[str, Any]] = []
     for mid in TASK_DIAGNOSTICS.get(task, []):
         rule = _BY_ID[mid]
+        kind = _GROUP_KIND[rule["group"]]
+        base = {"id": mid, "title": rule["title"], "group": rule["group"], "kind": kind,
+                "observableError": rule["observableError"], "feedback": rule["feedback"], "appliesTo": task}
+        if rule["group"] == GROUP_PEDAGOGICAL:
+            out.append({**base, "diagnosticOnly": True, "predictedResponse": None, "resultCode": None,
+                        "distinctFromAnswer": True})
+            continue
         predicted = rule["adapter"](task, params, answer)
-        entry = {"id": mid, "title": rule["title"], "group": rule["group"],
-                 "observableError": rule["observableError"], "feedback": rule["feedback"],
-                 "predictedResponse": predicted}
-        if predicted is not None:
-            res = U.check_response(predicted, answer)
-            entry["resultCode"] = res["code"]
-            entry["distinctFromAnswer"] = not res["correct"]
-        else:
-            entry["resultCode"] = rule["expectedCode"]  # None for pedagogical-only
-            entry["distinctFromAnswer"] = True
-        out.append(entry)
+        if predicted is None:
+            continue  # inapplicable for this item — do NOT emit a null-with-code record
+        res = U.check_response(predicted, answer)
+        out.append({**base, "diagnosticOnly": False, "predictedResponse": predicted,
+                    "resultCode": res["code"], "distinctFromAnswer": not res["correct"]})
     return out
 
 

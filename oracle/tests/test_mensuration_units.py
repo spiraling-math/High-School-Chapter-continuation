@@ -108,5 +108,62 @@ class TestChecker(unittest.TestCase):
         self.assertEqual(seen, set(U.RESULT_CODES))
 
 
+class TestCheckerEvidence(unittest.TestCase):
+    """Owner C3: genuinely-different equivalent forms, all seven codes, and no cross-unit conversion."""
+
+    def setUp(self):
+        self.rat_area = U.make_area(Fraction(105, 2), "mm")   # 105/2 mm^2 -> 52.5
+        self.int_len = U.make_length(15, "cm")
+
+    def test_all_declared_checker_codes_reached(self):
+        codes = set()
+        for ans in (self.rat_area, self.int_len, U.make_area(24, "cm")):
+            for e in U.checker_evidence(ans):
+                codes.add(U.check_response(e["response"], ans)["code"])
+        self.assertEqual(codes, set(U.RESULT_CODES))
+
+    def test_evidence_matches_expected_codes(self):
+        for ans in (self.rat_area, self.int_len):
+            for e in U.checker_evidence(ans):
+                self.assertEqual(U.check_response(e["response"], ans)["code"], e["expectedCode"], e["scenario"])
+
+    def test_equivalent_form_is_not_canonical_copy(self):
+        ev = U.checker_evidence(self.rat_area)
+        diff = [e for e in ev if e["genuinelyDifferent"] and U.check_response(e["response"], self.rat_area)["code"] == "correct"]
+        self.assertGreaterEqual(len(diff), 3)
+        for e in diff:
+            self.assertNotEqual(e["response"], U.format_quantity(self.rat_area))
+
+    def test_equivalent_rational_form_accepted(self):
+        self.assertEqual(U.check_response("210/4 mm^2", self.rat_area)["code"], "correct")
+
+    def test_equivalent_decimal_form_accepted(self):
+        self.assertEqual(U.check_response("52.5 mm^2", self.rat_area)["code"], "correct")
+        self.assertEqual(U.format_decimal(Fraction(105, 2)), "52.5")
+
+    def test_unicode_superscript_accepted(self):
+        self.assertEqual(U.check_response("105/2 mm²", self.rat_area)["code"], "correct")
+
+    def test_no_space_unit_form_accepted(self):
+        self.assertEqual(U.check_response("15cm", self.int_len)["code"], "correct")
+
+    def test_malformed_response_reachable(self):
+        for bad in ["15e2 cm", "15 cm long", "15 cm mm", "15/ cm", "15 cm^3", "15 cm/s", "", "15 cm 15 cm"]:
+            self.assertEqual(U.check_response(bad, self.int_len)["code"], "malformed-response", bad)
+
+    def test_scientific_notation_rejected(self):
+        self.assertEqual(U.check_response("1e3 cm", self.int_len)["code"], "malformed-response")
+
+    def test_trailing_text_rejected(self):
+        self.assertEqual(U.check_response("15 cm long", self.int_len)["code"], "malformed-response")
+
+    def test_conflicting_units_rejected(self):
+        self.assertEqual(U.check_response("15 cm mm", self.int_len)["code"], "malformed-response")
+
+    def test_cross_unit_conversion_not_performed(self):
+        self.assertEqual(U.check_response("100 cm", U.make_length(1, "m"))["code"], "wrong-base-unit")
+        self.assertEqual(U.check_response("10000 cm^2", U.make_area(1, "m"))["code"], "wrong-base-unit")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

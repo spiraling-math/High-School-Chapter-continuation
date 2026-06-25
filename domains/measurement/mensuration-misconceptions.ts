@@ -94,30 +94,36 @@ export const TASK_DIAGNOSTICS: Record<string, string[]> = {
   area_rectangle: ["MISC.MENS.ADDS_DIMS_FOR_AREA", "MISC.MENS.USES_PERIMETER_FOR_AREA", "MISC.MENS.LINEAR_UNITS_FOR_AREA", "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
   area_triangle: ["MISC.MENS.FORGETS_TO_HALVE", "MISC.MENS.USES_SLOPING_SIDE", "MISC.MENS.LINEAR_UNITS_FOR_AREA", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
   area_composite: ["MISC.MENS.SUBTRACTS_WRONG_RECTANGLE", "MISC.MENS.ADDS_DIMS_FOR_AREA", "MISC.MENS.USES_PERIMETER_FOR_AREA", "MISC.MENS.LINEAR_UNITS_FOR_AREA", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
-  missing_length_perimeter: ["MISC.MENS.USES_AREA_FOR_PERIMETER", "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
-  missing_dimension_area: ["MISC.MENS.USES_PERIMETER_FOR_AREA", "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
+  // Owner C4: only rules with a genuine pathway per task (no inapplicable value rules with a null
+  // prediction). USES_AREA_FOR_PERIMETER / USES_PERIMETER_FOR_AREA dropped from the inverse tasks.
+  missing_length_perimeter: ["MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
+  missing_dimension_area: ["MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.WRONG_BASE_UNIT", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
   missing_triangle_base_height: ["MISC.MENS.FORGETS_TO_HALVE", "MISC.MENS.USES_SLOPING_SIDE", "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER", "MISC.MENS.RIGHT_NUMBER_NO_UNIT"],
 };
 
+const GROUP_KIND: Record<string, string> = { [GROUP_MATH]: "numeric", [GROUP_UNIT]: "unit", [GROUP_PEDAGOGICAL]: "pedagogical" };
+
 export interface Diagnostic {
-  id: string; title: string; group: string; observableError: string; feedback: string;
-  predictedResponse: string | null; resultCode: string | null; distinctFromAnswer: boolean;
+  id: string; title: string; group: string; kind: string; observableError: string; feedback: string;
+  appliesTo: string; diagnosticOnly: boolean; predictedResponse: string | null; resultCode: string | null; distinctFromAnswer: boolean;
 }
 
 export function diagnosticsFor(task: string, params: Json, answer: Quantity): Diagnostic[] {
+  // Owner C4: numeric/unit rules carry a non-null prediction; pedagogical rules are diagnosticOnly;
+  // an inapplicable value/unit rule (null prediction) is OMITTED entirely.
   const out: Diagnostic[] = [];
   for (const mid of TASK_DIAGNOSTICS[task] ?? []) {
     const rule = BY_ID[mid] as Rule;
-    const predicted = rule.adapter(task, params, answer);
-    let resultCode: string | null;
-    let distinct: boolean;
-    if (predicted !== null) {
-      const res = checkResponse(predicted, answer);
-      resultCode = res.code; distinct = !res.correct;
-    } else {
-      resultCode = rule.expectedCode; distinct = true;
+    const kind = GROUP_KIND[rule.group]!;
+    const base = { id: mid, title: rule.title, group: rule.group, kind, observableError: rule.observableError, feedback: rule.feedback, appliesTo: task };
+    if (rule.group === GROUP_PEDAGOGICAL) {
+      out.push({ ...base, diagnosticOnly: true, predictedResponse: null, resultCode: null, distinctFromAnswer: true });
+      continue;
     }
-    out.push({ id: mid, title: rule.title, group: rule.group, observableError: rule.observableError, feedback: rule.feedback, predictedResponse: predicted, resultCode, distinctFromAnswer: distinct });
+    const predicted = rule.adapter(task, params, answer);
+    if (predicted === null) continue; // inapplicable — never emit a null-with-code record
+    const res = checkResponse(predicted, answer);
+    out.push({ ...base, diagnosticOnly: false, predictedResponse: predicted, resultCode: res.code, distinctFromAnswer: !res.correct });
   }
   return out;
 }

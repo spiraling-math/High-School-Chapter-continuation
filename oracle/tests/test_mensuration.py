@@ -99,20 +99,26 @@ class TestAnswerContract(unittest.TestCase):
 
 class TestShapeInvariants(unittest.TestCase):
     def test_composite_shoelace_equals_decomposition(self):
-        seen = 0
+        seen_area = seen_perim = 0
         for seed in range(SWEEP):
             it = M.generate(seed)
             if it["params"]["task"] not in M.COMPOSITE_TASKS:
                 continue
-            seen += 1
             p = it["params"]; shape = M._build_shape(p["task"], p)
             shoe = M._polygon_area_shoelace(shape["vertices"])
-            deco = M._decomposition_area(shape["decomposition"])
-            self.assertEqual(shoe, deco, f"seed {seed}")
-            self.assertEqual(shoe, p["W"] * p["H"] - p["a"] * p["b"])
+            self.assertEqual(shoe, p["W"] * p["H"] - p["a"] * p["b"], f"seed {seed}")
             ok, why = M._is_closed_orthogonal_simple(shape["vertices"])
             self.assertTrue(ok, why)
-        self.assertGreater(seen, 0)
+            if p["task"] == "area_composite":
+                seen_area += 1
+                self.assertIn("decomposition", shape)
+                self.assertEqual(shoe, M._decomposition_area(shape["decomposition"]), f"seed {seed}")
+            else:  # perimeter_composite — owner C1: no decomposition
+                seen_perim += 1
+                self.assertNotIn("decomposition", shape)
+                self.assertNotIn("decompMode", p)
+        self.assertGreater(seen_area, 0)
+        self.assertGreater(seen_perim, 0)
 
     def test_triangle_area_and_foot_on_base(self):
         for seed in range(SWEEP):
@@ -205,7 +211,7 @@ class TestReviewPackCoverage(unittest.TestCase):
         for tok in ("dim:length", "dim:area", "num:integer", "num:rational",
                     "unit:mm", "unit:cm", "unit:m",
                     "kind:rectangle", "kind:rectilinear_composite", "kind:triangle_base_height",
-                    "decomp:additive", "decomp:subtractive"):
+                    "decomp:area_composite:additive", "decomp:area_composite:subtractive"):
             self.assertIn(tok, covered, f"{tok} not covered")
 
     def test_feature_proofs_hold(self):
@@ -250,6 +256,157 @@ class TestArtifactIntegrity(unittest.TestCase):
         self.assertEqual(self.manifest["interactionTypes"], ["free-response"])
         self.assertEqual(self.manifest["answerTypes"], ["quantity"])
         self.assertEqual(sorted(self.manifest["objectiveIds"]), sorted(M.OBJECTIVE_BY_TASK[t] for t in M.TASKS))
+
+
+class TestCompositePerimeterSolution(unittest.TestCase):
+    """Owner C2: the perimeter_composite worked solution is numerically complete."""
+
+    def _named(self, item):
+        return {c["name"]: c["result"] for c in M.validate(item)["checks"]}
+
+    def test_named_checks_pass_for_every_composite_perimeter(self):
+        seen = 0
+        for s in range(SWEEP):
+            it = M.generate(s)
+            if it["params"]["task"] != "perimeter_composite":
+                continue
+            seen += 1
+            n = self._named(it)
+            for name in ("composite-perimeter-derives-missing-edges", "composite-perimeter-lists-complete-boundary",
+                         "composite-perimeter-sum-produces-answer", "no-internal-edge-in-perimeter-sum",
+                         "worked-solution-is-numerically-complete"):
+                self.assertEqual(n.get(name), "pass", f"{name} seed {s}")
+            if seen > 60:
+                break
+        self.assertGreater(seen, 0)
+
+    def test_no_placeholder_and_full_trace(self):
+        it = next(M.generate(s) for s in range(SWEEP) if M.generate(s)["params"]["task"] == "perimeter_composite")
+        joined = " ".join(st["intermediateResult"] for st in it["solution"]["steps"])
+        self.assertNotIn("part", joined)
+        self.assertIn(" + ", joined)  # an explicit boundary trace
+
+
+class TestDiagnosticStructure(unittest.TestCase):
+    """Owner C4: no null numeric diagnostics; pedagogical rules labelled; inapplicable rules omitted."""
+
+    def test_numeric_and_unit_diagnostics_are_non_null_and_pedagogical_labelled(self):
+        for s in range(SWEEP):
+            it = M.generate(s); t = it["params"]["task"]; ans = M._solve(t, it["params"])
+            for d in MM.diagnostics_for(t, it["params"], ans):
+                self.assertEqual(d["appliesTo"], t)
+                self.assertTrue(d["feedback"])
+                self.assertTrue(d["observableError"])
+                if d["kind"] == "pedagogical":
+                    self.assertTrue(d["diagnosticOnly"])
+                    self.assertIsNone(d["predictedResponse"])
+                else:
+                    self.assertFalse(d["diagnosticOnly"])
+                    self.assertIsNotNone(d["predictedResponse"], f"{d['id']} {t}")
+                    self.assertIsNotNone(d["resultCode"], f"{d['id']} {t}")
+
+    def test_inapplicable_rules_not_emitted_for_inverse_tasks(self):
+        for task in ("missing_length_perimeter", "missing_dimension_area"):
+            it = M.generate(next(s for s in range(SWEEP) if M.generate(s)["params"]["task"] == task), task=task)
+            ids = {d["id"] for d in MM.diagnostics_for(task, it["params"], M._solve(task, it["params"]))}
+            self.assertNotIn("MISC.MENS.USES_AREA_FOR_PERIMETER", ids)
+            self.assertNotIn("MISC.MENS.USES_PERIMETER_FOR_AREA", ids)
+
+    def test_uses_sloping_side_is_diagnostic_only(self):
+        it = M.generate(next(s for s in range(SWEEP) if M.generate(s)["params"]["task"] == "area_triangle"), task="area_triangle")
+        d = next(x for x in MM.diagnostics_for("area_triangle", it["params"], M._solve("area_triangle", it["params"])) if x["id"] == "MISC.MENS.USES_SLOPING_SIDE")
+        self.assertTrue(d["diagnosticOnly"])
+        self.assertIsNone(d["predictedResponse"])
+
+
+class TestWordingAccessibility(unittest.TestCase):
+    """Owner C5: prompt + accessibility wording polish; canonical units stay ASCII."""
+
+    def test_prompt_no_redundant_sentence(self):
+        leads = {"missing_length_perimeter": "This rectangle has a perimeter of",
+                 "missing_dimension_area": "This rectangle has an area of",
+                 "missing_triangle_base_height": "This triangle has an area of"}
+        for task, lead in leads.items():
+            it = M.generate(next(s for s in range(SWEEP) if M.generate(s)["params"]["task"] == task), task=task)
+            instr = it["prompt"]["instruction"]
+            self.assertTrue(instr.startswith(lead), instr)
+            self.assertNotIn("is given. The", instr)
+            self.assertNotIn("is given. Work", instr)
+
+    def test_accessibility_description_grammatical(self):
+        saw_tri = saw_comp = False
+        for s in range(SWEEP):
+            it = M.generate(s); spoken = it["accessibility"]["spokenMath"]
+            self.assertNotIn("A L-shaped", spoken)
+            if it["params"]["task"] in ("area_composite", "perimeter_composite"):
+                self.assertIn("An L-shaped composite rectilinear shape measured in", spoken); saw_comp = True
+            if it["params"]["kind"] == "triangle_base_height":
+                self.assertRegex(spoken, r"A triangle measured in \w+, with its perpendicular height marked\."); saw_tri = True
+            if saw_tri and saw_comp:
+                break
+        self.assertTrue(saw_tri and saw_comp)
+
+    def test_canonical_unit_display_remains_ascii(self):
+        for s in range(400):
+            it = M.generate(s)
+            self.assertNotIn("²", it["answer"]["display"])
+            if it["answer"]["measure"]["exponent"] == 2:
+                self.assertIn("^2", it["answer"]["display"])
+            self.assertNotIn("²", it["prompt"]["instruction"])
+
+    def test_unit_display_human_readable_in_a11y(self):
+        for task in ("missing_dimension_area", "missing_triangle_base_height"):
+            it = M.generate(next(s for s in range(SWEEP) if M.generate(s)["params"]["task"] == task), task=task)
+            rows = it["media"][0]["dataTableFallback"]["rows"]
+            area_row = next(r for r in rows if "area (given)" in r[0])
+            self.assertIn("squared", area_row[1])
+            self.assertNotIn("^2", area_row[1])
+
+
+class TestDecompositionCoverage(unittest.TestCase):
+    """Owner C1: decomposition coverage is task-specific; perimeter items excluded; both modes present."""
+
+    @classmethod
+    def setUpClass(cls):
+        path = os.path.join(HERE, "..", "..", "docs", "review", "mensuration_review_pack.json")
+        cls.pack = json.load(open(path, encoding="utf-8"))
+
+    def test_feature_proofs(self):
+        fp = self.pack["featureProofs"]
+        for k in ("area_composite_additive_exemplar_present", "area_composite_subtractive_exemplar_present",
+                  "decomposition_coverage_task_specific", "perimeter_items_not_in_area_decomposition_cells",
+                  "coverage_cell_matches_worked_method", "all_seven_checker_codes_reached",
+                  "genuinely_different_forms_accepted", "no_cross_unit_conversion", "no_null_numeric_diagnostic_records",
+                  "checker_matrix_no_mismatch"):
+            self.assertTrue(fp.get(k), f"feature proof failed: {k}")
+
+    def test_no_false_decomposition_coverage_claim(self):
+        cells = {row["cell"] for row in self.pack["coverageMatrix"]}
+        self.assertIn("decomp:area_composite:additive", cells)
+        self.assertIn("decomp:area_composite:subtractive", cells)
+        self.assertNotIn("decomp:additive", cells)
+        self.assertNotIn("decomp:subtractive", cells)
+        # no perimeter_composite record carries an area-decomposition token
+        for r in self.pack["records"]:
+            if r["task"] == "perimeter_composite":
+                self.assertIsNone(r["decompMode"])
+
+    def test_coverage_cell_matches_worked_method(self):
+        for r in self.pack["records"]:
+            if r["task"] != "area_composite":
+                continue
+            sol = " ".join(r["solution"])
+            if r["decompMode"] == "additive":
+                self.assertIn("Add the two rectangle areas", sol)
+            else:
+                self.assertIn("Subtract the missing rectangle", sol)
+
+    def test_checker_summary_all_seven(self):
+        cs = self.pack["checkerSummary"]
+        self.assertTrue(cs["allSevenReached"])
+        self.assertEqual(cs["matrixMismatches"], 0)
+        self.assertFalse(cs["crossUnitConversionPerformed"])
+        self.assertGreater(cs["genuinelyDifferentAccepted"], 0)
 
 
 if __name__ == "__main__":

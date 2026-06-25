@@ -261,6 +261,72 @@ def check_response(text: str, expected: Quantity) -> Dict[str, object]:
                    parsed)
 
 
+def format_decimal(value: Fraction) -> Optional[str]:
+    """Exact terminating-decimal string for `value`, or None if it does not terminate."""
+    d = value.denominator
+    twos = fives = 0
+    t = d
+    while t % 2 == 0:
+        t //= 2; twos += 1
+    while t % 5 == 0:
+        t //= 5; fives += 1
+    if t != 1:
+        return None
+    k = max(twos, fives)
+    if k == 0:
+        return str(value.numerator)
+    scaled = value.numerator * (10 ** k // d)
+    s = str(abs(scaled)).rjust(k + 1, "0")
+    s = s[:-k] + "." + s[-k:]
+    return ("-" if scaled < 0 else "") + s
+
+
+def checker_evidence(ans: Quantity) -> list:
+    """The shared quantity-checker evidence matrix (owner D/C3): GENUINELY-DIFFERENT accepted forms
+    (no-space, extra-space, unreduced fraction, terminating decimal, Unicode superscript), every
+    reject code, and every malformed-response category. Each entry is {scenario, response,
+    expectedCode, genuinelyDifferent}; the canonical form is the only non-genuinely-different one."""
+    val = format_value(ans.value)
+    tok = unit_token(ans.baseUnit, ans.exponent)
+    other = {"mm": "cm", "cm": "m", "m": "cm"}[ans.baseUnit]
+    ev: list = []
+
+    def add(scenario: str, resp: str, code: str, diff: bool = False) -> None:
+        ev.append({"scenario": scenario, "response": resp, "expectedCode": code, "genuinelyDifferent": diff})
+
+    add("canonical form", format_quantity(ans), "correct", False)
+    add("no-space unit form", f"{val}{tok}", "correct", True)
+    add("extra-space form", f"{val}  {tok}", "correct", True)
+    if ans.value.denominator != 1:
+        # raw doubled integers (Fraction would auto-reduce, defeating the "unreduced" intent)
+        add("unreduced fraction form", f"{ans.value.numerator * 2}/{ans.value.denominator * 2} {tok}", "correct", True)
+        dec = format_decimal(ans.value)
+        if dec is not None:
+            add("terminating decimal form", f"{dec} {tok}", "correct", True)
+    if ans.exponent == 2:
+        add("Unicode superscript form", f"{val} {ans.baseUnit}²", "correct", True)
+
+    add("bare number (no unit)", val, "missing-unit")
+    add("wrong base unit (no conversion)", format_quantity(Quantity(ans.dimension, other, ans.exponent, ans.value)), "wrong-base-unit")
+    add("incorrect value, correct unit", format_quantity(Quantity(ans.dimension, ans.baseUnit, ans.exponent, ans.value + 1)), "incorrect-value")
+    if ans.dimension == "area":
+        add("linear units for an area", format_quantity(make_length(ans.value, ans.baseUnit)), "wrong-exponent")
+        add("different dimensional quantity", format_quantity(make_length(ans.value, other)), "wrong-dimension")
+    else:
+        add("square units for a length", format_quantity(make_area(ans.value, ans.baseUnit)), "wrong-exponent")
+        add("different dimensional quantity", format_quantity(make_area(ans.value, other)), "wrong-dimension")
+
+    add("scientific notation", f"{val}e2 {tok}", "malformed-response")
+    add("trailing unparsed text", f"{format_quantity(ans)} long", "malformed-response")
+    add("conflicting unit tokens", f"{val} {ans.baseUnit} {other}", "malformed-response")
+    add("malformed fraction", f"{ans.value.numerator}/ {tok}", "malformed-response")
+    add("malformed exponent", f"{val} {ans.baseUnit}^3", "malformed-response")
+    add("unsupported compound unit", f"{val} {ans.baseUnit}/s", "malformed-response")
+    add("empty response", "", "malformed-response")
+    add("multiple numerical expressions", f"{val} {tok} {val} {tok}", "malformed-response")
+    return ev
+
+
 def _result(code: str, expected: Quantity, feedback: str, parsed: Optional[Quantity] = None) -> Dict[str, object]:
     out: Dict[str, object] = {
         "code": code,

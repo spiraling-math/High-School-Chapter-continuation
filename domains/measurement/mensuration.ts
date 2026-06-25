@@ -19,8 +19,8 @@ import {
 } from "./mensuration-units.ts";
 
 export const GENERATOR_ID = "gen.measurement.mensuration";
-export const GENERATOR_VERSION = "1.0.0";
-export const VALIDATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
+export const VALIDATOR_VERSION = "1.0.1";
 export const CALCULATOR_POLICY = "calculator-not-required";
 export const SCHEMA_VERSION = "1.0.0";
 
@@ -131,11 +131,14 @@ function buildShape(task: string, p: Json): Shape {
   }
   if (p.kind === "rectilinear_composite") {
     const W = p.W as number, H = p.H as number, a = p.a as number, b = p.b as number, corner = p.corner as string;
-    return {
-      kind: "rectilinear_composite", baseUnit: bu, W, H, a, b, corner, decompMode: p.decompMode as string,
-      vertices: lshapeVertices(W, H, a, b, corner), decomposition: lshapeDecomposition(W, H, a, b, corner, p.decompMode as string),
-      bbox: [W, H],
-    };
+    const shape: Shape = { kind: "rectilinear_composite", baseUnit: bu, W, H, a, b, corner,
+      vertices: lshapeVertices(W, H, a, b, corner), bbox: [W, H] };
+    // Decomposition only for area_composite (owner C1): perimeter_composite carries no decompMode.
+    if ("decompMode" in p) {
+      shape.decompMode = p.decompMode as string;
+      shape.decomposition = lshapeDecomposition(W, H, a, b, corner, p.decompMode as string);
+    }
+    return shape;
   }
   const base = p.base as number, height = p.height as number, apex = p.apexOffset as number;
   return {
@@ -226,9 +229,12 @@ function drawAreaTriangle(rng: Mulberry32): Json | null {
 function drawLshape(rng: Mulberry32, task: string): Json | null {
   const W = rng.nextInt(8, 18), H = rng.nextInt(6, 14), a = rng.nextInt(2, W - 3), b = rng.nextInt(2, H - 3);
   const corner = ["TR", "TL", "BR", "BL"][nInt(rng, 4)];
-  const mode = nInt(rng, 2) === 0 ? "subtractive" : "additive";
+  // decompMode drawn + stored ONLY for area_composite — no meaning for a perimeter question (owner C1).
+  const mode = task === "area_composite" ? (nInt(rng, 2) === 0 ? "subtractive" : "additive") : null;
   if (a >= W || b >= H || W - a < 2 || H - b < 2 || !ratioOk(W, H)) return null;
-  return { task, kind: "rectilinear_composite", baseUnit: pickUnit(rng), W, H, a, b, corner, decompMode: mode };
+  const p: Json = { task, kind: "rectilinear_composite", baseUnit: pickUnit(rng), W, H, a, b, corner };
+  if (mode !== null) p.decompMode = mode;
+  return p;
 }
 function drawMissingLengthPerimeter(rng: Mulberry32): Json | null {
   const w = rng.nextInt(3, 18), h = rng.nextInt(2, 14);
@@ -477,17 +483,18 @@ const TASK_PROMPT: Record<string, string> = {
   area_rectangle: "Work out the area of the rectangle shown. Give your answer in the correct square units.",
   area_triangle: "Work out the area of the triangle using its base and the perpendicular height shown. Give your answer in the correct square units.",
   area_composite: "Work out the area of the shape shown by splitting it into rectangles. Give your answer in the correct square units.",
-  missing_length_perimeter: "The perimeter of the rectangle is given. Work out the missing side length marked “?”. Give your answer in the correct units.",
-  missing_dimension_area: "The area of the rectangle is given. Work out the missing side length marked “?”. Give your answer in the correct units.",
-  missing_triangle_base_height: "The area of the triangle is given. Work out the missing measurement marked “?”. Give your answer in the correct units.",
+  missing_length_perimeter: "Work out the missing side length marked “?”. Give your answer in the correct units.",
+  missing_dimension_area: "Work out the missing side length marked “?”. Give your answer in the correct units.",
+  missing_triangle_base_height: "Work out the missing measurement marked “?”. Give your answer in the correct units.",
 };
 function buildPrompt(task: string, p: Json): Json {
+  // Owner C5: no redundant lead sentence.
   const unit = p.baseUnit as string;
   const blocks: Json[] = [{ kind: "media-ref", ref: "fig-1" }];
   let pre = "";
-  if (task === "missing_length_perimeter") pre = `The perimeter of this rectangle is ${2 * ((p.width as number) + (p.height as number))} ${unit}. `;
-  else if (task === "missing_dimension_area") pre = `The area of this rectangle is ${p.area} ${unit}^2. `;
-  else if (task === "missing_triangle_base_height") pre = `The area of this triangle is ${formatValue(new Rational(p.area2 as number, 2))} ${unit}^2. `;
+  if (task === "missing_length_perimeter") pre = `This rectangle has a perimeter of ${2 * ((p.width as number) + (p.height as number))} ${unit}. `;
+  else if (task === "missing_dimension_area") pre = `This rectangle has an area of ${p.area} ${unit}^2. `;
+  else if (task === "missing_triangle_base_height") pre = `This triangle has an area of ${formatValue(new Rational(p.area2 as number, 2))} ${unit}^2. `;
   const instr = pre + TASK_PROMPT[task];
   blocks.push({ kind: "text", text: instr });
   return { blocks, instruction: instr };
@@ -510,17 +517,27 @@ function buildSolution(task: string, p: Json, answer: Quantity): Json {
     step("Multiply base by perpendicular height", `${b} × ${h} = ${b * h}`);
     step("Halve the product (½ × base × height)", final);
   } else if (task === "perimeter_composite") {
-    step("Find any unlabelled outer edge from the given lengths", "use width − part and height − part");
-    step("Add every edge around the outside once (no inside lines)", final);
+    // Owner C2: a numerically complete exterior-boundary trace.
+    const W = p.W as number, H = p.H as number, a = p.a as number, b = p.b as number;
+    const verts = lshapeVertices(W, H, a, b, p.corner as string);
+    const edges = verts.map((_v: any, i: number) =>
+      rnum(verts[(i + 1) % verts.length][0].sub(verts[i][0]).abs()) + rnum(verts[(i + 1) % verts.length][1].sub(verts[i][1]).abs()));
+    step("Find the missing horizontal length", `${W} − ${a} = ${W - a} ${unit}`);
+    step("Find the missing vertical length", `${H} − ${b} = ${H - b} ${unit}`);
+    step("Trace the outside boundary, adding every exterior edge once (no inside lines)",
+      edges.map((e: number) => String(e)).join(" + ") + ` = ${final}`);
   } else if (task === "area_composite") {
     const W = p.W as number, H = p.H as number, a = p.a as number, b = p.b as number;
     if (p.decompMode === "subtractive") {
       step("Area of the surrounding rectangle", `${W} × ${H} = ${W * H}`);
-      step("Subtract the missing corner rectangle", `${W * H} − ${a} × ${b} = ${final}`);
+      step("Area of the missing corner rectangle", `${a} × ${b} = ${a * b}`);
+      step("Subtract the missing rectangle from the surrounding rectangle", `${W * H} − ${a * b} = ${final}`);
     } else {
       const d = lshapeDecomposition(W, H, a, b, p.corner as string, "additive");
-      step("Split into two rectangles and find each area", `${d[0].w}×${d[0].h} and ${d[1].w}×${d[1].h}`);
-      step("Add the rectangle areas", final);
+      const a0 = d[0].w * d[0].h, a1 = d[1].w * d[1].h;
+      step("Split into two rectangles", `${d[0].w} × ${d[0].h} and ${d[1].w} × ${d[1].h}`);
+      step("Find each rectangle's area", `${d[0].w} × ${d[0].h} = ${a0} and ${d[1].w} × ${d[1].h} = ${a1}`);
+      step("Add the two rectangle areas", `${a0} + ${a1} = ${final}`);
     }
   } else if (task === "missing_length_perimeter") {
     const known = p.hidden === "height" ? (p.width as number) : (p.height as number);
@@ -578,6 +595,7 @@ function buildAccessibility(task: string, p: Json, shape: Shape): Acc {
   const rows: { label: string; value: string }[] = [];
   const nts = HIDDEN_DIMENSION_TASKS.includes(task) ? " The figure is not drawn to scale." : "";
   let shapeWord: string;
+  let heightNote = "";
   if (kind === "rectangle") {
     if (p.hidden !== "width") rows.push({ label: "width", value: `${p.width} ${unit}` });
     if (p.hidden !== "height") rows.push({ label: "height", value: `${p.height} ${unit}` });
@@ -585,7 +603,8 @@ function buildAccessibility(task: string, p: Json, shape: Shape): Acc {
   } else if (kind === "triangle_base_height") {
     if (p.hidden !== "base") rows.push({ label: "base", value: `${p.base} ${unit}` });
     if (p.hidden !== "height") rows.push({ label: "perpendicular height", value: `${p.height} ${unit}` });
-    shapeWord = "triangle with a perpendicular height marked";
+    shapeWord = "triangle";
+    heightNote = ", with its perpendicular height marked"; // owner C5: correct clause order
   } else {
     rows.push({ label: "overall width", value: `${p.W} ${unit}` });
     rows.push({ label: "overall height", value: `${p.H} ${unit}` });
@@ -596,9 +615,11 @@ function buildAccessibility(task: string, p: Json, shape: Shape): Acc {
   if (task === "missing_length_perimeter") rows.push({ label: "perimeter (given)", value: `${p.perimeter} ${unit}` });
   else if (task === "missing_dimension_area") rows.push({ label: "area (given)", value: `${p.area} ${unit} squared` });
   else if (task === "missing_triangle_base_height") rows.push({ label: "area (given)", value: `${formatValue(new Rational(p.area2 as number, 2))} ${unit} squared` });
+  // Owner C5: correct article ("An L-shaped…" / "A rectangle"); clause order.
+  const article = shapeWord.startsWith("L-shaped") ? "An" : "A";
   const given = rows.map((r) => `${r.label} ${r.value}`).join("; ");
-  const spoken = `A ${shapeWord} measured in ${unitWord}. Given measurements: ${given}.${nts}`;
-  const alt = `A ${shapeWord} with labelled measurements.`;
+  const spoken = `${article} ${shapeWord} measured in ${unitWord}${heightNote}. Given measurements: ${given}.${nts}`;
+  const alt = `${article} ${shapeWord} with labelled measurements.`;
   return {
     spoken, alt, desc: spoken, title: alt,
     dataTable: { caption: `Given measurements of the ${shapeWord}`, columns: ["measurement", "value"], rows: rows.map((r) => [r.label, r.value]) },
@@ -722,6 +743,23 @@ function hiddenNotMeasurable(task: string, p: Json): boolean {
   return JSON.stringify(pxA) === JSON.stringify(pxB);
 }
 
+function validateCompositePerimeterSolution(add: (n: string, ok: boolean, d?: string) => void, item: Json, p: Json): void {
+  // Owner C2: the perimeter_composite solution must be numerically complete (mirror of Python).
+  const W = p.W as number, H = p.H as number, a = p.a as number, b = p.b as number;
+  const texts: string[] = ((item.solution as Json).steps as Json[]).map((s) => (s.intermediateResult as string) ?? "");
+  const joined = texts.join(" || ");
+  const derives = joined.includes(`${W} − ${a} = ${W - a}`) && joined.includes(`${H} − ${b} = ${H - b}`);
+  add("composite-perimeter-derives-missing-edges", derives, "must derive W−a and H−b numerically");
+  const trace = texts.find((t) => t.includes(" + ") && t.includes("=")) ?? "";
+  const lhs = trace ? (trace.split("=")[0] ?? "") : "";
+  const nums = (lhs.match(/\d+/g) ?? []).map(Number);
+  const sum = nums.reduce((x, y) => x + y, 0);
+  add("composite-perimeter-lists-complete-boundary", nums.length === 6, `${nums.length} boundary terms`);
+  add("composite-perimeter-sum-produces-answer", nums.length > 0 && sum === 2 * (W + H), `sum=${sum}`);
+  add("no-internal-edge-in-perimeter-sum", nums.length === 6 && sum === 2 * (W + H), "exactly the exterior edges; no internal line");
+  add("worked-solution-is-numerically-complete", texts.every((t) => /\d/.test(t)) && !joined.includes("part"), "every step numeric; no placeholder");
+}
+
 export function validate(item: Json): Json {
   const checks: Json[] = [];
   const add = (name: string, ok: boolean, detail = "") => checks.push({ name, result: ok ? "pass" : "fail", detail });
@@ -750,13 +788,20 @@ export function validate(item: Json): Json {
     add("composite-closed-orthogonal-simple", okClosed, why);
     const per = polygonPerimeter(verts);
     add("composite-exterior-perimeter", per.equals(R(2 * ((p.W as number) + (p.H as number)))));
-    const decomp = shape.decomposition as DRect[];
-    const adds = decomp.filter((r) => r.sign > 0);
-    let overlap = false;
-    for (let i = 0; i < adds.length; i++) for (let j = i + 1; j < adds.length; j++) if (rectsOverlap(adds[i] as DRect, adds[j] as DRect)) overlap = true;
-    add("composite-decomposition-non-overlapping", !overlap);
-    const shoe = polygonAreaShoelace(verts), deco = decompositionArea(decomp);
-    add("composite-shoelace-equals-decomposition", shoe.equals(deco) && shoe.equals(R((p.W as number) * (p.H as number) - (p.a as number) * (p.b as number))));
+    const shoe = polygonAreaShoelace(verts);
+    add("composite-shoelace-area", shoe.equals(R((p.W as number) * (p.H as number) - (p.a as number) * (p.b as number))));
+    if (task === "perimeter_composite") {
+      add("perimeter-composite-no-decompmode", !("decompMode" in p) && !("decomposition" in shape), "perimeter must not carry decomposition");
+      validateCompositePerimeterSolution(add, item, p);
+    } else {
+      const decomp = shape.decomposition as DRect[];
+      const adds = decomp.filter((r) => r.sign > 0);
+      let overlap = false;
+      for (let i = 0; i < adds.length; i++) for (let j = i + 1; j < adds.length; j++) if (rectsOverlap(adds[i] as DRect, adds[j] as DRect)) overlap = true;
+      add("composite-decomposition-non-overlapping", !overlap);
+      const deco = decompositionArea(decomp);
+      add("composite-shoelace-equals-decomposition", shoe.equals(deco) && shoe.equals(R((p.W as number) * (p.H as number) - (p.a as number) * (p.b as number))));
+    }
   } else {
     add("triangle-non-collinear", (p.height as number) > 0 && (p.base as number) > 0);
     add("triangle-foot-on-base", (p.apexOffset as number) >= 0 && (p.apexOffset as number) <= (p.base as number));

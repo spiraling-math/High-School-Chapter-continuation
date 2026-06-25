@@ -52,8 +52,8 @@ from mensuration_units import Quantity  # noqa: E402
 from difficulty import band_from_score, clamp01, round3  # noqa: E402
 
 GENERATOR_ID = "gen.measurement.mensuration"
-GENERATOR_VERSION = "1.0.0"
-VALIDATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
+VALIDATOR_VERSION = "1.0.1"
 CALCULATOR_POLICY = "calculator-not-required"
 SCHEMA_VERSION = "1.0.0"
 
@@ -199,11 +199,14 @@ def _build_shape(task: str, p: Dict[str, Any]) -> Dict[str, Any]:
                 "vertices": _rect_vertices(w, h), "bbox": (w, h)}
     if p["kind"] == "rectilinear_composite":
         W, H, a, b, corner = p["W"], p["H"], p["a"], p["b"], p["corner"]
-        return {"kind": "rectilinear_composite", "baseUnit": bu, "W": W, "H": H, "a": a, "b": b,
-                "corner": corner, "decompMode": p["decompMode"],
-                "vertices": _lshape_vertices(W, H, a, b, corner),
-                "decomposition": _lshape_decomposition(W, H, a, b, corner, p["decompMode"]),
-                "bbox": (W, H)}
+        shape = {"kind": "rectilinear_composite", "baseUnit": bu, "W": W, "H": H, "a": a, "b": b,
+                 "corner": corner, "vertices": _lshape_vertices(W, H, a, b, corner), "bbox": (W, H)}
+        # Decomposition is a meaningful, labelled curriculum dimension ONLY for area_composite
+        # (owner C1): perimeter_composite carries no decompMode and no decomposition.
+        if "decompMode" in p:
+            shape["decompMode"] = p["decompMode"]
+            shape["decomposition"] = _lshape_decomposition(W, H, a, b, corner, p["decompMode"])
+        return shape
     # triangle_base_height
     base, height, apex = p["base"], p["height"], p["apexOffset"]
     return {"kind": "triangle_base_height", "baseUnit": bu, "base": base, "height": height,
@@ -324,11 +327,16 @@ def _draw_lshape(rng: Mulberry32, task: str) -> Optional[Dict[str, Any]]:
     W = rng.next_int(8, 18); H = rng.next_int(6, 14)
     a = rng.next_int(2, W - 3); b = rng.next_int(2, H - 3)
     corner = ("TR", "TL", "BR", "BL")[_n(rng, 4)]
-    mode = "subtractive" if _n(rng, 2) == 0 else "additive"
+    # decompMode is drawn (and stored) ONLY for area_composite — it has no meaning for a perimeter
+    # question, where the answer is the exterior boundary regardless of any decomposition (owner C1).
+    mode = ("subtractive" if _n(rng, 2) == 0 else "additive") if task == "area_composite" else None
     if a >= W or b >= H or W - a < 2 or H - b < 2 or not _ratio_ok(W, H):
         return None
-    return {"task": task, "kind": "rectilinear_composite", "baseUnit": _pick_unit(rng),
-            "W": W, "H": H, "a": a, "b": b, "corner": corner, "decompMode": mode}
+    p = {"task": task, "kind": "rectilinear_composite", "baseUnit": _pick_unit(rng),
+         "W": W, "H": H, "a": a, "b": b, "corner": corner}
+    if mode is not None:
+        p["decompMode"] = mode
+    return p
 
 
 def _draw_missing_length_perimeter(rng: Mulberry32) -> Optional[Dict[str, Any]]:
@@ -672,22 +680,23 @@ _TASK_PROMPT = {
     "area_rectangle": "Work out the area of the rectangle shown. Give your answer in the correct square units.",
     "area_triangle": "Work out the area of the triangle using its base and the perpendicular height shown. Give your answer in the correct square units.",
     "area_composite": "Work out the area of the shape shown by splitting it into rectangles. Give your answer in the correct square units.",
-    "missing_length_perimeter": "The perimeter of the rectangle is given. Work out the missing side length marked “?”. Give your answer in the correct units.",
-    "missing_dimension_area": "The area of the rectangle is given. Work out the missing side length marked “?”. Give your answer in the correct units.",
-    "missing_triangle_base_height": "The area of the triangle is given. Work out the missing measurement marked “?”. Give your answer in the correct units.",
+    "missing_length_perimeter": "Work out the missing side length marked “?”. Give your answer in the correct units.",
+    "missing_dimension_area": "Work out the missing side length marked “?”. Give your answer in the correct units.",
+    "missing_triangle_base_height": "Work out the missing measurement marked “?”. Give your answer in the correct units.",
 }
 
 
 def _prompt(task: str, p: Dict[str, Any]) -> Dict[str, Any]:
+    """Owner C5: no redundant lead sentence. The given quantity is stated once, then the task."""
     unit = p["baseUnit"]
     blocks = [{"kind": "media-ref", "ref": "fig-1"}]
     pre = ""
     if task == "missing_length_perimeter":
-        pre = f"The perimeter of this rectangle is {2*(p['width']+p['height'])} {unit}. "
+        pre = f"This rectangle has a perimeter of {2*(p['width']+p['height'])} {unit}. "
     elif task == "missing_dimension_area":
-        pre = f"The area of this rectangle is {p['area']} {unit}^2. "
+        pre = f"This rectangle has an area of {p['area']} {unit}^2. "
     elif task == "missing_triangle_base_height":
-        pre = f"The area of this triangle is {U.format_value(Fraction(p['area2'],2))} {unit}^2. "
+        pre = f"This triangle has an area of {U.format_value(Fraction(p['area2'],2))} {unit}^2. "
     instr = pre + _TASK_PROMPT[task]
     blocks.append({"kind": "text", "text": instr})
     return {"blocks": blocks, "instruction": instr}
@@ -716,18 +725,30 @@ def _solution(task: str, p: Dict[str, Any], answer: Quantity) -> Dict[str, Any]:
         step("Multiply base by perpendicular height", f"{b} × {h} = {b*h}")
         step("Halve the product (½ × base × height)", final)
     elif task == "perimeter_composite":
-        step("Find any unlabelled outer edge from the given lengths", "use width − part and height − part")
-        step("Add every edge around the outside once (no inside lines)", final)
+        # Owner C2: a numerically complete exterior-boundary trace (the assessed skill), not the
+        # bounding-rectangle shortcut. Derive the two unlabelled step edges, then add every exterior
+        # edge exactly once (no internal lines).
+        W, H, a, b = p["W"], p["H"], p["a"], p["b"]
+        verts = _lshape_vertices(W, H, a, b, p["corner"])
+        edges = [int(abs(verts[(i + 1) % len(verts)][0] - verts[i][0]) + abs(verts[(i + 1) % len(verts)][1] - verts[i][1]))
+                 for i in range(len(verts))]
+        step("Find the missing horizontal length", f"{W} − {a} = {W - a} {unit}")
+        step("Find the missing vertical length", f"{H} − {b} = {H - b} {unit}")
+        step("Trace the outside boundary, adding every exterior edge once (no inside lines)",
+             " + ".join(str(e) for e in edges) + f" = {final}")
     elif task == "area_composite":
         W, H, a, b = p["W"], p["H"], p["a"], p["b"]
         if p["decompMode"] == "subtractive":
             step("Area of the surrounding rectangle", f"{W} × {H} = {W*H}")
-            step("Subtract the missing corner rectangle", f"{W*H} − {a} × {b} = {final}")
+            step("Area of the missing corner rectangle", f"{a} × {b} = {a*b}")
+            step("Subtract the missing rectangle from the surrounding rectangle", f"{W*H} − {a*b} = {final}")
         else:
             d = _lshape_decomposition(W, H, a, b, p["corner"], "additive")
             r0, r1 = d[0], d[1]
-            step("Split into two rectangles and find each area", f"{r0['w']}×{r0['h']} and {r1['w']}×{r1['h']}")
-            step("Add the rectangle areas", final)
+            a0, a1 = r0["w"] * r0["h"], r1["w"] * r1["h"]
+            step("Split into two rectangles", f"{r0['w']} × {r0['h']} and {r1['w']} × {r1['h']}")
+            step("Find each rectangle's area", f"{r0['w']} × {r0['h']} = {a0} and {r1['w']} × {r1['h']} = {a1}")
+            step("Add the two rectangle areas", f"{a0} + {a1} = {final}")
     elif task == "missing_length_perimeter":
         known = p["width"] if p["hidden"] == "height" else p["height"]
         P = p["perimeter"]
@@ -794,6 +815,7 @@ def _accessibility(task: str, p: Dict[str, Any], shape: Dict[str, Any]) -> Dict[
     rows: List[Dict[str, str]] = []
     nts = " The figure is not drawn to scale." if task in HIDDEN_DIMENSION_TASKS else ""
 
+    height_note = ""
     if kind == "rectangle":
         if p.get("hidden") != "width":
             rows.append({"label": "width", "value": f"{p['width']} {unit}"})
@@ -805,7 +827,8 @@ def _accessibility(task: str, p: Dict[str, Any], shape: Dict[str, Any]) -> Dict[
             rows.append({"label": "base", "value": f"{p['base']} {unit}"})
         if p.get("hidden") != "height":
             rows.append({"label": "perpendicular height", "value": f"{p['height']} {unit}"})
-        shape_word = "triangle with a perpendicular height marked"
+        shape_word = "triangle"
+        height_note = ", with its perpendicular height marked"  # owner C5: correct clause order
     else:
         rows.append({"label": "overall width", "value": f"{p['W']} {unit}"})
         rows.append({"label": "overall height", "value": f"{p['H']} {unit}"})
@@ -820,9 +843,12 @@ def _accessibility(task: str, p: Dict[str, Any], shape: Dict[str, Any]) -> Dict[
     elif task == "missing_triangle_base_height":
         rows.append({"label": "area (given)", "value": f"{U.format_value(Fraction(p['area2'],2))} {unit} squared"})
 
+    # Owner C5: correct article ("An L-shaped…" / "A rectangle"); the perpendicular-height clause
+    # follows "measured in …" rather than splitting it.
+    article = "An" if shape_word.startswith("L-shaped") else "A"
     given = "; ".join(f"{r['label']} {r['value']}" for r in rows)
-    spoken = f"A {shape_word} measured in {unit_word}. Given measurements: {given}.{nts}"
-    alt = f"A {shape_word} with labelled measurements."
+    spoken = f"{article} {shape_word} measured in {unit_word}{height_note}. Given measurements: {given}.{nts}"
+    alt = f"{article} {shape_word} with labelled measurements."
     desc = spoken
     dataTable = {"caption": f"Given measurements of the {shape_word}",
                  "columns": ["measurement", "value"],
@@ -927,6 +953,24 @@ def render(item: Dict[str, Any], mode: str = "full") -> str:
 # --------------------------------------------------------------------------- #
 # Independent validator — owner G/H/J
 # --------------------------------------------------------------------------- #
+def _validate_composite_perimeter_solution(add, item: Dict[str, Any], p: Dict[str, Any]) -> None:
+    """Owner C2: the perimeter_composite worked solution must be numerically complete — derive both
+    missing step edges, list the complete six-edge exterior boundary, sum it to the answer, and count
+    no internal decomposition edge."""
+    W, H, a, b = p["W"], p["H"], p["a"], p["b"]
+    texts = [s.get("intermediateResult", "") for s in item.get("solution", {}).get("steps", [])]
+    joined = " || ".join(texts)
+    derives = (f"{W} − {a} = {W - a}" in joined) and (f"{H} − {b} = {H - b}" in joined)
+    add("composite-perimeter-derives-missing-edges", derives, "must derive W−a and H−b numerically")
+    trace = next((t for t in texts if " + " in t and "=" in t), "")
+    lhs = trace.split("=")[0] if trace else ""
+    nums = [int(x) for x in re.findall(r"\d+", lhs)]
+    add("composite-perimeter-lists-complete-boundary", len(nums) == 6, f"{len(nums)} boundary terms")
+    add("composite-perimeter-sum-produces-answer", bool(nums) and sum(nums) == 2 * (W + H), f"sum={sum(nums)}")
+    add("no-internal-edge-in-perimeter-sum", len(nums) == 6 and sum(nums) == 2 * (W + H), "exactly the exterior edges; no internal line")
+    add("worked-solution-is-numerically-complete", all(re.search(r"\d", t) for t in texts) and "part" not in joined, "every step numeric; no placeholder")
+
+
 def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     checks: List[Dict[str, str]] = []
 
@@ -960,17 +1004,22 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     elif shape["kind"] == "rectilinear_composite":
         ok_closed, why = _is_closed_orthogonal_simple(verts)
         add("composite-closed-orthogonal-simple", ok_closed, why)
-        # exterior perimeter from the boundary
         per = _polygon_perimeter(verts)
         add("composite-exterior-perimeter", per == 2 * (p["W"] + p["H"]), str(per))
-        # decomposition: non-overlapping (additive) + union == polygon area; two area routes agree
-        decomp = shape["decomposition"]
-        adds = [r for r in decomp if r["sign"] > 0]
-        overlap = any(_rects_overlap(adds[i], adds[j]) for i in range(len(adds)) for j in range(i + 1, len(adds)))
-        add("composite-decomposition-non-overlapping", not overlap, "additive rectangles must be disjoint")
         shoe = _polygon_area_shoelace(verts)
-        deco = _decomposition_area(decomp)
-        add("composite-shoelace-equals-decomposition", shoe == deco == (p["W"] * p["H"] - p["a"] * p["b"]), f"shoelace={shoe} decomp={deco}")
+        add("composite-shoelace-area", shoe == (p["W"] * p["H"] - p["a"] * p["b"]), f"shoelace={shoe}")
+        if task == "perimeter_composite":
+            # Owner C1/C2: perimeter questions carry no decomposition; validate the BOUNDARY trace.
+            add("perimeter-composite-no-decompmode", "decompMode" not in p and "decomposition" not in shape, "perimeter must not carry decomposition")
+            _validate_composite_perimeter_solution(add, item, p)
+        else:
+            # area_composite: decomposition route agrees with the shoelace area (owner H).
+            decomp = shape["decomposition"]
+            adds = [r for r in decomp if r["sign"] > 0]
+            overlap = any(_rects_overlap(adds[i], adds[j]) for i in range(len(adds)) for j in range(i + 1, len(adds)))
+            add("composite-decomposition-non-overlapping", not overlap, "additive rectangles must be disjoint")
+            deco = _decomposition_area(decomp)
+            add("composite-shoelace-equals-decomposition", shoe == deco == (p["W"] * p["H"] - p["a"] * p["b"]), f"shoelace={shoe} decomp={deco}")
     else:  # triangle
         base, height, apex = p["base"], p["height"], p["apexOffset"]
         add("triangle-non-collinear", height > 0 and base > 0, f"{base}x{height}")

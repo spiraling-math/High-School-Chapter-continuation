@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.measurement.mensuration",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "sweepSeeds": 10000,
   "mode": "free-response",
   "invalid": 0,
@@ -66,9 +66,9 @@
         "integer": 1351
       },
       "baseUnits": {
-        "mm": 453,
-        "m": 447,
-        "cm": 451
+        "m": 463,
+        "mm": 440,
+        "cm": 448
       },
       "orientations": {
         "TL": 328,
@@ -76,10 +76,7 @@
         "BL": 325,
         "TR": 345
       },
-      "decompositionModes": {
-        "additive": 700,
-        "subtractive": 651
-      },
+      "decompositionModes": {},
       "hiddenRoles": {},
       "avgDrawAttempts": 1.0,
       "maxDrawAttempts": 1
@@ -319,131 +316,1140 @@
   },
   "quantityCheckerMatrix": {
     "codeCounts": {
-      "correct": 3000,
+      "correct": 10280,
       "missing-unit": 3000,
       "wrong-base-unit": 3000,
       "incorrect-value": 3000,
       "wrong-exponent": 3000,
-      "wrong-dimension": 3000
+      "wrong-dimension": 3000,
+      "malformed-response": 24000
     },
+    "matrixMismatches": 0,
+    "genuinelyDifferentAcceptedForms": 7280,
+    "crossUnitConversionPerformed": false,
     "samplesByTask": {
       "missing_length_perimeter": {
         "seed": 1,
         "answer": "3 m",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "squareForLength": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "3 m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "3m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "3  m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "3",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "3 cm",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "4 m",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "square units for a length",
+            "response": "3 m^2",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "3 cm^2",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "3e2 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "3 m long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "3 m cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "3/ m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "3 m^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "3 m/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "3 m 3 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "missing_triangle_base_height": {
         "seed": 4,
         "answer": "4 cm",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "squareForLength": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "4 cm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "4cm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "4  cm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "4",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "4 m",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "5 cm",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "square units for a length",
+            "response": "4 cm^2",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "4 m^2",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "4e2 cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "4 cm long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "4 cm m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "4/ cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "4 cm^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "4 cm/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "4 cm 4 cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "area_composite": {
         "seed": 6,
         "answer": "78 m^2",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "linearForArea": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "78 m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "78m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "78  m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "Unicode superscript form",
+            "response": "78 m\u00b2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "78",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "78 cm^2",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "79 m^2",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "linear units for an area",
+            "response": "78 m",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "78 cm",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "78e2 m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "78 m^2 long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "78 m cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "78/ m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "78 m^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "78 m/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "78 m^2 78 m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "perimeter_rectangle": {
         "seed": 7,
         "answer": "36 m",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "squareForLength": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "36 m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "36m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "36  m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "36",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "36 cm",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "37 m",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "square units for a length",
+            "response": "36 m^2",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "36 cm^2",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "36e2 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "36 m long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "36 m cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "36/ m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "36 m^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "36 m/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "36 m 36 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "perimeter_composite": {
         "seed": 8,
-        "answer": "44 mm",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "squareForLength": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "answer": "44 m",
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "44 m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "44m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "44  m",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "44",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "44 cm",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "45 m",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "square units for a length",
+            "response": "44 m^2",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "44 cm^2",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "44e2 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "44 m long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "44 m cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "44/ m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "44 m^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "44 m/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "44 m 44 m",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "area_rectangle": {
         "seed": 12,
         "answer": "32 m^2",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "linearForArea": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "32 m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "32m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "32  m^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "Unicode superscript form",
+            "response": "32 m\u00b2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "32",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "32 cm^2",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "33 m^2",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "linear units for an area",
+            "response": "32 m",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "32 cm",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "32e2 m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "32 m^2 long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "32 m cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "32/ m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "32 m^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "32 m/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "32 m^2 32 m^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "area_triangle": {
         "seed": 14,
         "answer": "36 mm^2",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "linearForArea": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "36 mm^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "36mm^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "36  mm^2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "Unicode superscript form",
+            "response": "36 mm\u00b2",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "36",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "36 cm^2",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "37 mm^2",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "linear units for an area",
+            "response": "36 mm",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "36 cm",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "36e2 mm^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "36 mm^2 long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "36 mm cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "36/ mm^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "36 mm^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "36 mm/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "36 mm^2 36 mm^2",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       },
       "missing_dimension_area": {
         "seed": 30,
         "answer": "7 mm",
-        "cases": {
-          "equivalentValueCorrectUnit": "correct",
-          "bareNumber": "missing-unit",
-          "wrongBaseUnit": "wrong-base-unit",
-          "incorrectValueCorrectUnit": "incorrect-value",
-          "squareForLength": "wrong-exponent",
-          "wrongDimension": "wrong-dimension"
-        }
+        "cases": [
+          {
+            "scenario": "canonical form",
+            "response": "7 mm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": false,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "no-space unit form",
+            "response": "7mm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "extra-space form",
+            "response": "7  mm",
+            "expectedCode": "correct",
+            "genuinelyDifferent": true,
+            "actualCode": "correct",
+            "ok": true
+          },
+          {
+            "scenario": "bare number (no unit)",
+            "response": "7",
+            "expectedCode": "missing-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "missing-unit",
+            "ok": true
+          },
+          {
+            "scenario": "wrong base unit (no conversion)",
+            "response": "7 cm",
+            "expectedCode": "wrong-base-unit",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-base-unit",
+            "ok": true
+          },
+          {
+            "scenario": "incorrect value, correct unit",
+            "response": "8 mm",
+            "expectedCode": "incorrect-value",
+            "genuinelyDifferent": false,
+            "actualCode": "incorrect-value",
+            "ok": true
+          },
+          {
+            "scenario": "square units for a length",
+            "response": "7 mm^2",
+            "expectedCode": "wrong-exponent",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-exponent",
+            "ok": true
+          },
+          {
+            "scenario": "different dimensional quantity",
+            "response": "7 cm^2",
+            "expectedCode": "wrong-dimension",
+            "genuinelyDifferent": false,
+            "actualCode": "wrong-dimension",
+            "ok": true
+          },
+          {
+            "scenario": "scientific notation",
+            "response": "7e2 mm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "trailing unparsed text",
+            "response": "7 mm long",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "conflicting unit tokens",
+            "response": "7 mm cm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed fraction",
+            "response": "7/ mm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "malformed exponent",
+            "response": "7 mm^3",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "unsupported compound unit",
+            "response": "7 mm/s",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "empty response",
+            "response": "",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          },
+          {
+            "scenario": "multiple numerical expressions",
+            "response": "7 mm 7 mm",
+            "expectedCode": "malformed-response",
+            "genuinelyDifferent": false,
+            "actualCode": "malformed-response",
+            "ok": true
+          }
+        ]
       }
     }
   },
   "allCheckerCodesReachable": true,
-  "misconceptionCoverage": {
+  "diagnosticCoverage": {
+    "numericRulesExercised": [
+      "MISC.MENS.ADDS_DIMS_FOR_AREA",
+      "MISC.MENS.ADDS_TWO_SIDES_RECT",
+      "MISC.MENS.COUNTS_INTERNAL_EDGE",
+      "MISC.MENS.FORGETS_TO_HALVE",
+      "MISC.MENS.OMITS_INDENTED_EDGE",
+      "MISC.MENS.SUBTRACTS_WRONG_RECTANGLE",
+      "MISC.MENS.USES_AREA_FOR_PERIMETER",
+      "MISC.MENS.USES_PERIMETER_FOR_AREA"
+    ],
+    "unitRulesExercised": [
+      "MISC.MENS.LINEAR_UNITS_FOR_AREA",
+      "MISC.MENS.RIGHT_NUMBER_NO_UNIT",
+      "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER",
+      "MISC.MENS.WRONG_BASE_UNIT"
+    ],
+    "pedagogicalNotesDemonstrated": [
+      "MISC.MENS.USES_SLOPING_SIDE"
+    ],
+    "inapplicableRules": [],
+    "totalRules": 13,
     "exercised": 13,
-    "total": 13,
-    "counts": {
-      "MISC.MENS.USES_AREA_FOR_PERIMETER": 1512,
-      "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER": 2511,
-      "MISC.MENS.WRONG_BASE_UNIT": 1936,
-      "MISC.MENS.RIGHT_NUMBER_NO_UNIT": 4000,
-      "MISC.MENS.FORGETS_TO_HALVE": 965,
-      "MISC.MENS.USES_SLOPING_SIDE": 965,
-      "MISC.MENS.SUBTRACTS_WRONG_RECTANGLE": 552,
-      "MISC.MENS.ADDS_DIMS_FOR_AREA": 1036,
-      "MISC.MENS.USES_PERIMETER_FOR_AREA": 1523,
-      "MISC.MENS.LINEAR_UNITS_FOR_AREA": 1489,
-      "MISC.MENS.ADDS_TWO_SIDES_RECT": 427,
-      "MISC.MENS.OMITS_INDENTED_EDGE": 547,
-      "MISC.MENS.COUNTS_INTERNAL_EDGE": 547
-    },
     "recomputationMismatches": 0
   },
   "allBandsReachable": true,

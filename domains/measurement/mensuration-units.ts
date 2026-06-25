@@ -180,3 +180,61 @@ function result(code: ResultCode, expected: Quantity, feedback: string, parsed?:
   if (parsed) out.parsed = formatQuantity(parsed);
   return out;
 }
+
+/** Exact terminating-decimal string for `value`, or null if it does not terminate. */
+export function formatDecimal(value: Rational): string | null {
+  let t = value.den, twos = 0, fives = 0;
+  while (t % 2 === 0) { t /= 2; twos++; }
+  while (t % 5 === 0) { t /= 5; fives++; }
+  if (t !== 1) return null;
+  const k = Math.max(twos, fives);
+  if (k === 0) return String(value.num);
+  const scaled = value.num * (10 ** k / value.den);
+  let s = String(Math.abs(scaled)).padStart(k + 1, "0");
+  s = s.slice(0, -k) + "." + s.slice(-k);
+  return (scaled < 0 ? "-" : "") + s;
+}
+
+export interface Evidence { scenario: string; response: string; expectedCode: ResultCode; genuinelyDifferent: boolean; }
+
+/** The shared quantity-checker evidence matrix (owner D/C3): genuinely-different accepted forms, every
+ * reject code, and every malformed-response category. Mirror of mensuration_units.checker_evidence. */
+export function checkerEvidence(ans: Quantity): Evidence[] {
+  const val = formatValue(ans.value);
+  const tok = unitToken(ans.baseUnit, ans.exponent);
+  const other = ({ mm: "cm", cm: "m", m: "cm" } as Record<BaseUnit, BaseUnit>)[ans.baseUnit];
+  const ev: Evidence[] = [];
+  const add = (scenario: string, response: string, expectedCode: ResultCode, genuinelyDifferent = false) =>
+    ev.push({ scenario, response, expectedCode, genuinelyDifferent });
+
+  add("canonical form", formatQuantity(ans), "correct", false);
+  add("no-space unit form", `${val}${tok}`, "correct", true);
+  add("extra-space form", `${val}  ${tok}`, "correct", true);
+  if (ans.value.den !== 1) {
+    add("unreduced fraction form", `${ans.value.num * 2}/${ans.value.den * 2} ${tok}`, "correct", true);
+    const dec = formatDecimal(ans.value);
+    if (dec !== null) add("terminating decimal form", `${dec} ${tok}`, "correct", true);
+  }
+  if (ans.exponent === 2) add("Unicode superscript form", `${val} ${ans.baseUnit}²`, "correct", true);
+
+  add("bare number (no unit)", val, "missing-unit");
+  add("wrong base unit (no conversion)", formatQuantity(quantity(ans.dimension, other, ans.exponent, ans.value)), "wrong-base-unit");
+  add("incorrect value, correct unit", formatQuantity(quantity(ans.dimension, ans.baseUnit, ans.exponent, ans.value.add(new Rational(1, 1)))), "incorrect-value");
+  if (ans.dimension === "area") {
+    add("linear units for an area", formatQuantity(makeLength(ans.value, ans.baseUnit)), "wrong-exponent");
+    add("different dimensional quantity", formatQuantity(makeLength(ans.value, other)), "wrong-dimension");
+  } else {
+    add("square units for a length", formatQuantity(makeArea(ans.value, ans.baseUnit)), "wrong-exponent");
+    add("different dimensional quantity", formatQuantity(makeArea(ans.value, other)), "wrong-dimension");
+  }
+
+  add("scientific notation", `${val}e2 ${tok}`, "malformed-response");
+  add("trailing unparsed text", `${formatQuantity(ans)} long`, "malformed-response");
+  add("conflicting unit tokens", `${val} ${ans.baseUnit} ${other}`, "malformed-response");
+  add("malformed fraction", `${ans.value.num}/ ${tok}`, "malformed-response");
+  add("malformed exponent", `${val} ${ans.baseUnit}^3`, "malformed-response");
+  add("unsupported compound unit", `${val} ${ans.baseUnit}/s`, "malformed-response");
+  add("empty response", "", "malformed-response");
+  add("multiple numerical expressions", `${val} ${tok} ${val} ${tok}`, "malformed-response");
+  return ev;
+}

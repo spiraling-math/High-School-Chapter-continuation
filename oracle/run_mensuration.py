@@ -57,26 +57,6 @@ def _orientation(item) -> str:
     return p["corner"]
 
 
-# A representative item per task for the structural quantity-checker matrix (owner L).
-def _checker_matrix(item):
-    ans = M._solve(item["params"]["task"], item["params"])
-    val = U.format_value(ans.value)
-    other = MM._other_base(ans.baseUnit)
-    cases = {
-        "equivalentValueCorrectUnit": U.format_quantity(ans),
-        "bareNumber": val,
-        "wrongBaseUnit": U.format_quantity(type(ans)(ans.dimension, other, ans.exponent, ans.value)),
-        "incorrectValueCorrectUnit": U.format_quantity(type(ans)(ans.dimension, ans.baseUnit, ans.exponent, ans.value + 1)),
-    }
-    if ans.dimension == "area":
-        cases["linearForArea"] = U.format_quantity(U.make_length(ans.value, ans.baseUnit))      # wrong-exponent
-        cases["wrongDimension"] = U.format_quantity(U.make_length(ans.value, other))            # diff base+power
-    else:
-        cases["squareForLength"] = U.format_quantity(U.make_area(ans.value, ans.baseUnit))      # wrong-exponent
-        cases["wrongDimension"] = U.format_quantity(U.make_area(ans.value, other))              # diff base+power
-    return {k: U.check_response(v, ans)["code"] for k, v in cases.items()}
-
-
 def main() -> int:
     os.makedirs(GOLDEN_DIR, exist_ok=True)
     os.makedirs(REVIEW_DIR, exist_ok=True)
@@ -161,46 +141,83 @@ def main() -> int:
             "avgDrawAttempts": round(sum(att) / len(att), 3), "maxDrawAttempts": max(att),
         }
 
-    # 4) Structural quantity-checker matrix (owner L): every code reachable + deterministic.
+    # 4) Structural quantity-checker matrix (owner C3): the shared evidence matrix must reach ALL
+    # SEVEN result codes (incl. malformed-response), accept genuinely-different equivalent forms, and
+    # never convert between base units.
     codes = Counter()
+    genuinely_diff_accepted = 0
+    matrix_bad = 0
     sample_matrix = {}
     for s in range(1, min(SWEEP, 3000) + 1):
         item = M.generate(s)
-        mat = _checker_matrix(item)
-        for c in mat.values():
-            codes[c] += 1
-        t = item["params"]["task"]
+        t = item["params"]["task"]; ans = M._solve(t, item["params"])
+        ev = U.checker_evidence(ans)
+        rows = []
+        for e in ev:
+            got = U.check_response(e["response"], ans)["code"]
+            codes[got] += 1
+            if got != e["expectedCode"]:
+                matrix_bad += 1
+            if e["genuinelyDifferent"] and got == "correct":
+                genuinely_diff_accepted += 1
+            rows.append({**e, "actualCode": got, "ok": got == e["expectedCode"]})
         if t not in sample_matrix:
-            sample_matrix[t] = {"seed": s, "answer": item["answer"]["display"], "cases": mat}
-    report["quantityCheckerMatrix"] = {"codeCounts": dict(codes), "samplesByTask": sample_matrix}
-    report["allCheckerCodesReachable"] = set(codes) >= set(U.RESULT_CODES) - {"malformed-response"}
+            sample_matrix[t] = {"seed": s, "answer": item["answer"]["display"], "cases": rows}
+    # explicit cross-unit non-conversion proofs (independent of any item)
+    conversion_proofs = [
+        {"response": "100 cm", "expected": U.make_length(1, "m"), "expectedCode": "wrong-base-unit"},
+        {"response": "10000 cm^2", "expected": U.make_area(1, "m"), "expectedCode": "wrong-base-unit"},
+    ]
+    no_conversion = all(U.check_response(c["response"], c["expected"])["code"] == c["expectedCode"] for c in conversion_proofs)
+    report["quantityCheckerMatrix"] = {
+        "codeCounts": dict(codes), "matrixMismatches": matrix_bad,
+        "genuinelyDifferentAcceptedForms": genuinely_diff_accepted,
+        "crossUnitConversionPerformed": not no_conversion,
+        "samplesByTask": sample_matrix,
+    }
+    report["allCheckerCodesReachable"] = all(codes.get(c, 0) > 0 for c in U.RESULT_CODES)  # ALL seven
 
-    # 5) Misconception coverage (owner K): every diagnostic exercised + recomputation sound.
-    misc_cov = Counter()
+    # 5) Diagnostic coverage (owner C4): report numeric / unit / pedagogical / inapplicable separately.
+    by_kind = {"numeric": Counter(), "unit": Counter(), "pedagogical": Counter()}
     misc_bad = 0
     for s in range(1, min(SWEEP, 4000) + 1):
         item = M.generate(s)
         t = item["params"]["task"]; ans = M._solve(t, item["params"])
         for d in MM.diagnostics_for(t, item["params"], ans):
-            misc_cov[d["id"]] += 1
-            rule = MM._BY_ID[d["id"]]
-            if d["predictedResponse"] is not None and rule["expectedCode"]:
-                if U.check_response(d["predictedResponse"], ans)["code"] != rule["expectedCode"]:
+            by_kind[d["kind"]][d["id"]] += 1
+            if d["kind"] != "pedagogical":
+                if d["predictedResponse"] is None or U.check_response(d["predictedResponse"], ans)["code"] != d["resultCode"]:
                     misc_bad += 1
-    report["misconceptionCoverage"] = {"exercised": len(misc_cov), "total": len(MM.MISCONCEPTIONS),
-                                        "counts": dict(misc_cov), "recomputationMismatches": misc_bad}
+    exercised = set().union(*(set(c) for c in by_kind.values()))
+    inapplicable = [m["id"] for m in MM.MISCONCEPTIONS if m["id"] not in exercised]
+    report["diagnosticCoverage"] = {
+        "numericRulesExercised": sorted(by_kind["numeric"]),
+        "unitRulesExercised": sorted(by_kind["unit"]),
+        "pedagogicalNotesDemonstrated": sorted(by_kind["pedagogical"]),
+        "inapplicableRules": inapplicable,
+        "totalRules": len(MM.MISCONCEPTIONS), "exercised": len(exercised),
+        "recomputationMismatches": misc_bad,
+    }
 
     report["allBandsReachable"] = all(not report["tasks"][t]["unreachableBands"] for t in M.TASKS)
     report["failures"] = failing
     with open(os.path.join(REVIEW_DIR, "mensuration_distribution.json"), "w", encoding="utf-8") as fh:
         json.dump(report, fh, indent=2)
 
+    qcm = report["quantityCheckerMatrix"]
+    dc = report["diagnosticCoverage"]
     print(f"Sweep: {SWEEP} items, invalid={invalid}, MC-rejected tasks={mc_rejected}/8.")
     print(f"All declared bands reachable: {report['allBandsReachable']}.")
-    print(f"All checker codes reachable: {report['allCheckerCodesReachable']}.")
-    print(f"Misconceptions exercised: {len(misc_cov)}/{len(MM.MISCONCEPTIONS)} "
-          f"(recomputation mismatches: {misc_bad}).")
-    return 0 if invalid == 0 and report["allBandsReachable"] and mc_rejected == 8 else 1
+    print(f"All SEVEN checker codes reachable: {report['allCheckerCodesReachable']} "
+          f"(matrix mismatches {qcm['matrixMismatches']}; genuinely-different accepted {qcm['genuinelyDifferentAcceptedForms']}; "
+          f"cross-unit conversion performed {qcm['crossUnitConversionPerformed']}).")
+    print(f"Diagnostics: numeric {len(dc['numericRulesExercised'])}, unit {len(dc['unitRulesExercised'])}, "
+          f"pedagogical {len(dc['pedagogicalNotesDemonstrated'])}, inapplicable {dc['inapplicableRules']} "
+          f"(recomputation mismatches {dc['recomputationMismatches']}).")
+    ok = (invalid == 0 and report["allBandsReachable"] and mc_rejected == 8
+          and report["allCheckerCodesReachable"] and qcm["matrixMismatches"] == 0
+          and not qcm["crossUnitConversionPerformed"] and dc["recomputationMismatches"] == 0)
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":
