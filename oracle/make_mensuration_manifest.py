@@ -78,11 +78,17 @@ def main() -> int:
         "approvalStatus": "pending-review",
         "objectiveReviewStatus": "approved-for-implementation",
         "gitCommit": _git_commit(),
-        # Implementation-authorization housekeeping (owner M) — metadata only; does NOT alter output.
+        # Version-tag terminology (owner artifact-identity REVISE): the SUPERSEDED implementation tag is
+        # NOT presented as an approval tag. The approved tag is created only on the owner's final APPROVE.
+        "versionTags": {
+            "previousVersionTag": "mensuration-v1.0.0",
+            "currentImplementationTag": "mensuration-v1.0.1",
+            "approvedTag": None,
+        },
+        # Implementation-authorization housekeeping — metadata only; does NOT alter canonical output.
         "approval": {"decision": "implementation-authorized-pending-review",
-                     "tag": "mensuration-v1.0.0",
                      "authorizedAt": os.environ.get("SPI_AUTHORIZED_DATE", "2026-06-25"),
-                     "decisionLog": "DECISION_LOG.md (mensuration REVISE-with-authorization)",
+                     "decisionLog": "DECISION_LOG.md #50 (build) + #51 (corrections) + artifact-identity REVISE",
                      "schemaExtension": "answer.type 'quantity' + answer.measure (APPROVED)"},
         "objectiveIds": [M.OBJECTIVE_BY_TASK[t] for t in M.TASKS],
         "tasks": list(M.TASKS),

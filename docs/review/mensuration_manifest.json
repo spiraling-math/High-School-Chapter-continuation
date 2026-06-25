@@ -4,12 +4,16 @@
   "validatorVersion": "1.0.1",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "f2212d39baf596922dc844d8b2fc3737455b789b",
+  "gitCommit": "6d765fe597ab31573f0ae738e65e9ba8c6e97432",
+  "versionTags": {
+    "previousVersionTag": "mensuration-v1.0.0",
+    "currentImplementationTag": "mensuration-v1.0.1",
+    "approvedTag": null
+  },
   "approval": {
     "decision": "implementation-authorized-pending-review",
-    "tag": "mensuration-v1.0.0",
     "authorizedAt": "2026-06-25",
-    "decisionLog": "DECISION_LOG.md (mensuration REVISE-with-authorization)",
+    "decisionLog": "DECISION_LOG.md #50 (build) + #51 (corrections) + artifact-identity REVISE",
     "schemaExtension": "answer.type 'quantity' + answer.measure (APPROVED)"
   },
   "objectiveIds": [
@@ -121,12 +125,12 @@
     },
     "visualAudit": {
       "path": "docs/review/mensuration_visual_audit.html",
-      "sha256": "4634a49e9037a3d2488e9eb8e77455c9028e8ed77fd81fdecd72ffdd483e0ee8",
+      "sha256": "d78d682e1610dea7a69df080412adc525a8f8290a63ccd52981a0f927676b51c",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/mensuration_browser_verification.json",
-      "sha256": "126cbed37b1c42962379fcfc1f33770e3f5a600b3d9be5086de3b042788ef3f6",
+      "sha256": "44f16e00a756ecd71064dd136cf81f45f02e31be12dba6394bdc66013944763a",
       "present": true
     }
   }

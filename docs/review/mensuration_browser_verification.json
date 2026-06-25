@@ -1,6 +1,8 @@
 {
   "generatorId": "gen.measurement.mensuration",
   "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
+  "gitCommit": "6d765fe597ab31573f0ae738e65e9ba8c6e97432",
   "auditPage": "docs/review/mensuration_visual_audit.html",
   "modes": [
     "premium",

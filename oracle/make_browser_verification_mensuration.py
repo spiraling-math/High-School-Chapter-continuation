@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -21,6 +22,13 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(HERE, "spi_oracle"))
 
 from spi_oracle import mensuration as M  # noqa: E402
+
+
+def _git_commit():
+    try:
+        return subprocess.check_output(["git", "-C", ROOT, "rev-parse", "HEAD"], text=True).strip()
+    except Exception:
+        return ""
 
 VSTYLE = os.path.join(ROOT, "core", "visual-style")
 REVIEW = os.path.join(ROOT, "docs", "review")
@@ -62,6 +70,7 @@ def main() -> int:
 
     report = {
         "generatorId": M.GENERATOR_ID, "generatorVersion": M.GENERATOR_VERSION,
+        "validatorVersion": M.VALIDATOR_VERSION, "gitCommit": _git_commit(),
         "auditPage": "docs/review/mensuration_visual_audit.html",
         "modes": MODES,
         "checks": {

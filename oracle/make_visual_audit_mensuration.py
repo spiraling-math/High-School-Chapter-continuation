@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +33,19 @@ _mens = json.load(open(os.path.join(VSTYLE, "mensuration-theme.json"), encoding=
 COMMON_CSS = _cart["commonCss"] + _mens["commonCss"]
 MODES = ["premium", "premium-dark", "accessible", "print"]
 _STYLE_RE = re.compile(r"<style>.*?</style>", re.S)
+
+# Single source of truth for the audit identity (owner artifact-identity REVISE): every visible +
+# embedded version string is derived from the generator constants, never hardcoded.
+GEN_ID = M.GENERATOR_ID
+GEN_VER = M.GENERATOR_VERSION
+VAL_VER = M.VALIDATOR_VERSION
+
+
+def _git_commit():
+    try:
+        return subprocess.check_output(["git", "-C", ROOT, "rev-parse", "HEAD"], text=True).strip()
+    except Exception:
+        return ""
 
 
 def mode_vars(mode):
@@ -87,8 +101,16 @@ def _representatives():
 
 def main() -> int:
     head, corner_picks, dense = _representatives()
+    commit = _git_commit()
+    title = f"{GEN_ID} v{GEN_VER} — visual audit"
+    # Identity metadata (owner artifact-identity REVISE): a single dynamic source for every visible
+    # + embedded version string. data-* attributes carry the machine-checkable identity.
+    body_attrs = (f'data-generator-id="{GEN_ID}" data-generator-version="{GEN_VER}" '
+                  f'data-validator-version="{VAL_VER}" data-git-commit="{commit}"')
     parts = [
-        "<!doctype html><html><head><meta charset='utf-8'><title>mensuration visual audit</title>",
+        f"<!doctype html><html lang='en' {body_attrs}><head><meta charset='utf-8'><title>{title}</title>",
+        f"<meta name='generator-id' content='{GEN_ID}'><meta name='generator-version' content='{GEN_VER}'>",
+        f"<meta name='validator-version' content='{VAL_VER}'><meta name='git-commit' content='{commit}'>",
         "<style>",
         "body{font-family:'Segoe UI',system-ui,sans-serif;margin:24px;background:#fff;color:#111}",
         "h2{margin-top:34px}.row{display:flex;flex-wrap:wrap;gap:14px}",
@@ -97,9 +119,11 @@ def main() -> int:
         ".card.dark .mode{color:#cbd5e1}.card svg{width:284px;height:auto;display:block}",
         ".pair{display:flex;gap:10px}.pair .col{width:300px}",
         COMMON_CSS,
-        "</style></head><body>",
-        "<h1>gen.measurement.mensuration v1.0.0 — visual audit</h1>",
-        "<p>Per-root <code>cx-figure</code> isolation: one document-level common ruleset (cartesian "
+        f"</style></head><body {body_attrs}>",
+        f"<h1>{title}</h1>",
+        f"<p data-generator-version='{GEN_VER}'>Identity: <code>{GEN_ID}</code> generator <b>v{GEN_VER}</b>, "
+        f"validator <b>v{VAL_VER}</b>, build commit <code>{commit[:12] or '(uncommitted)'}</code>. "
+        "Per-root <code>cx-figure</code> isolation: one document-level common ruleset (cartesian "
         "shared + mensuration additive); each figure's mode is set only by its own <code>--cx-*</code> "
         "variables. Monochrome <b>print</b> is the colour-free authoritative rendering.</p>",
     ]
@@ -132,12 +156,15 @@ def main() -> int:
             parts.append(f"<div class='{cls}'><div class='mode'>{mode}</div>{presentation_svg(it['media'][0]['svg'], mode)}</div>")
         parts.append("</div>")
 
-    # 4) Materialised export (premium, 6000x4200, self-contained).
+    # 4) Materialised export (premium, 6000x4200, self-contained) — carries identity metadata too.
     exp = export_svg(head[0][2]["media"][0]["svg"], "premium", 6000, 4200)
+    exp = exp.replace("<svg ", f'<svg data-generator-id="{GEN_ID}" data-generator-version="{GEN_VER}" ', 1)
     parts.append("<h2>Materialised export (premium, 6000×4200, self-contained)</h2>")
     parts.append("<div id='exp' style='width:330px'>" + presentation_svg(head[0][2]["media"][0]["svg"], "premium") + "</div>")
     parts.append("<script>")
     parts.append("window.__mens = {")
+    parts.append("  generatorId: " + json.dumps(GEN_ID) + ", generatorVersion: " + json.dumps(GEN_VER)
+                 + ", validatorVersion: " + json.dumps(VAL_VER) + ", gitCommit: " + json.dumps(commit) + ",")
     parts.append("  modes: " + json.dumps(MODES) + ",")
     parts.append("  exportSvg: " + json.dumps(exp) + ",")
     parts.append("  computed: function(){ var out={}; document.querySelectorAll('.card svg .cx-shape').forEach(function(s,i){")
@@ -151,8 +178,9 @@ def main() -> int:
     parts.append("    img.onerror=rej; img.src=url; }); }")
     parts.append("};")
     parts.append("</script>")
-    parts.append(f"<footer style='margin-top:30px;color:#6b7280;font-size:12px'>{M.GENERATOR_ID} v"
-                 f"{M.GENERATOR_VERSION}; modes {', '.join(MODES)}; per-root cx-figure isolation; export 6000×4200.</footer>")
+    parts.append(f"<footer style='margin-top:30px;color:#6b7280;font-size:12px'>{GEN_ID} v{GEN_VER} "
+                 f"(validator v{VAL_VER}, build {commit[:12] or '(uncommitted)'}); modes {', '.join(MODES)}; "
+                 f"per-root cx-figure isolation; export 6000×4200.</footer>")
     parts.append("</body></html>")
 
     out = os.path.join(ROOT, "docs", "review", "mensuration_visual_audit.html")

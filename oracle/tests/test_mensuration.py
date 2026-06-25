@@ -228,6 +228,73 @@ class TestReviewPackCoverage(unittest.TestCase):
             self.assertIn(code, seen_codes, f"checker code {code} never demonstrated")
 
 
+class TestArtifactIdentity(unittest.TestCase):
+    """Owner artifact-identity REVISE: the visual audit, browser report, and manifest must all state
+    the SAME generator/validator version + build commit; no stale version text; clean tag terminology."""
+
+    @classmethod
+    def setUpClass(cls):
+        import re
+        cls.re = re
+        rev = os.path.join(HERE, "..", "..", "docs", "review")
+        cls.audit = open(os.path.join(rev, "mensuration_visual_audit.html"), encoding="utf-8").read()
+        cls.browser = json.load(open(os.path.join(rev, "mensuration_browser_verification.json"), encoding="utf-8"))
+        cls.manifest = json.load(open(os.path.join(rev, "mensuration_manifest.json"), encoding="utf-8"))
+
+    def _attr(self, name):
+        m = self.re.search(rf'{name}="([^"]*)"', self.audit)
+        return m.group(1) if m else None
+
+    def test_audit_visible_title_matches_generator(self):
+        title = self.re.search(r"<title>([^<]+)</title>", self.audit).group(1)
+        h1 = self.re.search(r"<h1>([^<]+)</h1>", self.audit).group(1)
+        want = f"{M.GENERATOR_ID} v{M.GENERATOR_VERSION}"
+        self.assertIn(want, title)
+        self.assertIn(want, h1)
+
+    def test_audit_version_matches_generator(self):
+        self.assertEqual(self._attr("data-generator-version"), M.GENERATOR_VERSION)
+        self.assertEqual(self._attr("data-generator-id"), M.GENERATOR_ID)
+
+    def test_audit_validator_version_matches(self):
+        self.assertEqual(self._attr("data-validator-version"), M.VALIDATOR_VERSION)
+
+    def test_audit_commit_matches_build(self):
+        self.assertEqual(self._attr("data-git-commit"), self.manifest["gitCommit"])
+        self.assertEqual(self._attr("data-git-commit"), self.browser.get("gitCommit"))
+
+    def test_no_stale_version_text(self):
+        # the audit (visible text + metadata) must contain no superseded version string
+        self.assertNotIn("1.0.0", self.audit, "stale v1.0.0 text in the visual audit")
+        self.assertIn(f"v{M.GENERATOR_VERSION}", self.audit)
+
+    def test_browser_report_version_matches_audit(self):
+        self.assertEqual(self.browser["generatorVersion"], self._attr("data-generator-version"))
+        self.assertEqual(self.browser["generatorVersion"], M.GENERATOR_VERSION)
+
+    def test_manifest_version_matches_audit(self):
+        self.assertEqual(self.manifest["generatorVersion"], self._attr("data-generator-version"))
+        self.assertEqual(self.manifest["validatorVersion"], self._attr("data-validator-version"))
+
+    def test_manifest_tag_terminology(self):
+        vt = self.manifest["versionTags"]
+        self.assertEqual(vt["previousVersionTag"], "mensuration-v1.0.0")
+        self.assertEqual(vt["currentImplementationTag"], "mensuration-v1.0.1")
+        self.assertIsNone(vt["approvedTag"])
+        self.assertNotIn("tag", self.manifest["approval"], "superseded tag must not appear as an approval tag")
+
+    def test_manifest_hashes_match_files(self):
+        import hashlib
+        root = os.path.join(HERE, "..", "..")
+        for name, a in self.manifest["artifacts"].items():
+            self.assertTrue(a["present"], name)
+            h = hashlib.sha256()
+            with open(os.path.join(root, a["path"]), "rb") as fh:
+                for chunk in iter(lambda: fh.read(65536), b""):
+                    h.update(chunk)
+            self.assertEqual(a["sha256"], h.hexdigest(), f"{name} drift: {a['path']}")
+
+
 class TestArtifactIntegrity(unittest.TestCase):
     """The generation manifest's SHA-256 hashes match the on-disk artifacts (owner M)."""
 
