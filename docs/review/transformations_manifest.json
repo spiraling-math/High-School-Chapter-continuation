@@ -4,7 +4,7 @@
   "validatorVersion": "1.0.0",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "96594fc44170b81f8db7f260ae73dc8f19913fa2",
+  "gitCommit": "1072698d762562578e147f106f7788f2bc96bfaa",
   "versionTags": {
     "previousVersionTag": null,
     "currentImplementationTag": "transformations-v1.0.0",
@@ -85,8 +85,8 @@
     },
     "tsGenerator": {
       "path": "domains/geometry/transformations.ts",
-      "sha256": null,
-      "present": false
+      "sha256": "980183a8cb3a600af6fa0f09cc7b165a218d962dffe728d9df0458783bb3dccd",
+      "present": true
     },
     "tsMisconceptions": {
       "path": "domains/geometry/transformations-misconceptions.ts",
@@ -95,8 +95,8 @@
     },
     "tsParityTest": {
       "path": "domains/geometry/transformations.parity.test.ts",
-      "sha256": null,
-      "present": false
+      "sha256": "a464ac0442ff4135e7f9589af3a81445a69ee5eb79b8bd634b6cfc81f4b1e2b3",
+      "present": true
     },
     "golden": {
       "path": "oracle/golden/transformations.golden.json",

@@ -18,6 +18,7 @@ import * as geometryAngles from "../../domains/geometry/angles.ts";
 import * as coordinateLines from "../../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../../domains/statistics/data-handling.ts";
 import * as mensuration from "../../domains/measurement/mensuration.ts";
+import * as transformations from "../../domains/geometry/transformations.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -159,6 +160,34 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => mensuration.generate(s, c as Parameters<typeof mensuration.generate>[1]),
     validate: mensuration.validate,
     serialize: mensuration.serialize,
+  },
+  {
+    id: transformations.GENERATOR_ID,
+    version: transformations.GENERATOR_VERSION,
+    label: "Coordinate transformations — translate, reflect & rotate",
+    // PENDING-REVIEW at v1.0.0 (owner REVISE-with-authorization, 2026-06-25). Implementation is
+    // authorized + machine-validated and the TS mirror is byte-parity with the Python oracle (gated by
+    // oracle/golden/transformations.*), but the family is GATED from normal Studio + production exports
+    // until the owner's APPROVE/REVISE/REJECT of the implemented v1.0.0 family — selectable only in
+    // review mode. The nine SPI.MIDDLE.GEO.TRANS.* objectives are approved-for-implementation; the
+    // additive answer.type "transformation" (canonical-first: the descriptor IS answer.canonical) is
+    // owner-approved. All nine tasks are FREE-RESPONSE only; an explicit MC request is rejected with
+    // interaction-not-supported (never silently converted).
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "translate_point", label: "Translate a point", mc: false },
+      { value: "translate_shape", label: "Translate a shape", mc: false },
+      { value: "reflect_point", label: "Reflect a point", mc: false },
+      { value: "reflect_shape", label: "Reflect a shape", mc: false },
+      { value: "rotate_point", label: "Rotate a point", mc: false },
+      { value: "rotate_shape", label: "Rotate a shape", mc: false },
+      { value: "describe_translation", label: "Describe a translation", mc: false },
+      { value: "describe_reflection", label: "Describe a reflection", mc: false },
+      { value: "describe_rotation", label: "Describe a rotation", mc: false },
+    ],
+    generate: (s, c) => transformations.generate(s, c as Parameters<typeof transformations.generate>[1]),
+    validate: transformations.validate,
+    serialize: transformations.serialize,
   },
 ];
 

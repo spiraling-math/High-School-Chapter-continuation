@@ -37,23 +37,26 @@ test("the registered generators are the expected set", () => {
     "gen.geometry.coordinate-lines@1.0.2",
     "gen.stats.data-handling@1.0.2",
     "gen.measurement.mensuration@1.0.1",
+    "gen.geometry.transformations@1.0.0",
   ]);
 });
 
-test("approval lifecycle: all seven families curriculum-approved (mensuration approved at v1.0.1)", () => {
-  // gen.measurement.mensuration was curriculum-approved at v1.0.1 (DECISION_LOG.md #53), joining the
-  // six earlier families. With no pending-review generators registered, normal and review modes
-  // coincide; the visibility gate still hides any future pending-review/rejected generator.
+test("approval lifecycle: seven curriculum-approved families + transformations pending-review (gated)", () => {
+  // Seven families are curriculum-approved; gen.geometry.transformations is PENDING-REVIEW at v1.0.0
+  // (owner REVISE-with-authorization, 2026-06-25) and is GATED from normal Studio + production exports,
+  // selectable only in review mode until the owner's APPROVE/REVISE/REJECT.
   for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations",
     "gen.geometry.angles-figures", "gen.geometry.coordinate-lines", "gen.stats.data-handling",
     "gen.measurement.mensuration"]) {
     assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === id)!), "approved");
   }
+  assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === "gen.geometry.transformations")!), "pending-review");
   const normal = generatorsForMode("normal").map((g) => g.id);
   const review = generatorsForMode("review").map((g) => g.id);
-  assert.ok(normal.includes("gen.measurement.mensuration"), "mensuration now visible in normal mode + production");
+  assert.ok(!normal.includes("gen.geometry.transformations"), "transformations hidden from normal mode + production");
+  assert.ok(review.includes("gen.geometry.transformations"), "transformations visible in review mode");
   assert.deepEqual(approvedGenerators().map((g) => g.id), normal, "approved set == normal-mode set");
   assert.equal(normal.length, 7);
-  assert.equal(review.length, 7);
+  assert.equal(review.length, 8);
   assert.ok(normal.every((id) => approvalStatusOf(GENERATORS.find((g) => g.id === id)!) === "approved"));
 });

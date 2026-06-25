@@ -97,7 +97,7 @@
     },
     "schema": {
       "path": "schemas/question-item.schema.json",
-      "sha256": "1cc107b613a1effecb54a7c0616a81577a8d887c23920b8947c5db841e3cee05",
+      "sha256": "6b9730bbb5239baeaf1ac66367878363e73e12b442a5ac964e821c2cfc83ff58",
       "present": true
     },
     "theme": {
