@@ -2,6 +2,48 @@
 
 Last updated: 2026-06-25.
 
+## `gen.measurement.mensuration` v1.0.0 — IMPLEMENTED · PENDING-REVIEW (2026-06-25)
+
+The first **unit-aware** family — built **oracle-first** after the owner's REVISE-with-authorization
+directive (`DECISION_LOG.md` #50, decisions A–M). Eight FREE-RESPONSE Middle-School mensuration
+tasks (perimeter of rectangles; perimeter of composite rectilinear/L-shapes; area of rectangles;
+area of triangles from a shown base + perpendicular height; area of composites by decomposition;
+missing length from a perimeter; missing rectangle dimension from an area; missing triangle
+base/height from an area). Domain `measurement`, strand `mensuration`, segment **MEAS**; eight
+`SPI.MIDDLE.MEAS.*` objectives `approved-for-implementation` from a single-source task map.
+
+**Headline architecture — the dimensional-quantity answer contract.** The platform's first
+structured-unit answer: an APPROVED additive `question-item.schema.json` extension —
+`answer.type "quantity"` + `answer.measure {dimension (length|area), baseUnit (mm|cm|m), exponent
+(1|2)}` with a normalized-rational `canonical`, derived ASCII `display`, legacy `units` forbidden on
+quantity answers (existing items still conform; the Python conformance checker now honours
+`const/allOf/if-then`). An anchored, deterministic unit parser + a STRUCTURAL equivalence checker
+(seven result codes; alias table; **no cross-unit conversion** in v1.0.0) distinguish length from
+area and accept any mathematically-equivalent value with the correct unit.
+
+A discriminated **shape-model union** (rectangle / rectilinear-composite / triangle) drives the
+diagram, labels, prompt, answer, solution, misconception calculations, accessibility, and validation
+(dispatched by kind). The canonical **dimensioned-figure renderer** (byte-identical Py/TS, viewBox
+0 0 1000 700, integer `gridRound` coords, no trig) builds a shared **base-geometry** group +
+**student annotations** (given dimensions only; `?` for the unknown; **NOT-TO-SCALE** banner on the
+three hidden-dimension tasks so the answer can't be measured off the SVG) + an **additive overlay**
+present ONLY in the answer-key channel. The independent validator asserts shape invariants,
+**shoelace == decomposition** for composites, missing-dimension uniqueness + substitution, byte SVG
+parity, base-geometry-identical/overlay-additive-only, token-aware answer-leakage, and the
+to-scale/NOT-TO-SCALE policy. The additive `mensuration-theme` (extends `cartesian-theme`) renders
+four modes (premium / premium-dark / accessible / monochrome-print) + a self-contained 6000×4200
+export, with **live-Chromium** confirmation of four distinct mode fills. `MISC.MENS.*` provides 13
+free-response diagnostics (8 mathematical, 4 unit, 1 pedagogical `USES_SLOPING_SIDE`).
+
+**Status:** registered **`pending-review`** in `core/sdk/sequence-registry.ts` — gated out of normal
+Generator Studio and production exports/samples (visible only in `?review`), awaiting the owner's
+APPROVE / REVISE / REJECT. **Verification:** 10,000-seed sweep **0 invalid, 0 reproducibility
+failures, every declared band reachable**; conformance PASS; byte-parity golden (12) + task-pinned
+parity (304); 9 Python oracle suites (21 mensuration tests incl. 6 blocking coverage gates +
+artifact integrity); **231 TS tests**; review pack **17 items, 46/46 cells, allCovered**; manifest +
+SHA-256 integrity; **all six approved families’ output byte-for-byte unchanged**. Difficulty ranges
+are provisional (confirmed reachable by the distribution report) pending the curriculum decision.
+
 ## `gen.stats.data-handling` v1.0.2 — CURRICULUM-APPROVED (2026-06-25)
 
 Statistics & Data Handling — built **oracle-first** (`DECISION_LOG.md` #45, decisions A–P),
