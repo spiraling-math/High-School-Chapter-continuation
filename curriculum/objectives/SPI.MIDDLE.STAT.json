@@ -16,7 +16,7 @@
     "vocabulary": ["bar chart", "category", "frequency", "axis", "scale"],
     "answerTypes": ["integer"], "calculatorPolicy": "calculator-not-required",
     "difficultyRange": { "min": 1, "max": 2 },
-    "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE"],
+    "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.TABLE_VALUE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (reading bar charts)" }],
     "reviewStatus": "approved-for-implementation", "version": "1.0.0"
@@ -82,7 +82,7 @@
     "vocabulary": ["line graph", "axis", "ordered", "data point", "value"],
     "answerTypes": ["integer"], "calculatorPolicy": "calculator-not-required",
     "difficultyRange": { "min": 1, "max": 2 },
-    "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE"],
+    "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.BAR_CHART.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (line graphs)" }],
     "reviewStatus": "approved-for-implementation", "version": "1.0.0"

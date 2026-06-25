@@ -1,6 +1,6 @@
 {
   "generatorId": "gen.stats.data-handling",
-  "generatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
   "tool": "chromium-getComputedStyle + canvas rasterize (preview)",
   "checks": [
     {
@@ -92,19 +92,19 @@
       "width": 6000,
       "height": 4200,
       "selfContained": true,
-      "sha256": "151a4db09f1421b91175779a02d8a40032062d61a0b8fbb8ed6e00a50a800513"
+      "sha256": "2c155603548a3c2c23ca4ee077556c314e6e741c2dabc22c558b8b0798a19b13"
     },
     "accessible": {
       "width": 6000,
       "height": 4200,
       "selfContained": true,
-      "sha256": "58b9e0e9b0884e1d6d8140f8d314b0d50cd805452fe5ec281297a6e048950f50"
+      "sha256": "5d581770ab547a169157042d2508b6e41bfae5a8ea05b7c50a5190b308a8417b"
     },
     "print": {
       "width": 6000,
       "height": 4200,
       "selfContained": true,
-      "sha256": "121bad3406883f613ca0929b8c4c1a2e59d74e6a2a67181f0babafc147018c0c"
+      "sha256": "6cc85b8ef72c2472e905777ec582b1913f382ab40600aa6f344360929158795e"
     }
   }
 }

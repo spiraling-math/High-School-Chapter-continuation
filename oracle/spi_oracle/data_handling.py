@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import json
 import os
+import math
 import re
 import sys
 from collections import Counter
@@ -45,8 +46,8 @@ from difficulty import band_from_score, round3, clamp01  # noqa: E402
 from data_handling_misconceptions import MISCONCEPTIONS, rules_for, adapter_for  # noqa: E402
 
 GENERATOR_ID = "gen.stats.data-handling"
-GENERATOR_VERSION = "1.0.1"
-VALIDATOR_VERSION = "1.0.1"
+GENERATOR_VERSION = "1.0.2"
+VALIDATOR_VERSION = "1.0.2"
 CALCULATOR_POLICY = "calculator-not-required"
 
 TASKS = ("read_bar_chart", "read_pictogram", "read_table_value", "read_line_graph",
@@ -204,7 +205,9 @@ def disp_rat(f: Fraction) -> str:
 STYLE = (
     ".cx-axis{stroke:#111;stroke-width:3;fill:none}"
     ".cx-tick{stroke:#111;stroke-width:2}"
+    ".cx-tick-minor{stroke:#111;stroke-width:1.5}"
     ".cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}"
+    ".cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}"
     ".cx-bar{fill:#bbb;stroke:#111;stroke-width:2}"
     ".cx-line{stroke:#111;stroke-width:3;fill:none}"
     ".cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}"
@@ -225,7 +228,7 @@ PLOT_H = PLOT_Y1 - PLOT_Y0           # 520
 
 
 def _axis_step_and_max(maxv: int) -> Tuple[int, int]:
-    """Pin a count-axis step from {1,2,5,10} (owner J) and a nice axis maximum."""
+    """Pin a count-axis MAJOR step from {1,2,5,10} (owner J) and a nice axis maximum."""
     for step in (1, 2, 5, 10):
         ymax = -(-maxv // step) * step  # ceil(maxv/step)*step
         if ymax == 0:
@@ -236,6 +239,46 @@ def _axis_step_and_max(maxv: int) -> Tuple[int, int]:
     step = 10
     ymax = max(10, -(-maxv // step) * step)
     return step, ymax
+
+
+# Direct-read scale contract (owner v1.0.2): every queried value (and every plotted value)
+# must land on a VISIBLE mathematical mark — a labelled major tick, or a rendered minor
+# subdivision whose declared step resolves it exactly. No pixel estimation.
+MIN_SUBDIV_PX = 14          # each visible subdivision must be at least this many pixels apart
+MAX_MINOR_LINES = 24        # the minor grid must not be overloaded (clutter cap)
+
+
+def _list_gcd(xs: List[int]) -> int:
+    g = 0
+    for x in xs:
+        g = math.gcd(g, abs(int(x)))
+    return g or 1
+
+
+def _chart_scale(values: List[int]) -> Tuple[int, int, int]:
+    """(majorStep, minorStep, ymax). The minor step is the coarsest subdivision of the major
+    step that still divides EVERY plotted value, so all bars/points land on a visible mark
+    (minorStep == majorStep means no extra minor grid is needed)."""
+    major, ymax = _axis_step_and_max(max(values))
+    minor = math.gcd(major, _list_gcd(values))
+    if minor < 1:
+        minor = 1
+    return major, minor, ymax
+
+
+def _subdiv_px(minor: int, ymax: int) -> int:
+    return grid_round(PLOT_H * minor, ymax)
+
+
+def _scale_readable(major: int, minor: int, ymax: int) -> bool:
+    """The grid resolves the data without estimation or clutter."""
+    if minor < 1 or major % minor != 0:
+        return False
+    if ymax // minor > MAX_MINOR_LINES:          # too many minor lines -> overloaded
+        return False
+    if _subdiv_px(minor, ymax) < MIN_SUBDIV_PX:  # subdivisions too close to read
+        return False
+    return True
 
 
 def _py(ymax: int, value: int) -> int:
@@ -261,10 +304,22 @@ def _svg_open(acc: Dict[str, Any]) -> List[str]:
     ]
 
 
-def _value_axis(out: List[str], ymax: int, step: int, unit_label: str) -> None:
-    # y-axis line + ticks + integer labels + gridlines at each step.
+def _value_axis(out: List[str], ymax: int, major: int, minor: int, unit_label: str) -> None:
+    """Render the value axis with a MAJOR grid (labelled ticks) and, when minor < major, a
+    rendered MINOR subdivision grid (unlabelled, lighter) so every plotted/queried value lands
+    on a visible mark (owner v1.0.2 direct-read contract)."""
     out.append(f'<line class="cx-axis" x1="{PLOT_X0}" y1="{PLOT_Y0}" x2="{PLOT_X0}" y2="{PLOT_Y1}"/>')
     out.append(f'<line class="cx-axis" x1="{PLOT_X0}" y1="{PLOT_Y1}" x2="{PLOT_X1}" y2="{PLOT_Y1}"/>')
+    # 1. minor subdivisions (only at positions that are NOT also a major mark).
+    if minor < major:
+        v = minor
+        while v < ymax:
+            if v % major != 0:
+                py = _py(ymax, v)
+                out.append(f'<line class="cx-grid-minor" x1="{PLOT_X0}" y1="{py}" x2="{PLOT_X1}" y2="{py}"/>')
+                out.append(f'<line class="cx-tick-minor" x1="{PLOT_X0 - 4}" y1="{py}" x2="{PLOT_X0}" y2="{py}"/>')
+            v += minor
+    # 2. major gridlines + ticks + integer labels.
     v = 0
     while v <= ymax:
         py = _py(ymax, v)
@@ -272,7 +327,7 @@ def _value_axis(out: List[str], ymax: int, step: int, unit_label: str) -> None:
             out.append(f'<line class="cx-grid-major" x1="{PLOT_X0}" y1="{py}" x2="{PLOT_X1}" y2="{py}"/>')
         out.append(f'<line class="cx-tick" x1="{PLOT_X0 - 6}" y1="{py}" x2="{PLOT_X0}" y2="{py}"/>')
         out.append(f'<text class="cx-ticklbl" x="{PLOT_X0 - 12}" y="{py + 7}" text-anchor="end">{v}</text>')
-        v += step
+        v += major
     out.append(f'<text class="cx-axislbl" x="36" y="{(PLOT_Y0 + PLOT_Y1) // 2}" '
                f'text-anchor="middle" transform="rotate(-90 36 {(PLOT_Y0 + PLOT_Y1) // 2})">{_esc(unit_label)}</text>')
 
@@ -281,10 +336,10 @@ def _bar_chart_svg(params: Dict[str, Any]) -> str:
     ds = params["dataset"]
     cats, freqs, unit = ds["categories"], ds["frequencies"], ds["unit"]
     n = len(cats)
-    step, ymax = _axis_step_and_max(max(freqs))
+    major, minor, ymax = _chart_scale(freqs)
     acc = _accessibility("read_bar_chart", params)
     out = _svg_open(acc)
-    _value_axis(out, ymax, step, f"Frequency ({unit})")
+    _value_axis(out, ymax, major, minor, f"Frequency ({unit})")
     for i, (cat, fr) in enumerate(zip(cats, freqs)):
         left, right = _slot_edges(n, i)
         inset = grid_round((right - left) * 20, 100)
@@ -302,10 +357,10 @@ def _line_graph_svg(params: Dict[str, Any]) -> str:
     ds = params["dataset"]
     labels, vals, unit = ds["seriesLabels"], ds["values"], ds["unit"]
     n = len(labels)
-    step, ymax = _axis_step_and_max(max(vals))
+    major, minor, ymax = _chart_scale(vals)
     acc = _accessibility("read_line_graph", params)
     out = _svg_open(acc)
-    _value_axis(out, ymax, step, f"{ds['title']} ({unit})")
+    _value_axis(out, ymax, major, minor, f"{ds['title']} ({unit})")
     xs = [PLOT_X0 + grid_round((PLOT_X1 - PLOT_X0) * (2 * i + 1), 2 * n) for i in range(n)]
     pts = [(xs[i], _py(ymax, vals[i])) for i in range(n)]
     out.append('<polyline class="cx-line" points="' + " ".join(f"{x},{y}" for x, y in pts) + '"/>')
@@ -489,7 +544,10 @@ def _ctx(task: str, params: Dict[str, Any], correct: Any) -> Dict[str, Any]:
         vals = ds["values"] if task == "read_line_graph" else ds["frequencies"]
         c.update(values=list(vals), queryIndex=params["queryIndex"], total=sum(vals))
         if task in ("read_bar_chart", "read_line_graph"):
-            c["axisStep"] = _axis_step_and_max(max(vals))[0]
+            major, minor, _ymax = _chart_scale(vals)
+            c["axisStep"] = minor       # off-by-step / miscount use the visible MINOR subdivision
+            c["minorStep"] = minor
+            c["majorStep"] = major
         if task == "read_pictogram":
             c["key"] = ds["pictogramKey"]
             fr = ds["frequencies"][params["queryIndex"]]
@@ -907,12 +965,25 @@ def _freq_dataset(rng: Mulberry32, lo: int, hi: int, themes=_CATEGORY_THEMES, mi
     return {"kind": "frequency", "title": title, "unit": unit, "categories": cats, "frequencies": freqs}
 
 
+def _stepped_values(rng: Mulberry32, n: int, lo: int, hi: int, vstep: int) -> List[int]:
+    """n values that are MULTIPLES of vstep in [lo, hi] (so the chart scale resolves them)."""
+    a, b = lo // vstep, hi // vstep
+    return [vstep * (a + _n(rng, b - a + 1)) for _ in range(n)]
+
+
+# Readable bar/line scale buckets (owner v1.0.2): (lo, hi, vstep). Generating values as
+# multiples of vstep keeps the derived minor subdivision clean; the _acceptable gate redraws
+# any residual unreadable scale. These exercise major steps {1,2,5,10} and minor {1,5}.
+_BAR_BUCKETS = [(1, 8, 1), (2, 16, 1), (2, 16, 2), (5, 35, 5), (10, 55, 5)]
+_LINE_BUCKETS = [(1, 9, 1), (2, 16, 1), (5, 35, 5), (10, 55, 5)]
+
+
 def _draw_read_bar_chart(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    # vary the value range to exercise axis steps 1/2/5/10 (owner J/O)
-    bucket = _n(rng, 4)
-    lo, hi = [(1, 8), (2, 16), (5, 35), (10, 55)][bucket]
-    ds = _freq_dataset(rng, lo, hi)
-    qi = _n(rng, len(ds["categories"]))
+    lo, hi, vstep = _BAR_BUCKETS[_n(rng, len(_BAR_BUCKETS))]
+    title, unit, cats, n = _draw_categories(rng, _CATEGORY_THEMES, 3, 5)
+    freqs = _stepped_values(rng, n, lo, hi, vstep)
+    ds = {"kind": "frequency", "title": title, "unit": unit, "categories": cats, "frequencies": freqs}
+    qi = _n(rng, n)
     return {"task": "read_bar_chart", "dataset": ds, "queryIndex": qi, "scaffold": _n(rng, 2) == 0}
 
 
@@ -941,9 +1012,8 @@ def _draw_read_line_graph(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     title, unit, pool = _pick_theme(rng, _LINE_THEMES)
     n = 5 + _n(rng, 2)
     n = min(n, len(pool))
-    bucket = _n(rng, 3)
-    lo, hi = [(1, 9), (2, 18), (5, 40)][bucket]
-    vals = [lo + _n(rng, hi - lo + 1) for _ in range(n)]
+    lo, hi, vstep = _LINE_BUCKETS[_n(rng, len(_LINE_BUCKETS))]
+    vals = _stepped_values(rng, n, lo, hi, vstep)
     ds = {"kind": "list", "title": title, "unit": unit, "seriesLabels": pool[:n], "values": vals}
     qi = _n(rng, n)
     return {"task": "read_line_graph", "dataset": ds, "queryIndex": qi, "scaffold": _n(rng, 2) == 0}
@@ -1107,6 +1177,15 @@ def _acceptable(params: Dict[str, Any], interaction: str) -> Optional[List[Dict[
 
 def _answer_sane(task: str, params: Dict[str, Any], correct: Any) -> bool:
     ds = params["dataset"]
+    if task in ("read_bar_chart", "read_line_graph"):
+        # Direct-read scale contract (owner v1.0.2): the chart scale must resolve every value
+        # on a visible mark without estimation or clutter; otherwise redraw.
+        vals = ds["values"] if task == "read_line_graph" else ds["frequencies"]
+        major, minor, ymax = _chart_scale(vals)
+        if not _scale_readable(major, minor, ymax):
+            return False
+        if any(v % minor != 0 for v in vals):       # every value lands on a visible subdivision
+            return False
     if task == "mode_from_list":
         cnt = Counter(ds["values"]).most_common()
         if len(cnt) < 2 or cnt[0][1] == cnt[1][1]:
@@ -1294,6 +1373,9 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             add("chart-realises-data", _chart_realises_data(task, params, m.get("svg", "")), "bars/points/symbols agree with the dataset")
             if task in ("read_bar_chart", "read_line_graph"):
                 add("axis-scale-consistency", _axis_consistent(task, params, m.get("svg", "")), "ticks/gridlines follow a {1,2,5,10} step")
+                # direct-read scale contract (owner v1.0.2) — inspect the serialized SVG
+                for name, ok_, detail in _readability_checks(task, params, m.get("svg", "")):
+                    add(name, ok_, detail)
             stored_spec = (m.get("spec") or {}).get("premium")
             add("premium-spec-parity", stored_spec == _premium_spec(task, params), "premium spec recomputed byte-for-byte")
         else:
@@ -1475,14 +1557,14 @@ def _chart_realises_data(task: str, params: Dict[str, Any], svg: str) -> bool:
         rects = re.findall(r'<rect class="cx-bar"[^>]*y="(\d+)"[^>]*height="(\d+)"', svg)
         if len(rects) != len(ds["frequencies"]):
             return False
-        step, ymax = _axis_step_and_max(max(ds["frequencies"]))
+        _major, _minor, ymax = _chart_scale(ds["frequencies"])
         for (y, h), fr in zip(rects, ds["frequencies"]):
             if int(y) != _py(ymax, fr) or int(y) + int(h) != PLOT_Y1:
                 return False
         return True
     if task == "read_line_graph":
         circles = re.findall(r'<circle class="cx-pt-core" cx="(\d+)" cy="(\d+)"', svg)
-        step, ymax = _axis_step_and_max(max(ds["values"]))
+        _major, _minor, ymax = _chart_scale(ds["values"])
         if len(circles) != len(ds["values"]):
             return False
         for (cx, cy), v in zip(circles, ds["values"]):
@@ -1505,10 +1587,51 @@ def _axis_consistent(task: str, params: Dict[str, Any], svg: str) -> bool:
     vals = ds["values"] if task == "read_line_graph" else ds.get("frequencies")
     if not vals:
         return True
-    step, ymax = _axis_step_and_max(max(vals))
+    major, minor, ymax = _chart_scale(vals)
     labels = [int(t) for t in re.findall(r'<text class="cx-ticklbl"[^>]*>(-?\d+)</text>', svg)]
-    expected = list(range(0, ymax + 1, step))
-    return labels == expected and step in (1, 2, 5, 10)
+    expected = list(range(0, ymax + 1, major))     # labels only on MAJOR ticks
+    return labels == expected and major in (1, 2, 5, 10) and major % minor == 0
+
+
+def _grid_tick_ys(svg: str) -> set:
+    """All visible value-mark y-positions in the SVG: major + minor gridlines and ticks,
+    plus the baseline. The validator reads these from the SERIALIZED student SVG (owner v1.0.2)."""
+    ys = set()
+    for cls in ("cx-grid-major", "cx-grid-minor"):
+        ys |= {int(y) for y in re.findall(rf'<line class="{cls}" x1="\d+" y1="(\d+)"', svg)}
+    for cls in ("cx-tick", "cx-tick-minor"):
+        ys |= {int(y1) for y1, _y2 in re.findall(rf'<line class="{cls}" x1="\d+" y1="(\d+)" x2="\d+" y2="(\d+)"', svg)}
+    ys.add(PLOT_Y1)                                 # the baseline (value 0) is a visible mark
+    return ys
+
+
+def _readability_checks(task: str, params: Dict[str, Any], svg: str) -> List[Tuple[str, bool, str]]:
+    """Owner v1.0.2 direct-read scale contract — inspect the SERIALIZED student SVG (not just the
+    dataset) to prove every queried/plotted value lands on a visible mark with no pixel estimation."""
+    ds = params["dataset"]
+    vals = ds["values"] if task == "read_line_graph" else ds["frequencies"]
+    major, minor, ymax = _chart_scale(vals)
+    qi = params["queryIndex"]
+    queried = vals[qi]
+    mark_ys = _grid_tick_ys(svg)
+    q_py = _py(ymax, queried)
+    all_on = all(_py(ymax, v) in mark_ys for v in vals)
+    minor_lines = ymax // minor
+    sep = _subdiv_px(minor, ymax)
+    align_tag = "bar-top-aligns-visible-subdivision" if task == "read_bar_chart" else "line-point-aligns-visible-subdivision"
+    out = [
+        ("minor-step-divides-major-step", major % minor == 0, f"major {major} minor {minor}"),
+        ("minor-grid-not-overloaded", minor_lines <= MAX_MINOR_LINES and sep >= MIN_SUBDIV_PX, f"{minor_lines} lines, {sep}px"),
+        ("queried-value-readable-from-scale", queried % minor == 0, f"queried {queried} % minor {minor}"),
+        ("visible-subdivision-resolves-query", q_py in mark_ys, f"queried y {q_py} on a visible mark"),
+        (align_tag, all_on, "every plotted value sits on a visible mark"),
+        ("exact-read-answer-unique", queried % minor == 0 and q_py in mark_ys, "answer uniquely readable from a mark"),
+        ("no-pixel-estimation-required", all(v % minor == 0 for v in vals) and all_on, "no value falls between marks"),
+        ("scale-readable-in-monochrome", '<line class="cx-tick"' in svg and '<text class="cx-ticklbl"' in svg,
+         "labelled monochrome ticks present"),
+        ("scale-readable-at-print-size", sep >= MIN_SUBDIV_PX, f"subdivision {sep}px >= {MIN_SUBDIV_PX}"),
+    ]
+    return out
 
 
 def _table_round_trip(task: str, params: Dict[str, Any], html: str) -> bool:

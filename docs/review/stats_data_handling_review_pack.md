@@ -1,6 +1,6 @@
-# Review pack — `gen.stats.data-handling` v1.0.1
+# Review pack — `gen.stats.data-handling` v1.0.2
 
-Validator v1.0.1. **33 items** (11 chart SVGs + 22 semantic tables). Coverage: 89/89 required dimensions; misconceptions shown: 35/35. All items machine-valid: **True**.
+Validator v1.0.2. **32 items** (11 chart SVGs + 21 semantic tables). Coverage: 92/92 required dimensions; misconceptions shown: 36/36. All items machine-valid: **True**.
 
 Status: **PENDING REVIEW** — gated out of normal Studio + production until owner approval.
 Objectives are `approved-for-implementation`; items are machine-validated, never auto-published.
@@ -252,37 +252,47 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 8. mean_from_list (multiple-choice) — band 2
+## 8. read_line_graph (multiple-choice) — band 2
 
-- **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01`
+- **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
 - **Answer type:** integer
 - **Seed:** 5
-- **Prompt:** Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.
-- **Canonical answer:** `11`
+- **Prompt:** What is the value at Game 2?
+- **Canonical answer:** `20`
 
-<details><summary>figure (semantic HTML table)</summary>
+<details><summary>figure (canonical SVG)</summary>
 
-<table class="cx-list">
-<caption>Goals scored</caption>
-<tbody><tr>
-<td>17</td>
-<td>7</td>
-<td>9</td>
-</tr></tbody></table>
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Goals scored.">
+<title>Goals scored</title>
+<desc>A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-grid-minor" x1="120" y1="538" x2="950" y2="538"/>
+<line class="cx-tick-minor" x1="116" y1="538" x2="120" y2="538"/>
+<line class="cx-grid-minor" x1="120" y1="434" x2="950" y2="434"/>
+<line class="cx-tick-minor" x1="116" y1="434" x2="120" y2="434"/>
+<line class="cx-grid-minor" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick-minor" x1="116" y1="330" x2="120" y2="330"/>
+<line class="cx-grid-minor" x1="120" y1="226" x2="950" y2="226"/>
+<line class="cx-tick-minor" x1="116" y1="226" x2="120" y2="226"/>
+<line class="cx
+```
 
 </details>
 
 **Worked solution:**
-  1. Add the values: 17 + 7 + 9 = 33
-  2. Divide by how many values: 33 ÷ 3 = 11
+  1. Locate the requested position on the horizontal axis: Game 2
+  2. Read the value of the marked point from the vertical axis: 20
 
 **Distractors (misconception-backed):**
-  - `33` — MISC.STAT.MEAN_NO_DIVIDE: Adds the values but forgets to divide by how many there are.
-  - `33/2` — MISC.STAT.MEAN_DIVIDE_WRONG_N: Divides by the wrong number of values.
-  - `12` — MISC.STAT.MEAN_MIDRANGE: Averages only the largest and smallest values instead of all of them.
+  - `25` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
+  - `2` — MISC.STAT.LINE_SWAPS_AXES: Reads the value off the horizontal axis instead of the vertical axis.
+  - `4` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
 
-- **Accessibility (spoken):** A list of values titled Goals scored.
-- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 0, 'scaffolding': 0.5}
+- **Accessibility (spoken):** A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.
+- **Difficulty axes:** {'numericalComplexity': 0.9, 'readingDemand': 0.25, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.1}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(5,{'interactionType':'multiple-choice'})))"`
 
 ---
@@ -370,7 +380,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Books read.">
 <title>Books read</title>
 <desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
 <line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
 <line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
@@ -381,9 +391,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
 <line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
 <text class="cx-ticklbl" x="108" y="389" text-anchor="end">2</text>
-<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
-<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
-<text class="cx-
+<line class="cx-grid-major" x1="120" y1="27
 ```
 
 </details>
@@ -412,7 +420,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Sport played.">
 <title>Sport played</title>
 <desc>A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 10 pupils.</text>
 <text class="cx-catlbl" x="80" y="114" text-anchor="start">Football</text>
 <rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
@@ -421,8 +429,6 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <text class="cx-catlbl" x="80" y="184" text-anchor="start">Tennis</text>
 <rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
 <rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
-<rect class="
 ```
 
 </details>
@@ -456,7 +462,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Favourite fruit.">
 <title>Favourite fruit</title>
 <desc>A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 children.</text>
 <text class="cx-catlbl" x="80" y="114" text-anchor="start">Apple</text>
 <rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
@@ -465,8 +471,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <text class="cx-catlbl" x="80" y="184" text-anchor="start">Banana</text>
 <rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
 <rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
-<text class="cx-cat
+<rect
 ```
 
 </details>
@@ -481,41 +486,47 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 14. median_from_list (multiple-choice) — band 2
+## 14. read_bar_chart (multiple-choice) — band 1
 
-- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
+- **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
 - **Seed:** 8
-- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
-- **Canonical answer:** `10`
+- **Prompt:** How many children are in the category “Apple”?
+- **Canonical answer:** `16`
 
-<details><summary>figure (semantic HTML table)</summary>
+<details><summary>figure (canonical SVG)</summary>
 
-<table class="cx-list">
-<caption>Shoe sizes</caption>
-<tbody><tr>
-<td>16</td>
-<td>1</td>
-<td>10</td>
-<td>8</td>
-<td>11</td>
-<td>7</td>
-<td>11</td>
-</tr></tbody></table>
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
+<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
+<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
+<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
+<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
+<line class="cx-grid-major" 
+```
 
 </details>
 
 **Worked solution:**
-  1. Order the values: 1, 7, 8, 10, 11, 11, 16
-  2. Identify the single middle value: 10
+  1. Locate the bar for the named category: the bar for “Apple”
+  2. Read its height using the vertical-axis scale: 16
 
 **Distractors (misconception-backed):**
-  - `8` — MISC.STAT.MEDIAN_NO_ORDER: Takes the middle value without putting the list in order first.
-  - `11` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
-  - `64/7` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
+  - `18` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
+  - `12` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
+  - `8` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
 
-- **Accessibility (spoken):** A list of values titled Shoe sizes.
-- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
+- **Accessibility (spoken):** A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.
+- **Difficulty axes:** {'numericalComplexity': 0.32, 'readingDemand': 0.15, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.1}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'multiple-choice'})))"`
 
 ---
@@ -552,98 +563,52 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 16. read_line_graph (multiple-choice) — band 2
-
-- **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
-- **Answer type:** integer
-- **Seed:** 9
-- **Prompt:** What is the value at Day 4?
-- **Canonical answer:** `10`
-
-<details><summary>figure (canonical SVG)</summary>
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Plant height.">
-<title>Plant height</title>
-<desc>A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
-<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
-<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
-<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
-<text class="cx-ticklbl" x="108" y="467" text-anchor="end">5</text>
-<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
-<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
-<text class="cx-ticklbl" x="108" y="337" text-anchor="end">10</text>
-<line class="cx-grid-major" x1="120" y1="200" x2="950" y2="200"/>
-<line class="cx-tick" x1="114" y1="200" x2="120" y2="200"/>
-```
-
-</details>
-
-**Worked solution:**
-  1. Locate the requested position on the horizontal axis: Day 4
-  2. Read the value of the marked point from the vertical axis: 10
-
-**Distractors (misconception-backed):**
-  - `15` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
-  - `4` — MISC.STAT.LINE_SWAPS_AXES: Reads the value off the horizontal axis instead of the vertical axis.
-  - `2` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
-
-- **Accessibility (spoken):** A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.
-- **Difficulty axes:** {'numericalComplexity': 0.34, 'readingDemand': 0.3, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0.333, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))"`
-
----
-
-## 17. median_from_list (multiple-choice) — band 2
+## 16. median_from_list (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
 - **Answer type:** integer
-- **Seed:** 10
+- **Seed:** 9
 - **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
-- **Canonical answer:** `7`
+- **Canonical answer:** `14`
 
 <details><summary>figure (semantic HTML table)</summary>
 
 <table class="cx-list">
-<caption>Data values</caption>
+<caption>Daily steps</caption>
 <tbody><tr>
-<td>17</td>
-<td>10</td>
-<td>9</td>
-<td>5</td>
-<td>2</td>
+<td>19</td>
 <td>1</td>
+<td>15</td>
+<td>2</td>
+<td>14</td>
+<td>13</td>
+<td>20</td>
 </tr></tbody></table>
 
 </details>
 
 **Worked solution:**
-  1. Order the values: 1, 2, 5, 9, 10, 17
-  2. Identify the two middle values: 5 and 9
-  3. Average the two middle values: (5 + 9) ÷ 2 = 7
+  1. Order the values: 1, 2, 13, 14, 15, 19, 20
+  2. Identify the single middle value: 14
 
 **Distractors (misconception-backed):**
-  - `5` — MISC.STAT.MEDIAN_WRONG_MIDDLE: Picks one of the two middle values instead of their average.
-  - `22/3` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
-  - `9` — MISC.STAT.MEDIAN_MIDRANGE: Averages the largest and smallest values instead of finding the middle.
+  - `2` — MISC.STAT.MEDIAN_NO_ORDER: Takes the middle value without putting the list in order first.
+  - `12` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
+  - `21/2` — MISC.STAT.MEDIAN_MIDRANGE: Averages the largest and smallest values instead of finding the middle.
 
-- **Accessibility (spoken):** A list of values titled Data values.
+- **Accessibility (spoken):** A list of values titled Daily steps.
 - **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(10,{'interactionType':'multiple-choice'})))"`
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))"`
 
 ---
 
-## 18. read_line_graph (free-response) — band 2
+## 17. read_line_graph (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
 - **Answer type:** integer
 - **Seed:** 12
 - **Prompt:** What is the value at Mon?
-- **Canonical answer:** `10`
+- **Canonical answer:** `15`
 
 <details><summary>figure (canonical SVG)</summary>
 
@@ -651,35 +616,33 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Temperature.">
 <title>Temperature</title>
 <desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
 <line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
-<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
-<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
-<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
-<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
-<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
-<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
-<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
-<t
+<line class="cx-grid-minor" x1="120" y1="538" x2="950" y2="538"/>
+<line class="cx-tick-minor" x1="116" y1="538" x2="120" y2="538"/>
+<line class="cx-grid-minor" x1="120" y1="434" x2="950" y2="434"/>
+<line class="cx-tick-minor" x1="116" y1="434" x2="120" y2="434"/>
+<line class="cx-grid-minor" x1="120" y1="330" x2="950" y2="330"/>
+<line class="cx-tick-minor" x1="116" y1="330" x2="120" y2="330"/>
+<line class="cx-grid-minor" x1="120" y1="226" x2="950" y2="226"/>
+<line class="cx-tick-minor" x1="116" y1="226" x2="120" y2="226"/>
+<line class="cx-gr
 ```
 
 </details>
 
 **Worked solution:**
   1. Locate the requested position on the horizontal axis: Mon
-  2. Read the value of the marked point from the vertical axis: 10
+  2. Read the value of the marked point from the vertical axis: 15
 
 - **Accessibility (spoken):** A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.
-- **Difficulty axes:** {'numericalComplexity': 0.62, 'readingDemand': 0.3, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0.333, 'scaffolding': 0.5}
+- **Difficulty axes:** {'numericalComplexity': 0.9, 'readingDemand': 0.3, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0.333, 'scaffolding': 0.5}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(12,{'interactionType':'free-response'})))"`
 
 ---
 
-## 19. read_table_value (multiple-choice) — band 2
+## 18. read_table_value (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.TABLE_VALUE.01`
 - **Answer type:** integer
@@ -717,7 +680,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 20. complete_frequency_table (free-response) — band 2
+## 19. complete_frequency_table (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01`
 - **Answer type:** table-completion
@@ -753,7 +716,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 21. read_bar_chart (free-response) — band 2
+## 20. read_bar_chart (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
@@ -767,20 +730,18 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Sport played.">
 <title>Sport played</title>
 <desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
 <line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="525" x2="950" y2="525"/>
-<line class="cx-tick" x1="114" y1="525" x2="120" y2="525"/>
-<text class="cx-ticklbl" x="108" y="532" text-anchor="end">2</text>
-<line class="cx-grid-major" x1="120" y1="460" x2="950" y2="460"/>
-<line class="cx-tick" x1="114" y1="460" x2="120" y2="460"/>
-<text class="cx-ticklbl" x="108" y="467" text-anchor="end">4</text>
-<line class="cx-grid-major" x1="120" y1="395" x2="950" y2="395"/>
-<line class="cx-tick" x1="114" y1="395" x2="120" y2="395"/>
-<text clas
+<line class="cx-grid-minor" x1="120" y1="557" x2="950" y2="557"/>
+<line class="cx-tick-minor" x1="116" y1="557" x2="120" y2="557"/>
+<line class="cx-grid-minor" x1="120" y1="492" x2="950" y2="492"/>
+<line class="cx-tick-minor" x1="116" y1="492" x2="120" y2="492"/>
+<line class="cx-grid-minor" x1="120" y1="427" x2="950" y2="427"/>
+<line class="cx-tick-minor" x1="116" y1="427" x2="120" y2="427"/>
+<line class="cx-grid-minor" x1="120" y1="362" x2="950" y2="362"/>
+<line class="cx-tick-minor" x1="116" y1="362" x2="120" y2="362"/>
+<line class="cx-grid-mino
 ```
 
 </details>
@@ -792,6 +753,43 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 - **Accessibility (spoken):** A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.
 - **Difficulty axes:** {'numericalComplexity': 0.32, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.1}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'free-response'})))"`
+
+---
+
+## 21. mean_from_list (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01`
+- **Answer type:** exact-rational
+- **Seed:** 19
+- **Prompt:** Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.
+- **Canonical answer:** `47/5`
+
+<details><summary>figure (semantic HTML table)</summary>
+
+<table class="cx-list">
+<caption>Shoe sizes</caption>
+<tbody><tr>
+<td>2</td>
+<td>2</td>
+<td>11</td>
+<td>15</td>
+<td>17</td>
+</tr></tbody></table>
+
+</details>
+
+**Worked solution:**
+  1. Add the values: 2 + 2 + 11 + 15 + 17 = 47
+  2. Divide by how many values: 47 ÷ 5 = 47/5
+
+**Distractors (misconception-backed):**
+  - `47` — MISC.STAT.MEAN_NO_DIVIDE: Adds the values but forgets to divide by how many there are.
+  - `47/4` — MISC.STAT.MEAN_DIVIDE_WRONG_N: Divides by the wrong number of values.
+  - `2` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
+
+- **Accessibility (spoken):** A list of values titled Shoe sizes.
+- **Difficulty axes:** {'numericalComplexity': 0.55, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 0.667, 'scaffolding': 0.1}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'multiple-choice'})))"`
 
 ---
 
@@ -868,7 +866,52 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 24. mean_from_freq_table (free-response) — band 4
+## 24. read_bar_chart (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
+- **Answer type:** integer
+- **Seed:** 23
+- **Prompt:** How many children are in the category “Grape”?
+- **Canonical answer:** `20`
+
+<details><summary>figure (canonical SVG)</summary>
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite fruit.">
+<title>Favourite fruit</title>
+<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
+<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
+<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
+<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
+<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
+<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
+<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
+<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
+<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
+<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
+<line class="cx-grid-major"
+```
+
+</details>
+
+**Worked solution:**
+  1. Locate the bar for the named category: the bar for “Grape”
+  2. Read its height using the vertical-axis scale: 20
+
+**Distractors (misconception-backed):**
+  - `25` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
+  - `30` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
+  - `4` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
+
+- **Accessibility (spoken):** A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.
+- **Difficulty axes:** {'numericalComplexity': 0.7, 'readingDemand': 0.15, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.1}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(23,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 25. mean_from_freq_table (free-response) — band 4
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01`
 - **Answer type:** exact-rational
@@ -900,7 +943,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 25. mean_from_freq_table (multiple-choice) — band 4
+## 26. mean_from_freq_table (multiple-choice) — band 4
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01`
 - **Answer type:** exact-rational
@@ -937,182 +980,97 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 26. read_pictogram (multiple-choice) — band 2
+## 27. read_line_graph (multiple-choice) — band 2
 
-- **Objective:** `SPI.MIDDLE.STAT.READ.PICTOGRAM.01`
-- **Answer type:** integer
-- **Seed:** 32
-- **Prompt:** Use the key to find the number of cars for “White”.
-- **Canonical answer:** `7`
-
-<details><summary>figure (canonical SVG)</summary>
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Colour of car.">
-<title>Colour of car</title>
-<desc>A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
-<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 2 cars.</text>
-<text class="cx-catlbl" x="80" y="114" text-anchor="start">Red</text>
-<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="0" data-half="1" x="368" y="90" width="17" height="34" rx="6"/>
-<text class="cx-catlbl" x="80" y="184" text-anchor="start">Blue</text>
-<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
-<text class="cx-catlbl" x="80" y="254" text-anchor="start">Black</text>
-<rect class="cx-symbol" data-cat="2"
-```
-
-</details>
-
-**Worked solution:**
-  1. Count the whole and half symbols in the named row: 3 whole symbols and 1 half symbol
-  2. Apply the displayed key: 3 × 2 + 1 = 7
-
-**Distractors (misconception-backed):**
-  - `6` — MISC.STAT.PICTO_IGNORES_HALF: Leaves out the value of the half symbol.
-  - `8` — MISC.STAT.PICTO_HALF_AS_WHOLE: Counts the half symbol as if it were a whole symbol.
-  - `5` — MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL: Counts one symbol too few when reading the row.
-
-- **Accessibility (spoken):** A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.
-- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.25, 'reasoningSteps': 0.15, 'informationDensity': 0.333, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(32,{'interactionType':'multiple-choice'})))"`
-
----
-
-## 27. read_bar_chart (multiple-choice) — band 1
-
-- **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
+- **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
 - **Answer type:** integer
 - **Seed:** 34
-- **Prompt:** How many pupils are in the category “Hockey”?
-- **Canonical answer:** `12`
+- **Prompt:** What is the value at Game 3?
+- **Canonical answer:** `8`
 
 <details><summary>figure (canonical SVG)</summary>
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Sport played.">
-<title>Sport played</title>
-<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Line graph: Goals scored.">
+<title>Goals scored</title>
+<desc>A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
 <line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="503" x2="950" y2="503"/>
-<line class="cx-tick" x1="114" y1="503" x2="120" y2="503"/>
-<text class="cx-ticklbl" x="108" y="510" text-anchor="end">2</text>
-<line class="cx-grid-major" x1="120" y1="417" x2="950" y2="417"/>
-<line class="cx-tick" x1="114" y1="417" x2="120" y2="417"/>
-<text class="cx-ticklbl" x="108" y="424" text-anchor="end">4</text>
-<line class="cx-grid-major" x1="120" y1="330" x2="950" y2="330"/>
-<line class="cx-tick" x1="114" y1="330" x2="120" y2="330"/>
-<text clas
+<line class="cx-grid-minor" x1="120" y1="557" x2="950" y2="557"/>
+<line class="cx-tick-minor" x1="116" y1="557" x2="120" y2="557"/>
+<line class="cx-grid-minor" x1="120" y1="492" x2="950" y2="492"/>
+<line class="cx-tick-minor" x1="116" y1="492" x2="120" y2="492"/>
+<line class="cx-grid-minor" x1="120" y1="427" x2="950" y2="427"/>
+<line class="cx-tick-minor" x1="116" y1="427" x2="120" y2="427"/>
+<line class="cx-grid-minor" x1="120" y1="362" x2="950" y2="362"/>
+<line class="cx-tick-minor" x1="116" y1="362" x2="120" y2="362"/>
+<line class="cx
 ```
 
 </details>
 
 **Worked solution:**
-  1. Locate the bar for the named category: the bar for “Hockey”
-  2. Read its height using the vertical-axis scale: 12
+  1. Locate the requested position on the horizontal axis: Game 3
+  2. Read the value of the marked point from the vertical axis: 8
 
 **Distractors (misconception-backed):**
-  - `14` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
-  - `7` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
-  - `6` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
+  - `9` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
+  - `3` — MISC.STAT.LINE_SWAPS_AXES: Reads the value off the horizontal axis instead of the vertical axis.
+  - `10` — MISC.STAT.READ_OFF_BY_MAJOR_STEP: Reads the value one whole labelled gridline up or down.
 
-- **Accessibility (spoken):** A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.
-- **Difficulty axes:** {'numericalComplexity': 0.24, 'readingDemand': 0.15, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.5}
+- **Accessibility (spoken):** A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.
+- **Difficulty axes:** {'numericalComplexity': 0.32, 'readingDemand': 0.25, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.5}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(34,{'interactionType':'multiple-choice'})))"`
 
 ---
 
-## 28. read_bar_chart (free-response) — band 2
+## 28. read_bar_chart (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
-- **Seed:** 35
-- **Prompt:** How many cars are in the category “Blue”?
-- **Canonical answer:** `13`
+- **Seed:** 36
+- **Prompt:** How many readers are in the category “Mystery”?
+- **Canonical answer:** `20`
 
 <details><summary>figure (canonical SVG)</summary>
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Colour of car.">
-<title>Colour of car</title>
-<desc>A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Books read.">
+<title>Books read</title>
+<desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
 <line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="516" x2="950" y2="516"/>
-<line class="cx-tick" x1="114" y1="516" x2="120" y2="516"/>
-<text class="cx-ticklbl" x="108" y="523" text-anchor="end">5</text>
-<line class="cx-grid-major" x1="120" y1="441" x2="950" y2="441"/>
-<line class="cx-tick" x1="114" y1="441" x2="120" y2="441"/>
-<text class="cx-ticklbl" x="108" y="448" text-anchor="end">10</text>
-<line class="cx-grid-major" x1="120" y1="367" x2="950" y2="367"/>
-<line class="cx-tick" x1="114" y1="367" x2="120" y2="367"/>
-<text 
+<line class="cx-grid-minor" x1="120" y1="547" x2="950" y2="547"/>
+<line class="cx-tick-minor" x1="116" y1="547" x2="120" y2="547"/>
+<line class="cx-grid-minor" x1="120" y1="460" x2="950" y2="460"/>
+<line class="cx-tick-minor" x1="116" y1="460" x2="120" y2="460"/>
+<line class="cx-grid-minor" x1="120" y1="373" x2="950" y2="373"/>
+<line class="cx-tick-minor" x1="116" y1="373" x2="120" y2="373"/>
+<line class="cx-grid-minor" x1="120" y1="287" x2="950" y2="287"/>
+<line class="cx-tick-minor" x1="116" y1="287" x2="120" y2="287"/>
+<line class="cx-grid-minor" x1=
 ```
 
 </details>
 
 **Worked solution:**
-  1. Locate the bar for the named category: the bar for “Blue”
-  2. Read its height using the vertical-axis scale: 13
+  1. Locate the bar for the named category: the bar for “Mystery”
+  2. Read its height using the vertical-axis scale: 20
 
-- **Accessibility (spoken):** A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.
-- **Difficulty axes:** {'numericalComplexity': 0.62, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(35,{'interactionType':'free-response'})))"`
+**Distractors (misconception-backed):**
+  - `25` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
+  - `55` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
+  - `4` — MISC.STAT.READ_MISCOUNT_SCALE: Counts the squares instead of using the scale on the axis.
 
----
-
-## 29. read_bar_chart (free-response) — band 2
-
-- **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
-- **Answer type:** integer
-- **Seed:** 39
-- **Prompt:** How many pupils are in the category “Football”?
-- **Canonical answer:** `49`
-
-<details><summary>figure (canonical SVG)</summary>
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Sport played.">
-<title>Sport played</title>
-<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
-<line class="cx-axis" x1="120" y1="70" x2="120" y2="590"/>
-<line class="cx-axis" x1="120" y1="590" x2="950" y2="590"/>
-<line class="cx-tick" x1="114" y1="590" x2="120" y2="590"/>
-<text class="cx-ticklbl" x="108" y="597" text-anchor="end">0</text>
-<line class="cx-grid-major" x1="120" y1="486" x2="950" y2="486"/>
-<line class="cx-tick" x1="114" y1="486" x2="120" y2="486"/>
-<text class="cx-ticklbl" x="108" y="493" text-anchor="end">10</text>
-<line class="cx-grid-major" x1="120" y1="382" x2="950" y2="382"/>
-<line class="cx-tick" x1="114" y1="382" x2="120" y2="382"/>
-<text class="cx-ticklbl" x="108" y="389" text-anchor="end">20</text>
-<line class="cx-grid-major" x1="120" y1="278" x2="950" y2="278"/>
-<line class="cx-tick" x1="114" y1="278" x2="120" y2="278"/>
-<text cl
-```
-
-</details>
-
-**Worked solution:**
-  1. Locate the bar for the named category: the bar for “Football”
-  2. Read its height using the vertical-axis scale: 49
-
-- **Accessibility (spoken):** A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.
-- **Difficulty axes:** {'numericalComplexity': 0.98, 'readingDemand': 0.15, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(39,{'interactionType':'free-response'})))"`
+- **Accessibility (spoken):** A bar chart titled Books read. Read the frequency for the named category from the labelled axis.
+- **Difficulty axes:** {'numericalComplexity': 1, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.1}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(36,{'interactionType':'multiple-choice'})))"`
 
 ---
 
-## 30. read_pictogram (multiple-choice) — band 2
+## 29. read_pictogram (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.PICTOGRAM.01`
 - **Answer type:** integer
@@ -1126,7 +1084,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Colour of car.">
 <title>Colour of car</title>
 <desc>A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.</desc>
-<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
 <text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 cars.</text>
 <text class="cx-catlbl" x="80" y="114" text-anchor="start">Red</text>
 <rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
@@ -1135,8 +1093,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <text class="cx-catlbl" x="80" y="184" text-anchor="start">Blue</text>
 <rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
 <rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
-<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
-<text class="cx-catlbl" x="80" y="254
+<rect class="cx-symbol"
 ```
 
 </details>
@@ -1156,7 +1113,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 31. single_event_probability (free-response) — band 2
+## 30. single_event_probability (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction
@@ -1192,7 +1149,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 32. range_from_list (free-response) — band 1
+## 31. range_from_list (free-response) — band 1
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.RANGE_LIST.01`
 - **Answer type:** integer
@@ -1222,7 +1179,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 33. single_event_probability (free-response) — band 3
+## 32. single_event_probability (free-response) — band 3
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction

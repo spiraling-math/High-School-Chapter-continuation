@@ -49,8 +49,14 @@ def _features(item):
     for o in item.get("options", []):
         if o.get("misconceptionId"):
             toks.add(f"misc:{o['misconceptionId']}")
-    if task == "read_bar_chart":
-        toks.add(f"barscale:{_axis_step(item)}")
+    if task in ("read_bar_chart", "read_line_graph"):
+        vals = ds.get("values") or ds["frequencies"]
+        major, minor, _ymax = dh._chart_scale(vals)
+        q = vals[item["params"]["queryIndex"]]
+        if task == "read_bar_chart":
+            toks.add(f"barscale:{major}")
+        if minor < major and q % major != 0:               # queried value resolved by a minor subdivision
+            toks.add(f"{'bar' if task == 'read_bar_chart' else 'line'}:minor-subdiv")
     if task == "read_pictogram":
         key = ds["pictogramKey"]
         anyhalf = any((f % key) == (key // 2) and key % 2 == 0 for f in ds["frequencies"])
@@ -103,7 +109,9 @@ def _required_tokens():
             "range:zero", "range:pos", "list:negative", "prob:0", "prob:1", "prob:half", "prob:other",
             "table:total", "table:freqcell", "dense",
             # owner #11 required examples:
-            "list:signed-context-free", "misc-mode-valid", "no-mode-rejected"}
+            "list:signed-context-free", "misc-mode-valid", "no-mode-rejected",
+            # owner v1.0.2 direct-read examples: minor subdivisions on bar + line:
+            "bar:minor-subdiv", "line:minor-subdiv"}
     return req
 
 

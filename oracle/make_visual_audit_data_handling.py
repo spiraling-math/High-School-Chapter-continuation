@@ -110,6 +110,34 @@ def main() -> int:
         "colour-free authoritative rendering.</p>",
     ]
 
+    # Direct-read scale contract (owner v1.0.2): before -> after for charts whose queried value
+    # sits on a MINOR subdivision. "Before" strips the minor grid (the v1.0.1 look) so the
+    # queried bar/point falls between labelled ticks; "after" renders the minor subdivisions so
+    # the value is exactly recoverable from a visible mark.
+    import re as _re
+    minor_re = _re.compile(r'<line class="cx-(?:grid|tick)-minor"[^>]*/>\n?')
+    parts.append("<h2>Direct-read scale contract — before → after (minor subdivisions)</h2>")
+    parts.append("<p>Charts whose queried value lands on a minor subdivision. <b>Before</b> (minor "
+                 "grid removed) the value falls between labelled ticks; <b>after</b> it sits on a visible mark.</p>")
+    shown = 0
+    for seed in range(1, 4000):
+        if shown >= 3:
+            break
+        it = dh.generate(seed, {"task": "read_bar_chart", "interactionType": "free-response"})
+        ds = it["params"]["dataset"]
+        major, minor, _y = dh._chart_scale(ds["frequencies"])
+        q = ds["frequencies"][it["params"]["queryIndex"]]
+        if not (minor < major and q % major != 0):
+            continue
+        shown += 1
+        after = it["media"][0]["svg"]
+        before = minor_re.sub("", after)
+        cat = ds["categories"][it["params"]["queryIndex"]]
+        parts.append(f"<h3>seed {seed} — queried “{cat}” = {q} (major {major}, minor {minor})</h3><div class='grid'>")
+        parts.append(f"<div class='card'><div class='mode'>before (no minor grid — value between ticks)</div>{presentation_svg(before, 'print')}</div>")
+        parts.append(f"<div class='card'><div class='mode'>after (minor subdivision resolves {q})</div>{presentation_svg(after, 'print')}</div>")
+        parts.append("</div>")
+
     for key, it in items.items():
         svg = it["media"][0]["svg"]
         parts.append(f"<h2>{key} — {it['params']['task']}</h2><div class='grid'>")

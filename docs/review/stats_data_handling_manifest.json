@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.stats.data-handling",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
   "objectiveIds": [
     "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
@@ -32,52 +32,52 @@
   "artifacts": {
     "golden": {
       "path": "oracle/golden/data_handling.golden.json",
-      "sha256": "462c45dc931e0d36b5c551208019d0756dae1a291a2a0c9040878175210ae4f0",
+      "sha256": "ccb9a67e5cd47ab66ba8a1891ebd4f1ea4a8a371af5108e262aa5dad65f92829",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/data_handling.parity.json",
-      "sha256": "7bd28f40e743159a99cf48ccac6c0d4467a0ebec32a077285850fc0e8f6b303b",
+      "sha256": "4ce2e60553b5fe0da77a4d5f3183206b7dfa280fdb422fae723b0da463f38b67",
       "present": true
     },
     "distribution": {
       "path": "docs/review/stats_data_handling_distribution.json",
-      "sha256": "82a2072041f1ab877390cb7100143eecf6392eb8d6335d53043476cd22eea455",
+      "sha256": "aba7aa521e3fe2da3d075fd28ad388ab809ff8a514fd5b0c2b53b910e5537fac",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/stats_data_handling_review_pack.json",
-      "sha256": "2f6a4dd1491d3671828159e3f27355fe002cb3734baf7339748fb4dfa453df3c",
+      "sha256": "f086f3d7cfc74e00e999d982c4d3fb98b5dee026086a4a41cf8f476be1b478c6",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/stats_data_handling_review_pack.md",
-      "sha256": "0a420dfcccdccd17aa40179959063ee2c02e58b7eb69d24d096f7c695d2faf13",
+      "sha256": "cda89dc2f01b3c997fa43db17604243197c25689700ad9e77660a3e836c12ee2",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/stats_data_handling_visual_audit.html",
-      "sha256": "ec2fcbd5ff78c4745e4fe37095f3d5d6358e8f7923e535348c8422d3eecf1b47",
+      "sha256": "7978e6f18abf48da015ee8ac3f62d286b63693e006c810e51e9b2cde388947c7",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/stats_data_handling_browser_verification.json",
-      "sha256": "89773ec71828f9d8add70d1cc17bff4118530a31a46770545e2caef1fbb7ef8a",
+      "sha256": "29778a3f6604a7449865dde9cfd2e833f46a4dc5031a3338ce7d4deba6e820be",
       "present": true
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
-      "sha256": "297725b40477d940cee373bc2ed1e8ced0f1c57d9e62da7e24f0e13ad2988a35",
+      "sha256": "2167f1aee249660fae6979ea5c2b88bcd56ee2d5e6a256d4152462f677590668",
       "present": true
     },
     "oracle": {
       "path": "oracle/spi_oracle/data_handling.py",
-      "sha256": "f2783c29dc037647e3a1b819ffd1d66706e93caf438e328b7c28e8904a141908",
+      "sha256": "78c37f9ed41bf7f902f9b4732929f466200ba99c689ac4fbceeb2ef4e32bae6b",
       "present": true
     },
     "misconceptions": {
       "path": "oracle/spi_oracle/data_handling_misconceptions.py",
-      "sha256": "274e9d81b55f1fe1833aae02dc44534839097238c8f635617279224afa75ad74",
+      "sha256": "9186fced64e757558ebd8e6f774ae35987c584bd9c633cb221bfdfc8e9eca38f",
       "present": true
     },
     "dataChartTheme": {
@@ -88,17 +88,17 @@
   },
   "rasterExports": {
     "premium": {
-      "sha256": "151a4db09f1421b91175779a02d8a40032062d61a0b8fbb8ed6e00a50a800513",
+      "sha256": "2c155603548a3c2c23ca4ee077556c314e6e741c2dabc22c558b8b0798a19b13",
       "width": 6000,
       "height": 4200
     },
     "accessible": {
-      "sha256": "58b9e0e9b0884e1d6d8140f8d314b0d50cd805452fe5ec281297a6e048950f50",
+      "sha256": "5d581770ab547a169157042d2508b6e41bfae5a8ea05b7c50a5190b308a8417b",
       "width": 6000,
       "height": 4200
     },
     "print": {
-      "sha256": "121bad3406883f613ca0929b8c4c1a2e59d74e6a2a67181f0babafc147018c0c",
+      "sha256": "6cc85b8ef72c2472e905777ec582b1913f382ab40600aa6f344360929158795e",
       "width": 6000,
       "height": 4200
     }

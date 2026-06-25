@@ -47,6 +47,15 @@ def _miscount_scale(c: Dict[str, Any]) -> Optional[int]:
     return v if v != c["correct"] else None
 
 
+def _off_by_major(c: Dict[str, Any]) -> Optional[int]:
+    # Reads one MAJOR gridline off (distinct from one MINOR subdivision off).
+    step = c.get("majorStep", 1)
+    if step <= c.get("minorStep", 1):
+        return None
+    v = c["correct"] + step
+    return v if v != c["correct"] else None
+
+
 def _picto_count_symbols(c: Dict[str, Any]) -> Optional[int]:
     key = c.get("key")
     if not key or key <= 1:
@@ -432,19 +441,25 @@ MISCONCEPTIONS: Dict[str, Dict[str, Any]] = {m["id"]: m for m in [
        "Writes one of the frequencies as the total instead of their sum.",
        "The total is the sum of all the frequencies, not a single one of them.",
        lambda c: None),
+    # --- v1.0.2 addition (direct-read scale) ------------------------------ #
+    _r("MISC.STAT.READ_OFF_BY_MAJOR_STEP", "Reads one major gridline off",
+       "value +/- one major step", "lands on the wrong labelled gridline",
+       "Reads the value one whole labelled gridline up or down.",
+       "Read carefully to the exact gridline the bar or point reaches.",
+       _off_by_major),
 ]}
 
 
 # Which misconception ids each task may draw distractors from (order = preference).
 RULES_BY_TASK: Dict[str, List[str]] = {
-    "read_bar_chart": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE"],
+    "read_bar_chart": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     # Whole-symbol count first; the half-symbol rules are mutually exclusive with it (owner #3);
     # off-by-one is a fallback so a 3rd distinct distractor always exists.
     "read_pictogram": ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF",
                        "MISC.STAT.PICTO_HALF_AS_WHOLE", "MISC.STAT.READ_WRONG_CATEGORY",
                        "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL"],
     "read_table_value": ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
-    "read_line_graph": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE"],
+    "read_line_graph": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     # complete_frequency_table is free-response only — no distractors; its rules appear as
     # blank-kind-specific solution pitfalls (missing-total vs missing-frequency, owner #4).
     "complete_frequency_table": ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL",

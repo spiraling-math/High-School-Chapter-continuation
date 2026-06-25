@@ -279,5 +279,56 @@ class TestReconciliation(unittest.TestCase):
                 self.assertIn(mid, mis.MISCONCEPTIONS, f"stale misconception id {mid} in {o['objectiveId']}")
 
 
+class TestDirectReadScale(unittest.TestCase):
+    """Owner v1.0.2 — every queried bar/line value must land on a visible scale mark."""
+
+    def _mark_ys(self, svg):
+        return dh._grid_tick_ys(svg)
+
+    def test_every_queried_value_on_a_visible_mark(self):
+        off = 0
+        for seed in range(1, 4001):
+            for task in ("read_bar_chart", "read_line_graph"):
+                it = dh.generate(seed, {"task": task, "interactionType": "free-response"})
+                self.assertEqual(dh.validate(it)["status"], "pass")
+                ds = it["params"]["dataset"]
+                vals = ds.get("values") or ds["frequencies"]
+                major, minor, ymax = dh._chart_scale(vals)
+                q = vals[it["params"]["queryIndex"]]
+                self.assertEqual(q % minor, 0, f"queried {q} not on the minor grid (seed {seed} {task})")
+                svg = it["media"][0]["svg"]
+                self.assertIn(dh._py(ymax, q), self._mark_ys(svg), f"queried y not on a visible mark (seed {seed} {task})")
+                if q % major != 0:
+                    off += 1  # resolved by a minor subdivision (acceptable)
+        self.assertGreater(off, 0, "some queried values should exercise the minor subdivision grid")
+
+    def test_minor_step_divides_major_and_not_overloaded(self):
+        for seed in range(1, 3001):
+            for task in ("read_bar_chart", "read_line_graph"):
+                it = dh.generate(seed, {"task": task})
+                vals = it["params"]["dataset"].get("values") or it["params"]["dataset"]["frequencies"]
+                major, minor, ymax = dh._chart_scale(vals)
+                self.assertEqual(major % minor, 0)
+                self.assertLessEqual(ymax // minor, dh.MAX_MINOR_LINES)
+                self.assertGreaterEqual(dh._subdiv_px(minor, ymax), dh.MIN_SUBDIV_PX)
+
+    def test_named_regression_seeds_19_35_39(self):
+        # The owner's seeds 19/35/39: in v1.0.2 every read_bar_chart item is exactly readable.
+        for seed in (19, 35, 39):
+            it = dh.generate(seed, {"task": "read_bar_chart", "interactionType": "free-response"})
+            self.assertEqual(dh.validate(it)["status"], "pass", f"seed {seed} must be valid")
+            ds = it["params"]["dataset"]
+            major, minor, ymax = dh._chart_scale(ds["frequencies"])
+            q = ds["frequencies"][it["params"]["queryIndex"]]
+            self.assertEqual(q % minor, 0, f"seed {seed} queried value must sit on a visible mark")
+            self.assertIn(dh._py(ymax, q), self._mark_ys(it["media"][0]["svg"]))
+
+    def test_readability_distribution_zero_off_grid(self):
+        rep = json.load(open(os.path.join(REVIEW, "stats_data_handling_distribution.json"), encoding="utf-8"))
+        for task, a in rep["directReadAudit"].items():
+            self.assertEqual(a["queriedOffGrid"], 0, f"{task} has off-grid queried values")
+            self.assertEqual(a["itemsRequiringVisualEstimation"], 0)
+
+
 if __name__ == "__main__":
     print("OK" if unittest.main(exit=False, verbosity=1).result.wasSuccessful() else "FAIL")

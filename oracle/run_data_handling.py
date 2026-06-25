@@ -164,6 +164,43 @@ def main() -> int:
             "avgDrawAttemptsMC": round(sum(mc_att) / len(mc_att), 3) if mc_att else None,
             "maxDrawAttemptsMC": max(mc_att) if mc_att else None,
         }
+    # Direct-chart-readability audit (owner v1.0.2 #5): sweep read_bar_chart + read_line_graph.
+    read_audit = {}
+    for task in ("read_bar_chart", "read_line_graph"):
+        on_major = on_minor = off_grid = 0
+        smallest_minor = 10 ** 9
+        min_sep = 10 ** 9
+        from spi_oracle.seeded_random import Mulberry32
+        redraws = 0
+        for s in range(1, SWEEP + 1):
+            # count readability-driven redraws by replaying the draw loop
+            rng = Mulberry32(s)
+            for _ in range(dh.MAX_PARAM_ATTEMPTS):
+                drawn = dh._DRAW[task](rng)
+                if drawn is not None and dh._acceptable(drawn, "free-response") is not None:
+                    break
+                redraws += 1
+            item = dh.generate(s, {"task": task, "interactionType": "free-response"})
+            ds = item["params"]["dataset"]
+            vals = ds.get("values") or ds["frequencies"]
+            major, minor, ymax = dh._chart_scale(vals)
+            q = vals[item["params"]["queryIndex"]]
+            if q % major == 0:
+                on_major += 1
+            elif q % minor == 0:
+                on_minor += 1
+            else:
+                off_grid += 1
+            smallest_minor = min(smallest_minor, minor)
+            min_sep = min(min_sep, dh._subdiv_px(minor, ymax))
+        read_audit[task] = {
+            "items": SWEEP, "queriedOnMajorTick": on_major, "queriedOnMinorTick": on_minor,
+            "queriedOffGrid": off_grid, "smallestRenderedSubdivision": smallest_minor,
+            "minPixelDistanceBetweenSubdivisions": min_sep,
+            "readabilityRedraws": redraws, "itemsRequiringVisualEstimation": off_grid,
+        }
+    report["directReadAudit"] = read_audit
+
     with open(os.path.join(REVIEW_DIR, "stats_data_handling_distribution.json"), "w", encoding="utf-8") as fh:
         json.dump(report, fh, indent=2)
 
@@ -178,7 +215,12 @@ def main() -> int:
         flag = " UNREACHABLE:" + str(t["unreachableBands"]) if t["unreachableBands"] else ""
         flag += " OVER:" + str(t["overConcentratedBands"]) if t["overConcentratedBands"] else ""
         print(f"  {task:26s} {t['declaredBand']} -> {dict(sorted(t['bandPct'].items()))}{flag}")
-    return 0 if invalid == 0 else 1
+    print("Direct-read readability audit:")
+    for task, a in read_audit.items():
+        print(f"  {task:16s} major {a['queriedOnMajorTick']} / minor {a['queriedOnMinorTick']} / "
+              f"OFF-GRID {a['queriedOffGrid']} | minSubdiv {a['smallestRenderedSubdivision']} "
+              f"minSep {a['minPixelDistanceBetweenSubdivisions']}px | redraws {a['readabilityRedraws']}")
+    return 0 if invalid == 0 and all(a["queriedOffGrid"] == 0 for a in read_audit.values()) else 1
 
 
 if __name__ == "__main__":

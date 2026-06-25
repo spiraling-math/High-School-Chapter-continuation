@@ -1,11 +1,11 @@
 {
   "summary": {
     "generatorId": "gen.stats.data-handling",
-    "generatorVersion": "1.0.1",
-    "validatorVersion": "1.0.1",
-    "itemCount": 33,
+    "generatorVersion": "1.0.2",
+    "validatorVersion": "1.0.2",
+    "itemCount": 32,
     "svgItems": 11,
-    "tableItems": 22,
+    "tableItems": 21,
     "tasksCovered": [
       "complete_frequency_table",
       "mean_from_freq_table",
@@ -56,14 +56,15 @@
       "MISC.STAT.RANGE_IS_MAX",
       "MISC.STAT.RANGE_IS_MIN",
       "MISC.STAT.READ_MISCOUNT_SCALE",
+      "MISC.STAT.READ_OFF_BY_MAJOR_STEP",
       "MISC.STAT.READ_OFF_BY_STEP",
       "MISC.STAT.READ_WRONG_CATEGORY",
       "MISC.STAT.TABLE_ADJACENT_ROW",
       "MISC.STAT.TABLE_READS_LARGEST",
       "MISC.STAT.TABLE_READS_TOTAL"
     ],
-    "requiredTokens": 89,
-    "coveredTokens": 89,
+    "requiredTokens": 92,
+    "coveredTokens": 92,
     "missingCoverage": [],
     "allValid": true
   },
@@ -1038,93 +1039,121 @@
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(4,{'interactionType':'multiple-choice'})))\""
     },
     {
-      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
-      "task": "mean_from_list",
+      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+      "task": "read_line_graph",
       "interaction": "multiple-choice",
       "answerType": "integer",
       "seed": 5,
       "params": {
-        "task": "mean_from_list",
+        "task": "read_line_graph",
         "dataset": {
           "kind": "list",
           "title": "Goals scored",
           "unit": "goals",
+          "seriesLabels": [
+            "Game 1",
+            "Game 2",
+            "Game 3",
+            "Game 4",
+            "Game 5"
+          ],
           "values": [
-            17,
-            7,
-            9
+            45,
+            20,
+            10,
+            45,
+            20
           ]
         },
-        "scaffold": false
+        "queryIndex": 1,
+        "scaffold": true
       },
       "dataset": {
         "kind": "list",
         "title": "Goals scored",
         "unit": "goals",
+        "seriesLabels": [
+          "Game 1",
+          "Game 2",
+          "Game 3",
+          "Game 4",
+          "Game 5"
+        ],
         "values": [
-          17,
-          7,
-          9
+          45,
+          20,
+          10,
+          45,
+          20
         ]
       },
-      "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
-      "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>17</td>\n<td>7</td>\n<td>9</td>\n</tr></tbody></table>",
-      "answer": "11",
-      "answerCanonical": 11,
+      "prompt": "What is the value at Game 2?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Goals scored.\">\n<title>Goals scored</title>\n<desc>A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"538\" x2=\"950\" y2=\"538\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"538\" x2=\"120\" y2=\"538\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"434\" x2=\"950\" y2=\"434\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"434\" x2=\"120\" y2=\"434\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"226\" x2=\"950\" y2=\"226\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"226\" x2=\"120\" y2=\"226\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"122\" x2=\"950\" y2=\"122\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"122\" x2=\"120\" y2=\"122\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">40</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">50</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Goals scored (goals)</text>\n<polyline class=\"cx-line\" points=\"203,122 369,382 535,486 701,122 867,382\"/>\n<circle class=\"cx-pt-outline\" cx=\"203\" cy=\"122\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"203\" cy=\"122\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"203\" y1=\"590\" x2=\"203\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Game 1</text>\n<circle class=\"cx-pt-outline\" cx=\"369\" cy=\"382\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"369\" cy=\"382\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"369\" y1=\"590\" x2=\"369\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Game 2</text>\n<circle class=\"cx-pt-outline\" cx=\"535\" cy=\"486\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"535\" cy=\"486\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"535\" y1=\"590\" x2=\"535\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Game 3</text>\n<circle class=\"cx-pt-outline\" cx=\"701\" cy=\"122\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"701\" cy=\"122\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"701\" y1=\"590\" x2=\"701\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Game 4</text>\n<circle class=\"cx-pt-outline\" cx=\"867\" cy=\"382\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"867\" cy=\"382\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"867\" y1=\"590\" x2=\"867\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Game 5</text>\n</svg>",
+      "answer": "20",
+      "answerCanonical": 20,
       "solution": [
         {
           "number": 1,
-          "transformation": "Add the values",
-          "intermediateResult": "17 + 7 + 9 = 33"
+          "transformation": "Locate the requested position on the horizontal axis",
+          "intermediateResult": "Game 2"
         },
         {
           "number": 2,
-          "transformation": "Divide by how many values",
-          "intermediateResult": "33 \u00f7 3 = 11"
+          "transformation": "Read the value of the marked point from the vertical axis",
+          "intermediateResult": "20"
         }
       ],
       "distractors": [
         {
           "id": "d1",
-          "value": 33,
-          "display": "33",
-          "misconceptionId": "MISC.STAT.MEAN_NO_DIVIDE",
-          "rationale": "Adds the values but forgets to divide by how many there are."
+          "value": 25,
+          "display": "25",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
         },
         {
           "id": "d2",
-          "value": {
-            "num": 33,
-            "den": 2
-          },
-          "display": "33/2",
-          "misconceptionId": "MISC.STAT.MEAN_DIVIDE_WRONG_N",
-          "rationale": "Divides by the wrong number of values."
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.LINE_SWAPS_AXES",
+          "rationale": "Reads the value off the horizontal axis instead of the vertical axis."
         },
         {
           "id": "d3",
-          "value": 12,
-          "display": "12",
-          "misconceptionId": "MISC.STAT.MEAN_MIDRANGE",
-          "rationale": "Averages only the largest and smallest values instead of all of them."
+          "value": 4,
+          "display": "4",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
         }
       ],
       "accessibility": {
-        "spokenMath": "A list of values titled Goals scored.",
+        "spokenMath": "A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.",
         "dataTable": {
           "columns": [
+            "Position",
             "Value"
           ],
           "rows": [
             [
-              "17"
+              "Game 1",
+              "45"
             ],
             [
-              "7"
+              "Game 2",
+              "20"
             ],
             [
-              "9"
+              "Game 3",
+              "10"
+            ],
+            [
+              "Game 4",
+              "45"
+            ],
+            [
+              "Game 5",
+              "20"
             ]
           ]
         }
@@ -1132,12 +1161,12 @@
       "difficulty": {
         "overallBand": 2,
         "axes": {
-          "numericalComplexity": 0.3,
-          "readingDemand": 0.2,
-          "interpretationDemand": 0.3,
-          "reasoningSteps": 0.35,
+          "numericalComplexity": 0.9,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.2,
+          "reasoningSteps": 0.1,
           "informationDensity": 0,
-          "scaffolding": 0.5
+          "scaffolding": 0.1
         }
       },
       "validation": "pass",
@@ -1149,8 +1178,19 @@
         "answer-type-consistency",
         "media-present",
         "media-kind",
-        "html-table-realises-data",
-        "table-round-trip",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "line-point-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
+        "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
@@ -1168,7 +1208,9 @@
         "distractor-statistic-exists",
         "distractor-value-is-actual-statistic",
         "distractor-rationale-true-for-dataset",
-        "solution-method-produces-canonical-answer"
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(5,{'interactionType':'multiple-choice'})))\""
@@ -1489,7 +1531,7 @@
       },
       "prompt": "How many readers are in the category \u201cScience\u201d?",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Books read.\">\n<title>Books read</title>\n<desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">1</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">3</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">5</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (readers)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Mystery</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Fantasy</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Comic</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"382\" width=\"100\" height=\"208\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Science</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">History</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Books read</text>\n</svg>",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Books read.\">\n<title>Books read</title>\n<desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">1</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">3</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">5</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (readers)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Mystery</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Fantasy</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Comic</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"382\" width=\"100\" height=\"208\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Science</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">History</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Books read</text>\n</svg>",
       "answer": "2",
       "answerCanonical": 2,
       "solution": [
@@ -1559,6 +1601,15 @@
         "svg-realises-data",
         "chart-realises-data",
         "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "bar-top-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
         "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
@@ -1621,7 +1672,7 @@
       },
       "prompt": "Use the key to find the number of pupils for \u201cHockey\u201d.",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Sport played.\">\n<title>Sport played</title>\n<desc>A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 10 pupils.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Football</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" data-half=\"1\" x=\"368\" y=\"90\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Tennis</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" data-half=\"1\" x=\"412\" y=\"160\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Hockey</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" data-half=\"1\" x=\"500\" y=\"230\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Sport played.\">\n<title>Sport played</title>\n<desc>A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 10 pupils.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Football</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" data-half=\"1\" x=\"368\" y=\"90\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Tennis</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" data-half=\"1\" x=\"412\" y=\"160\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Hockey</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" data-half=\"1\" x=\"500\" y=\"230\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
       "answer": "55",
       "answerCanonical": 55,
       "solution": [
@@ -1785,7 +1836,7 @@
       },
       "prompt": "Use the key to find the number of children for \u201cApple\u201d.",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Favourite fruit.\">\n<title>Favourite fruit</title>\n<desc>A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 children.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Apple</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Banana</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Grape</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"324\" text-anchor=\"start\">Orange</text>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"280\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"324\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"394\" text-anchor=\"start\">Pear</text>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"280\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"324\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"368\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Favourite fruit</text>\n</svg>",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Favourite fruit.\">\n<title>Favourite fruit</title>\n<desc>A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 children.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Apple</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Banana</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Grape</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"324\" text-anchor=\"start\">Orange</text>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"280\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"324\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"394\" text-anchor=\"start\">Pear</text>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"280\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"324\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"4\" x=\"368\" y=\"370\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Favourite fruit</text>\n</svg>",
       "answer": "15",
       "answerCanonical": 15,
       "solution": [
@@ -1873,126 +1924,118 @@
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'free-response'})))\""
     },
     {
-      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
-      "task": "median_from_list",
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
       "interaction": "multiple-choice",
       "answerType": "integer",
       "seed": 8,
       "params": {
-        "task": "median_from_list",
+        "task": "read_bar_chart",
         "dataset": {
-          "kind": "list",
-          "title": "Shoe sizes",
-          "unit": "sizes",
-          "values": [
+          "kind": "frequency",
+          "title": "Favourite fruit",
+          "unit": "children",
+          "categories": [
+            "Apple",
+            "Banana",
+            "Grape"
+          ],
+          "frequencies": [
             16,
-            1,
-            10,
-            8,
-            11,
-            7,
-            11
+            12,
+            2
           ]
         },
-        "scaffold": false
+        "queryIndex": 0,
+        "scaffold": true
       },
       "dataset": {
-        "kind": "list",
-        "title": "Shoe sizes",
-        "unit": "sizes",
-        "values": [
+        "kind": "frequency",
+        "title": "Favourite fruit",
+        "unit": "children",
+        "categories": [
+          "Apple",
+          "Banana",
+          "Grape"
+        ],
+        "frequencies": [
           16,
-          1,
-          10,
-          8,
-          11,
-          7,
-          11
+          12,
+          2
         ]
       },
-      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
-      "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Shoe sizes</caption>\n<tbody><tr>\n<td>16</td>\n<td>1</td>\n<td>10</td>\n<td>8</td>\n<td>11</td>\n<td>7</td>\n<td>11</td>\n</tr></tbody></table>",
-      "answer": "10",
-      "answerCanonical": 10,
+      "prompt": "How many children are in the category \u201cApple\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Favourite fruit.\">\n<title>Favourite fruit</title>\n<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"525\" x2=\"950\" y2=\"525\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"525\" x2=\"120\" y2=\"525\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"532\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"395\" x2=\"950\" y2=\"395\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"395\" x2=\"120\" y2=\"395\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"402\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"265\" x2=\"950\" y2=\"265\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"265\" x2=\"120\" y2=\"265\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"272\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">12</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"135\" x2=\"950\" y2=\"135\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"135\" x2=\"120\" y2=\"135\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"142\" text-anchor=\"end\">14</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">16</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (children)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"70\" width=\"167\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Apple</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"200\" width=\"166\" height=\"390\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Banana</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"525\" width=\"167\" height=\"65\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Grape</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Favourite fruit</text>\n</svg>",
+      "answer": "16",
+      "answerCanonical": 16,
       "solution": [
         {
           "number": 1,
-          "transformation": "Order the values",
-          "intermediateResult": "1, 7, 8, 10, 11, 11, 16"
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cApple\u201d"
         },
         {
           "number": 2,
-          "transformation": "Identify the single middle value",
-          "intermediateResult": "10"
+          "transformation": "Read its height using the vertical-axis scale",
+          "intermediateResult": "16"
         }
       ],
       "distractors": [
         {
           "id": "d1",
-          "value": 8,
-          "display": "8",
-          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
-          "rationale": "Takes the middle value without putting the list in order first."
+          "value": 18,
+          "display": "18",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
         },
         {
           "id": "d2",
-          "value": 11,
-          "display": "11",
-          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
-          "rationale": "Gives the most common value instead of the one asked for."
+          "value": 12,
+          "display": "12",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
         },
         {
           "id": "d3",
-          "value": {
-            "num": 64,
-            "den": 7
-          },
-          "display": "64/7",
-          "misconceptionId": "MISC.STAT.MEDIAN_USES_MEAN",
-          "rationale": "Adds the values and divides instead of finding the middle value."
+          "value": 8,
+          "display": "8",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
         }
       ],
       "accessibility": {
-        "spokenMath": "A list of values titled Shoe sizes.",
+        "spokenMath": "A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.",
         "dataTable": {
           "columns": [
-            "Value"
+            "Category",
+            "Frequency"
           ],
           "rows": [
             [
+              "Apple",
               "16"
             ],
             [
-              "1"
+              "Banana",
+              "12"
             ],
             [
-              "10"
-            ],
-            [
-              "8"
-            ],
-            [
-              "11"
-            ],
-            [
-              "7"
-            ],
-            [
-              "11"
+              "Grape",
+              "2"
             ]
           ]
         }
       },
       "difficulty": {
-        "overallBand": 2,
+        "overallBand": 1,
         "axes": {
-          "numericalComplexity": 0.3,
-          "readingDemand": 0.2,
-          "interpretationDemand": 0.3,
-          "reasoningSteps": 0.35,
-          "informationDensity": 1,
-          "scaffolding": 0.5
+          "numericalComplexity": 0.32,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0,
+          "scaffolding": 0.1
         }
       },
       "validation": "pass",
@@ -2004,8 +2047,19 @@
         "answer-type-consistency",
         "media-present",
         "media-kind",
-        "html-table-realises-data",
-        "table-round-trip",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "bar-top-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
+        "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
@@ -2023,10 +2077,9 @@
         "distractor-statistic-exists",
         "distractor-value-is-actual-statistic",
         "distractor-rationale-true-for-dataset",
-        "even-median-identifies-two-middle-values",
-        "even-median-shows-average",
-        "median-solution-parity-correct",
-        "solution-method-produces-canonical-answer"
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'multiple-choice'})))\""
@@ -2153,289 +2206,113 @@
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'free-response'})))\""
     },
     {
-      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
-      "task": "read_line_graph",
-      "interaction": "multiple-choice",
-      "answerType": "integer",
-      "seed": 9,
-      "params": {
-        "task": "read_line_graph",
-        "dataset": {
-          "kind": "list",
-          "title": "Plant height",
-          "unit": "cm",
-          "seriesLabels": [
-            "Day 1",
-            "Day 2",
-            "Day 3",
-            "Day 4",
-            "Day 5",
-            "Day 6"
-          ],
-          "values": [
-            12,
-            11,
-            13,
-            10,
-            5,
-            17
-          ]
-        },
-        "queryIndex": 3,
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "list",
-        "title": "Plant height",
-        "unit": "cm",
-        "seriesLabels": [
-          "Day 1",
-          "Day 2",
-          "Day 3",
-          "Day 4",
-          "Day 5",
-          "Day 6"
-        ],
-        "values": [
-          12,
-          11,
-          13,
-          10,
-          5,
-          17
-        ]
-      },
-      "prompt": "What is the value at Day 4?",
-      "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Plant height.\">\n<title>Plant height</title>\n<desc>A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">20</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Plant height (cm)</text>\n<polyline class=\"cx-line\" points=\"189,278 328,304 466,252 604,330 743,460 881,148\"/>\n<circle class=\"cx-pt-outline\" cx=\"189\" cy=\"278\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"189\" cy=\"278\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"189\" y1=\"590\" x2=\"189\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"189\" y=\"618\" text-anchor=\"middle\">Day 1</text>\n<circle class=\"cx-pt-outline\" cx=\"328\" cy=\"304\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"328\" cy=\"304\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"328\" y1=\"590\" x2=\"328\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"328\" y=\"618\" text-anchor=\"middle\">Day 2</text>\n<circle class=\"cx-pt-outline\" cx=\"466\" cy=\"252\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"466\" cy=\"252\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"466\" y1=\"590\" x2=\"466\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"466\" y=\"618\" text-anchor=\"middle\">Day 3</text>\n<circle class=\"cx-pt-outline\" cx=\"604\" cy=\"330\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"604\" cy=\"330\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"604\" y1=\"590\" x2=\"604\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"604\" y=\"618\" text-anchor=\"middle\">Day 4</text>\n<circle class=\"cx-pt-outline\" cx=\"743\" cy=\"460\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"743\" cy=\"460\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"743\" y1=\"590\" x2=\"743\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"743\" y=\"618\" text-anchor=\"middle\">Day 5</text>\n<circle class=\"cx-pt-outline\" cx=\"881\" cy=\"148\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"881\" cy=\"148\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"881\" y1=\"590\" x2=\"881\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"881\" y=\"618\" text-anchor=\"middle\">Day 6</text>\n</svg>",
-      "answer": "10",
-      "answerCanonical": 10,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Locate the requested position on the horizontal axis",
-          "intermediateResult": "Day 4"
-        },
-        {
-          "number": 2,
-          "transformation": "Read the value of the marked point from the vertical axis",
-          "intermediateResult": "10"
-        }
-      ],
-      "distractors": [
-        {
-          "id": "d1",
-          "value": 15,
-          "display": "15",
-          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
-          "rationale": "Reads the value one step up or down the scale."
-        },
-        {
-          "id": "d2",
-          "value": 4,
-          "display": "4",
-          "misconceptionId": "MISC.STAT.LINE_SWAPS_AXES",
-          "rationale": "Reads the value off the horizontal axis instead of the vertical axis."
-        },
-        {
-          "id": "d3",
-          "value": 2,
-          "display": "2",
-          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
-          "rationale": "Counts the squares instead of using the scale on the axis."
-        }
-      ],
-      "accessibility": {
-        "spokenMath": "A line graph titled Plant height with marked points at each labelled position. Read the value at the named position.",
-        "dataTable": {
-          "columns": [
-            "Position",
-            "Value"
-          ],
-          "rows": [
-            [
-              "Day 1",
-              "12"
-            ],
-            [
-              "Day 2",
-              "11"
-            ],
-            [
-              "Day 3",
-              "13"
-            ],
-            [
-              "Day 4",
-              "10"
-            ],
-            [
-              "Day 5",
-              "5"
-            ],
-            [
-              "Day 6",
-              "17"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 2,
-        "axes": {
-          "numericalComplexity": 0.34,
-          "readingDemand": 0.3,
-          "interpretationDemand": 0.2,
-          "reasoningSteps": 0.1,
-          "informationDensity": 0.333,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "svg-realises-data",
-        "chart-realises-data",
-        "axis-scale-consistency",
-        "premium-spec-parity",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid",
-        "mc-option-count",
-        "mc-options-distinct",
-        "mc-one-correct",
-        "mc-distractors-recompute",
-        "context-values-in-domain",
-        "count-context-nonnegative",
-        "signed-context-explicit",
-        "context-unit-compatible-with-values",
-        "mode-distractor-requires-unique-mode",
-        "distractor-statistic-exists",
-        "distractor-value-is-actual-statistic",
-        "distractor-rationale-true-for-dataset",
-        "solution-method-produces-canonical-answer",
-        "chart-solution-references-correct-chart-elements",
-        "solution-language-matches-representation"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))\""
-    },
-    {
       "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
       "task": "median_from_list",
       "interaction": "multiple-choice",
       "answerType": "integer",
-      "seed": 10,
+      "seed": 9,
       "params": {
         "task": "median_from_list",
         "dataset": {
           "kind": "list",
-          "title": "Data values",
-          "unit": "values",
+          "title": "Daily steps",
+          "unit": "thousand steps",
           "values": [
-            17,
-            10,
-            9,
-            5,
+            19,
+            1,
+            15,
             2,
-            1
+            14,
+            13,
+            20
           ]
         },
         "scaffold": false
       },
       "dataset": {
         "kind": "list",
-        "title": "Data values",
-        "unit": "values",
+        "title": "Daily steps",
+        "unit": "thousand steps",
         "values": [
-          17,
-          10,
-          9,
-          5,
+          19,
+          1,
+          15,
           2,
-          1
+          14,
+          13,
+          20
         ]
       },
       "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
       "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Data values</caption>\n<tbody><tr>\n<td>17</td>\n<td>10</td>\n<td>9</td>\n<td>5</td>\n<td>2</td>\n<td>1</td>\n</tr></tbody></table>",
-      "answer": "7",
-      "answerCanonical": 7,
+      "figure": "<table class=\"cx-list\">\n<caption>Daily steps</caption>\n<tbody><tr>\n<td>19</td>\n<td>1</td>\n<td>15</td>\n<td>2</td>\n<td>14</td>\n<td>13</td>\n<td>20</td>\n</tr></tbody></table>",
+      "answer": "14",
+      "answerCanonical": 14,
       "solution": [
         {
           "number": 1,
           "transformation": "Order the values",
-          "intermediateResult": "1, 2, 5, 9, 10, 17"
+          "intermediateResult": "1, 2, 13, 14, 15, 19, 20"
         },
         {
           "number": 2,
-          "transformation": "Identify the two middle values",
-          "intermediateResult": "5 and 9"
-        },
-        {
-          "number": 3,
-          "transformation": "Average the two middle values",
-          "intermediateResult": "(5 + 9) \u00f7 2 = 7"
+          "transformation": "Identify the single middle value",
+          "intermediateResult": "14"
         }
       ],
       "distractors": [
         {
           "id": "d1",
-          "value": 5,
-          "display": "5",
-          "misconceptionId": "MISC.STAT.MEDIAN_WRONG_MIDDLE",
-          "rationale": "Picks one of the two middle values instead of their average."
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
+          "rationale": "Takes the middle value without putting the list in order first."
         },
         {
           "id": "d2",
-          "value": {
-            "num": 22,
-            "den": 3
-          },
-          "display": "22/3",
+          "value": 12,
+          "display": "12",
           "misconceptionId": "MISC.STAT.MEDIAN_USES_MEAN",
           "rationale": "Adds the values and divides instead of finding the middle value."
         },
         {
           "id": "d3",
-          "value": 9,
-          "display": "9",
+          "value": {
+            "num": 21,
+            "den": 2
+          },
+          "display": "21/2",
           "misconceptionId": "MISC.STAT.MEDIAN_MIDRANGE",
           "rationale": "Averages the largest and smallest values instead of finding the middle."
         }
       ],
       "accessibility": {
-        "spokenMath": "A list of values titled Data values.",
+        "spokenMath": "A list of values titled Daily steps.",
         "dataTable": {
           "columns": [
             "Value"
           ],
           "rows": [
             [
-              "17"
+              "19"
             ],
             [
-              "10"
+              "1"
             ],
             [
-              "9"
-            ],
-            [
-              "5"
+              "15"
             ],
             [
               "2"
             ],
             [
-              "1"
+              "14"
+            ],
+            [
+              "13"
+            ],
+            [
+              "20"
             ]
           ]
         }
@@ -2485,7 +2362,7 @@
         "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(10,{'interactionType':'multiple-choice'})))\""
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
@@ -2508,12 +2385,12 @@
             "Sat"
           ],
           "values": [
+            15,
             10,
-            5,
-            30,
-            28,
-            24,
-            31
+            40,
+            40,
+            35,
+            45
           ]
         },
         "queryIndex": 0,
@@ -2532,19 +2409,19 @@
           "Sat"
         ],
         "values": [
+          15,
           10,
-          5,
-          30,
-          28,
-          24,
-          31
+          40,
+          40,
+          35,
+          45
         ]
       },
       "prompt": "What is the value at Mon?",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Temperature.\">\n<title>Temperature</title>\n<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Temperature (degrees)</text>\n<polyline class=\"cx-line\" points=\"189,441 328,516 466,144 604,174 743,233 881,129\"/>\n<circle class=\"cx-pt-outline\" cx=\"189\" cy=\"441\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"189\" cy=\"441\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"189\" y1=\"590\" x2=\"189\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"189\" y=\"618\" text-anchor=\"middle\">Mon</text>\n<circle class=\"cx-pt-outline\" cx=\"328\" cy=\"516\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"328\" cy=\"516\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"328\" y1=\"590\" x2=\"328\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"328\" y=\"618\" text-anchor=\"middle\">Tue</text>\n<circle class=\"cx-pt-outline\" cx=\"466\" cy=\"144\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"466\" cy=\"144\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"466\" y1=\"590\" x2=\"466\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"466\" y=\"618\" text-anchor=\"middle\">Wed</text>\n<circle class=\"cx-pt-outline\" cx=\"604\" cy=\"174\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"604\" cy=\"174\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"604\" y1=\"590\" x2=\"604\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"604\" y=\"618\" text-anchor=\"middle\">Thu</text>\n<circle class=\"cx-pt-outline\" cx=\"743\" cy=\"233\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"743\" cy=\"233\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"743\" y1=\"590\" x2=\"743\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"743\" y=\"618\" text-anchor=\"middle\">Fri</text>\n<circle class=\"cx-pt-outline\" cx=\"881\" cy=\"129\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"881\" cy=\"129\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"881\" y1=\"590\" x2=\"881\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"881\" y=\"618\" text-anchor=\"middle\">Sat</text>\n</svg>",
-      "answer": "10",
-      "answerCanonical": 10,
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Temperature.\">\n<title>Temperature</title>\n<desc>A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"538\" x2=\"950\" y2=\"538\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"538\" x2=\"120\" y2=\"538\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"434\" x2=\"950\" y2=\"434\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"434\" x2=\"120\" y2=\"434\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"226\" x2=\"950\" y2=\"226\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"226\" x2=\"120\" y2=\"226\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"122\" x2=\"950\" y2=\"122\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"122\" x2=\"120\" y2=\"122\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">40</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">50</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Temperature (degrees)</text>\n<polyline class=\"cx-line\" points=\"189,434 328,486 466,174 604,174 743,226 881,122\"/>\n<circle class=\"cx-pt-outline\" cx=\"189\" cy=\"434\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"189\" cy=\"434\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"189\" y1=\"590\" x2=\"189\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"189\" y=\"618\" text-anchor=\"middle\">Mon</text>\n<circle class=\"cx-pt-outline\" cx=\"328\" cy=\"486\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"328\" cy=\"486\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"328\" y1=\"590\" x2=\"328\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"328\" y=\"618\" text-anchor=\"middle\">Tue</text>\n<circle class=\"cx-pt-outline\" cx=\"466\" cy=\"174\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"466\" cy=\"174\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"466\" y1=\"590\" x2=\"466\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"466\" y=\"618\" text-anchor=\"middle\">Wed</text>\n<circle class=\"cx-pt-outline\" cx=\"604\" cy=\"174\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"604\" cy=\"174\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"604\" y1=\"590\" x2=\"604\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"604\" y=\"618\" text-anchor=\"middle\">Thu</text>\n<circle class=\"cx-pt-outline\" cx=\"743\" cy=\"226\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"743\" cy=\"226\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"743\" y1=\"590\" x2=\"743\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"743\" y=\"618\" text-anchor=\"middle\">Fri</text>\n<circle class=\"cx-pt-outline\" cx=\"881\" cy=\"122\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"881\" cy=\"122\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"881\" y1=\"590\" x2=\"881\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"881\" y=\"618\" text-anchor=\"middle\">Sat</text>\n</svg>",
+      "answer": "15",
+      "answerCanonical": 15,
       "solution": [
         {
           "number": 1,
@@ -2554,7 +2431,7 @@
         {
           "number": 2,
           "transformation": "Read the value of the marked point from the vertical axis",
-          "intermediateResult": "10"
+          "intermediateResult": "15"
         }
       ],
       "distractors": [],
@@ -2568,27 +2445,27 @@
           "rows": [
             [
               "Mon",
-              "10"
+              "15"
             ],
             [
               "Tue",
-              "5"
+              "10"
             ],
             [
               "Wed",
-              "30"
+              "40"
             ],
             [
               "Thu",
-              "28"
+              "40"
             ],
             [
               "Fri",
-              "24"
+              "35"
             ],
             [
               "Sat",
-              "31"
+              "45"
             ]
           ]
         }
@@ -2596,7 +2473,7 @@
       "difficulty": {
         "overallBand": 2,
         "axes": {
-          "numericalComplexity": 0.62,
+          "numericalComplexity": 0.9,
           "readingDemand": 0.3,
           "interpretationDemand": 0.2,
           "reasoningSteps": 0.1,
@@ -2616,6 +2493,15 @@
         "svg-realises-data",
         "chart-realises-data",
         "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "line-point-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
         "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
@@ -2993,7 +2879,7 @@
       },
       "prompt": "How many pupils are in the category \u201cRugby\u201d?",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"525\" x2=\"950\" y2=\"525\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"525\" x2=\"120\" y2=\"525\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"532\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"395\" x2=\"950\" y2=\"395\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"395\" x2=\"120\" y2=\"395\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"402\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"265\" x2=\"950\" y2=\"265\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"265\" x2=\"120\" y2=\"265\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"272\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">12</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"135\" x2=\"950\" y2=\"135\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"135\" x2=\"120\" y2=\"135\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"142\" text-anchor=\"end\">14</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">16</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"395\" width=\"100\" height=\"195\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"232\" width=\"100\" height=\"358\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Netball</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Rugby</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"557\" x2=\"950\" y2=\"557\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"557\" x2=\"120\" y2=\"557\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"492\" x2=\"950\" y2=\"492\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"492\" x2=\"120\" y2=\"492\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"427\" x2=\"950\" y2=\"427\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"427\" x2=\"120\" y2=\"427\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"362\" x2=\"950\" y2=\"362\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"362\" x2=\"120\" y2=\"362\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"297\" x2=\"950\" y2=\"297\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"297\" x2=\"120\" y2=\"297\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"232\" x2=\"950\" y2=\"232\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"232\" x2=\"120\" y2=\"232\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"167\" x2=\"950\" y2=\"167\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"167\" x2=\"120\" y2=\"167\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"102\" x2=\"950\" y2=\"102\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"102\" x2=\"120\" y2=\"102\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"525\" x2=\"950\" y2=\"525\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"525\" x2=\"120\" y2=\"525\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"532\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"395\" x2=\"950\" y2=\"395\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"395\" x2=\"120\" y2=\"395\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"402\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"265\" x2=\"950\" y2=\"265\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"265\" x2=\"120\" y2=\"265\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"272\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">12</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"135\" x2=\"950\" y2=\"135\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"135\" x2=\"120\" y2=\"135\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"142\" text-anchor=\"end\">14</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">16</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"70\" width=\"100\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"395\" width=\"100\" height=\"195\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"232\" width=\"100\" height=\"358\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Netball</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"297\" width=\"100\" height=\"293\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Rugby</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
       "answer": "9",
       "answerCanonical": 9,
       "solution": [
@@ -3063,6 +2949,15 @@
         "svg-realises-data",
         "chart-realises-data",
         "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "bar-top-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
         "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
@@ -3079,6 +2974,155 @@
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
+      "task": "mean_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "exact-rational",
+      "seed": 19,
+      "params": {
+        "task": "mean_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Shoe sizes",
+          "unit": "sizes",
+          "values": [
+            2,
+            2,
+            11,
+            15,
+            17
+          ]
+        },
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Shoe sizes",
+        "unit": "sizes",
+        "values": [
+          2,
+          2,
+          11,
+          15,
+          17
+        ]
+      },
+      "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Shoe sizes</caption>\n<tbody><tr>\n<td>2</td>\n<td>2</td>\n<td>11</td>\n<td>15</td>\n<td>17</td>\n</tr></tbody></table>",
+      "answer": "47/5",
+      "answerCanonical": {
+        "num": 47,
+        "den": 5
+      },
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Add the values",
+          "intermediateResult": "2 + 2 + 11 + 15 + 17 = 47"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide by how many values",
+          "intermediateResult": "47 \u00f7 5 = 47/5"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 47,
+          "display": "47",
+          "misconceptionId": "MISC.STAT.MEAN_NO_DIVIDE",
+          "rationale": "Adds the values but forgets to divide by how many there are."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 47,
+            "den": 4
+          },
+          "display": "47/4",
+          "misconceptionId": "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+          "rationale": "Divides by the wrong number of values."
+        },
+        {
+          "id": "d3",
+          "value": 2,
+          "display": "2",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Shoe sizes.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ],
+            [
+              "11"
+            ],
+            [
+              "15"
+            ],
+            [
+              "17"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.55,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 0.667,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
@@ -3372,6 +3416,167 @@
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(22,{'interactionType':'multiple-choice'})))\""
     },
     {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
+      "task": "read_bar_chart",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 23,
+      "params": {
+        "task": "read_bar_chart",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Favourite fruit",
+          "unit": "children",
+          "categories": [
+            "Apple",
+            "Banana",
+            "Grape"
+          ],
+          "frequencies": [
+            35,
+            30,
+            20
+          ]
+        },
+        "queryIndex": 2,
+        "scaffold": true
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Favourite fruit",
+        "unit": "children",
+        "categories": [
+          "Apple",
+          "Banana",
+          "Grape"
+        ],
+        "frequencies": [
+          35,
+          30,
+          20
+        ]
+      },
+      "prompt": "How many children are in the category \u201cGrape\u201d?",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Favourite fruit.\">\n<title>Favourite fruit</title>\n<desc>A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (children)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"70\" width=\"167\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Apple</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"144\" width=\"166\" height=\"446\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Banana</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"293\" width=\"167\" height=\"297\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Grape</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Favourite fruit</text>\n</svg>",
+      "answer": "20",
+      "answerCanonical": 20,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cGrape\u201d"
+        },
+        {
+          "number": 2,
+          "transformation": "Read its height using the vertical-axis scale",
+          "intermediateResult": "20"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 25,
+          "display": "25",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
+        },
+        {
+          "id": "d2",
+          "value": 30,
+          "display": "30",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
+        },
+        {
+          "id": "d3",
+          "value": 4,
+          "display": "4",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A bar chart titled Favourite fruit. Read the frequency for the named category from the labelled axis.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Apple",
+              "35"
+            ],
+            [
+              "Banana",
+              "30"
+            ],
+            [
+              "Grape",
+              "20"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.7,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.15,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0,
+          "scaffolding": 0.1
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "bar-top-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(23,{'interactionType':'multiple-choice'})))\""
+    },
+    {
       "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
       "task": "mean_from_freq_table",
       "interaction": "free-response",
@@ -3661,115 +3866,121 @@
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(30,{'interactionType':'multiple-choice'})))\""
     },
     {
-      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
-      "task": "read_pictogram",
+      "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
+      "task": "read_line_graph",
       "interaction": "multiple-choice",
       "answerType": "integer",
-      "seed": 32,
+      "seed": 34,
       "params": {
-        "task": "read_pictogram",
+        "task": "read_line_graph",
         "dataset": {
-          "kind": "frequency",
-          "title": "Colour of car",
-          "unit": "cars",
-          "categories": [
-            "Red",
-            "Blue",
-            "Black",
-            "White"
+          "kind": "list",
+          "title": "Goals scored",
+          "unit": "goals",
+          "seriesLabels": [
+            "Game 1",
+            "Game 2",
+            "Game 3",
+            "Game 4",
+            "Game 5"
           ],
-          "frequencies": [
-            5,
-            4,
-            7,
-            7
-          ],
-          "pictogramKey": 2
+          "values": [
+            13,
+            13,
+            8,
+            15,
+            16
+          ]
         },
-        "queryIndex": 3,
+        "queryIndex": 2,
         "scaffold": false
       },
       "dataset": {
-        "kind": "frequency",
-        "title": "Colour of car",
-        "unit": "cars",
-        "categories": [
-          "Red",
-          "Blue",
-          "Black",
-          "White"
+        "kind": "list",
+        "title": "Goals scored",
+        "unit": "goals",
+        "seriesLabels": [
+          "Game 1",
+          "Game 2",
+          "Game 3",
+          "Game 4",
+          "Game 5"
         ],
-        "frequencies": [
-          5,
-          4,
-          7,
-          7
-        ],
-        "pictogramKey": 2
+        "values": [
+          13,
+          13,
+          8,
+          15,
+          16
+        ]
       },
-      "prompt": "Use the key to find the number of cars for \u201cWhite\u201d.",
+      "prompt": "What is the value at Game 3?",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Colour of car.\">\n<title>Colour of car</title>\n<desc>A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 2 cars.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Red</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" data-half=\"1\" x=\"368\" y=\"90\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Blue</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Black</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" data-half=\"1\" x=\"412\" y=\"230\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"324\" text-anchor=\"start\">White</text>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"280\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"324\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"368\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" data-half=\"1\" x=\"412\" y=\"300\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
-      "answer": "7",
-      "answerCanonical": 7,
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Line graph: Goals scored.\">\n<title>Goals scored</title>\n<desc>A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"557\" x2=\"950\" y2=\"557\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"557\" x2=\"120\" y2=\"557\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"492\" x2=\"950\" y2=\"492\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"492\" x2=\"120\" y2=\"492\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"427\" x2=\"950\" y2=\"427\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"427\" x2=\"120\" y2=\"427\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"362\" x2=\"950\" y2=\"362\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"362\" x2=\"120\" y2=\"362\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"297\" x2=\"950\" y2=\"297\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"297\" x2=\"120\" y2=\"297\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"232\" x2=\"950\" y2=\"232\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"232\" x2=\"120\" y2=\"232\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"167\" x2=\"950\" y2=\"167\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"167\" x2=\"120\" y2=\"167\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"102\" x2=\"950\" y2=\"102\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"102\" x2=\"120\" y2=\"102\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"525\" x2=\"950\" y2=\"525\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"525\" x2=\"120\" y2=\"525\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"532\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"467\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"395\" x2=\"950\" y2=\"395\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"395\" x2=\"120\" y2=\"395\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"402\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"265\" x2=\"950\" y2=\"265\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"265\" x2=\"120\" y2=\"265\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"272\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"207\" text-anchor=\"end\">12</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"135\" x2=\"950\" y2=\"135\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"135\" x2=\"120\" y2=\"135\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"142\" text-anchor=\"end\">14</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">16</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Goals scored (goals)</text>\n<polyline class=\"cx-line\" points=\"203,167 369,167 535,330 701,102 867,70\"/>\n<circle class=\"cx-pt-outline\" cx=\"203\" cy=\"167\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"203\" cy=\"167\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"203\" y1=\"590\" x2=\"203\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Game 1</text>\n<circle class=\"cx-pt-outline\" cx=\"369\" cy=\"167\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"369\" cy=\"167\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"369\" y1=\"590\" x2=\"369\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Game 2</text>\n<circle class=\"cx-pt-outline\" cx=\"535\" cy=\"330\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"535\" cy=\"330\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"535\" y1=\"590\" x2=\"535\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Game 3</text>\n<circle class=\"cx-pt-outline\" cx=\"701\" cy=\"102\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"701\" cy=\"102\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"701\" y1=\"590\" x2=\"701\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Game 4</text>\n<circle class=\"cx-pt-outline\" cx=\"867\" cy=\"70\" r=\"7\"/>\n<circle class=\"cx-pt-core\" cx=\"867\" cy=\"70\" r=\"3\"/>\n<line class=\"cx-tick\" x1=\"867\" y1=\"590\" x2=\"867\" y2=\"596\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Game 5</text>\n</svg>",
+      "answer": "8",
+      "answerCanonical": 8,
       "solution": [
         {
           "number": 1,
-          "transformation": "Count the whole and half symbols in the named row",
-          "intermediateResult": "3 whole symbols and 1 half symbol"
+          "transformation": "Locate the requested position on the horizontal axis",
+          "intermediateResult": "Game 3"
         },
         {
           "number": 2,
-          "transformation": "Apply the displayed key",
-          "intermediateResult": "3 \u00d7 2 + 1 = 7"
+          "transformation": "Read the value of the marked point from the vertical axis",
+          "intermediateResult": "8"
         }
       ],
       "distractors": [
         {
           "id": "d1",
-          "value": 6,
-          "display": "6",
-          "misconceptionId": "MISC.STAT.PICTO_IGNORES_HALF",
-          "rationale": "Leaves out the value of the half symbol."
+          "value": 9,
+          "display": "9",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
         },
         {
           "id": "d2",
-          "value": 8,
-          "display": "8",
-          "misconceptionId": "MISC.STAT.PICTO_HALF_AS_WHOLE",
-          "rationale": "Counts the half symbol as if it were a whole symbol."
+          "value": 3,
+          "display": "3",
+          "misconceptionId": "MISC.STAT.LINE_SWAPS_AXES",
+          "rationale": "Reads the value off the horizontal axis instead of the vertical axis."
         },
         {
           "id": "d3",
-          "value": 5,
-          "display": "5",
-          "misconceptionId": "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL",
-          "rationale": "Counts one symbol too few when reading the row."
+          "value": 10,
+          "display": "10",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_MAJOR_STEP",
+          "rationale": "Reads the value one whole labelled gridline up or down."
         }
       ],
       "accessibility": {
-        "spokenMath": "A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.",
+        "spokenMath": "A line graph titled Goals scored with marked points at each labelled position. Read the value at the named position.",
         "dataTable": {
           "columns": [
-            "Category",
-            "Symbols (1 symbol = 2 cars)"
+            "Position",
+            "Value"
           ],
           "rows": [
             [
-              "Red",
-              "2 whole symbols and 1 half symbol"
+              "Game 1",
+              "13"
             ],
             [
-              "Blue",
-              "2 whole symbols"
+              "Game 2",
+              "13"
             ],
             [
-              "Black",
-              "3 whole symbols and 1 half symbol"
+              "Game 3",
+              "8"
             ],
             [
-              "White",
-              "3 whole symbols and 1 half symbol"
+              "Game 4",
+              "15"
+            ],
+            [
+              "Game 5",
+              "16"
             ]
           ]
         }
@@ -3777,163 +3988,9 @@
       "difficulty": {
         "overallBand": 2,
         "axes": {
-          "numericalComplexity": 0.3,
-          "readingDemand": 0.2,
-          "interpretationDemand": 0.25,
-          "reasoningSteps": 0.15,
-          "informationDensity": 0.333,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "svg-realises-data",
-        "chart-realises-data",
-        "premium-spec-parity",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid",
-        "mc-option-count",
-        "mc-options-distinct",
-        "mc-one-correct",
-        "mc-distractors-recompute",
-        "context-values-in-domain",
-        "count-context-nonnegative",
-        "signed-context-explicit",
-        "context-unit-compatible-with-values",
-        "mode-distractor-requires-unique-mode",
-        "distractor-statistic-exists",
-        "distractor-value-is-actual-statistic",
-        "distractor-rationale-true-for-dataset",
-        "pictogram-symbol-count-exact",
-        "pictogram-distractor-matches-visible-symbols",
-        "half-symbol-misconceptions-distinct",
-        "solution-method-produces-canonical-answer",
-        "chart-solution-references-correct-chart-elements",
-        "solution-language-matches-representation"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(32,{'interactionType':'multiple-choice'})))\""
-    },
-    {
-      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
-      "task": "read_bar_chart",
-      "interaction": "multiple-choice",
-      "answerType": "integer",
-      "seed": 34,
-      "params": {
-        "task": "read_bar_chart",
-        "dataset": {
-          "kind": "frequency",
-          "title": "Sport played",
-          "unit": "pupils",
-          "categories": [
-            "Football",
-            "Tennis",
-            "Hockey"
-          ],
-          "frequencies": [
-            8,
-            7,
-            12
-          ]
-        },
-        "queryIndex": 2,
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "frequency",
-        "title": "Sport played",
-        "unit": "pupils",
-        "categories": [
-          "Football",
-          "Tennis",
-          "Hockey"
-        ],
-        "frequencies": [
-          8,
-          7,
-          12
-        ]
-      },
-      "prompt": "How many pupils are in the category \u201cHockey\u201d?",
-      "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"503\" x2=\"950\" y2=\"503\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"503\" x2=\"120\" y2=\"503\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"510\" text-anchor=\"end\">2</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"417\" x2=\"950\" y2=\"417\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"417\" x2=\"120\" y2=\"417\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"424\" text-anchor=\"end\">4</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">6</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"243\" x2=\"950\" y2=\"243\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"243\" x2=\"120\" y2=\"243\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"250\" text-anchor=\"end\">8</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"157\" x2=\"950\" y2=\"157\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"157\" x2=\"120\" y2=\"157\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"164\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">12</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"243\" width=\"167\" height=\"347\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"287\" width=\"166\" height=\"303\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"70\" width=\"167\" height=\"520\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
-      "answer": "12",
-      "answerCanonical": 12,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Locate the bar for the named category",
-          "intermediateResult": "the bar for \u201cHockey\u201d"
-        },
-        {
-          "number": 2,
-          "transformation": "Read its height using the vertical-axis scale",
-          "intermediateResult": "12"
-        }
-      ],
-      "distractors": [
-        {
-          "id": "d1",
-          "value": 14,
-          "display": "14",
-          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
-          "rationale": "Reads the value one step up or down the scale."
-        },
-        {
-          "id": "d2",
-          "value": 7,
-          "display": "7",
-          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
-          "rationale": "Reads the frequency of a neighbouring category."
-        },
-        {
-          "id": "d3",
-          "value": 6,
-          "display": "6",
-          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
-          "rationale": "Counts the squares instead of using the scale on the axis."
-        }
-      ],
-      "accessibility": {
-        "spokenMath": "A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.",
-        "dataTable": {
-          "columns": [
-            "Category",
-            "Frequency"
-          ],
-          "rows": [
-            [
-              "Football",
-              "8"
-            ],
-            [
-              "Tennis",
-              "7"
-            ],
-            [
-              "Hockey",
-              "12"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 1,
-        "axes": {
-          "numericalComplexity": 0.24,
-          "readingDemand": 0.15,
-          "interpretationDemand": 0.15,
+          "numericalComplexity": 0.32,
+          "readingDemand": 0.25,
+          "interpretationDemand": 0.2,
           "reasoningSteps": 0.1,
           "informationDensity": 0,
           "scaffolding": 0.5
@@ -3951,6 +4008,15 @@
         "svg-realises-data",
         "chart-realises-data",
         "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "line-point-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
         "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
@@ -3979,72 +4045,94 @@
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
       "task": "read_bar_chart",
-      "interaction": "free-response",
+      "interaction": "multiple-choice",
       "answerType": "integer",
-      "seed": 35,
+      "seed": 36,
       "params": {
         "task": "read_bar_chart",
         "dataset": {
           "kind": "frequency",
-          "title": "Colour of car",
-          "unit": "cars",
+          "title": "Books read",
+          "unit": "readers",
           "categories": [
-            "Red",
-            "Blue",
-            "Black",
-            "White",
-            "Silver"
+            "Mystery",
+            "Fantasy",
+            "Comic",
+            "Science",
+            "History"
           ],
           "frequencies": [
-            17,
-            13,
-            16,
-            28,
-            31
+            20,
+            55,
+            55,
+            15,
+            25
           ]
         },
-        "queryIndex": 1,
-        "scaffold": false
+        "queryIndex": 0,
+        "scaffold": true
       },
       "dataset": {
         "kind": "frequency",
-        "title": "Colour of car",
-        "unit": "cars",
+        "title": "Books read",
+        "unit": "readers",
         "categories": [
-          "Red",
-          "Blue",
-          "Black",
-          "White",
-          "Silver"
+          "Mystery",
+          "Fantasy",
+          "Comic",
+          "Science",
+          "History"
         ],
         "frequencies": [
-          17,
-          13,
-          16,
-          28,
-          31
+          20,
+          55,
+          55,
+          15,
+          25
         ]
       },
-      "prompt": "How many cars are in the category \u201cBlue\u201d?",
+      "prompt": "How many readers are in the category \u201cMystery\u201d?",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Colour of car.\">\n<title>Colour of car</title>\n<desc>A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"516\" x2=\"950\" y2=\"516\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"516\" x2=\"120\" y2=\"516\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"523\" text-anchor=\"end\">5</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"441\" x2=\"950\" y2=\"441\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"441\" x2=\"120\" y2=\"441\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"448\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"367\" x2=\"950\" y2=\"367\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"367\" x2=\"120\" y2=\"367\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"374\" text-anchor=\"end\">15</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"293\" x2=\"950\" y2=\"293\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"293\" x2=\"120\" y2=\"293\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"300\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"219\" x2=\"950\" y2=\"219\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"219\" x2=\"120\" y2=\"219\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"226\" text-anchor=\"end\">25</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"144\" x2=\"950\" y2=\"144\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"144\" x2=\"120\" y2=\"144\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"151\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">35</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (cars)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"337\" width=\"100\" height=\"253\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Red</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"397\" width=\"100\" height=\"193\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Blue</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"352\" width=\"100\" height=\"238\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Black</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"174\" width=\"100\" height=\"416\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">White</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"129\" width=\"100\" height=\"461\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">Silver</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
-      "answer": "13",
-      "answerCanonical": 13,
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Books read.\">\n<title>Books read</title>\n<desc>A bar chart titled Books read. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"547\" x2=\"950\" y2=\"547\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"547\" x2=\"120\" y2=\"547\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"460\" x2=\"950\" y2=\"460\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"460\" x2=\"120\" y2=\"460\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"373\" x2=\"950\" y2=\"373\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"373\" x2=\"120\" y2=\"373\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"287\" x2=\"950\" y2=\"287\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"287\" x2=\"120\" y2=\"287\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"200\" x2=\"950\" y2=\"200\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"200\" x2=\"120\" y2=\"200\"/>\n<line class=\"cx-grid-minor\" x1=\"120\" y1=\"113\" x2=\"950\" y2=\"113\"/>\n<line class=\"cx-tick-minor\" x1=\"116\" y1=\"113\" x2=\"120\" y2=\"113\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"503\" x2=\"950\" y2=\"503\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"503\" x2=\"120\" y2=\"503\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"510\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"417\" x2=\"950\" y2=\"417\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"417\" x2=\"120\" y2=\"417\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"424\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"330\" x2=\"950\" y2=\"330\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"330\" x2=\"120\" y2=\"330\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"337\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"243\" x2=\"950\" y2=\"243\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"243\" x2=\"120\" y2=\"243\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"250\" text-anchor=\"end\">40</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"157\" x2=\"950\" y2=\"157\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"157\" x2=\"120\" y2=\"157\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"164\" text-anchor=\"end\">50</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">60</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (readers)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"153\" y=\"417\" width=\"100\" height=\"173\"/>\n<text class=\"cx-catlbl\" x=\"203\" y=\"618\" text-anchor=\"middle\">Mystery</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"319\" y=\"113\" width=\"100\" height=\"477\"/>\n<text class=\"cx-catlbl\" x=\"369\" y=\"618\" text-anchor=\"middle\">Fantasy</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"485\" y=\"113\" width=\"100\" height=\"477\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Comic</text>\n<rect class=\"cx-bar\" data-cat=\"3\" x=\"651\" y=\"460\" width=\"100\" height=\"130\"/>\n<text class=\"cx-catlbl\" x=\"701\" y=\"618\" text-anchor=\"middle\">Science</text>\n<rect class=\"cx-bar\" data-cat=\"4\" x=\"817\" y=\"373\" width=\"100\" height=\"217\"/>\n<text class=\"cx-catlbl\" x=\"867\" y=\"618\" text-anchor=\"middle\">History</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Books read</text>\n</svg>",
+      "answer": "20",
+      "answerCanonical": 20,
       "solution": [
         {
           "number": 1,
           "transformation": "Locate the bar for the named category",
-          "intermediateResult": "the bar for \u201cBlue\u201d"
+          "intermediateResult": "the bar for \u201cMystery\u201d"
         },
         {
           "number": 2,
           "transformation": "Read its height using the vertical-axis scale",
-          "intermediateResult": "13"
+          "intermediateResult": "20"
         }
       ],
-      "distractors": [],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 25,
+          "display": "25",
+          "misconceptionId": "MISC.STAT.READ_OFF_BY_STEP",
+          "rationale": "Reads the value one step up or down the scale."
+        },
+        {
+          "id": "d2",
+          "value": 55,
+          "display": "55",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
+        },
+        {
+          "id": "d3",
+          "value": 4,
+          "display": "4",
+          "misconceptionId": "MISC.STAT.READ_MISCOUNT_SCALE",
+          "rationale": "Counts the squares instead of using the scale on the axis."
+        }
+      ],
       "accessibility": {
-        "spokenMath": "A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.",
+        "spokenMath": "A bar chart titled Books read. Read the frequency for the named category from the labelled axis.",
         "dataTable": {
           "columns": [
             "Category",
@@ -4052,24 +4140,24 @@
           ],
           "rows": [
             [
-              "Red",
-              "17"
+              "Mystery",
+              "20"
             ],
             [
-              "Blue",
-              "13"
+              "Fantasy",
+              "55"
             ],
             [
-              "Black",
-              "16"
+              "Comic",
+              "55"
             ],
             [
-              "White",
-              "28"
+              "Science",
+              "15"
             ],
             [
-              "Silver",
-              "31"
+              "History",
+              "25"
             ]
           ]
         }
@@ -4077,12 +4165,12 @@
       "difficulty": {
         "overallBand": 2,
         "axes": {
-          "numericalComplexity": 0.62,
+          "numericalComplexity": 1,
           "readingDemand": 0.25,
           "interpretationDemand": 0.15,
           "reasoningSteps": 0.1,
           "informationDensity": 0.667,
-          "scaffolding": 0.5
+          "scaffolding": 0.1
         }
       },
       "validation": "pass",
@@ -4097,144 +4185,39 @@
         "svg-realises-data",
         "chart-realises-data",
         "axis-scale-consistency",
+        "minor-step-divides-major-step",
+        "minor-grid-not-overloaded",
+        "queried-value-readable-from-scale",
+        "visible-subdivision-resolves-query",
+        "bar-top-aligns-visible-subdivision",
+        "exact-read-answer-unique",
+        "no-pixel-estimation-required",
+        "scale-readable-in-monochrome",
+        "scale-readable-at-print-size",
         "premium-spec-parity",
         "no-derived-statistic-annotation",
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
         "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
         "context-values-in-domain",
         "count-context-nonnegative",
         "signed-context-explicit",
         "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
         "solution-method-produces-canonical-answer",
         "chart-solution-references-correct-chart-elements",
         "solution-language-matches-representation"
       ],
       "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(35,{'interactionType':'free-response'})))\""
-    },
-    {
-      "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
-      "task": "read_bar_chart",
-      "interaction": "free-response",
-      "answerType": "integer",
-      "seed": 39,
-      "params": {
-        "task": "read_bar_chart",
-        "dataset": {
-          "kind": "frequency",
-          "title": "Sport played",
-          "unit": "pupils",
-          "categories": [
-            "Football",
-            "Tennis",
-            "Hockey"
-          ],
-          "frequencies": [
-            49,
-            37,
-            10
-          ]
-        },
-        "queryIndex": 0,
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "frequency",
-        "title": "Sport played",
-        "unit": "pupils",
-        "categories": [
-          "Football",
-          "Tennis",
-          "Hockey"
-        ],
-        "frequencies": [
-          49,
-          37,
-          10
-        ]
-      },
-      "prompt": "How many pupils are in the category \u201cFootball\u201d?",
-      "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Vertical bar chart: Sport played.\">\n<title>Sport played</title>\n<desc>A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<line class=\"cx-axis\" x1=\"120\" y1=\"70\" x2=\"120\" y2=\"590\"/>\n<line class=\"cx-axis\" x1=\"120\" y1=\"590\" x2=\"950\" y2=\"590\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"590\" x2=\"120\" y2=\"590\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"597\" text-anchor=\"end\">0</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"486\" x2=\"950\" y2=\"486\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"486\" x2=\"120\" y2=\"486\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"493\" text-anchor=\"end\">10</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"382\" x2=\"950\" y2=\"382\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"382\" x2=\"120\" y2=\"382\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"389\" text-anchor=\"end\">20</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"278\" x2=\"950\" y2=\"278\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"278\" x2=\"120\" y2=\"278\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"285\" text-anchor=\"end\">30</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"174\" x2=\"950\" y2=\"174\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"174\" x2=\"120\" y2=\"174\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"181\" text-anchor=\"end\">40</text>\n<line class=\"cx-grid-major\" x1=\"120\" y1=\"70\" x2=\"950\" y2=\"70\"/>\n<line class=\"cx-tick\" x1=\"114\" y1=\"70\" x2=\"120\" y2=\"70\"/>\n<text class=\"cx-ticklbl\" x=\"108\" y=\"77\" text-anchor=\"end\">50</text>\n<text class=\"cx-axislbl\" x=\"36\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(-90 36 330)\">Frequency (pupils)</text>\n<rect class=\"cx-bar\" data-cat=\"0\" x=\"175\" y=\"80\" width=\"167\" height=\"510\"/>\n<text class=\"cx-catlbl\" x=\"258\" y=\"618\" text-anchor=\"middle\">Football</text>\n<rect class=\"cx-bar\" data-cat=\"1\" x=\"452\" y=\"205\" width=\"166\" height=\"385\"/>\n<text class=\"cx-catlbl\" x=\"535\" y=\"618\" text-anchor=\"middle\">Tennis</text>\n<rect class=\"cx-bar\" data-cat=\"2\" x=\"728\" y=\"486\" width=\"167\" height=\"104\"/>\n<text class=\"cx-catlbl\" x=\"811\" y=\"618\" text-anchor=\"middle\">Hockey</text>\n<text class=\"cx-axislbl\" x=\"535\" y=\"682\" text-anchor=\"middle\">Sport played</text>\n</svg>",
-      "answer": "49",
-      "answerCanonical": 49,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Locate the bar for the named category",
-          "intermediateResult": "the bar for \u201cFootball\u201d"
-        },
-        {
-          "number": 2,
-          "transformation": "Read its height using the vertical-axis scale",
-          "intermediateResult": "49"
-        }
-      ],
-      "distractors": [],
-      "accessibility": {
-        "spokenMath": "A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.",
-        "dataTable": {
-          "columns": [
-            "Category",
-            "Frequency"
-          ],
-          "rows": [
-            [
-              "Football",
-              "49"
-            ],
-            [
-              "Tennis",
-              "37"
-            ],
-            [
-              "Hockey",
-              "10"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 2,
-        "axes": {
-          "numericalComplexity": 0.98,
-          "readingDemand": 0.15,
-          "interpretationDemand": 0.15,
-          "reasoningSteps": 0.1,
-          "informationDensity": 0,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "svg-realises-data",
-        "chart-realises-data",
-        "axis-scale-consistency",
-        "premium-spec-parity",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid",
-        "context-values-in-domain",
-        "count-context-nonnegative",
-        "signed-context-explicit",
-        "context-unit-compatible-with-values",
-        "solution-method-produces-canonical-answer",
-        "chart-solution-references-correct-chart-elements",
-        "solution-language-matches-representation"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(39,{'interactionType':'free-response'})))\""
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(36,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
@@ -4281,7 +4264,7 @@
       },
       "prompt": "Use the key to find the number of cars for \u201cBlue\u201d.",
       "mediaKind": "svg",
-      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Colour of car.\">\n<title>Colour of car</title>\n<desc>A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 cars.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Red</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Blue</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Black</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Colour of car.\">\n<title>Colour of car</title>\n<desc>A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-tick-minor{stroke:#111;stroke-width:1.5}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 cars.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Red</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Blue</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Black</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
       "answer": "15",
       "answerCanonical": 15,
       "solution": [
