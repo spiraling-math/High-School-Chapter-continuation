@@ -29,6 +29,7 @@ from spi_oracle import linear_equations as lin  # noqa: E402
 from spi_oracle import geometry as geoang  # noqa: E402
 from spi_oracle import coordinate_lines as coord  # noqa: E402
 from spi_oracle import data_handling as stats  # noqa: E402
+from spi_oracle import transformations as trans  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -204,6 +205,12 @@ def main() -> int:
     for task in stats.TASKS:
         mode = "free-response" if task in stats.FREE_RESPONSE_ONLY else "multiple-choice"
         ok &= validate(stats.generate(7, {"interactionType": mode, "task": task}), item_schema, registry, f"stats item task={task}")
+
+    # 4g. Live transformations items (coordinate / table-completion / transformation answers; 9 tasks).
+    for task in trans.TASKS:
+        ok &= validate(trans.generate(7, {"task": task}), item_schema, registry, f"transformation item task={task}")
+    for seed in (1, 42, 123456789):
+        ok &= validate(trans.generate(seed), item_schema, registry, f"transformation item seed={seed}")
 
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]

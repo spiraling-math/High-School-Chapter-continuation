@@ -19,6 +19,7 @@ domains/geometry/transformations.ts mirrors this byte-for-byte.
 
 from __future__ import annotations
 
+import json
 from typing import Any, Dict, List, Optional, Tuple
 
 from .seeded_random import Mulberry32
@@ -426,13 +427,34 @@ def _round3(x: float):
     return int(r) if r == int(r) else r  # int when whole (parity-critical)
 
 
+def _is_high_complexity(task: str, params: Dict[str, Any]) -> bool:
+    """A deterministic structural lever selecting the upper of a task's two declared bands. Each lever
+    varies across seeds so BOTH declared bands are reachable (owner O band-reachability)."""
+    kind = params["kind"]
+    obj = params["objectType"]
+    desc = params["descriptor"]
+    if kind == "translation" and task.endswith("_point"):
+        v = desc["vector"]
+        return abs(v["dx"]) + abs(v["dy"]) >= 5            # larger vectors -> harder
+    if kind == "reflection":
+        return desc["axis"]["kind"] == "diagonal"          # y=x / y=-x are harder than x=a / y=b
+    if kind == "rotation":
+        return desc["quarterTurnsCCW"] != 2                # quarter turns harder than a half turn
+    return obj == "quadrilateral"                          # translate_shape / describe_translation
+
+
 def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     kind = params["kind"]
     obj = params["objectType"]
     desc = params["descriptor"]
+    high = _is_high_complexity(task, params)
+    lo, hi = TASK_BANDS[task]
+    band = hi if high else lo
+
+    # Descriptive axes (transparency only; the band is the structural lever above). All exact (owner F).
     mags = [abs(v[0]) + abs(v[1]) for v in params["source"] + params["image"]]
     nc = min(1.0, (max(mags) if mags else 0) / 24.0)
-    ev = 0.0  # exact integers only — never approximate (owner F)
+    ev = 0.0
     rs = {"translation": 0.30, "reflection": 0.50, "rotation": 0.70}[kind]
     if task.startswith("describe"):
         rs = min(1.0, rs + 0.20)
@@ -441,15 +463,10 @@ def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     ab = {"point": 0.20, "segment": 0.35, "triangle": 0.45, "quadrilateral": 0.60}[obj]
     if task.startswith("describe"):
         ab = min(1.0, ab + 0.20)
-    if kind == "reflection" and desc["axis"]["kind"] == "diagonal":
+    if high:
         ab = min(1.0, ab + 0.10)
-    if kind == "rotation" and desc["quarterTurnsCCW"] != 2:
-        ab = min(1.0, ab + 0.08)
     axes = {"numericalComplexity": _round3(nc), "exactVsApproximate": _round3(ev),
             "reasoningSteps": _round3(rs), "abstraction": _round3(ab)}
-    score = 0.25 * nc + 0.10 * ev + 0.35 * rs + 0.30 * ab
-    lo, hi = TASK_BANDS[task]
-    band = max(lo, min(hi, band_from_score(score)))
     return {"overallBand": band, "axes": axes}
 
 
@@ -719,6 +736,12 @@ def _labels_pairwise_clear(placements: List[Dict[str, Any]]) -> bool:
             if _overlap(boxes[i], boxes[j]):
                 return False
     return True
+
+
+def serialize(item: Dict[str, Any]) -> str:
+    """Canonical JSON (sorted keys, compact) — the byte-for-byte parity contract with the TS mirror,
+    matching json.dumps(sort_keys=True, ensure_ascii=False, separators=(',', ':'))."""
+    return json.dumps(item, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
 
 
 def describe() -> Dict[str, Any]:

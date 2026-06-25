@@ -1,0 +1,593 @@
+{
+  "generatorId": "gen.geometry.transformations",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "sweepSeeds": 10000,
+  "mode": "free-response",
+  "invalid": 0,
+  "multipleChoiceRejectedTasks": 9,
+  "tasks": {
+    "translate_point": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
+      "items": 1104,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 438,
+        "2": 666
+      },
+      "bandPct": {
+        "1": 39.7,
+        "2": 60.3
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "point": 1104
+      },
+      "answerTypes": {
+        "coordinate": 1104
+      },
+      "axisFamilies": {},
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {
+        "++": 284,
+        "-+": 181,
+        "+-": 278,
+        "0-": 65,
+        "--": 172,
+        "+0": 51,
+        "0+": 49,
+        "-0": 24
+      },
+      "imageQuadrants": {
+        "Q3": 430,
+        "Q2": 404,
+        "Q1": 66,
+        "Q4": 73,
+        "axis": 131
+      },
+      "fixedPointItems": 0,
+      "axisCrossingItems": 335
+    },
+    "translate_shape": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
+      "items": 1116,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 1088,
+        "3": 28
+      },
+      "bandPct": {
+        "2": 97.5,
+        "3": 2.5
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "segment": 1062,
+        "triangle": 26,
+        "quadrilateral": 28
+      },
+      "answerTypes": {
+        "table-completion": 1116
+      },
+      "axisFamilies": {},
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {
+        "-+": 237,
+        "+-": 224,
+        "--": 233,
+        "-0": 53,
+        "0-": 42,
+        "++": 224,
+        "+0": 55,
+        "0+": 48
+      },
+      "imageQuadrants": {
+        "axis": 393,
+        "Q1": 485,
+        "Q4": 481,
+        "Q3": 482,
+        "Q2": 473
+      },
+      "fixedPointItems": 0,
+      "axisCrossingItems": 814
+    },
+    "reflect_point": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01",
+      "items": 1142,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 522,
+        "3": 620
+      },
+      "bandPct": {
+        "2": 45.7,
+        "3": 54.3
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "point": 1142
+      },
+      "answerTypes": {
+        "coordinate": 1142
+      },
+      "axisFamilies": {
+        "y=x": 327,
+        "y=b": 243,
+        "x=a": 279,
+        "y=-x": 293
+      },
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "Q3": 270,
+        "Q2": 251,
+        "axis": 118,
+        "Q4": 272,
+        "Q1": 231
+      },
+      "fixedPointItems": 0,
+      "axisCrossingItems": 727
+    },
+    "reflect_shape": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
+      "items": 1093,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 498,
+        "3": 595
+      },
+      "bandPct": {
+        "2": 45.6,
+        "3": 54.4
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "triangle": 1044,
+        "segment": 25,
+        "quadrilateral": 24
+      },
+      "answerTypes": {
+        "table-completion": 1093
+      },
+      "axisFamilies": {
+        "x=a": 244,
+        "y=b": 254,
+        "y=x": 286,
+        "y=-x": 309
+      },
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "axis": 663,
+        "Q2": 663,
+        "Q4": 648,
+        "Q1": 627,
+        "Q3": 677
+      },
+      "fixedPointItems": 333,
+      "axisCrossingItems": 1005
+    },
+    "rotate_point": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01",
+      "items": 1153,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 373,
+        "3": 780
+      },
+      "bandPct": {
+        "2": 32.4,
+        "3": 67.6
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "point": 1153
+      },
+      "answerTypes": {
+        "coordinate": 1153
+      },
+      "axisFamilies": {},
+      "quarterTurns": {
+        "2": 373,
+        "3": 383,
+        "1": 397
+      },
+      "originCentre": {
+        "non-origin": 1128,
+        "origin": 25
+      },
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "Q1": 241,
+        "Q4": 221,
+        "axis": 227,
+        "Q3": 240,
+        "Q2": 224
+      },
+      "fixedPointItems": 0,
+      "axisCrossingItems": 896
+    },
+    "rotate_shape": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01",
+      "items": 1063,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 306,
+        "4": 757
+      },
+      "bandPct": {
+        "3": 28.8,
+        "4": 71.2
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "triangle": 938,
+        "segment": 64,
+        "quadrilateral": 61
+      },
+      "answerTypes": {
+        "table-completion": 1063
+      },
+      "axisFamilies": {},
+      "quarterTurns": {
+        "1": 386,
+        "2": 306,
+        "3": 371
+      },
+      "originCentre": {
+        "non-origin": 1034,
+        "origin": 29
+      },
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "Q2": 611,
+        "axis": 612,
+        "Q3": 675,
+        "Q1": 661,
+        "Q4": 627
+      },
+      "fixedPointItems": 39,
+      "axisCrossingItems": 1051
+    },
+    "describe_translation": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01",
+      "items": 1096,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 88,
+        "3": 1008
+      },
+      "bandPct": {
+        "2": 8.0,
+        "3": 92.0
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "quadrilateral": 1008,
+        "triangle": 88
+      },
+      "answerTypes": {
+        "transformation": 1096
+      },
+      "axisFamilies": {},
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {
+        "--": 209,
+        "++": 238,
+        "-+": 238,
+        "+-": 221,
+        "+0": 47,
+        "0-": 46,
+        "0+": 56,
+        "-0": 41
+      },
+      "imageQuadrants": {
+        "Q2": 923,
+        "axis": 815,
+        "Q3": 808,
+        "Q1": 906,
+        "Q4": 844
+      },
+      "fixedPointItems": 0,
+      "axisCrossingItems": 1003
+    },
+    "describe_reflection": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
+      "items": 1116,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 504,
+        "4": 612
+      },
+      "bandPct": {
+        "3": 45.2,
+        "4": 54.8
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "quadrilateral": 1053,
+        "triangle": 63
+      },
+      "answerTypes": {
+        "transformation": 1116
+      },
+      "axisFamilies": {
+        "y=b": 263,
+        "x=a": 241,
+        "y=-x": 320,
+        "y=x": 292
+      },
+      "quarterTurns": {},
+      "originCentre": {},
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "Q4": 836,
+        "Q3": 883,
+        "axis": 960,
+        "Q1": 859,
+        "Q2": 863
+      },
+      "fixedPointItems": 434,
+      "axisCrossingItems": 1090
+    },
+    "describe_rotation": {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01",
+      "items": 1117,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 318,
+        "4": 799
+      },
+      "bandPct": {
+        "3": 28.5,
+        "4": 71.5
+      },
+      "unreachableBands": [],
+      "objectTypes": {
+        "quadrilateral": 1016,
+        "triangle": 101
+      },
+      "answerTypes": {
+        "transformation": 1117
+      },
+      "axisFamilies": {},
+      "quarterTurns": {
+        "3": 416,
+        "1": 383,
+        "2": 318
+      },
+      "originCentre": {
+        "non-origin": 1099,
+        "origin": 18
+      },
+      "vectorSigns": {},
+      "imageQuadrants": {
+        "Q2": 936,
+        "Q3": 873,
+        "Q4": 885,
+        "Q1": 873,
+        "axis": 800
+      },
+      "fixedPointItems": 66,
+      "axisCrossingItems": 1117
+    }
+  },
+  "checkerMatrix": {
+    "cases": [
+      {
+        "expected": "translation by vector (3, -2)",
+        "response": "translation by vector (3, -2)",
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90 deg anticlockwise about (2, -1)",
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90\u00b0 anticlockwise about (2, -1)",
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 270 deg clockwise about (2, -1)",
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "reflection in x = 4",
+        "response": "reflection in the y-axis",
+        "expectedCode": "wrong-reflection-axis",
+        "actualCode": "wrong-reflection-axis",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "reflection in x = 4",
+        "expectedCode": "wrong-transformation-type",
+        "actualCode": "wrong-transformation-type",
+        "ok": true
+      },
+      {
+        "expected": "translation by vector (3, -2)",
+        "response": "translation by vector (3, 2)",
+        "expectedCode": "wrong-translation-vector",
+        "actualCode": "wrong-translation-vector",
+        "ok": true
+      },
+      {
+        "expected": "reflection in x = 4",
+        "response": "reflection in x = 5",
+        "expectedCode": "wrong-reflection-axis",
+        "actualCode": "wrong-reflection-axis",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90 deg anticlockwise about (3, -1)",
+        "expectedCode": "wrong-rotation-centre",
+        "actualCode": "wrong-rotation-centre",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 180 deg about (2, -1)",
+        "expectedCode": "wrong-rotation-amount",
+        "actualCode": "wrong-rotation-amount",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90 deg about (2, -1)",
+        "expectedCode": "ambiguous-description",
+        "actualCode": "ambiguous-description",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90 deg clockwise",
+        "expectedCode": "missing-rotation-centre",
+        "actualCode": "missing-rotation-centre",
+        "ok": true
+      },
+      {
+        "expected": "translation by vector (3, -2)",
+        "response": "translation",
+        "expectedCode": "missing-translation-vector",
+        "actualCode": "missing-translation-vector",
+        "ok": true
+      },
+      {
+        "expected": "reflection in x = 4",
+        "response": "reflection in y = 2x",
+        "expectedCode": "unsupported-reflection-line",
+        "actualCode": "unsupported-reflection-line",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 45 deg clockwise about (0, 0)",
+        "expectedCode": "unsupported-angle",
+        "actualCode": "unsupported-angle",
+        "ok": true
+      },
+      {
+        "expected": "rotation 90 deg anticlockwise about (2, -1)",
+        "response": "rotation 90 deg clockwise and anticlockwise about (0, 0)",
+        "expectedCode": "contradictory-description",
+        "actualCode": "contradictory-description",
+        "ok": true
+      },
+      {
+        "expected": "translation by vector (3, -2)",
+        "response": "translation by vector (3, -2) please",
+        "expectedCode": "unparsed-trailing-text",
+        "actualCode": "unparsed-trailing-text",
+        "ok": true
+      },
+      {
+        "expected": "translation by vector (3, -2)",
+        "response": "move it a little",
+        "expectedCode": "malformed-response",
+        "actualCode": "malformed-response",
+        "ok": true
+      }
+    ],
+    "mismatches": 0,
+    "codesReached": [
+      "ambiguous-description",
+      "contradictory-description",
+      "correct",
+      "malformed-response",
+      "missing-rotation-centre",
+      "missing-translation-vector",
+      "unparsed-trailing-text",
+      "unsupported-angle",
+      "unsupported-reflection-line",
+      "wrong-reflection-axis",
+      "wrong-rotation-amount",
+      "wrong-rotation-centre",
+      "wrong-transformation-type",
+      "wrong-translation-vector"
+    ],
+    "allCodesReachable": true
+  },
+  "diagnosticCoverage": {
+    "valueRulesExercised": [
+      "MISC.TRANS.APPLIES_TO_ONE_VERTEX",
+      "MISC.TRANS.CHANGES_ONLY_X",
+      "MISC.TRANS.CHANGES_ONLY_Y",
+      "MISC.TRANS.NEGATES_WRONG_COORDINATE",
+      "MISC.TRANS.REFLECTS_X0_FOR_XA",
+      "MISC.TRANS.REFLECTS_X_FOR_Y_AXIS",
+      "MISC.TRANS.REFLECTS_Y0_FOR_YB",
+      "MISC.TRANS.REFLECTS_Y_FOR_X_AXIS",
+      "MISC.TRANS.REVERSES_VECTOR",
+      "MISC.TRANS.ROTATES_ABOUT_ORIGIN",
+      "MISC.TRANS.ROTATES_THE_CENTRE",
+      "MISC.TRANS.ROTATES_WRONG_DIRECTION",
+      "MISC.TRANS.SWAPS_DX_DY",
+      "MISC.TRANS.SWAPS_WITHOUT_SIGN",
+      "MISC.TRANS.TRANSLATES_FROM_ORIGIN",
+      "MISC.TRANS.USES_180_RULE_FOR_90",
+      "MISC.TRANS.WRONG_SIGN_ONE_COMPONENT",
+      "MISC.TRANS.YNEGX_ONLY_SWAPS",
+      "MISC.TRANS.YX_CHANGES_BOTH_SIGNS"
+    ],
+    "descriptorRulesExercised": [
+      "MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION",
+      "MISC.TRANS.RIGHT_CENTRE_WRONG_DIRECTION",
+      "MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS",
+      "MISC.TRANS.RIGHT_TYPE_WRONG_VECTOR"
+    ],
+    "parserRulesExercised": [
+      "MISC.TRANS.RIGHT_ANGLE_MISSING_CENTRE"
+    ],
+    "inapplicableRules": [],
+    "totalRules": 24,
+    "exercised": 24,
+    "recomputationMismatches": 0
+  },
+  "allBandsReachable": true,
+  "failures": []
+}
