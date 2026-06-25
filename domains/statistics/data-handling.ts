@@ -23,8 +23,8 @@ type Frac = Rational;
 const F = (x: number): Rational => new Rational(x, 1);
 
 export const GENERATOR_ID = "gen.stats.data-handling";
-export const GENERATOR_VERSION = "1.0.0";
-export const VALIDATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
+export const VALIDATOR_VERSION = "1.0.1";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 export const TASKS = ["read_bar_chart", "read_pictogram", "read_table_value", "read_line_graph",
@@ -74,7 +74,7 @@ const MAX_PARAM_ATTEMPTS = 800;
 
 // Themed category sets (categories carry their own labels — a non-colour indicator).
 type CatTheme = [string, string, string[]];
-type ListTheme = [string, string];
+type ListTheme = [string, string, string];  // (title, unit, domain) — owner #1
 type ProbTheme = [string, string, string[]];
 
 const CATEGORY_THEMES: CatTheme[] = [
@@ -90,10 +90,31 @@ const LINE_THEMES: CatTheme[] = [
   ["Plant height", "cm", ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6"]],
   ["Goals scored", "goals", ["Game 1", "Game 2", "Game 3", "Game 4", "Game 5"]],
 ];
-const LIST_THEMES: ListTheme[] = [
-  ["Test scores", "marks"], ["Goals scored", "goals"], ["Ages", "years"],
-  ["Shoe sizes", "sizes"], ["Numbers of pets", "pets"], ["Daily steps", "thousand steps"],
+// List-data contexts carry a DOMAIN (owner #1). Negative values may appear ONLY in signed or
+// context-free contexts; counts/measurements must stay non-negative. (title, unit, domain)
+const LIST_THEMES_NONNEG: ListTheme[] = [
+  ["Test scores", "marks", "count"], ["Goals scored", "goals", "count"],
+  ["Ages", "years", "count"], ["Shoe sizes", "sizes", "measurement"],
+  ["Numbers of pets", "pets", "count"], ["Daily steps", "thousand steps", "count"],
 ];
+const LIST_THEMES_SIGNED: ListTheme[] = [
+  ["Temperature", "°C", "signed"], ["Temperature change", "°C", "signed"],
+  ["Elevation relative to sea level", "m", "signed"], ["Profit and loss", "£", "signed"],
+  ["Change in value", "points", "signed"],
+];
+const LIST_THEMES_FREE: ListTheme[] = [
+  ["Numerical data", "values", "context-free"], ["Data values", "values", "context-free"],
+];
+// Authoritative context-domain registry (owner #1): every context used by the generator,
+// mapped to the value domain it admits. Drives the context-value compatibility validators.
+// Category/line defaults are applied FIRST; the explicitly-domained list themes win on any
+// title collision (e.g. a "Temperature" series is signed, not a plain count).
+const CONTEXT_DOMAINS: Record<string, string> = {};
+for (const t of CATEGORY_THEMES) CONTEXT_DOMAINS[t[0]] = "count";  // category frequencies are counts
+for (const t of LINE_THEMES) CONTEXT_DOMAINS[t[0]] = "count";      // default line series to counts
+for (const t of [...LIST_THEMES_NONNEG, ...LIST_THEMES_SIGNED, ...LIST_THEMES_FREE]) CONTEXT_DOMAINS[t[0]] = t[2];
+const NONNEG_DOMAINS = ["count", "measurement", "category-frequency"];
+
 const PROB_THEMES: ProbTheme[] = [
   ["a bag of counters", "counter", ["red", "blue", "green", "yellow"]],
   ["a box of beads", "bead", ["red", "blue", "white", "black"]],
@@ -113,6 +134,32 @@ function gridRound(num: number, den: number): number {
   const q = Math.floor(num / den);
   const rem = num - q * den;
   return 2 * rem >= den ? q + 1 : q;
+}
+
+/** The single most frequent value, or null when there is no UNIQUE mode (owner #2):
+ *  null if every value occurs equally often, or if two or more values tie for the greatest
+ *  frequency. Never substitutes the first/max/min value. */
+function uniqueMode(values: number[]): number | null {
+  if (values.length === 0) return null;
+  const ordered = counterMostCommon(values);
+  const top = ordered[0]![1];
+  const winners = ordered.filter(([, c]) => c === top);
+  if (winners.length !== 1) return null;
+  if (top === 1) return null;  // all values distinct -> no mode
+  return winners[0]![0];
+}
+
+/** Natural signed-arithmetic display (owner #8): 8 + -5 + -6 -> '8 − 5 − 6'.
+ *  The first term keeps its own sign; subsequent negatives render as ' − k'. */
+function sumExpr(values: number[]): string {
+  const parts: string[] = [];
+  for (let i = 0; i < values.length; i++) {
+    const x = values[i]!;
+    if (i === 0) parts.push(String(x));
+    else if (x < 0) parts.push(`− ${Math.abs(x)}`);
+    else parts.push(`+ ${x}`);
+  }
+  return parts.join(" ");
 }
 
 function esc(s: string): string {
@@ -467,9 +514,12 @@ function ctxOf(task: string, params: Json, correct: SolveResult): Ctx {
     c.listSum = sumOf(v);
     c.maxv = Math.max(...v);
     c.minv = Math.min(...v);
-    const [modeVal, modeFreq] = mostCommon(v);
-    c.modeValue = modeVal;
-    c.modeFrequency = modeFreq;
+    // uniqueMode is null when there is no single most-frequent value (owner #2).
+    const um = uniqueMode(v);
+    c.uniqueMode = um;
+    c.modeFrequency = um !== null ? counterMostCommon(v).find(([val]) => val === um)![1] : null;
+    c.midrange = new Rational(Math.max(...v) + Math.min(...v), 2);
+    c.meanValue = new Rational(sumOf(v), v.length);
     const sv = [...v].sort((a, b) => a - b);
     c.medianValue = sv.length % 2
       ? F(sv[Math.floor(sv.length / 2)]!)
@@ -719,7 +769,7 @@ function dataTableObj(task: string, ds: Json): Json {
       const fr = freqs[i]!;
       const whole = Math.floor(fr / key);
       const half = (fr % key) === Math.floor(key / 2) && key % 2 === 0;
-      rows.push([cats[i]!, `${whole}` + (half ? " and a half" : "") + " symbol(s)"]);
+      rows.push([cats[i]!, half ? `${whole} whole symbols and 1 half symbol` : `${whole} whole symbols`]);
     }
     return { columns: ["Category", `Symbols (1 symbol = ${key} ${ds.unit})`], rows };
   }
@@ -805,35 +855,55 @@ function solution(task: string, params: Json): Json {
     steps.push({ number: steps.length + 1, transformation: t, intermediateResult: r });
   };
 
-  if (task === "read_bar_chart" || task === "read_table_value" || task === "read_line_graph") {
-    step("Locate the named category/position", "Find the matching bar, row, or marked point.");
-    step("Read the value from the labelled axis", String(correct as number));
+  // Representation-specific worked solutions (owner #6): table steps never mention a bar or
+  // axis; chart/graph/pictogram steps reference their own elements.
+  if (task === "read_bar_chart") {
+    const cat = ds.categories[params.queryIndex];
+    step("Locate the bar for the named category", `the bar for “${cat}”`);
+    step("Read its height using the vertical-axis scale", String(correct as number));
+  } else if (task === "read_table_value") {
+    const cat = ds.categories[params.queryIndex];
+    step("Locate the row for the named category", `the row for “${cat}”`);
+    step("Read the frequency in that row", String(correct as number));
+  } else if (task === "read_line_graph") {
+    const lab = ds.seriesLabels[params.queryIndex];
+    step("Locate the requested position on the horizontal axis", `${lab}`);
+    step("Read the value of the marked point from the vertical axis", String(correct as number));
   } else if (task === "read_pictogram") {
     const key: number = ds.pictogramKey;
     const fr = correct as number;
     const whole = Math.floor(fr / key);
     const half = (fr % key) === Math.floor(key / 2) && key % 2 === 0;
-    step("Count the symbols", `${whole} whole` + (half ? " and a half" : "") + " symbol(s)");
-    step("Apply the key", `${whole} × ${key}` + (half ? ` + ${Math.floor(key / 2)}` : "") + ` = ${fr}`);
+    const symdesc = half ? `${whole} whole symbols and 1 half symbol` : `${whole} whole symbols`;
+    step("Count the whole and half symbols in the named row", symdesc);
+    step("Apply the displayed key", `${whole} × ${key}` + (half ? ` + ${Math.floor(key / 2)}` : "") + ` = ${fr}`);
   } else if (task === "complete_frequency_table") {
     const freqs: number[] = ds.frequencies;
     const blank = params.blank;
     const total = sumOf(freqs);
     if (blank.kind === "total") {
-      step("Add the frequencies", freqs.map((f) => String(f)).join(" + ") + ` = ${total}`);
+      // The total is the unknown -> ADD every displayed frequency (owner #4).
+      step("Add every displayed frequency", sumExpr(freqs) + ` = ${total}`);
     } else {
       const i = blank.index;
       const others = total - freqs[i]!;
-      step("Subtract the known frequencies from the total", `${total} − ${others} = ${freqs[i]}`);
+      step("Subtract the sum of the known frequencies from the displayed total", `${total} − ${others} = ${freqs[i]}`);
     }
   } else if (task === "mean_from_list") {
     const v: number[] = ds.values;
-    step("Add the values", v.map((x) => String(x)).join(" + ") + ` = ${sumOf(v)}`);
+    step("Add the values", sumExpr(v) + ` = ${sumOf(v)}`);
     step("Divide by how many values", `${sumOf(v)} ÷ ${v.length} = ${dispRat(new Rational(sumOf(v), v.length))}`);
   } else if (task === "median_from_list") {
     const v = [...ds.values].sort((a: number, b: number) => a - b) as number[];
     step("Order the values", v.map((x) => String(x)).join(", "));
-    step("Find the middle value", dispRat(correct instanceof Rational ? correct : F(correct as number)));
+    const n = v.length;
+    if (n % 2) {                                   // odd: a single middle value (owner #5)
+      step("Identify the single middle value", String(v[Math.floor(n / 2)]!));
+    } else {                                       // even: two middles, explicitly averaged
+      const a = v[Math.floor(n / 2) - 1]!, b = v[Math.floor(n / 2)]!;
+      step("Identify the two middle values", `${a} and ${b}`);
+      step("Average the two middle values", `(${a} + ${b}) ÷ 2 = ${dispRat(new Rational(a + b, 2))}`);
+    }
   } else if (task === "mode_from_list") {
     step("Count how many times each value occurs", "Tally the values.");
     step("Identify the most common value", String(correct as number));
@@ -940,7 +1010,10 @@ function drawCompleteFrequencyTable(rng: Mulberry32): Json | null {
 }
 
 function drawList(rng: Mulberry32, lo: number, hi: number, minN: number, maxN: number): Json {
-  const [title, unit] = pickTheme(rng, LIST_THEMES);
+  // Negative values require a signed or context-free context (owner #1).
+  const signed = lo < 0;
+  const pool: ListTheme[] = signed ? [...LIST_THEMES_SIGNED, ...LIST_THEMES_FREE] : [...LIST_THEMES_NONNEG, ...LIST_THEMES_FREE];
+  const [title, unit] = pickTheme(rng, pool);
   const n = minN + nInt(rng, maxN - minN + 1);
   const vals: number[] = [];
   for (let i = 0; i < n; i++) {
@@ -977,9 +1050,9 @@ function drawModeFromList(rng: Mulberry32): Json | null {
   }
   vals = vals.concat(others);
   vals = seededShuffle(rng, vals);
-  const top = counterMostCommon(vals);
-  if (top.length < 2 || top[0]![1] === top[1]![1]) return null;  // not a unique mode -> redraw
-  const ds = { kind: "list", title: pickTheme(rng, LIST_THEMES)[0], unit: "values", values: vals };
+  if (uniqueMode(vals) === null) return null;  // not a unique mode -> redraw (owner #2)
+  const [title, unit] = pickTheme(rng, LIST_THEMES_NONNEG);
+  const ds = { kind: "list", title, unit, values: vals };
   return { task: "mode_from_list", dataset: ds, scaffold: nInt(rng, 2) === 0 };
 }
 
@@ -989,7 +1062,8 @@ function drawRangeFromList(rng: Mulberry32): Json | null {
   if (nInt(rng, 8) === 0) {
     const v = 1 + nInt(rng, 12);
     const n = 3 + nInt(rng, 3);
-    ds = { kind: "list", title: pickTheme(rng, LIST_THEMES)[0], unit: "values", values: Array(n).fill(v) };
+    const [title, unit] = pickTheme(rng, LIST_THEMES_NONNEG);
+    ds = { kind: "list", title, unit, values: Array(n).fill(v) };
   } else {
     ds = drawList(rng, 1, 30, 4, 7);
   }
@@ -997,7 +1071,7 @@ function drawRangeFromList(rng: Mulberry32): Json | null {
 }
 
 function drawMeanFromFreqTable(rng: Mulberry32): Json | null {
-  const [title, unit] = pickTheme(rng, LIST_THEMES);
+  const [title, unit] = pickTheme(rng, LIST_THEMES_NONNEG);
   const n = 3 + nInt(rng, 4);
   const base = nInt(rng, 3);
   const values: number[] = [];
@@ -1217,6 +1291,8 @@ export function serialize(item: Json): string {
 }
 
 export function describe(): Json {
+  const difficultyRanges: Record<string, [number, number]> = {};
+  for (const t of TASKS as readonly string[]) difficultyRanges[OBJECTIVE_BY_TASK[t]!] = [...TASK_BANDS[t]!] as [number, number];
   return {
     id: GENERATOR_ID, version: GENERATOR_VERSION,
     title: "Statistics & data handling",
@@ -1225,6 +1301,9 @@ export function describe(): Json {
     interactionTypes: ["free-response", "multiple-choice"],
     answerTypes: ["integer", "exact-rational", "fraction", "table-completion"],
     tasks: [...TASKS],
+    // Difficulty ranges are derived from the single authoritative TASK_BANDS source (owner #7),
+    // so the descriptor, objectives, distribution report, and review pack cannot disagree.
+    difficultyRanges,
   };
 }
 
@@ -1335,11 +1414,144 @@ export function validate(item: Json): Json {
     }
   }
 
+  // v1.0.1 curriculum/semantic checks (owner #1-#6).
+  for (const [name, ok_, detail] of v101Checks(task, params, item)) {
+    add(name, ok_, detail);
+  }
+
   const statuses = checks.map((c) => c.result);
   return {
     status: statuses.every((s) => s === "pass") ? "pass" : "fail",
     validatorVersion: VALIDATOR_VERSION, checks,
   };
+}
+
+function decodeDistractorValue(_task: string, value: Json): CtxValue {
+  if (typeof value === "object" && value !== null && "num" in value) return new Rational(value.num, value.den);
+  return value as number;
+}
+
+function v101Checks(task: string, params: Json, item: Json): Array<[string, boolean, string]> {
+  const out: Array<[string, boolean, string]> = [];
+  const ds = params.dataset;
+  const correct = solve(task, params);
+  const steps: Json[] = item.solution?.steps ?? [];
+  const solText = steps.map((s) => `${s.transformation ?? ""} ${s.intermediateResult ?? ""}`).join(" ").toLowerCase();
+
+  // --- #1 context-value compatibility ---------------------------------- //
+  if ("values" in ds || ds.kind === "frequency") {
+    const title: string = ds.title ?? "";
+    let vals: number[] = ds.values;
+    if (vals === undefined || vals === null) vals = ds.frequencies ?? [];
+    let domain = CONTEXT_DOMAINS[title];
+    if (domain === undefined) domain = ds.kind === "frequency" ? "count" : "context-free";
+    const hasNeg = vals.some((v) => v < 0);
+    const nonnegCtx = NONNEG_DOMAINS.includes(domain);
+    out.push(["context-values-in-domain", (!hasNeg) || domain === "signed" || domain === "context-free",
+      `domain=${domain} hasNeg=${hasNeg}`]);
+    out.push(["count-context-nonnegative", (!nonnegCtx) || (!hasNeg), `domain=${domain}`]);
+    out.push(["signed-context-explicit", (!hasNeg) || domain === "signed" || domain === "context-free", `title=${title}`]);
+    out.push(["context-unit-compatible-with-values", (!hasNeg) || domain === "signed" || domain === "context-free",
+      `unit=${ds.unit}`]);
+  }
+
+  // --- #2 mode/averages distractor semantics (MC only) ----------------- //
+  if (item.interactionType === "multiple-choice" && item.distractors && item.distractors.length) {
+    const c = ctxOf(task, params, correct);
+    let reqUnique = true, statExists = true, valIsStat = true, rationaleTrue = true;
+    for (const d of item.distractors as Json[]) {
+      const mid: string = d.misconceptionId;
+      const recomputed = adapterFor(mid)(c);
+      if (recomputed === null) { statExists = false; continue; }
+      if (valueKey(task, recomputed) !== valueKey(task, decodeDistractorValue(task, d.value))) valIsStat = false;
+      if (d.rationale !== MISCONCEPTIONS[mid]!.observableError) rationaleTrue = false;
+      if (mid === "MISC.STAT.AVG_USES_MODE") {
+        const um = uniqueMode(ds.values);
+        if (um === null || !F(um).equals(recomputed instanceof Rational ? recomputed : F(recomputed as number))) reqUnique = false;
+      }
+    }
+    out.push(["mode-distractor-requires-unique-mode", reqUnique, "AVG_USES_MODE only with a true unique mode"]);
+    out.push(["distractor-statistic-exists", statExists, "each distractor's misconception yields a value"]);
+    out.push(["distractor-value-is-actual-statistic", valIsStat, "distractor value == recomputed statistic"]);
+    out.push(["distractor-rationale-true-for-dataset", rationaleTrue, "rationale matches the registry observable error"]);
+  }
+
+  // --- #3 pictogram exact symbols -------------------------------------- //
+  if (task === "read_pictogram") {
+    const key: number = ds.pictogramKey;
+    const fr: number = ds.frequencies[params.queryIndex];
+    const unit = key % 2 === 0 ? Math.floor(key / 2) : key;
+    out.push(["pictogram-symbol-count-exact", fr % unit === 0, `value ${fr} is an exact symbol count for key ${key}`]);
+    if (item.interactionType === "multiple-choice") {
+      const mids = (item.distractors ?? []).map((d: Json) => d.misconceptionId);
+      const halfPresent = (fr % key) === Math.floor(key / 2) && key % 2 === 0;
+      const okMatch = !(halfPresent && mids.includes("MISC.STAT.PICTO_COUNTS_SYMBOLS"));
+      out.push(["pictogram-distractor-matches-visible-symbols", okMatch, "no whole-count distractor when a half symbol is shown"]);
+      let distinct = true;
+      const valsByMid: Record<string, string> = {};
+      for (const d of (item.distractors ?? []) as Json[]) {
+        valsByMid[d.misconceptionId] = valueKey(task, decodeDistractorValue(task, d.value));
+      }
+      if ("MISC.STAT.PICTO_IGNORES_HALF" in valsByMid && "MISC.STAT.PICTO_HALF_AS_WHOLE" in valsByMid) {
+        distinct = valsByMid["MISC.STAT.PICTO_IGNORES_HALF"] !== valsByMid["MISC.STAT.PICTO_HALF_AS_WHOLE"];
+      }
+      out.push(["half-symbol-misconceptions-distinct", distinct, "ignore-half and half-as-whole give different values"]);
+    }
+  }
+
+  // --- #4 frequency-table blank-kind diagnostics ----------------------- //
+  if (task === "complete_frequency_table") {
+    const kind: string = params.blank.kind;
+    const first = steps.length ? String(steps[0].transformation).toLowerCase() : "";
+    out.push(["total-blank-uses-addition", kind !== "total" || first.includes("add"), "missing total -> addition"]);
+    out.push(["frequency-blank-uses-subtraction", kind !== "frequency" || first.includes("subtract"), "missing frequency -> subtraction"]);
+    out.push(["frequency-diagnostic-applicable-to-blank-kind",
+      first.includes("subtract") === (kind === "frequency"), "operation matches the blank kind"]);
+    out.push(["feedback-matches-displayed-table", !(kind === "total" && first.includes("subtract")),
+      "no 'subtract from the total' wording when the total is the unknown"]);
+  }
+
+  // --- #5 median solution parity --------------------------------------- //
+  if (task === "median_from_list") {
+    const n = ds.values.length;
+    let okParity: boolean;
+    if (n % 2) {
+      okParity = solText.includes("single middle value") && !solText.includes("average");
+      out.push(["even-median-identifies-two-middle-values", true, "n odd"]);
+      out.push(["even-median-shows-average", true, "n odd"]);
+    } else {
+      const sv = [...ds.values].sort((a: number, b: number) => a - b) as number[];
+      const a = sv[Math.floor(n / 2) - 1]!, b = sv[Math.floor(n / 2)]!;
+      okParity = solText.includes("two middle values") && solText.includes("average");
+      out.push(["even-median-identifies-two-middle-values", solText.includes(`${a} and ${b}`), "two middles listed"]);
+      out.push(["even-median-shows-average", solText.includes(`(${a} + ${b}) ÷ 2`), "explicit average shown"]);
+    }
+    out.push(["median-solution-parity-correct", okParity, `n=${n}`]);
+  }
+
+  // --- general: the worked method ends at the canonical answer ---------- //
+  if (steps.length) {
+    const ansdisp: string = item.answer.display;
+    const lastIr: string = steps[steps.length - 1].intermediateResult ?? "";
+    out.push(["solution-method-produces-canonical-answer", lastIr.includes(ansdisp), `last step yields ${ansdisp}`]);
+  }
+
+  // --- #6 representation-specific worked-solution language -------------- //
+  if (task === "read_table_value") {
+    out.push(["table-solution-does-not-reference-axis", !solText.includes("axis"), "table solution avoids 'axis'"]);
+    out.push(["table-solution-does-not-reference-bar-or-point", !solText.includes("bar") && !solText.includes("marked point"), "table solution avoids bar/point"]);
+    out.push(["solution-language-matches-representation", solText.includes("row"), "table solution references a row"]);
+  } else if (task === "read_bar_chart") {
+    out.push(["chart-solution-references-correct-chart-elements", solText.includes("bar") && solText.includes("height"), "bar-chart solution references bar/height"]);
+    out.push(["solution-language-matches-representation", solText.includes("axis"), "bar-chart references the axis scale"]);
+  } else if (task === "read_line_graph") {
+    out.push(["chart-solution-references-correct-chart-elements", solText.includes("point") && solText.includes("axis"), "line-graph solution references point/axis"]);
+    out.push(["solution-language-matches-representation", solText.includes("horizontal axis") || solText.includes("vertical axis"), "line-graph references axes"]);
+  } else if (task === "read_pictogram") {
+    out.push(["chart-solution-references-correct-chart-elements", solText.includes("symbol") && solText.includes("key"), "pictogram solution references symbols/key"]);
+    out.push(["solution-language-matches-representation", solText.includes("symbol"), "pictogram references symbols"]);
+  }
+  return out;
 }
 
 // --------------------------------------------------------------------------- //

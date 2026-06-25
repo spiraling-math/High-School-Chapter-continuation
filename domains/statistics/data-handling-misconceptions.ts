@@ -37,8 +37,10 @@ export type Ctx = {
   listSum?: number;
   maxv?: number;
   minv?: number;
-  modeValue?: number;
-  modeFrequency?: number;
+  uniqueMode?: number | null;
+  modeFrequency?: number | null;
+  midrange?: Rational;
+  meanValue?: Rational;
   medianValue?: Rational;
   sumVF?: number;
   sumf?: number;
@@ -95,9 +97,29 @@ function miscountScale(c: Ctx): AdapterValue {
 function pictoCountSymbols(c: Ctx): AdapterValue {
   const key = c.key;
   if (!key || key <= 1) return null;
+  // Owner #3, policy B: the exact whole-symbol count is an integer ONLY when the queried
+  // category has no half symbol. When a half is present, the symbol count is non-integer
+  // (e.g. 5½), so this rule is INAPPLICABLE and must not return a misleading floored value.
+  if (c.halfPresent) return null;
   const correct = c.correct as number;
   const v = Math.floor(correct / key);
   return v !== correct ? v : null;
+}
+
+function pictoHalfAsWhole(c: Ctx): AdapterValue {
+  if (!c.halfPresent) return null;
+  const key = c.key ?? 0;
+  const correct = c.correct as number;
+  const v = correct + Math.floor(key / 2);  // counts the half symbol as a whole one
+  return v !== correct ? v : null;
+}
+
+function pictoOffByOneSymbol(c: Ctx): AdapterValue {
+  const key = c.key ?? 0;
+  if (!key) return null;
+  const correct = c.correct as number;
+  const v = correct - key;  // miscounts by one whole symbol
+  return v !== correct && v >= 0 ? v : null;
 }
 
 function pictoIgnoreHalf(c: Ctx): AdapterValue {
@@ -153,8 +175,25 @@ function meanDivideWrongN(c: Ctx): AdapterValue {
 }
 
 function usesMode(c: Ctx): AdapterValue {
-  const m = c.modeValue;
+  // Eligible ONLY when the dataset has a UNIQUE mode (owner #2). uniqueMode is null when
+  // every value occurs equally often or two+ values tie for the greatest frequency.
+  const m = c.uniqueMode;
   return m !== undefined && m !== null && neVal(F(m), c.correct) ? F(m) : null;
+}
+
+function midrange(c: Ctx): AdapterValue {
+  const mr = c.midrange;
+  return mr !== undefined && mr !== null && neVal(mr, c.correct) ? mr : null;
+}
+
+function usesMean(c: Ctx): AdapterValue {
+  const mv = c.meanValue;
+  return mv !== undefined && mv !== null && neVal(mv, c.correct) ? mv : null;
+}
+
+function rangeIsMin(c: Ctx): AdapterValue {
+  const mn = c.minv;
+  return mn !== undefined && mn !== null && mn !== (c.correct as number) ? mn : null;
 }
 
 function usesMedian(c: Ctx): AdapterValue {
@@ -408,6 +447,49 @@ const RULES: Misconception[] = [
     "Writes a correct but unsimplified fraction.",
     "Your value is equivalent, but simplify the fraction to its simplest form.",
     () => null),
+  // --- v1.0.1 additions (owner #2/#3/#4) --------------------------------- //
+  r("MISC.STAT.MEAN_MIDRANGE", "Uses the midrange instead of the mean",
+    "(largest + smallest) / 2", "averages only the extremes",
+    "Averages only the largest and smallest values instead of all of them.",
+    "The mean uses every value, not only the largest and smallest.",
+    midrange),
+  r("MISC.STAT.MEDIAN_USES_MEAN", "Uses the mean instead of the median",
+    "the mean", "confuses the median with the mean",
+    "Adds the values and divides instead of finding the middle value.",
+    "The median is the middle value of the ordered list, not the mean.",
+    usesMean),
+  r("MISC.STAT.MEDIAN_MIDRANGE", "Uses the midrange instead of the median",
+    "(largest + smallest) / 2", "averages the extremes instead of finding the middle",
+    "Averages the largest and smallest values instead of finding the middle.",
+    "The median is the middle value of the ordered list, not the average of the extremes.",
+    midrange),
+  r("MISC.STAT.RANGE_IS_MIN", "Range is the smallest value",
+    "the smallest value", "reports the minimum as the range",
+    "Gives the smallest value instead of the difference.",
+    "The range is the largest value minus the smallest value.",
+    rangeIsMin),
+  r("MISC.STAT.PICTO_HALF_AS_WHOLE", "Counts the half symbol as a whole",
+    "value + half-symbol's worth", "treats the part symbol as a full one",
+    "Counts the half symbol as if it were a whole symbol.",
+    "A half symbol is worth half of the key, not a whole one.",
+    pictoHalfAsWhole),
+  r("MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL", "Miscounts by one symbol",
+    "value - one symbol's worth", "counts one symbol too few",
+    "Counts one symbol too few when reading the row.",
+    "Count the symbols in the row carefully, then multiply by the key.",
+    pictoOffByOneSymbol),
+  // Free-response missing-TOTAL diagnostics (owner #4) — feedback-only, applicable only when
+  // the total is the unknown. Never claim to subtract from a total that is itself missing.
+  r("MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "Omits a category from the total",
+    "sum of all but one frequency", "leaves one frequency out when adding",
+    "Leaves a category out when adding up the total.",
+    "Add every category's frequency — don't miss one out.",
+    () => null),
+  r("MISC.STAT.FREQ_TOTAL_COPIES_ONE", "Copies one frequency as the total",
+    "one of the frequencies", "writes a single frequency as the total",
+    "Writes one of the frequencies as the total instead of their sum.",
+    "The total is the sum of all the frequencies, not a single one of them.",
+    () => null),
 ];
 
 export const MISCONCEPTIONS: Record<string, Misconception> = Object.fromEntries(
@@ -417,14 +499,23 @@ export const MISCONCEPTIONS: Record<string, Misconception> = Object.fromEntries(
 // Which misconception ids each task may draw distractors from (order = preference).
 export const RULES_BY_TASK: Record<string, string[]> = {
   read_bar_chart: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE"],
-  read_pictogram: ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF", "MISC.STAT.READ_WRONG_CATEGORY"],
+  // Whole-symbol count first; the half-symbol rules are mutually exclusive with it (owner #3);
+  // off-by-one is a fallback so a 3rd distinct distractor always exists.
+  read_pictogram: ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF",
+    "MISC.STAT.PICTO_HALF_AS_WHOLE", "MISC.STAT.READ_WRONG_CATEGORY",
+    "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL"],
   read_table_value: ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
   read_line_graph: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE"],
-  complete_frequency_table: ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL", "MISC.STAT.READ_WRONG_CATEGORY"],
-  mean_from_list: ["MISC.STAT.MEAN_NO_DIVIDE", "MISC.STAT.MEAN_DIVIDE_WRONG_N", "MISC.STAT.AVG_USES_MODE"],
-  median_from_list: ["MISC.STAT.MEDIAN_NO_ORDER", "MISC.STAT.MEDIAN_WRONG_MIDDLE", "MISC.STAT.AVG_USES_MODE"],
+  // complete_frequency_table is free-response only — no distractors; its rules appear as
+  // blank-kind-specific solution pitfalls (missing-total vs missing-frequency, owner #4).
+  complete_frequency_table: ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL",
+    "MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "MISC.STAT.FREQ_TOTAL_COPIES_ONE"],
+  // AVG_USES_MODE is PREFERRED when a unique mode exists; midrange/min/mean fallbacks guarantee
+  // three distinct, mathematically-true distractors when there is no mode (owner #2).
+  mean_from_list: ["MISC.STAT.MEAN_NO_DIVIDE", "MISC.STAT.MEAN_DIVIDE_WRONG_N", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEAN_MIDRANGE"],
+  median_from_list: ["MISC.STAT.MEDIAN_NO_ORDER", "MISC.STAT.MEDIAN_WRONG_MIDDLE", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEDIAN_USES_MEAN", "MISC.STAT.MEDIAN_MIDRANGE"],
   mode_from_list: ["MISC.STAT.MODE_USES_HIGHEST", "MISC.STAT.MODE_USES_FREQUENCY", "MISC.STAT.AVG_USES_MEDIAN"],
-  range_from_list: ["MISC.STAT.RANGE_IS_MAX", "MISC.STAT.RANGE_ADDS", "MISC.STAT.AVG_USES_MODE"],
+  range_from_list: ["MISC.STAT.RANGE_IS_MAX", "MISC.STAT.RANGE_ADDS", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.RANGE_IS_MIN"],
   mean_from_freq_table: ["MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES", "MISC.STAT.MEANFT_NO_WEIGHT", "MISC.STAT.MEAN_DIVIDE_WRONG_N"],
   single_event_probability: ["MISC.STAT.PROB_COMPLEMENT", "MISC.STAT.PROB_ODDS", "MISC.STAT.PROB_OFF_BY_ONE"],
 };
