@@ -222,5 +222,35 @@ class TestReviewPackCoverage(unittest.TestCase):
             self.assertIn(code, seen_codes, f"checker code {code} never demonstrated")
 
 
+class TestArtifactIntegrity(unittest.TestCase):
+    """The generation manifest's SHA-256 hashes match the on-disk artifacts (owner M)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.root = os.path.join(HERE, "..", "..")
+        cls.manifest = json.load(open(os.path.join(cls.root, "docs", "review", "mensuration_manifest.json"), encoding="utf-8"))
+
+    def _sha256(self, rel):
+        import hashlib
+        h = hashlib.sha256()
+        with open(os.path.join(self.root, rel), "rb") as fh:
+            for chunk in iter(lambda: fh.read(65536), b""):
+                h.update(chunk)
+        return h.hexdigest()
+
+    def test_manifest_hashes_match_disk(self):
+        for name, a in self.manifest["artifacts"].items():
+            self.assertTrue(a["present"], f"{name} missing")
+            self.assertEqual(a["sha256"], self._sha256(a["path"]), f"{name} drift: {a['path']}")
+
+    def test_manifest_metadata(self):
+        self.assertEqual(self.manifest["generatorVersion"], M.GENERATOR_VERSION)
+        self.assertEqual(self.manifest["approvalStatus"], "pending-review")
+        self.assertEqual(self.manifest["objectiveReviewStatus"], "approved-for-implementation")
+        self.assertEqual(self.manifest["interactionTypes"], ["free-response"])
+        self.assertEqual(self.manifest["answerTypes"], ["quantity"])
+        self.assertEqual(sorted(self.manifest["objectiveIds"]), sorted(M.OBJECTIVE_BY_TASK[t] for t in M.TASKS))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
