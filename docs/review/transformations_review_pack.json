@@ -1,0 +1,502 @@
+{
+  "generatorId": "gen.geometry.transformations",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "mode": "free-response",
+  "requiredCells": [
+    "answerType:coordinate",
+    "answerType:table-completion",
+    "answerType:transformation",
+    "axisCrossing",
+    "axisFamily:x=a",
+    "axisFamily:y=-x",
+    "axisFamily:y=b",
+    "axisFamily:y=x",
+    "band:describe_reflection:3",
+    "band:describe_reflection:4",
+    "band:describe_rotation:3",
+    "band:describe_rotation:4",
+    "band:describe_translation:2",
+    "band:describe_translation:3",
+    "band:reflect_point:2",
+    "band:reflect_point:3",
+    "band:reflect_shape:2",
+    "band:reflect_shape:3",
+    "band:rotate_point:2",
+    "band:rotate_point:3",
+    "band:rotate_shape:3",
+    "band:rotate_shape:4",
+    "band:translate_point:1",
+    "band:translate_point:2",
+    "band:translate_shape:2",
+    "band:translate_shape:3",
+    "centre:non-origin",
+    "centre:origin",
+    "fixedPoint",
+    "object:describe_reflection:quadrilateral",
+    "object:describe_reflection:triangle",
+    "object:describe_rotation:quadrilateral",
+    "object:describe_rotation:triangle",
+    "object:describe_translation:quadrilateral",
+    "object:describe_translation:triangle",
+    "object:reflect_point:point",
+    "object:reflect_shape:quadrilateral",
+    "object:reflect_shape:segment",
+    "object:reflect_shape:triangle",
+    "object:rotate_point:point",
+    "object:rotate_shape:quadrilateral",
+    "object:rotate_shape:segment",
+    "object:rotate_shape:triangle",
+    "object:translate_point:point",
+    "object:translate_shape:quadrilateral",
+    "object:translate_shape:segment",
+    "object:translate_shape:triangle",
+    "quadrant:Q1",
+    "quadrant:Q2",
+    "quadrant:Q3",
+    "quadrant:Q4",
+    "quarterTurns:1",
+    "quarterTurns:2",
+    "quarterTurns:3",
+    "task:describe_reflection",
+    "task:describe_rotation",
+    "task:describe_translation",
+    "task:reflect_point",
+    "task:reflect_shape",
+    "task:rotate_point",
+    "task:rotate_shape",
+    "task:translate_point",
+    "task:translate_shape",
+    "vecSign:++",
+    "vecSign:+-",
+    "vecSign:+0",
+    "vecSign:-+",
+    "vecSign:--",
+    "vecSign:-0",
+    "vecSign:0+",
+    "vecSign:0-"
+  ],
+  "coveredCells": [
+    "answerType:coordinate",
+    "answerType:table-completion",
+    "answerType:transformation",
+    "axisCrossing",
+    "axisFamily:x=a",
+    "axisFamily:y=-x",
+    "axisFamily:y=b",
+    "axisFamily:y=x",
+    "band:describe_reflection:3",
+    "band:describe_reflection:4",
+    "band:describe_rotation:3",
+    "band:describe_rotation:4",
+    "band:describe_translation:2",
+    "band:describe_translation:3",
+    "band:reflect_point:2",
+    "band:reflect_point:3",
+    "band:reflect_shape:2",
+    "band:reflect_shape:3",
+    "band:rotate_point:2",
+    "band:rotate_point:3",
+    "band:rotate_shape:3",
+    "band:rotate_shape:4",
+    "band:translate_point:1",
+    "band:translate_point:2",
+    "band:translate_shape:2",
+    "band:translate_shape:3",
+    "centre:non-origin",
+    "centre:origin",
+    "fixedPoint",
+    "object:describe_reflection:quadrilateral",
+    "object:describe_reflection:triangle",
+    "object:describe_rotation:quadrilateral",
+    "object:describe_rotation:triangle",
+    "object:describe_translation:quadrilateral",
+    "object:describe_translation:triangle",
+    "object:reflect_point:point",
+    "object:reflect_shape:quadrilateral",
+    "object:reflect_shape:segment",
+    "object:reflect_shape:triangle",
+    "object:rotate_point:point",
+    "object:rotate_shape:quadrilateral",
+    "object:rotate_shape:segment",
+    "object:rotate_shape:triangle",
+    "object:translate_point:point",
+    "object:translate_shape:quadrilateral",
+    "object:translate_shape:segment",
+    "object:translate_shape:triangle",
+    "quadrant:Q1",
+    "quadrant:Q2",
+    "quadrant:Q3",
+    "quadrant:Q4",
+    "quadrant:axis",
+    "quarterTurns:1",
+    "quarterTurns:2",
+    "quarterTurns:3",
+    "task:describe_reflection",
+    "task:describe_rotation",
+    "task:describe_translation",
+    "task:reflect_point",
+    "task:reflect_shape",
+    "task:rotate_point",
+    "task:rotate_shape",
+    "task:translate_point",
+    "task:translate_shape",
+    "vecSign:++",
+    "vecSign:+-",
+    "vecSign:+0",
+    "vecSign:-+",
+    "vecSign:--",
+    "vecSign:-0",
+    "vecSign:0+",
+    "vecSign:0-"
+  ],
+  "missingCells": [],
+  "allCovered": true,
+  "allValid": true,
+  "itemCount": 22,
+  "resultCodes": {
+    "reachable": true,
+    "codes": [
+      "ambiguous-description",
+      "contradictory-description",
+      "correct",
+      "malformed-response",
+      "missing-rotation-centre",
+      "missing-translation-vector",
+      "unparsed-trailing-text",
+      "unsupported-angle",
+      "unsupported-reflection-line",
+      "wrong-reflection-axis",
+      "wrong-rotation-amount",
+      "wrong-rotation-centre",
+      "wrong-transformation-type",
+      "wrong-translation-vector"
+    ],
+    "matrixMismatches": 0
+  },
+  "diagnostics": {
+    "total": 24,
+    "exercised": 24,
+    "inapplicable": [],
+    "recomputationMismatches": 0
+  },
+  "multipleChoiceRejectedTasks": 9,
+  "regressionInvariants": {
+    "symmetric_not_auto_ambiguous": true,
+    "uniqueness_from_labels": true,
+    "fixed_vertex_valid": true,
+    "unchanged_rejected": true,
+    "permuted_label_rejected": true,
+    "quad_distances_preserved": true,
+    "rotation_preserves_orientation": true,
+    "reflection_reverses_orientation": true,
+    "display_derived_from_canonical": true,
+    "no_duplicate_descriptor_field": true
+  },
+  "presence": {
+    "premiumLight": true,
+    "premiumDark": true,
+    "accessibleColour": true,
+    "monochromePrint": true,
+    "selfContained6000x4200Export": true,
+    "multiItemWorksheet": true,
+    "labelCollisionStress": true,
+    "studentAndAnswerKeyChannels": true,
+    "sourceOnlyPerformFigures": true,
+    "sourceAndImageDescribeFigures": true
+  },
+  "records": [
+    {
+      "itemId": "ITEM-TRANS-rotate_shape-3189",
+      "seed": 3189,
+      "task": "rotate_shape",
+      "band": 4,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "answerType:table-completion",
+        "axisCrossing",
+        "band:rotate_shape:4",
+        "centre:non-origin",
+        "fixedPoint",
+        "object:rotate_shape:quadrilateral",
+        "quadrant:Q1",
+        "quadrant:Q2",
+        "quadrant:Q3",
+        "quadrant:Q4",
+        "quarterTurns:1",
+        "task:rotate_shape"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-rotate_point-212",
+      "seed": 212,
+      "task": "rotate_point",
+      "band": 2,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "answerType:coordinate",
+        "band:rotate_point:2",
+        "centre:origin",
+        "object:rotate_point:point",
+        "quarterTurns:2",
+        "task:rotate_point"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_translation-2",
+      "seed": 2,
+      "task": "describe_translation",
+      "band": 3,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "answerType:transformation",
+        "band:describe_translation:3",
+        "object:describe_translation:quadrilateral",
+        "task:describe_translation",
+        "vecSign:--"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_rotation-4",
+      "seed": 4,
+      "task": "describe_rotation",
+      "band": 4,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "band:describe_rotation:4",
+        "object:describe_rotation:quadrilateral",
+        "quarterTurns:3",
+        "task:describe_rotation"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_point-7",
+      "seed": 7,
+      "task": "translate_point",
+      "band": 2,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "band:translate_point:2",
+        "object:translate_point:point",
+        "task:translate_point",
+        "vecSign:++"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_shape-8",
+      "seed": 8,
+      "task": "translate_shape",
+      "band": 2,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "band:translate_shape:2",
+        "object:translate_shape:segment",
+        "task:translate_shape",
+        "vecSign:-+"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-reflect_point-12",
+      "seed": 12,
+      "task": "reflect_point",
+      "band": 3,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "axisFamily:y=x",
+        "band:reflect_point:3",
+        "object:reflect_point:point",
+        "task:reflect_point"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-reflect_shape-18",
+      "seed": 18,
+      "task": "reflect_shape",
+      "band": 2,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "axisFamily:x=a",
+        "band:reflect_shape:2",
+        "object:reflect_shape:triangle",
+        "task:reflect_shape"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_reflection-30",
+      "seed": 30,
+      "task": "describe_reflection",
+      "band": 3,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "axisFamily:y=b",
+        "band:describe_reflection:3",
+        "object:describe_reflection:quadrilateral",
+        "task:describe_reflection"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_translation-150",
+      "seed": 150,
+      "task": "describe_translation",
+      "band": 2,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "band:describe_translation:2",
+        "object:describe_translation:triangle",
+        "vecSign:0-"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-reflect_shape-896",
+      "seed": 896,
+      "task": "reflect_shape",
+      "band": 3,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "axisFamily:y=-x",
+        "band:reflect_shape:3",
+        "object:reflect_shape:segment"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_shape-1878",
+      "seed": 1878,
+      "task": "translate_shape",
+      "band": 3,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "band:translate_shape:3",
+        "object:translate_shape:quadrilateral",
+        "vecSign:+0"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-rotate_shape-13",
+      "seed": 13,
+      "task": "rotate_shape",
+      "band": 3,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "band:rotate_shape:3",
+        "object:rotate_shape:triangle"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_point-23",
+      "seed": 23,
+      "task": "translate_point",
+      "band": 1,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "band:translate_point:1",
+        "vecSign:+-"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_rotation-407",
+      "seed": 407,
+      "task": "describe_rotation",
+      "band": 3,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "band:describe_rotation:3",
+        "object:describe_rotation:triangle"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-describe_reflection-865",
+      "seed": 865,
+      "task": "describe_reflection",
+      "band": 4,
+      "answerType": "transformation",
+      "valid": true,
+      "covers": [
+        "band:describe_reflection:4",
+        "object:describe_reflection:triangle"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_shape-1315",
+      "seed": 1315,
+      "task": "translate_shape",
+      "band": 2,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "object:translate_shape:triangle",
+        "vecSign:0+"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-rotate_point-11",
+      "seed": 11,
+      "task": "rotate_point",
+      "band": 3,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "band:rotate_point:3"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-reflect_point-15",
+      "seed": 15,
+      "task": "reflect_point",
+      "band": 2,
+      "answerType": "coordinate",
+      "valid": true,
+      "covers": [
+        "band:reflect_point:2"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-rotate_shape-42",
+      "seed": 42,
+      "task": "rotate_shape",
+      "band": 3,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "object:rotate_shape:segment"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-translate_shape-51",
+      "seed": 51,
+      "task": "translate_shape",
+      "band": 2,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "vecSign:-0"
+      ]
+    },
+    {
+      "itemId": "ITEM-TRANS-reflect_shape-1391",
+      "seed": 1391,
+      "task": "reflect_shape",
+      "band": 3,
+      "answerType": "table-completion",
+      "valid": true,
+      "covers": [
+        "object:reflect_shape:quadrilateral"
+      ]
+    }
+  ]
+}

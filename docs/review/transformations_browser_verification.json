@@ -1,0 +1,60 @@
+{
+  "generatorId": "gen.geometry.transformations",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "viewBox": "0 0 1000 700",
+  "exportPx": [
+    6000,
+    4200
+  ],
+  "modes": [
+    "premium-light",
+    "premium-dark",
+    "accessible",
+    "print"
+  ],
+  "checks": [
+    {
+      "name": "svg-well-formed-accessible",
+      "ok": true,
+      "detail": "viewBox 0 0 1000 700 + role=img + title + desc on every sample"
+    },
+    {
+      "name": "no-colour-only-meaning",
+      "ok": true,
+      "detail": "source filled circle/solid vs image open square/dashed; monochrome-authoritative #111"
+    },
+    {
+      "name": "answer-key-base-identical-additive-overlay",
+      "ok": true,
+      "detail": "key shares student base bytes + appends overlay"
+    },
+    {
+      "name": "label-bbox-clearance",
+      "ok": true,
+      "detail": "deterministic complete-bounding-box label placement clears every sample"
+    },
+    {
+      "name": "accessibility-text-channels",
+      "ok": true,
+      "detail": "spokenMath + altText + longDescription + dataTableFallback present"
+    },
+    {
+      "name": "self-contained-6000x4200-export",
+      "ok": true,
+      "detail": "viewBox scales 6x to 6000x4200; no external resource references (inline marker defs only)"
+    },
+    {
+      "name": "four-mode-style-isolation",
+      "ok": true,
+      "detail": "audit applies premium-light/dark/accessible/print via container-scoped classes"
+    },
+    {
+      "name": "multi-item-worksheet",
+      "ok": true,
+      "detail": "items are self-contained SVG media; multiple compose into one worksheet export"
+    }
+  ],
+  "allPassed": true
+}
