@@ -2,6 +2,49 @@
 
 Last updated: 2026-06-25.
 
+## `gen.geometry.transformations` v1.0.0 — PENDING-REVIEW (2026-06-25)
+
+The eighth generator family, implemented oracle-first per the owner's REVISE-with-authorization
+directive (`DECISION_LOG.md` #54, decisions A–P). Nine FREE-RESPONSE Middle-School coordinate-
+transformation tasks: translate/reflect/rotate × point/shape + describe_translation/reflection/rotation.
+Domain `geometry`, strand `coordinate-transformations`, segment **GEO.TRANS**; nine
+`SPI.MIDDLE.GEO.TRANS.*` objectives (`approved-for-implementation`) from a single-source
+`TRANSFORMATIONS_TASKS`/`OBJECTIVE_BY_TASK` (Py + TS). An explicit multiple-choice request is rejected
+with `interaction-not-supported` (never silently converted).
+
+The **exact integer-coordinate transformation engine** (translation; reflect x=a/y=b/y=x/y=-x;
+quarter-turn rotation via translate-to-centre, anticlockwise q=1/2/3) uses no trig, float, tolerance, or
+irrational. Point images answer with `answer.type "coordinate"`; shape images with `table-completion`
+(cells keyed A′…D′ U+2032, correspondence by label); describe tasks with the new **`answer.type
+"transformation"`** — a canonical-first descriptor where the structured union **IS `answer.canonical`**
+(no sibling field; `display` derived; ASCII `deg`), added the additive way of the approved mensuration
+`quantity` precedent and enforced identically by the runtime Ajv validator + the Python conformance
+checker (`if/then/const`, plus `not` for the zero-vector rejection). The independent validator never
+calls the forward engine; describe items require exactly one descriptor of the expected family (symmetric
+sources allowed when uniquely solvable; fixed vertices valid). Squared-distance congruence (1/3/6
+distances), rotations preserve / reflections reverse orientation. The renderer **reuses the approved
+cartesian-theme + Cartesian visual/a11y contract** and mirrors the projection primitives family-locally
+(approved coordinate-lines files untouched); source = filled circle/solid, image = open square/dashed
+(distinct without colour); perform student channel hides the image, describe shows both figures and never
+names the transformation; base geometry byte-identical across student/answer-key, key adds only the
+overlay. `MISC.TRANS.*` registry: 24 diagnostics (single source; owner-K descriptor IDs; no `DESC_*`).
+
+**Status:** **PENDING-REVIEW** — registered `approvalStatus: "pending-review"`
+(`core/sdk/sequence-registry.ts`), gated from normal Studio + production exports, selectable only in
+review mode, until the owner's APPROVE/REVISE/REJECT of the implemented v1.0.0 family. **Verified:**
+oracle-first Python + byte-parity TS mirror (golden + 360-entry task-pinned parity); 10,000-seed sweep
+**0 invalid, 0 reproducibility failures, every declared band reachable, MC rejected 9/9, all 14 result
+codes reachable (0 matrix mismatches), 24/24 diagnostics exercised (0 inapplicable, 0 recomputation
+mismatches)**; conformance PASS; review pack **22 items / full coverage / 11 regression invariants**;
+visual audit (4 modes + student-vs-key + label-collision) + browser verification 8/8; manifest SHA-256;
+**all seven approved families’ output byte-for-byte UNCHANGED.**
+
+**Non-blocking future calibration debt** (do NOT alter pending-review v1.0.0 output if later approved):
+each task's two declared bands are reached via a single deterministic structural lever (vector size /
+diagonal axis / quarter-turn / quadrilateral); a future calibration pass may add finer intra-band
+variation. Describe-task object scope is triangles + quadrilaterals (invariant-point-only describe cases
+are a documented visual-scope choice, not a uniqueness claim).
+
 ## `gen.measurement.mensuration` v1.0.1 — CURRICULUM-APPROVED (2026-06-25)
 
 The first **unit-aware** family — built **oracle-first** after the owner's REVISE-with-authorization
