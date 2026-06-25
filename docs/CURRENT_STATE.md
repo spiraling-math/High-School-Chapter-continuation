@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-25.
 
-## `gen.measurement.mensuration` v1.0.1 — IMPLEMENTED · PENDING-REVIEW (2026-06-25)
+## `gen.measurement.mensuration` v1.0.1 — CURRICULUM-APPROVED (2026-06-25)
 
 The first **unit-aware** family — built **oracle-first** after the owner's REVISE-with-authorization
 directive (`DECISION_LOG.md` #50, decisions A–M). Eight FREE-RESPONSE Middle-School mensuration
@@ -51,14 +51,23 @@ diagnostic-only. **C5** missing-* prompts dropped the redundant sentence and the
 grammar is fixed ("An L-shaped…", "A triangle measured in … with its perpendicular height marked"),
 canonical units staying ASCII `^2`.
 
-**Status:** registered **`pending-review`** in `core/sdk/sequence-registry.ts` — gated out of normal
-Generator Studio and production exports/samples (visible only in `?review`), awaiting the owner's
-APPROVE / REJECT. **Verification:** 10,000-seed sweep **0 invalid, every declared band reachable, all
-seven checker codes, 0 matrix mismatches, no cross-unit conversion, 13 diagnostics (8 numeric / 4
-unit / 1 pedagogical), 0 inapplicable**; conformance PASS; byte-parity golden (12) + task-pinned
-parity (304); 9 Python oracle suites (**61 mensuration tests**); **231 TS tests**; review pack **16
-items, 46/46 cells, allCovered** + all feature proofs; manifest + SHA-256 integrity; **all six
-approved families’ output byte-for-byte unchanged**.
+**Status:** **CURRICULUM-APPROVED** at v1.0.1 (`DECISION_LOG.md` #53; tag `approved-mensuration-v1.0.1`).
+Registered **`approved`** in `core/sdk/sequence-registry.ts` — selectable in normal Generator Studio
+and included in production exports/samples (only v1.0.1 registered; v1.0.0 preserved at tag
+`mensuration-v1.0.0`). The eight `SPI.MIDDLE.MEAS.*` objectives are curriculum-approved
+(`reviewStatus: approved`). The shared **dimensional-quantity contract** (`answer.type = quantity`,
+`answer.measure`, the exact parser/checker, the seven-code vocabulary, length/area + mm/cm/m) is
+approved platform infrastructure; the bundled runtime Ajv validator was recompiled so `quantity`
+validates at runtime (additive — the six earlier families still validate unchanged). This approval
+does **not** authorize cross-unit conversion, additional physical dimensions, compound units, or
+approximate quantities. Newly generated items stay **machine-validated**; no future item is
+auto-approved or auto-published. **Verification:** 10,000-seed sweep **0 invalid, every declared band
+reachable, all seven checker codes, 0 matrix mismatches, no cross-unit conversion, 13 diagnostics (8
+numeric / 4 unit / 1 pedagogical), 0 inapplicable**; conformance + runtime Ajv PASS; byte-parity
+golden (12) + task-pinned parity (304); 9 Python oracle suites (**43 mensuration tests**); **231 TS
+tests**; review pack **16 items, 46/46 cells, allCovered** + all feature proofs (frozen immutable);
+manifest + SHA-256 integrity + artifact-identity; **all six earlier approved families’ output
+byte-for-byte unchanged**.
 
 **Non-blocking future calibration debt** (do NOT distort the mathematics to equalise percentages):
 difficulty concentration in `area_composite` band 4, `missing_triangle_base_height` band 3, and the

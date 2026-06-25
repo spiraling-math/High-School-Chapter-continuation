@@ -15,7 +15,7 @@ committed golden/parity fixtures.
 | `gen.geometry.angles-figures` | **1.2.3** | curriculum-approved | `GENERATOR_SPEC_geometry_svg_proposal.md` | `4c9705c` | 2026-06-23 |
 | `gen.geometry.coordinate-lines` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` | `660b50e` | 2026-06-24 |
 | `gen.stats.data-handling` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_statistics_data_handling_PROPOSAL.md` | `17540e8` | 2026-06-25 |
-| `gen.measurement.mensuration` | **1.0.1** | **implemented · pending-review** (gated from normal Studio + production; DECISION_LOG #50 build + #51 corrections) | `GENERATOR_SPEC_mensuration_PROPOSAL.md` | (this build) | — (awaiting owner APPROVE/REJECT) |
+| `gen.measurement.mensuration` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_mensuration_PROPOSAL.md` | tag `approved-mensuration-v1.0.1` | 2026-06-25 |
 | `gen.measurement.mensuration` | 1.0.0 | preserved (superseded by 1.0.1; never approved) | — | tag `mensuration-v1.0.0` | — |
 | `gen.stats.data-handling` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `stats-data-handling-v1.0.{0,1}` | — |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
