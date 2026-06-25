@@ -1,0 +1,69 @@
+{
+  "generatorId": "gen.measurement.mensuration",
+  "generatorVersion": "1.0.0",
+  "auditPage": "docs/review/mensuration_visual_audit.html",
+  "modes": [
+    "premium",
+    "premium-dark",
+    "accessible",
+    "print"
+  ],
+  "checks": {
+    "per-root-cx-figure-isolation": true,
+    "four-modes-distinct-colours": true,
+    "monochrome-print-authoritative": true,
+    "export-self-contained-no-var": true,
+    "export-6000x4200": true,
+    "no-colour-only-meaning": true
+  },
+  "modeShapeColours": {
+    "premium": {
+      "--cx-fill": "#eef2f7",
+      "--cx-edge": "#1b2733",
+      "--cx-cut": "#2563eb",
+      "--cx-result": "#166534"
+    },
+    "premium-dark": {
+      "--cx-fill": "#1e293b",
+      "--cx-edge": "#e2e8f0",
+      "--cx-cut": "#93c5fd",
+      "--cx-result": "#86efac"
+    },
+    "accessible": {
+      "--cx-fill": "#ffffff",
+      "--cx-edge": "#000000",
+      "--cx-cut": "#0072b2",
+      "--cx-result": "#000000"
+    },
+    "print": {
+      "--cx-fill": "#f0f0f0",
+      "--cx-edge": "#111111",
+      "--cx-cut": "#111111",
+      "--cx-result": "#111111"
+    }
+  },
+  "exportSha256": {
+    "premium": "d0e24771c385a933eabe6986c68ffdf5d991d7442ed95b028a9f6989f1562a9e",
+    "premium-dark": "03e2ccea8a933260fb5c11bbe4405dc3d92ef8d4ec52d60a9f9248a58587028a",
+    "accessible": "7638155ded71a8d3e030ec92b30c87f9df5a4b4caf19d47608c4938af7c7e2e7",
+    "print": "88d6eb745bdb630159b5d77130826e20bb13dd9da76343ed2e00b25c22688e6b"
+  },
+  "computedStyles": {
+    "note": "captured live in Chromium via the preview tool on docs/review/mensuration_visual_audit.html",
+    "cxShapeFillsByMode": {
+      "premium": "rgb(238, 242, 247)",
+      "premium-dark": "rgb(30, 41, 59)",
+      "accessible": "rgb(255, 255, 255)",
+      "print": "rgb(240, 240, 240)"
+    },
+    "cxShapeStrokesByMode": {
+      "premium": "rgb(27, 39, 51)",
+      "premium-dark": "rgb(226, 232, 240)",
+      "accessible": "rgb(0, 0, 0)",
+      "print": "rgb(17, 17, 17)"
+    },
+    "distinctComputedFillsAcrossFourModes": 4,
+    "overlayPresentInStudentGalleryRows": false
+  },
+  "rasterConfirmation": "window.__mens.exportDataURL(scale) rasterizes the self-contained 6000x4200 export to a PNG data URL in-browser; the export is also verified deterministically (baked concrete colours, no var(), width=6000/height=4200)."
+}
