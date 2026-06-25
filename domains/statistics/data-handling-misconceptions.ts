@@ -28,6 +28,8 @@ export type Ctx = {
   queryIndex?: number;
   total?: number;
   axisStep?: number;
+  minorStep?: number;
+  majorStep?: number;
   key?: number;
   halfPresent?: boolean;
   xValue?: number;
@@ -91,6 +93,15 @@ function miscountScale(c: Ctx): AdapterValue {
   const correct = c.correct as number;
   if (step <= 1 || correct % step !== 0) return null;
   const v = Math.floor(correct / step);
+  return v !== correct ? v : null;
+}
+
+function offByMajor(c: Ctx): AdapterValue {
+  // Reads one MAJOR gridline off (distinct from one MINOR subdivision off).
+  const step = c.majorStep ?? 1;
+  if (step <= (c.minorStep ?? 1)) return null;
+  const correct = c.correct as number;
+  const v = correct + step;
   return v !== correct ? v : null;
 }
 
@@ -490,6 +501,12 @@ const RULES: Misconception[] = [
     "Writes one of the frequencies as the total instead of their sum.",
     "The total is the sum of all the frequencies, not a single one of them.",
     () => null),
+  // --- v1.0.2 addition (direct-read scale) ------------------------------ //
+  r("MISC.STAT.READ_OFF_BY_MAJOR_STEP", "Reads one major gridline off",
+    "value +/- one major step", "lands on the wrong labelled gridline",
+    "Reads the value one whole labelled gridline up or down.",
+    "Read carefully to the exact gridline the bar or point reaches.",
+    offByMajor),
 ];
 
 export const MISCONCEPTIONS: Record<string, Misconception> = Object.fromEntries(
@@ -498,14 +515,14 @@ export const MISCONCEPTIONS: Record<string, Misconception> = Object.fromEntries(
 
 // Which misconception ids each task may draw distractors from (order = preference).
 export const RULES_BY_TASK: Record<string, string[]> = {
-  read_bar_chart: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE"],
+  read_bar_chart: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
   // Whole-symbol count first; the half-symbol rules are mutually exclusive with it (owner #3);
   // off-by-one is a fallback so a 3rd distinct distractor always exists.
   read_pictogram: ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF",
     "MISC.STAT.PICTO_HALF_AS_WHOLE", "MISC.STAT.READ_WRONG_CATEGORY",
     "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL"],
   read_table_value: ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
-  read_line_graph: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE"],
+  read_line_graph: ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
   // complete_frequency_table is free-response only — no distractors; its rules appear as
   // blank-kind-specific solution pitfalls (missing-total vs missing-frequency, owner #4).
   complete_frequency_table: ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL",

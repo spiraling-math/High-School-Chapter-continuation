@@ -23,8 +23,8 @@ type Frac = Rational;
 const F = (x: number): Rational => new Rational(x, 1);
 
 export const GENERATOR_ID = "gen.stats.data-handling";
-export const GENERATOR_VERSION = "1.0.1";
-export const VALIDATOR_VERSION = "1.0.1";
+export const GENERATOR_VERSION = "1.0.2";
+export const VALIDATOR_VERSION = "1.0.2";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 export const TASKS = ["read_bar_chart", "read_pictogram", "read_table_value", "read_line_graph",
@@ -178,7 +178,9 @@ const sumOf = (xs: number[]): number => xs.reduce((a, b) => a + b, 0);
 const STYLE =
   ".cx-axis{stroke:#111;stroke-width:3;fill:none}" +
   ".cx-tick{stroke:#111;stroke-width:2}" +
+  ".cx-tick-minor{stroke:#111;stroke-width:1.5}" +
   ".cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}" +
+  ".cx-grid-minor{stroke:#bbb;stroke-width:0.75;fill:none}" +
   ".cx-bar{fill:#bbb;stroke:#111;stroke-width:2}" +
   ".cx-line{stroke:#111;stroke-width:3;fill:none}" +
   ".cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}" +
@@ -209,6 +211,52 @@ function axisStepAndMax(maxv: number): [number, number] {
   return [step, ymax];
 }
 
+// Direct-read scale contract (owner v1.0.2): every queried value (and every plotted value)
+// must land on a VISIBLE mathematical mark — a labelled major tick, or a rendered minor
+// subdivision whose declared step resolves it exactly. No pixel estimation.
+const MIN_SUBDIV_PX = 14;     // each visible subdivision must be at least this many pixels apart
+const MAX_MINOR_LINES = 24;   // the minor grid must not be overloaded (clutter cap)
+
+/** gcd of two non-negative integers (Euclid). Mirrors Python math.gcd on |a|,|b|. */
+function gcd(a: number, b: number): number {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b !== 0) {
+    const t = a % b;
+    a = b;
+    b = t;
+  }
+  return a;
+}
+
+function listGcd(xs: number[]): number {
+  let g = 0;
+  for (const x of xs) g = gcd(g, Math.abs(Math.trunc(x)));
+  return g || 1;
+}
+
+/** (majorStep, minorStep, ymax). The minor step is the coarsest subdivision of the major
+ *  step that still divides EVERY plotted value, so all bars/points land on a visible mark
+ *  (minorStep === majorStep means no extra minor grid is needed). */
+function chartScale(values: number[]): [number, number, number] {
+  const [major, ymax] = axisStepAndMax(Math.max(...values));
+  let minor = gcd(major, listGcd(values));
+  if (minor < 1) minor = 1;
+  return [major, minor, ymax];
+}
+
+function subdivPx(minor: number, ymax: number): number {
+  return gridRound(PLOT_H * minor, ymax);
+}
+
+/** The grid resolves the data without estimation or clutter. */
+function scaleReadable(major: number, minor: number, ymax: number): boolean {
+  if (minor < 1 || major % minor !== 0) return false;
+  if (Math.floor(ymax / minor) > MAX_MINOR_LINES) return false;   // too many minor lines -> overloaded
+  if (subdivPx(minor, ymax) < MIN_SUBDIV_PX) return false;        // subdivisions too close to read
+  return true;
+}
+
 /** Project a value onto the integer pixel y (0 at baseline, ymax at top). */
 function py(ymax: number, value: number): number {
   return PLOT_Y1 - gridRound(value * PLOT_H, ymax);
@@ -234,9 +282,25 @@ function svgOpen(acc: Acc): string[] {
   ];
 }
 
-function valueAxis(out: string[], ymax: number, step: number, unitLabel: string): void {
+/** Render the value axis with a MAJOR grid (labelled ticks) and, when minor < major, a
+ *  rendered MINOR subdivision grid (unlabelled, lighter) so every plotted/queried value lands
+ *  on a visible mark (owner v1.0.2 direct-read contract). */
+function valueAxis(out: string[], ymax: number, major: number, minor: number, unitLabel: string): void {
   out.push(`<line class="cx-axis" x1="${PLOT_X0}" y1="${PLOT_Y0}" x2="${PLOT_X0}" y2="${PLOT_Y1}"/>`);
   out.push(`<line class="cx-axis" x1="${PLOT_X0}" y1="${PLOT_Y1}" x2="${PLOT_X1}" y2="${PLOT_Y1}"/>`);
+  // 1. minor subdivisions (only at positions that are NOT also a major mark).
+  if (minor < major) {
+    let v = minor;
+    while (v < ymax) {
+      if (v % major !== 0) {
+        const yp = py(ymax, v);
+        out.push(`<line class="cx-grid-minor" x1="${PLOT_X0}" y1="${yp}" x2="${PLOT_X1}" y2="${yp}"/>`);
+        out.push(`<line class="cx-tick-minor" x1="${PLOT_X0 - 4}" y1="${yp}" x2="${PLOT_X0}" y2="${yp}"/>`);
+      }
+      v += minor;
+    }
+  }
+  // 2. major gridlines + ticks + integer labels.
   let v = 0;
   while (v <= ymax) {
     const yp = py(ymax, v);
@@ -245,7 +309,7 @@ function valueAxis(out: string[], ymax: number, step: number, unitLabel: string)
     }
     out.push(`<line class="cx-tick" x1="${PLOT_X0 - 6}" y1="${yp}" x2="${PLOT_X0}" y2="${yp}"/>`);
     out.push(`<text class="cx-ticklbl" x="${PLOT_X0 - 12}" y="${yp + 7}" text-anchor="end">${v}</text>`);
-    v += step;
+    v += major;
   }
   const mid = Math.floor((PLOT_Y0 + PLOT_Y1) / 2);
   out.push(`<text class="cx-axislbl" x="36" y="${mid}" ` +
@@ -256,10 +320,10 @@ function barChartSvg(params: Json): string {
   const ds = params.dataset;
   const cats: string[] = ds.categories, freqs: number[] = ds.frequencies, unit: string = ds.unit;
   const n = cats.length;
-  const [step, ymax] = axisStepAndMax(Math.max(...freqs));
+  const [major, minor, ymax] = chartScale(freqs);
   const acc = accessibility("read_bar_chart", params);
   const out = svgOpen(acc);
-  valueAxis(out, ymax, step, `Frequency (${unit})`);
+  valueAxis(out, ymax, major, minor, `Frequency (${unit})`);
   for (let i = 0; i < n; i++) {
     const cat = cats[i]!, fr = freqs[i]!;
     const [left, right] = slotEdges(n, i);
@@ -279,10 +343,10 @@ function lineGraphSvg(params: Json): string {
   const ds = params.dataset;
   const labels: string[] = ds.seriesLabels, vals: number[] = ds.values, unit: string = ds.unit;
   const n = labels.length;
-  const [step, ymax] = axisStepAndMax(Math.max(...vals));
+  const [major, minor, ymax] = chartScale(vals);
   const acc = accessibility("read_line_graph", params);
   const out = svgOpen(acc);
-  valueAxis(out, ymax, step, `${ds.title} (${unit})`);
+  valueAxis(out, ymax, major, minor, `${ds.title} (${unit})`);
   const xs: number[] = [];
   for (let i = 0; i < n; i++) xs.push(PLOT_X0 + gridRound((PLOT_X1 - PLOT_X0) * (2 * i + 1), 2 * n));
   const pts: Array<[number, number]> = [];
@@ -496,7 +560,10 @@ function ctxOf(task: string, params: Json, correct: SolveResult): Ctx {
     c.queryIndex = params.queryIndex;
     c.total = sumOf(vals);
     if (task === "read_bar_chart" || task === "read_line_graph") {
-      c.axisStep = axisStepAndMax(Math.max(...vals))[0];
+      const [major, minor] = chartScale(vals);
+      c.axisStep = minor;       // off-by-step / miscount use the visible MINOR subdivision
+      c.minorStep = minor;
+      c.majorStep = major;
     }
     if (task === "read_pictogram") {
       c.key = ds.pictogramKey;
@@ -959,11 +1026,26 @@ function freqDataset(rng: Mulberry32, lo: number, hi: number, themes: CatTheme[]
   return { kind: "frequency", title, unit, categories: cats, frequencies: freqs };
 }
 
+/** n values that are MULTIPLES of vstep in [lo, hi] (so the chart scale resolves them). */
+function steppedValues(rng: Mulberry32, n: number, lo: number, hi: number, vstep: number): number[] {
+  const a = Math.floor(lo / vstep), b = Math.floor(hi / vstep);
+  const out: number[] = [];
+  for (let i = 0; i < n; i++) out.push(vstep * (a + nInt(rng, b - a + 1)));
+  return out;
+}
+
+// Readable bar/line scale buckets (owner v1.0.2): (lo, hi, vstep). Generating values as
+// multiples of vstep keeps the derived minor subdivision clean; the acceptable gate redraws
+// any residual unreadable scale. These exercise major steps {1,2,5,10} and minor {1,5}.
+const BAR_BUCKETS: [number, number, number][] = [[1, 8, 1], [2, 16, 1], [2, 16, 2], [5, 35, 5], [10, 55, 5]];
+const LINE_BUCKETS: [number, number, number][] = [[1, 9, 1], [2, 16, 1], [5, 35, 5], [10, 55, 5]];
+
 function drawReadBarChart(rng: Mulberry32): Json | null {
-  const bucket = nInt(rng, 4);
-  const [lo, hi] = ([[1, 8], [2, 16], [5, 35], [10, 55]] as [number, number][])[bucket]!;
-  const ds = freqDataset(rng, lo, hi);
-  const qi = nInt(rng, ds.categories.length);
+  const [lo, hi, vstep] = BAR_BUCKETS[nInt(rng, BAR_BUCKETS.length)]!;
+  const [title, unit, cats, n] = drawCategories(rng, CATEGORY_THEMES, 3, 5);
+  const freqs = steppedValues(rng, n, lo, hi, vstep);
+  const ds = { kind: "frequency", title, unit, categories: cats, frequencies: freqs };
+  const qi = nInt(rng, n);
   return { task: "read_bar_chart", dataset: ds, queryIndex: qi, scaffold: nInt(rng, 2) === 0 };
 }
 
@@ -991,10 +1073,8 @@ function drawReadLineGraph(rng: Mulberry32): Json | null {
   const [title, unit, pool] = pickTheme(rng, LINE_THEMES);
   let n = 5 + nInt(rng, 2);
   n = Math.min(n, pool.length);
-  const bucket = nInt(rng, 3);
-  const [lo, hi] = ([[1, 9], [2, 18], [5, 40]] as [number, number][])[bucket]!;
-  const vals: number[] = [];
-  for (let i = 0; i < n; i++) vals.push(lo + nInt(rng, hi - lo + 1));
+  const [lo, hi, vstep] = LINE_BUCKETS[nInt(rng, LINE_BUCKETS.length)]!;
+  const vals = steppedValues(rng, n, lo, hi, vstep);
   const ds = { kind: "list", title, unit, seriesLabels: pool.slice(0, n), values: vals };
   const qi = nInt(rng, n);
   return { task: "read_line_graph", dataset: ds, queryIndex: qi, scaffold: nInt(rng, 2) === 0 };
@@ -1168,6 +1248,14 @@ function acceptable(params: Json, interaction: string): Distractor[] | null {
 
 function answerSane(task: string, params: Json, _correct: SolveResult): boolean {
   const ds = params.dataset;
+  if (task === "read_bar_chart" || task === "read_line_graph") {
+    // Direct-read scale contract (owner v1.0.2): the chart scale must resolve every value
+    // on a visible mark without estimation or clutter; otherwise redraw.
+    const vals: number[] = task === "read_line_graph" ? ds.values : ds.frequencies;
+    const [major, minor, ymax] = chartScale(vals);
+    if (!scaleReadable(major, minor, ymax)) return false;
+    if (vals.some((v) => v % minor !== 0)) return false;   // every value lands on a visible subdivision
+  }
   if (task === "mode_from_list") {
     const cnt = counterMostCommon(ds.values);
     if (cnt.length < 2 || cnt[0]![1] === cnt[1]![1]) return false;
@@ -1364,6 +1452,10 @@ export function validate(item: Json): Json {
       add("chart-realises-data", chartRealisesData(task, params, m.svg ?? ""), "bars/points/symbols agree with the dataset");
       if (task === "read_bar_chart" || task === "read_line_graph") {
         add("axis-scale-consistency", axisConsistent(task, params, m.svg ?? ""), "ticks/gridlines follow a {1,2,5,10} step");
+        // direct-read scale contract (owner v1.0.2) — inspect the serialized SVG
+        for (const [name, ok_, detail] of readabilityChecks(task, params, m.svg ?? "")) {
+          add(name, ok_, detail);
+        }
       }
       const storedSpec = (m.spec ?? {}).premium;
       add("premium-spec-parity", eqJson(storedSpec, premiumSpec(task, params)), "premium spec recomputed byte-for-byte");
@@ -1569,7 +1661,7 @@ function chartRealisesData(task: string, params: Json, svg: string): boolean {
     const rects = [...svg.matchAll(/<rect class="cx-bar"[^>]*y="(\d+)"[^>]*height="(\d+)"/g)];
     const freqs: number[] = ds.frequencies;
     if (rects.length !== freqs.length) return false;
-    const [, ymax] = axisStepAndMax(Math.max(...freqs));
+    const [, , ymax] = chartScale(freqs);
     for (let i = 0; i < rects.length; i++) {
       const y = parseInt(rects[i]![1]!, 10), h = parseInt(rects[i]![2]!, 10);
       if (y !== py(ymax, freqs[i]!) || y + h !== PLOT_Y1) return false;
@@ -1579,7 +1671,7 @@ function chartRealisesData(task: string, params: Json, svg: string): boolean {
   if (task === "read_line_graph") {
     const circles = [...svg.matchAll(/<circle class="cx-pt-core" cx="(\d+)" cy="(\d+)"/g)];
     const vals: number[] = ds.values;
-    const [, ymax] = axisStepAndMax(Math.max(...vals));
+    const [, , ymax] = chartScale(vals);
     if (circles.length !== vals.length) return false;
     for (let i = 0; i < circles.length; i++) {
       const cy = parseInt(circles[i]![2]!, 10);
@@ -1604,11 +1696,58 @@ function axisConsistent(task: string, params: Json, svg: string): boolean {
   const ds = params.dataset;
   const vals: number[] = task === "read_line_graph" ? ds.values : ds.frequencies;
   if (!vals || !vals.length) return true;
-  const [step, ymax] = axisStepAndMax(Math.max(...vals));
+  const [major, minor, ymax] = chartScale(vals);
   const labels = [...svg.matchAll(/<text class="cx-ticklbl"[^>]*>(-?\d+)<\/text>/g)].map((mm) => parseInt(mm[1]!, 10));
   const expected: number[] = [];
-  for (let v = 0; v <= ymax; v += step) expected.push(v);
-  return labels.length === expected.length && labels.every((l, i) => l === expected[i]) && [1, 2, 5, 10].includes(step);
+  for (let v = 0; v <= ymax; v += major) expected.push(v);  // labels only on MAJOR ticks
+  return labels.length === expected.length && labels.every((l, i) => l === expected[i])
+    && [1, 2, 5, 10].includes(major) && major % minor === 0;
+}
+
+/** All visible value-mark y-positions in the SVG: major + minor gridlines and ticks, plus the
+ *  baseline. The validator reads these from the SERIALIZED student SVG (owner v1.0.2). */
+function gridTickYs(svg: string): Set<number> {
+  const ys = new Set<number>();
+  for (const cls of ["cx-grid-major", "cx-grid-minor"]) {
+    for (const mm of svg.matchAll(new RegExp(`<line class="${cls}" x1="\\d+" y1="(\\d+)"`, "g"))) {
+      ys.add(parseInt(mm[1]!, 10));
+    }
+  }
+  for (const cls of ["cx-tick", "cx-tick-minor"]) {
+    for (const mm of svg.matchAll(new RegExp(`<line class="${cls}" x1="\\d+" y1="(\\d+)" x2="\\d+" y2="(\\d+)"`, "g"))) {
+      ys.add(parseInt(mm[1]!, 10));
+    }
+  }
+  ys.add(PLOT_Y1);   // the baseline (value 0) is a visible mark
+  return ys;
+}
+
+/** Owner v1.0.2 direct-read scale contract — inspect the SERIALIZED student SVG (not just the
+ *  dataset) to prove every queried/plotted value lands on a visible mark with no pixel estimation. */
+function readabilityChecks(task: string, params: Json, svg: string): Array<[string, boolean, string]> {
+  const ds = params.dataset;
+  const vals: number[] = task === "read_line_graph" ? ds.values : ds.frequencies;
+  const [major, minor, ymax] = chartScale(vals);
+  const qi: number = params.queryIndex;
+  const queried = vals[qi]!;
+  const markYs = gridTickYs(svg);
+  const qPy = py(ymax, queried);
+  const allOn = vals.every((v) => markYs.has(py(ymax, v)));
+  const minorLines = Math.floor(ymax / minor);
+  const sep = subdivPx(minor, ymax);
+  const alignTag = task === "read_bar_chart" ? "bar-top-aligns-visible-subdivision" : "line-point-aligns-visible-subdivision";
+  return [
+    ["minor-step-divides-major-step", major % minor === 0, `major ${major} minor ${minor}`],
+    ["minor-grid-not-overloaded", minorLines <= MAX_MINOR_LINES && sep >= MIN_SUBDIV_PX, `${minorLines} lines, ${sep}px`],
+    ["queried-value-readable-from-scale", queried % minor === 0, `queried ${queried} % minor ${minor}`],
+    ["visible-subdivision-resolves-query", markYs.has(qPy), `queried y ${qPy} on a visible mark`],
+    [alignTag, allOn, "every plotted value sits on a visible mark"],
+    ["exact-read-answer-unique", queried % minor === 0 && markYs.has(qPy), "answer uniquely readable from a mark"],
+    ["no-pixel-estimation-required", vals.every((v) => v % minor === 0) && allOn, "no value falls between marks"],
+    ["scale-readable-in-monochrome", svg.includes('<line class="cx-tick"') && svg.includes('<text class="cx-ticklbl"'),
+      "labelled monochrome ticks present"],
+    ["scale-readable-at-print-size", sep >= MIN_SUBDIV_PX, `subdivision ${sep}px >= ${MIN_SUBDIV_PX}`],
+  ];
 }
 
 function tableRoundTrip(task: string, params: Json, html: string): boolean {
