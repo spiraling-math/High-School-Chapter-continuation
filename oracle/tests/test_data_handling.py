@@ -216,7 +216,7 @@ class TestArtifactIntegrity(unittest.TestCase):
     def test_manifest_metadata(self):
         manifest = json.load(open(os.path.join(REVIEW, "stats_data_handling_manifest.json"), encoding="utf-8"))
         self.assertEqual(manifest["generatorVersion"], dh.GENERATOR_VERSION)
-        self.assertEqual(manifest["approvalStatus"], "pending-review")
+        self.assertEqual(manifest["approvalStatus"], "approved")
         self.assertEqual(manifest["objectiveIds"], [dh.OBJECTIVE_BY_TASK[t] for t in dh.TASKS])
 
 

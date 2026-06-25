@@ -5,7 +5,7 @@
  * objectives present and their prerequisites resolved. Also enforces the owner's
  * decisions (A, C, I, M): the exact eleven objective IDs via OBJECTIVE_BY_TASK
  * (no alternative spellings), the new domain/strand, mathematical-only answerTypes
- * (no "multiple-choice"), and approved-for-implementation review status during dev.
+ * (no "multiple-choice"), and curriculum-approved review status (v1.0.2).
  *
  * Run:  node --test core/curriculum/stats-graph.test.ts
  */
@@ -84,7 +84,7 @@ test("statistics objective metadata follows the owner decisions", () => {
     const o = byId.get(id)!;
     assert.equal(o.domain, "statistics", `${id} domain`);
     assert.equal(o.strand, "data-handling-and-probability", `${id} strand`);
-    assert.equal(o.reviewStatus, "approved-for-implementation", `${id} reviewStatus (approved-for-implementation during dev)`);
+    assert.equal(o.reviewStatus, "approved", `${id} reviewStatus (curriculum-approved at v1.0.2)`);
     assert.ok(!o.answerTypes.includes("multiple-choice"), `${id} must not list multiple-choice as an answer type`);
     assert.deepEqual(o.answerTypes, expectAnswerTypes[id], `${id} answerTypes`);
   }

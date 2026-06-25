@@ -19,7 +19,7 @@
     "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.TABLE_VALUE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (reading bar charts)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
@@ -41,7 +41,7 @@
     "commonMisconceptions": ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF", "MISC.STAT.PICTO_HALF_AS_WHOLE", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.BAR_CHART.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (pictograms)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
@@ -63,7 +63,7 @@
     "commonMisconceptions": ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (frequency tables)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
@@ -85,7 +85,7 @@
     "commonMisconceptions": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE", "MISC.STAT.READ_OFF_BY_MAJOR_STEP"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.BAR_CHART.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (line graphs)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
@@ -107,7 +107,7 @@
     "commonMisconceptions": ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL", "MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "MISC.STAT.FREQ_TOTAL_COPIES_ONE"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.TABLE_VALUE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (completing frequency tables)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_LIST.01",
@@ -129,7 +129,7 @@
     "commonMisconceptions": ["MISC.STAT.MEAN_NO_DIVIDE", "MISC.STAT.MEAN_DIVIDE_WRONG_N", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEAN_MIDRANGE"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (mean of a list)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
@@ -151,7 +151,7 @@
     "commonMisconceptions": ["MISC.STAT.MEDIAN_NO_ORDER", "MISC.STAT.MEDIAN_WRONG_MIDDLE", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEDIAN_USES_MEAN", "MISC.STAT.MEDIAN_MIDRANGE"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.AVG.MEAN_LIST.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (median of a list)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
@@ -173,7 +173,7 @@
     "commonMisconceptions": ["MISC.STAT.MODE_USES_HIGHEST", "MISC.STAT.MODE_USES_FREQUENCY", "MISC.STAT.AVG_USES_MEDIAN"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.AVG.MEAN_LIST.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (mode of a list)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.AVG.RANGE_LIST.01",
@@ -195,7 +195,7 @@
     "commonMisconceptions": ["MISC.STAT.RANGE_IS_MAX", "MISC.STAT.RANGE_ADDS", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.RANGE_IS_MIN"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.AVG.MEAN_LIST.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (range of a list)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
@@ -217,7 +217,7 @@
     "commonMisconceptions": ["MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES", "MISC.STAT.MEANFT_NO_WEIGHT", "MISC.STAT.MEAN_DIVIDE_WRONG_N"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.AVG.MEAN_LIST.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (mean from a frequency table)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
@@ -239,6 +239,6 @@
     "commonMisconceptions": ["MISC.STAT.PROB_COMPLEMENT", "MISC.STAT.PROB_ODDS", "MISC.STAT.PROB_OFF_BY_ONE", "MISC.STAT.PROB_UNREDUCED"],
     "relatedObjectives": ["SPI.MIDDLE.STAT.READ.TABLE_VALUE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-statistics", "locator": "Middle School data handling (single-event probability)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   }
 ]

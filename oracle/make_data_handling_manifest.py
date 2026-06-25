@@ -65,8 +65,14 @@ def main() -> int:
 
     manifest = {
         "generatorId": dh.GENERATOR_ID, "generatorVersion": dh.GENERATOR_VERSION,
-        "validatorVersion": dh.VALIDATOR_VERSION, "approvalStatus": "pending-review",
+        "validatorVersion": dh.VALIDATOR_VERSION, "approvalStatus": "approved",
+        # Approval housekeeping (owner #14) — metadata only; does NOT alter canonical output.
+        "approval": {"decision": "curriculum-approved", "tag": "approved-stats-data-handling-v1.0.2",
+                     "approvedAt": os.environ.get("SPI_APPROVAL_DATE", "2026-06-25"),
+                     "approvalCommit": os.environ.get("SPI_APPROVAL_COMMIT", ""),
+                     "decisionLog": "DECISION_LOG.md #49"},
         "objectiveIds": [dh.OBJECTIVE_BY_TASK[t] for t in dh.TASKS],
+        "objectiveReviewStatus": "approved",
         "tasks": list(dh.TASKS), "artifacts": artifacts, "rasterExports": rasters,
     }
     with open(os.path.join(REVIEW_DIR, "stats_data_handling_manifest.json"), "w", encoding="utf-8") as fh:

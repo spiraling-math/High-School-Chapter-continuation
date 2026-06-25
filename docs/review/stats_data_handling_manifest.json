@@ -2,7 +2,14 @@
   "generatorId": "gen.stats.data-handling",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
+  "approvalStatus": "approved",
+  "approval": {
+    "decision": "curriculum-approved",
+    "tag": "approved-stats-data-handling-v1.0.2",
+    "approvedAt": "2026-06-25",
+    "approvalCommit": "",
+    "decisionLog": "DECISION_LOG.md #49"
+  },
   "objectiveIds": [
     "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
     "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
@@ -16,6 +23,7 @@
     "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
     "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01"
   ],
+  "objectiveReviewStatus": "approved",
   "tasks": [
     "read_bar_chart",
     "read_pictogram",
@@ -67,7 +75,7 @@
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
-      "sha256": "2167f1aee249660fae6979ea5c2b88bcd56ee2d5e6a256d4152462f677590668",
+      "sha256": "433da37d6c47d74211d9c5df59321dea43194cb1dc02b168c79aea854a56529f",
       "present": true
     },
     "oracle": {

@@ -111,11 +111,11 @@ export const GENERATORS: GeneratorModule[] = [
     id: dataHandling.GENERATOR_ID,
     version: dataHandling.GENERATOR_VERSION,
     label: "Statistics & data handling (charts + tables)",
-    // PENDING-REVIEW at v1.0.0: machine-validated TS mirror of the Python oracle (byte-parity
-    // gated by oracle/golden/data_handling.*), but NOT yet curriculum-approved. Available only
-    // in the Studio's review/developer mode; gated OUT of normal Studio use and production
-    // exports/samples until the owner's review-pack decision.
-    approvalStatus: "pending-review",
+    // Curriculum-APPROVED at v1.0.2 (DECISION_LOG.md #49). The TS mirror is byte-parity with the
+    // Python oracle (gated by oracle/golden/data_handling.*). Selectable in normal Studio use and
+    // included in production exports/samples; only v1.0.2 registered (v1.0.0/v1.0.1 preserved as
+    // historical, unapproved). Newly generated items begin at machine-validated.
+    approvalStatus: "approved",
     tasks: [
       { value: "read_bar_chart", label: "Read a bar chart", mc: true },
       { value: "read_pictogram", label: "Read a pictogram", mc: true },

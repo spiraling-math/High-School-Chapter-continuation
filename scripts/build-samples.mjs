@@ -19,6 +19,7 @@ import * as geometric from "../domains/sequences/geometric.ts";
 import * as linear from "../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../domains/geometry/angles.ts";
 import * as coordinateLines from "../domains/geometry/coordinate-lines.ts";
+import * as dataHandling from "../domains/statistics/data-handling.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -56,6 +57,12 @@ for (const [task, mode] of [["straight_line_missing_angle", "multiple-choice"], 
 for (const [task, mode] of [["read_point", "multiple-choice"], ["plot_point", "free-response"], ["gradient_two_points", "multiple-choice"], ["midpoint", "multiple-choice"], ["interpret_mx_c", "multiple-choice"], ["equation_from_graph", "multiple-choice"], ["equation_from_two_points", "multiple-choice"]]) {
   const item = coordinateLines.generate(13, { task, interactionType: mode });
   records.push(makeRecord(item, coordinateLines.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
+}
+// Include statistics & data handling — curriculum-approved at v1.0.2 (DECISION_LOG.md #49).
+// complete_frequency_table is free-response only; the rest are multiple-choice.
+for (const [task, mode] of [["read_bar_chart", "multiple-choice"], ["read_pictogram", "multiple-choice"], ["read_table_value", "multiple-choice"], ["read_line_graph", "multiple-choice"], ["complete_frequency_table", "free-response"], ["mean_from_list", "multiple-choice"], ["median_from_list", "multiple-choice"], ["mode_from_list", "free-response"], ["range_from_list", "multiple-choice"], ["mean_from_freq_table", "multiple-choice"], ["single_event_probability", "multiple-choice"]]) {
+  const item = dataHandling.generate(13, { task, interactionType: mode });
+  records.push(makeRecord(item, dataHandling.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
 }
 
 const katexCss = inlineKatexCss();
