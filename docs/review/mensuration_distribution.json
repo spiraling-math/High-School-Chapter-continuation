@@ -1,0 +1,451 @@
+{
+  "generatorId": "gen.measurement.mensuration",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "sweepSeeds": 10000,
+  "mode": "free-response",
+  "invalid": 0,
+  "multipleChoiceRejectedTasks": 8,
+  "tasks": {
+    "perimeter_rectangle": {
+      "objectiveId": "SPI.MIDDLE.MEAS.PERIM.RECTANGLE.01",
+      "items": 1082,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 791,
+        "2": 291
+      },
+      "bandPct": {
+        "1": 73.1,
+        "2": 26.9
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "length": 1082
+      },
+      "numberKinds": {
+        "integer": 1082
+      },
+      "baseUnits": {
+        "m": 378,
+        "mm": 371,
+        "cm": 333
+      },
+      "orientations": {
+        "portrait": 367,
+        "landscape": 715
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {},
+      "avgDrawAttempts": 1.237,
+      "maxDrawAttempts": 5
+    },
+    "perimeter_composite": {
+      "objectiveId": "SPI.MIDDLE.MEAS.PERIM.COMPOSITE_RECTILINEAR.01",
+      "items": 1351,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 315,
+        "3": 1036
+      },
+      "bandPct": {
+        "2": 23.3,
+        "3": 76.7
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "length": 1351
+      },
+      "numberKinds": {
+        "integer": 1351
+      },
+      "baseUnits": {
+        "mm": 453,
+        "m": 447,
+        "cm": 451
+      },
+      "orientations": {
+        "TL": 328,
+        "BR": 353,
+        "BL": 325,
+        "TR": 345
+      },
+      "decompositionModes": {
+        "additive": 700,
+        "subtractive": 651
+      },
+      "hiddenRoles": {},
+      "avgDrawAttempts": 1.0,
+      "maxDrawAttempts": 1
+    },
+    "area_rectangle": {
+      "objectiveId": "SPI.MIDDLE.MEAS.AREA.RECTANGLE.01",
+      "items": 1196,
+      "declaredBand": [
+        1,
+        2
+      ],
+      "bandCounts": {
+        "1": 888,
+        "2": 308
+      },
+      "bandPct": {
+        "1": 74.2,
+        "2": 25.8
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "area": 1196
+      },
+      "numberKinds": {
+        "integer": 1196
+      },
+      "baseUnits": {
+        "m": 413,
+        "mm": 392,
+        "cm": 391
+      },
+      "orientations": {
+        "portrait": 379,
+        "landscape": 739,
+        "square": 78
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {},
+      "avgDrawAttempts": 1.151,
+      "maxDrawAttempts": 5
+    },
+    "area_triangle": {
+      "objectiveId": "SPI.MIDDLE.MEAS.AREA.TRIANGLE_BASE_HEIGHT.01",
+      "items": 1163,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 480,
+        "3": 683
+      },
+      "bandPct": {
+        "2": 41.3,
+        "3": 58.7
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "area": 1163
+      },
+      "numberKinds": {
+        "integer": 878,
+        "rational": 285
+      },
+      "baseUnits": {
+        "mm": 397,
+        "m": 403,
+        "cm": 363
+      },
+      "orientations": {
+        "base>=height": 789,
+        "height>base": 374
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {},
+      "avgDrawAttempts": 1.158,
+      "maxDrawAttempts": 5
+    },
+    "area_composite": {
+      "objectiveId": "SPI.MIDDLE.MEAS.AREA.COMPOSITE_DECOMPOSITION.01",
+      "items": 1352,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 187,
+        "4": 1165
+      },
+      "bandPct": {
+        "3": 13.8,
+        "4": 86.2
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "area": 1352
+      },
+      "numberKinds": {
+        "integer": 1352
+      },
+      "baseUnits": {
+        "m": 459,
+        "mm": 448,
+        "cm": 445
+      },
+      "orientations": {
+        "TR": 343,
+        "TL": 326,
+        "BR": 332,
+        "BL": 351
+      },
+      "decompositionModes": {
+        "subtractive": 695,
+        "additive": 657
+      },
+      "hiddenRoles": {},
+      "avgDrawAttempts": 1.0,
+      "maxDrawAttempts": 1
+    },
+    "missing_length_perimeter": {
+      "objectiveId": "SPI.MIDDLE.MEAS.PERIM.MISSING_LENGTH.01",
+      "items": 1280,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 561,
+        "3": 719
+      },
+      "bandPct": {
+        "2": 43.8,
+        "3": 56.2
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "length": 1280
+      },
+      "numberKinds": {
+        "integer": 1280
+      },
+      "baseUnits": {
+        "m": 422,
+        "mm": 453,
+        "cm": 405
+      },
+      "orientations": {
+        "portrait": 449,
+        "landscape": 831
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {
+        "width": 641,
+        "height": 639
+      },
+      "avgDrawAttempts": 1.071,
+      "maxDrawAttempts": 4
+    },
+    "missing_dimension_area": {
+      "objectiveId": "SPI.MIDDLE.MEAS.AREA.MISSING_DIMENSION.01",
+      "items": 1272,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 554,
+        "3": 718
+      },
+      "bandPct": {
+        "2": 43.6,
+        "3": 56.4
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "length": 1272
+      },
+      "numberKinds": {
+        "integer": 1272
+      },
+      "baseUnits": {
+        "mm": 427,
+        "m": 410,
+        "cm": 435
+      },
+      "orientations": {
+        "landscape": 899,
+        "portrait": 373
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {
+        "height": 635,
+        "width": 637
+      },
+      "avgDrawAttempts": 1.071,
+      "maxDrawAttempts": 4
+    },
+    "missing_triangle_base_height": {
+      "objectiveId": "SPI.MIDDLE.MEAS.AREA.TRIANGLE_MISSING_BASE_HEIGHT.01",
+      "items": 1304,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 1153,
+        "4": 151
+      },
+      "bandPct": {
+        "3": 88.4,
+        "4": 11.6
+      },
+      "unreachableBands": [],
+      "dimensions": {
+        "length": 1304
+      },
+      "numberKinds": {
+        "integer": 1304
+      },
+      "baseUnits": {
+        "cm": 469,
+        "m": 414,
+        "mm": 421
+      },
+      "orientations": {
+        "base>=height": 879,
+        "height>base": 425
+      },
+      "decompositionModes": {},
+      "hiddenRoles": {
+        "height": 651,
+        "base": 653
+      },
+      "avgDrawAttempts": 1.07,
+      "maxDrawAttempts": 4
+    }
+  },
+  "quantityCheckerMatrix": {
+    "codeCounts": {
+      "correct": 3000,
+      "missing-unit": 3000,
+      "wrong-base-unit": 3000,
+      "incorrect-value": 3000,
+      "wrong-exponent": 3000,
+      "wrong-dimension": 3000
+    },
+    "samplesByTask": {
+      "missing_length_perimeter": {
+        "seed": 1,
+        "answer": "3 m",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "squareForLength": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "missing_triangle_base_height": {
+        "seed": 4,
+        "answer": "4 cm",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "squareForLength": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "area_composite": {
+        "seed": 6,
+        "answer": "78 m^2",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "linearForArea": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "perimeter_rectangle": {
+        "seed": 7,
+        "answer": "36 m",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "squareForLength": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "perimeter_composite": {
+        "seed": 8,
+        "answer": "44 mm",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "squareForLength": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "area_rectangle": {
+        "seed": 12,
+        "answer": "32 m^2",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "linearForArea": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "area_triangle": {
+        "seed": 14,
+        "answer": "36 mm^2",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "linearForArea": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      },
+      "missing_dimension_area": {
+        "seed": 30,
+        "answer": "7 mm",
+        "cases": {
+          "equivalentValueCorrectUnit": "correct",
+          "bareNumber": "missing-unit",
+          "wrongBaseUnit": "wrong-base-unit",
+          "incorrectValueCorrectUnit": "incorrect-value",
+          "squareForLength": "wrong-exponent",
+          "wrongDimension": "wrong-dimension"
+        }
+      }
+    }
+  },
+  "allCheckerCodesReachable": true,
+  "misconceptionCoverage": {
+    "exercised": 13,
+    "total": 13,
+    "counts": {
+      "MISC.MENS.USES_AREA_FOR_PERIMETER": 1512,
+      "MISC.MENS.SQUARE_UNITS_FOR_PERIMETER": 2511,
+      "MISC.MENS.WRONG_BASE_UNIT": 1936,
+      "MISC.MENS.RIGHT_NUMBER_NO_UNIT": 4000,
+      "MISC.MENS.FORGETS_TO_HALVE": 965,
+      "MISC.MENS.USES_SLOPING_SIDE": 965,
+      "MISC.MENS.SUBTRACTS_WRONG_RECTANGLE": 552,
+      "MISC.MENS.ADDS_DIMS_FOR_AREA": 1036,
+      "MISC.MENS.USES_PERIMETER_FOR_AREA": 1523,
+      "MISC.MENS.LINEAR_UNITS_FOR_AREA": 1489,
+      "MISC.MENS.ADDS_TWO_SIDES_RECT": 427,
+      "MISC.MENS.OMITS_INDENTED_EDGE": 547,
+      "MISC.MENS.COUNTS_INTERNAL_EDGE": 547
+    },
+    "recomputationMismatches": 0
+  },
+  "allBandsReachable": true,
+  "failures": []
+}
