@@ -4,7 +4,7 @@
   "validatorVersion": "1.0.0",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "ad8b7ca6a15918c241b97a9cc98a4e7966f6d106",
+  "gitCommit": "8a099cb0f5ad52a921751abbe908a7a01e5844e4",
   "approval": {
     "decision": "implementation-authorized-pending-review",
     "tag": "mensuration-v1.0.0",
@@ -81,7 +81,7 @@
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.MEAS.json",
-      "sha256": "263b1cead21d9d07de267ce05156c7018da2f6bc61f8a606aa2a93a261593df7",
+      "sha256": "d2e7af360cadcfbd55e47a072be617da3b71a334cee18896c0b24a3402010a29",
       "present": true
     },
     "objectiveIds": {

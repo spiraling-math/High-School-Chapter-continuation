@@ -87,7 +87,7 @@ test("mensuration cross-domain prerequisites resolve and use only ONE-STEP linea
   const inverse = HIDDEN_DIMENSION_TASKS.map((t) => OBJECTIVE_BY_TASK[t]);
   for (const id of inverse) {
     const o = byId.get(id)!;
-    const xrefs: string[] = (o.crossDomainRelationships ?? []).map((r: any) => r.objectiveId);
+    const xrefs: string[] = o.crossDomainRelationships ?? []; // schema: array of objective-ID strings
     assert.ok(
       xrefs.some((x) => x === "SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01" || x === "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01"),
       `${id} must record a one-step linear-equation cross-domain relationship`,
