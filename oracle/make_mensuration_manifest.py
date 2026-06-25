@@ -75,20 +75,22 @@ def main() -> int:
     manifest = {
         "generatorId": M.GENERATOR_ID, "generatorVersion": M.GENERATOR_VERSION,
         "validatorVersion": M.VALIDATOR_VERSION,
-        "approvalStatus": "pending-review",
-        "objectiveReviewStatus": "approved-for-implementation",
-        "gitCommit": _git_commit(),
-        # Version-tag terminology (owner artifact-identity REVISE): the SUPERSEDED implementation tag is
-        # NOT presented as an approval tag. The approved tag is created only on the owner's final APPROVE.
+        "approvalStatus": "approved",
+        "objectiveReviewStatus": "approved",
+        "gitCommit": os.environ.get("SPI_BUILD_COMMIT") or _git_commit(),
+        # Version tags (owner final APPROVE): the approved reference tag is created on approval; the
+        # superseded v1.0.0 implementation tag is recorded as previousVersionTag, never as the approval tag.
         "versionTags": {
             "previousVersionTag": "mensuration-v1.0.0",
             "currentImplementationTag": "mensuration-v1.0.1",
-            "approvedTag": None,
+            "approvedTag": "approved-mensuration-v1.0.1",
         },
-        # Implementation-authorization housekeeping — metadata only; does NOT alter canonical output.
-        "approval": {"decision": "implementation-authorized-pending-review",
-                     "authorizedAt": os.environ.get("SPI_AUTHORIZED_DATE", "2026-06-25"),
-                     "decisionLog": "DECISION_LOG.md #50 (build) + #51 (corrections) + artifact-identity REVISE",
+        # Approval housekeeping (owner final APPROVE) — metadata only; does NOT alter canonical output.
+        "approval": {"decision": "curriculum-approved",
+                     "approvedTag": "approved-mensuration-v1.0.1",
+                     "approvedAt": os.environ.get("SPI_APPROVAL_DATE", "2026-06-25"),
+                     "approvalCommit": os.environ.get("SPI_APPROVAL_COMMIT", ""),
+                     "decisionLog": "DECISION_LOG.md #53",
                      "schemaExtension": "answer.type 'quantity' + answer.measure (APPROVED)"},
         "objectiveIds": [M.OBJECTIVE_BY_TASK[t] for t in M.TASKS],
         "tasks": list(M.TASKS),
@@ -99,7 +101,7 @@ def main() -> int:
     with open(os.path.join(REVIEW_DIR, "mensuration_manifest.json"), "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, indent=2)
     present = sum(1 for a in artifacts.values() if a["present"])
-    print(f"Manifest written: {present}/{len(artifacts)} artifacts hashed (approvalStatus=pending-review).")
+    print(f"Manifest written: {present}/{len(artifacts)} artifacts hashed (approvalStatus={manifest['approvalStatus']}).")
     for name, a in artifacts.items():
         print(f"  {name:20s} {'--' if not a['present'] else a['sha256'][:12]}  {a['path']}")
     return 0 if present == len(artifacts) else 1

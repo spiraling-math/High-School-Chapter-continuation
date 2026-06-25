@@ -280,8 +280,9 @@ class TestArtifactIdentity(unittest.TestCase):
         vt = self.manifest["versionTags"]
         self.assertEqual(vt["previousVersionTag"], "mensuration-v1.0.0")
         self.assertEqual(vt["currentImplementationTag"], "mensuration-v1.0.1")
-        self.assertIsNone(vt["approvedTag"])
-        self.assertNotIn("tag", self.manifest["approval"], "superseded tag must not appear as an approval tag")
+        self.assertEqual(vt["approvedTag"], "approved-mensuration-v1.0.1")  # created on final APPROVE
+        # the approved tag is the genuine approved reference, never the superseded v1.0.0 implementation tag
+        self.assertNotEqual(self.manifest["approval"].get("approvedTag"), "mensuration-v1.0.0")
 
     def test_manifest_hashes_match_files(self):
         import hashlib
@@ -318,8 +319,8 @@ class TestArtifactIntegrity(unittest.TestCase):
 
     def test_manifest_metadata(self):
         self.assertEqual(self.manifest["generatorVersion"], M.GENERATOR_VERSION)
-        self.assertEqual(self.manifest["approvalStatus"], "pending-review")
-        self.assertEqual(self.manifest["objectiveReviewStatus"], "approved-for-implementation")
+        self.assertEqual(self.manifest["approvalStatus"], "approved")
+        self.assertEqual(self.manifest["objectiveReviewStatus"], "approved")
         self.assertEqual(self.manifest["interactionTypes"], ["free-response"])
         self.assertEqual(self.manifest["answerTypes"], ["quantity"])
         self.assertEqual(sorted(self.manifest["objectiveIds"]), sorted(M.OBJECTIVE_BY_TASK[t] for t in M.TASKS))

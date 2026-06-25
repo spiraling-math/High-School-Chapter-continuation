@@ -2,7 +2,7 @@
   "generatorId": "gen.measurement.mensuration",
   "generatorVersion": "1.0.1",
   "validatorVersion": "1.0.1",
-  "gitCommit": "6d765fe597ab31573f0ae738e65e9ba8c6e97432",
+  "gitCommit": "833e4b1d10a39e4e01ff3a9cd9885ab873475d8a",
   "auditPage": "docs/review/mensuration_visual_audit.html",
   "modes": [
     "premium",

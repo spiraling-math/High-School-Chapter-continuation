@@ -2,18 +2,20 @@
   "generatorId": "gen.measurement.mensuration",
   "generatorVersion": "1.0.1",
   "validatorVersion": "1.0.1",
-  "approvalStatus": "pending-review",
-  "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "6d765fe597ab31573f0ae738e65e9ba8c6e97432",
+  "approvalStatus": "approved",
+  "objectiveReviewStatus": "approved",
+  "gitCommit": "833e4b1d10a39e4e01ff3a9cd9885ab873475d8a",
   "versionTags": {
     "previousVersionTag": "mensuration-v1.0.0",
     "currentImplementationTag": "mensuration-v1.0.1",
-    "approvedTag": null
+    "approvedTag": "approved-mensuration-v1.0.1"
   },
   "approval": {
-    "decision": "implementation-authorized-pending-review",
-    "authorizedAt": "2026-06-25",
-    "decisionLog": "DECISION_LOG.md #50 (build) + #51 (corrections) + artifact-identity REVISE",
+    "decision": "curriculum-approved",
+    "approvedTag": "approved-mensuration-v1.0.1",
+    "approvedAt": "2026-06-25",
+    "approvalCommit": "bec630792eabadbc693633d83315b9fe2cb3b020",
+    "decisionLog": "DECISION_LOG.md #53",
     "schemaExtension": "answer.type 'quantity' + answer.measure (APPROVED)"
   },
   "objectiveIds": [
@@ -85,7 +87,7 @@
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.MEAS.json",
-      "sha256": "d2e7af360cadcfbd55e47a072be617da3b71a334cee18896c0b24a3402010a29",
+      "sha256": "caadda80804dede11edd92b5ea02c57527d15a642c50bd9322cd1c530d6c5a54",
       "present": true
     },
     "objectiveIds": {
@@ -125,12 +127,12 @@
     },
     "visualAudit": {
       "path": "docs/review/mensuration_visual_audit.html",
-      "sha256": "d78d682e1610dea7a69df080412adc525a8f8290a63ccd52981a0f927676b51c",
+      "sha256": "932300ef3ea72814e94371ff57f39a528ec795c44e54da0a033aa4280909415c",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/mensuration_browser_verification.json",
-      "sha256": "44f16e00a756ecd71064dd136cf81f45f02e31be12dba6394bdc66013944763a",
+      "sha256": "24b994568fc4d6117c545d6ecbf40f4d8cbd46cbea20abe4b07fd61608f807a3",
       "present": true
     }
   }
