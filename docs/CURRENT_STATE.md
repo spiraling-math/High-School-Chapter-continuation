@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-25.
 
-## `gen.stats.data-handling` v1.0.2 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
+## `gen.stats.data-handling` v1.0.2 — CURRICULUM-APPROVED (2026-06-25)
 
 Statistics & Data Handling — built **oracle-first** (`DECISION_LOG.md` #45, decisions A–P),
 **corrected to v1.0.1** after a curriculum/semantic REVISE (#46: context-domain registry;
@@ -33,15 +33,17 @@ premium-dark / accessible / print), per-root style isolation (real-browser 14/14
 self-contained export. `MISC.STAT.*` registry (27 rules, all shown). Difficulty uses six
 schema-valid axes incl. a dedicated `scaffolding` axis; **every declared band is reachable**.
 
-**Registry: `approvalStatus: pending-review`** — gated OUT of normal Generator Studio and
-production samples (0 stats records in `bank.json`); items begin machine-validated; nothing
-auto-published. The v1.0.2 generator is accepted; its review PACKAGE was corrected (`DECISION_LOG.md`
-#48) after a coverage REJECT — the review pack now derives its required cells from the distribution
-report and carries an explicit coverage matrix (**57/57** task × interaction/band/answer-shape cells,
-`allCovered: true`), with six blocking coverage tests; generator bytes unchanged (no v1.0.3).
-**Next:** owner **APPROVE or REJECT** of the corrected v1.0.2 review package (`docs/review/stats_data_handling_*`).
-Provisional note: some reading/range tasks lean to the upper declared band (owner M — provisional
-pending review; reachability gate met).
+**CURRICULUM-APPROVED at v1.0.2 (`DECISION_LOG.md` #49):** `approvalStatus: approved` — selectable in
+normal Generator Studio use and included in production exports/samples (`scripts/build-samples.mjs`
+emits all 11 tasks; `bank.json` carries 11 stats records, 39 total); the eleven `SPI.MIDDLE.STAT.*`
+objectives are `reviewStatus: approved`; only v1.0.2 registered; v1.0.0/v1.0.1 preserved (tags),
+historical/unapproved. The 28 reviewed items are approved golden exemplars; the v1.0.2 fixtures,
+review pack + coverage matrix, audit, distribution, browser verification, and manifest are frozen
+immutable (tag `approved-stats-data-handling-v1.0.2`). The corrected review pack covers **57/57**
+curriculum-review cells + 113/113 extra dimensions + all 36 misconception/diagnostic rules.
+Newly generated items begin machine-validated; nothing auto-published. **Non-blocking calibration/
+efficiency debt** (do not alter approved output): difficulty/median-band concentration in some
+reading/range tasks; the high `mode_from_list` multiple-choice redraw rate.
 
 ## `gen.geometry.coordinate-lines` v1.0.2 — CURRICULUM-APPROVED (2026-06-24)
 

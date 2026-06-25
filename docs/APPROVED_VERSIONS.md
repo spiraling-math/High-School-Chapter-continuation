@@ -14,6 +14,8 @@ committed golden/parity fixtures.
 | `gen.algebra.linear-equations` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_linear_equations_proposal.md` | `0ebcb96` | 2026-06-21 |
 | `gen.geometry.angles-figures` | **1.2.3** | curriculum-approved | `GENERATOR_SPEC_geometry_svg_proposal.md` | `4c9705c` | 2026-06-23 |
 | `gen.geometry.coordinate-lines` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` | `660b50e` | 2026-06-24 |
+| `gen.stats.data-handling` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_statistics_data_handling_PROPOSAL.md` | `17540e8` | 2026-06-25 |
+| `gen.stats.data-handling` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `stats-data-handling-v1.0.{0,1}` | — |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
 | `gen.sequences.arithmetic` | 1.0.0, 1.0.1 | preserved (superseded by 1.1.0) | — | `5a962a7`, `4cbb6a1` | — |
 | `gen.algebra.linear-equations` | 1.0.0 | preserved (superseded by 1.0.1) | — | `1cfc76c` | — |
@@ -76,6 +78,17 @@ objectives); they are not themselves bound to a generated task in this version.
 | `SPI.MIDDLE.GEO.COORD.INTERPRET_MX_C.01` | coordinate interpret_mx_c | 1.0.2 | approved |
 | `SPI.MIDDLE.GEO.COORD.EQUATION_FROM_GRAPH.01` | coordinate equation_from_graph | 1.0.2 | approved |
 | `SPI.MIDDLE.GEO.COORD.EQUATION_FROM_2PTS.01` | coordinate equation_from_two_points | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.READ.BAR_CHART.01` | stats read_bar_chart | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.READ.PICTOGRAM.01` | stats read_pictogram | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.READ.TABLE_VALUE.01` | stats read_table_value | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01` | stats read_line_graph | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01` | stats complete_frequency_table | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01` | stats mean_from_list | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01` | stats median_from_list | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.AVG.MODE_LIST.01` | stats mode_from_list | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.AVG.RANGE_LIST.01` | stats range_from_list | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01` | stats mean_from_freq_table | 1.0.2 | approved |
+| `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01` | stats single_event_probability | 1.0.2 | approved |
 
 The five `SPI.MIDDLE.GEO.*.01` angle objective **definitions** were curriculum-approved on
 2026-06-22 (`DECISION_LOG.md` #34); their **generator** `gen.geometry.angles-figures`
@@ -184,25 +197,55 @@ approved-exemplar status is recorded here.
 | `gen.algebra.linear-equations` 1.0.1 | `oracle/golden/linear_equations.golden.json` | 1, 42, 123456789, 2147483647 |
 | `gen.geometry.angles-figures` 1.2.3 | `oracle/golden/geometry_angles.golden.json` | golden seeds + the review-pack items |
 | `gen.geometry.coordinate-lines` 1.0.2 | `oracle/golden/coordinate_lines.golden.json` | golden seeds + the 29 review-pack items (25 figures + 4 text-only) |
+| `gen.stats.data-handling` 1.0.2 | `oracle/golden/data_handling.golden.json` | golden seeds + the 28 review-pack items (the reachability-derived coverage matrix) |
 | Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md`, `docs/review/coordinate_lines_review_pack.md` | all listed items |
 
-## Pending-review generators (built, gated, awaiting owner review)
+## Statistics & data-handling generator — curriculum-approved at v1.0.2 (2026-06-25, `DECISION_LOG.md` #49)
 
-- **`gen.stats.data-handling` 1.0.2 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45 spec-approve, #46 + #47 REVISE applied).
-  Built oracle-first, corrected to v1.0.1 (curriculum/semantic REVISE), then to v1.0.2 after a
-  direct-chart-readability REVISE: a direct-read scale contract for bar/line charts — every queried
-  value lands on a visible major tick or a rendered minor subdivision (no pixel estimation; 10k audit
-  0 off-grid); nine SVG-inspecting readability checks. **v1.0.0 + v1.0.1 preserved unchanged**
-  (tags `stats-data-handling-v1.0.0`, `stats-data-handling-v1.0.1`; v1.0.2 = `stats-data-handling-v1.0.2`). **Not yet
-  curriculum-approved and NOT selectable** in normal Generator Studio or production samples (gated;
-  0 stats records in `bank.json`). The eleven `SPI.MIDDLE.STAT.*` objectives are
-  `reviewStatus: approved-for-implementation` (curriculum-approved only after the owner reviews the
-  implemented generator + review pack). Independent Python oracle + byte-for-byte TS mirror;
-  golden(19)+parity(300) byte-identical; 10,000-seed sweep 0 invalid; conformant. Review artifacts:
-  `docs/review/stats_data_handling_{review_pack.md,review_pack.json,visual_audit.html,distribution.json,browser_verification.json,manifest.json}`
-  (35 misconceptions; SHA-256 attested; Python artifact-integrity test). The additive
-  `core/visual-style/data-chart-theme` reuses the approved cartesian-theme (coordinate-lines v1.0.2
-  output unchanged). **Next owner decision: APPROVE or REJECT.**
+The owner approved `gen.stats.data-handling` v1.0.2 + validator v1.0.2, the implemented
+specification, the eleven-task scope, the canonical data model, the exact arithmetic + answer
+checkers, the semantic HTML-table renderer, the bar-chart/pictogram/line-graph renderers, the
+**direct-read major/minor scale contract**, the misconception/distractor registry, the difficulty
+model + currently declared ranges, the worked solutions, the context-domain rules, the accessibility
+model, the canonical monochrome rendering, the four render modes, per-root visual-style isolation,
+the 6000×4200 export contract, and the corrected review-pack coverage model. Built oracle-first;
+corrected via v1.0.1 (curriculum/semantic REVISE) and v1.0.2 (direct-read REVISE + coverage-artifact
+correction). **v1.0.0 + v1.0.1 preserved unchanged** (tags `stats-data-handling-v1.0.{0,1}`),
+historical / superseded / unapproved. Only v1.0.2 registered (`approvalStatus: approved`),
+selectable in normal Studio + included in production samples (11 stats records in `bank.json`).
+The eleven `SPI.MIDDLE.STAT.*` objectives are `reviewStatus: approved`. Tag
+**`approved-stats-data-handling-v1.0.2`** (= `stats-data-handling-v1.0.2`).
+
+**Frozen immutable approval artifacts** (hash-attested by `docs/review/stats_data_handling_manifest.json`
++ the blocking Python/TS artifact-integrity tests):
+
+| Artifact | Path | SHA-256 (prefix) |
+| --- | --- | --- |
+| Golden fixtures | `oracle/golden/data_handling.golden.json` | `ccb9a67e5cd4` |
+| Parity fixtures (300) | `oracle/golden/data_handling.parity.json` | `4ce2e60553b5` |
+| Distribution + direct-read audit | `docs/review/stats_data_handling_distribution.json` | `aba7aa521e3f` |
+| Review pack (JSON, coverage matrix) | `docs/review/stats_data_handling_review_pack.json` | `e52b3bd8a78f` |
+| Review pack (Markdown) | `docs/review/stats_data_handling_review_pack.md` | `b4b22fe56d8d` |
+| Visual audit | `docs/review/stats_data_handling_visual_audit.html` | `7978e6f18abf` |
+| Browser verification | `docs/review/stats_data_handling_browser_verification.json` | `29778a3f6604` |
+| Objectives | `curriculum/objectives/SPI.MIDDLE.STAT.json` | `433da37d6c47` |
+| Oracle | `oracle/spi_oracle/data_handling.py` | `78c37f9ed41b` |
+| Misconceptions | `oracle/spi_oracle/data_handling_misconceptions.py` | `9186fced64e7` |
+| Data-chart theme | `core/visual-style/data-chart-theme.json` | `7c308740a908` |
+
+**6000×4200 export hashes** (self-contained, materialised): premium `2c155603548a`, accessible
+`5d581770ab54`, print `6cc85b8ef72c`.
+
+The approved review pack covers **57/57 curriculum-review cells** (every task × supported
+interaction, × reachable difficulty band, × realised answer shape, derived from the distribution
+report) **+ 113/113 additional dimensions + all 36 misconception/diagnostic rules; zero missing
+coverage**. The 28 reviewed representative items are approved golden exemplars. The additive
+`core/visual-style/data-chart-theme` reuses the approved coordinate-lines v1.0.2 cartesian-theme
+(coordinate-lines output unchanged).
+
+**Non-blocking calibration/efficiency debt** (do not alter approved output): difficulty + median-band
+concentration in some reading/range tasks; the high `mode_from_list` multiple-choice deterministic
+redraw rate.
 
 ## Lifecycle policy (unchanged)
 
