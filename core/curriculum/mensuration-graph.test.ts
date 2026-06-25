@@ -101,7 +101,7 @@ test("mensuration objective metadata follows the owner decisions (A, C, F, M)", 
     const o = byId.get(id)!;
     assert.equal(o.domain, "measurement", `${id} domain`);
     assert.equal(o.strand, "mensuration", `${id} strand`);
-    assert.equal(o.reviewStatus, "approved-for-implementation", `${id} reviewStatus (owner M)`);
+    assert.equal(o.reviewStatus, "approved", `${id} reviewStatus (curriculum-approved at v1.0.1)`);
     // Every answer is a dimensional quantity; multiple-choice is never an answer type (owner C).
     assert.deepEqual(o.answerTypes, ["quantity"], `${id} answerTypes must be exactly ["quantity"]`);
     assert.ok(!o.answerTypes.includes("multiple-choice"), `${id} must not list multiple-choice`);

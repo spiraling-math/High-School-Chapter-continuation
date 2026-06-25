@@ -20,6 +20,7 @@ import * as linear from "../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../domains/geometry/angles.ts";
 import * as coordinateLines from "../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../domains/statistics/data-handling.ts";
+import * as mensuration from "../domains/measurement/mensuration.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -63,6 +64,14 @@ for (const [task, mode] of [["read_point", "multiple-choice"], ["plot_point", "f
 for (const [task, mode] of [["read_bar_chart", "multiple-choice"], ["read_pictogram", "multiple-choice"], ["read_table_value", "multiple-choice"], ["read_line_graph", "multiple-choice"], ["complete_frequency_table", "free-response"], ["mean_from_list", "multiple-choice"], ["median_from_list", "multiple-choice"], ["mode_from_list", "free-response"], ["range_from_list", "multiple-choice"], ["mean_from_freq_table", "multiple-choice"], ["single_event_probability", "multiple-choice"]]) {
   const item = dataHandling.generate(13, { task, interactionType: mode });
   records.push(makeRecord(item, dataHandling.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
+}
+
+// Include mensuration items (all eight FREE-RESPONSE tasks; dimensional-quantity answers) —
+// curriculum-approved at v1.0.1 (DECISION_LOG #53).
+for (const task of ["perimeter_rectangle", "perimeter_composite", "area_rectangle", "area_triangle",
+  "area_composite", "missing_length_perimeter", "missing_dimension_area", "missing_triangle_base_height"]) {
+  const item = mensuration.generate(13, { task, interactionType: "free-response" });
+  records.push(makeRecord(item, mensuration.validate(item).status, { mode: "free-response", genConfig: { interactionType: "free-response", task } }));
 }
 
 const katexCss = inlineKatexCss();

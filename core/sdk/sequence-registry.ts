@@ -138,13 +138,14 @@ export const GENERATORS: GeneratorModule[] = [
     id: mensuration.GENERATOR_ID,
     version: mensuration.GENERATOR_VERSION,
     label: "Mensuration — perimeter, area & composite shapes",
-    // PENDING-REVIEW (owner REVISE decision M): implementation is authorized and machine-validated
-    // oracle-first (byte-parity TS mirror, gated by oracle/golden/mensuration.*), but the family is
-    // GATED OUT of normal Generator Studio and production exports/samples until the owner's
-    // review-pack APPROVE/REJECT. Visible only in ?review developer mode. The eight objectives are
-    // approved-for-implementation; the dimensional-quantity answer.type "quantity" schema extension
-    // is approved. All eight tasks are FREE-RESPONSE only (no multiple-choice in v1.0.0).
-    approvalStatus: "pending-review",
+    // Curriculum-APPROVED at v1.0.1 (DECISION_LOG.md #53; tag approved-mensuration-v1.0.1). The TS
+    // mirror is byte-parity with the Python oracle (gated by oracle/golden/mensuration.*). Selectable
+    // in normal Studio use and included in production exports/samples; only v1.0.1 registered
+    // (v1.0.0 preserved as historical, unapproved). The eight SPI.MIDDLE.MEAS.* objectives are
+    // curriculum-approved; the dimensional-quantity answer.type "quantity" + answer.measure contract
+    // is approved (length/area, mm/cm/m; NO cross-unit conversion). All eight tasks are FREE-RESPONSE
+    // only. Newly generated items begin at machine-validated.
+    approvalStatus: "approved",
     tasks: [
       { value: "perimeter_rectangle", label: "Perimeter of a rectangle", mc: false },
       { value: "perimeter_composite", label: "Perimeter of a composite (L-shape)", mc: false },

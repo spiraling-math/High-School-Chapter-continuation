@@ -54,7 +54,7 @@
         "locator": "Middle School mensuration (perimeter of rectangles)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -113,7 +113,7 @@
         "locator": "Middle School mensuration (perimeter of composite rectilinear shapes)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -171,7 +171,7 @@
         "locator": "Middle School mensuration (area of rectangles)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -229,7 +229,7 @@
         "locator": "Middle School mensuration (area of triangles, base and perpendicular height)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -289,7 +289,7 @@
         "locator": "Middle School mensuration (area of composite rectilinear shapes by decomposition)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -351,7 +351,7 @@
         "locator": "Middle School mensuration (missing length from a given perimeter)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -413,7 +413,7 @@
         "locator": "Middle School mensuration (missing rectangle dimension from a given area)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   },
   {
@@ -475,7 +475,7 @@
         "locator": "Middle School mensuration (missing triangle base or height from a given area)"
       }
     ],
-    "reviewStatus": "approved-for-implementation",
+    "reviewStatus": "approved",
     "version": "1.0.0"
   }
 ]
