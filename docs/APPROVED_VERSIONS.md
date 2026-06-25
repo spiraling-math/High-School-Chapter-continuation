@@ -188,17 +188,21 @@ approved-exemplar status is recorded here.
 
 ## Pending-review generators (built, gated, awaiting owner review)
 
-- **`gen.stats.data-handling` 1.0.0 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45).
-  Built oracle-first after the owner's APPROVE-WITH-REQUIRED-REVISIONS (decisions A–P). **Not yet
+- **`gen.stats.data-handling` 1.0.1 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45 spec-approve, #46 REVISE applied).
+  Built oracle-first, then corrected to v1.0.1 after the owner's curriculum/semantic REVISE
+  (context-domain registry; unique-mode-gated distractors; pictogram exact-symbol policy; blank-kind
+  frequency diagnostics; even-median solutions; representation-specific solutions; single-source
+  ranges + registry-as-single-source misconceptions; signed-arithmetic display). **v1.0.0 preserved
+  unchanged** (tags `stats-data-handling-v1.0.0`; v1.0.1 = `stats-data-handling-v1.0.1`). **Not yet
   curriculum-approved and NOT selectable** in normal Generator Studio or production samples (gated;
   0 stats records in `bank.json`). The eleven `SPI.MIDDLE.STAT.*` objectives are
-  `reviewStatus: approved-for-implementation` (they become curriculum-approved only after the owner
-  reviews the implemented generator + review pack). Independent Python oracle + byte-for-byte TS
-  mirror; golden(19)+parity(300) byte-identical; 10,000-seed sweep 0 invalid; conformant. Review
-  artifacts: `docs/review/stats_data_handling_{review_pack.md,review_pack.json,visual_audit.html,distribution.json,browser_verification.json,manifest.json}`
-  (SHA-256 attested; Python artifact-integrity test). The additive `core/visual-style/data-chart-theme`
-  reuses the approved cartesian-theme (coordinate-lines v1.0.2 output unchanged). **Next owner decision:
-  APPROVE / REVISE / REJECT.**
+  `reviewStatus: approved-for-implementation` (curriculum-approved only after the owner reviews the
+  implemented generator + review pack). Independent Python oracle + byte-for-byte TS mirror;
+  golden(19)+parity(300) byte-identical; 10,000-seed sweep 0 invalid; conformant. Review artifacts:
+  `docs/review/stats_data_handling_{review_pack.md,review_pack.json,visual_audit.html,distribution.json,browser_verification.json,manifest.json}`
+  (35 misconceptions; SHA-256 attested; Python artifact-integrity test). The additive
+  `core/visual-style/data-chart-theme` reuses the approved cartesian-theme (coordinate-lines v1.0.2
+  output unchanged). **Next owner decision: APPROVE or REJECT.**
 
 ## Lifecycle policy (unchanged)
 

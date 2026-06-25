@@ -2,11 +2,17 @@
 
 Last updated: 2026-06-25.
 
-## `gen.stats.data-handling` v1.0.0 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
+## `gen.stats.data-handling` v1.0.1 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
 
 Statistics & Data Handling — the next architecture-proving family, built **oracle-first** after
 the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec (`DECISION_LOG.md` #45; decisions
-A–P applied). **11 tasks** under the new `statistics` domain / `data-handling-and-probability`
+A–P applied), then **corrected to v1.0.1** after a curriculum/semantic REVISE (`DECISION_LOG.md`
+#46): a context-domain registry (negatives only in signed/context-free contexts); a unique-mode
+gate on the mode distractor + new always-true averages fallbacks; pictogram exact-symbol policy;
+blank-kind-specific frequency-table diagnostics; even-length median solutions that average the
+two middles; representation-specific worked solutions; single-source difficulty ranges + registry-
+as-single-source misconceptions; natural signed-arithmetic display. v1.0.0 preserved unchanged
+(tag `stats-data-handling-v1.0.0`). **11 tasks** under the new `statistics` domain / `data-handling-and-probability`
 strand, 1:1 with the eleven `SPI.MIDDLE.STAT.*` objectives (`reviewStatus: approved-for-implementation`)
 via the single-source `OBJECTIVE_BY_TASK` (`core/curriculum/stats-objective-ids.ts`): read a value
 from a bar chart / pictogram / frequency table / line graph; complete a frequency table
@@ -27,9 +33,9 @@ schema-valid axes incl. a dedicated `scaffolding` axis; **every declared band is
 
 **Registry: `approvalStatus: pending-review`** — gated OUT of normal Generator Studio and
 production samples (0 stats records in `bank.json`); items begin machine-validated; nothing
-auto-published. **Next:** owner **APPROVE / REVISE / REJECT** of the implemented generator + review
-pack (`docs/review/stats_data_handling_*`). Provisional note: some reading/range tasks lean to the
-upper declared band (owner M — provisional pending review; reachability gate met).
+auto-published. **Next:** owner **APPROVE or REJECT** of the implemented v1.0.1 generator + corrected
+review pack (`docs/review/stats_data_handling_*`). Provisional note: some reading/range tasks lean to
+the upper declared band (owner M — provisional pending review; reachability gate met).
 
 ## `gen.geometry.coordinate-lines` v1.0.2 — CURRICULUM-APPROVED (2026-06-24)
 
