@@ -133,7 +133,7 @@ The intended shape (no implementation — field names and constants only):
 - `MENSURATION_TASKS = [ "perimeter_rectangle", "perimeter_composite", "area_rectangle", "area_triangle", "area_composite", "missing_length_perimeter", "missing_dimension_area", "missing_triangle_base_height" ]` — **the single canonical slug set; these exact eight strings are the keys used everywhere** (any earlier draft spellings such as `rect_perimeter`, `composite_perimeter`, `perimeter_composite_rectilinear`, `missing_length_from_perimeter`, etc. are superseded and must not appear).
 - `OBJECTIVE_BY_TASK: Record<MensurationTask, string>` keyed by those eight task slugs to the eight IDs above.
 - `MENSURATION_OBJECTIVE_IDS = MENSURATION_TASKS.map(t => OBJECTIVE_BY_TASK[t])`.
-- `FREE_RESPONSE_ONLY_TASKS: MensurationTask[] = MENSURATION_TASKS` — **all eight tasks are free-response only in v1.0.0** (rationale in §3.1: no task carries a constructive set of ≥ 3 distinct misconception-backed value distractors that all bear the correct unit, so no task offers multiple-choice).
+- `FREE_RESPONSE_ONLY_TASKS: MensurationTask[] = MENSURATION_TASKS` — **all eight tasks are free-response only in v1.0.0**; `supportedInteractionTypes = ["free-response"]` for every task. An explicit multiple-choice request is rejected with a clear unsupported-interaction error (§3.1, §3.3) and never silently replaced with a free-response item. The mathematical misconceptions are deterministic free-response diagnostics + feedback (§10), not multiple-choice distractors.
 
 The objective records live in a single file `curriculum/objectives/SPI.MIDDLE.MEAS.json` (one file per domain, matching `curriculum/objectives/SPI.MIDDLE.STAT.json`). Their `reviewStatus` follows a **two-stage gated lifecycle** consistent with the schema enum and the stats precedent:
 
@@ -553,7 +553,7 @@ The checker has no conversion table and never rescales `value`. A recognised non
 
 ---
 
-## 6. Canonical polygon and dimension data model
+## 6. Canonical shape-model union and dimension data model
 
 ### 6.1 One source of truth
 
@@ -1616,7 +1616,7 @@ This is the **only** schema change the family needs. It validates under the **bu
 3. DECISION_LOG is currently at #49 (gen.stats.data-handling CURRICULUM-APPROVED at v1.0.2). This proposal, once logged, would be the next entry (~#50). No DECISION_LOG entry number is asserted in the front matter to avoid pre-allocating one; §15 should record the actual entry on owner action.
 4. Theme name — RESOLVED. Reused themes verified present: core/visual-style/cartesian-theme.{json,ts} (coordinate-lines v1.0.2 per-root cx-figure isolation; modes print/premium/premium-dark/accessible) and core/visual-style/data-chart-theme.{json,ts} (stats v1.0.2 ADDITIVE extension). The mensuration extension is named **`mensuration-theme`** (theme id `spi-math-mensuration-theme/1`), which `extends: "spi-math-cartesian-theme/1"` and FOLLOWS the data-chart-theme additive PATTERN without depending on it. The placeholder 'data-dimension-theme' is retired; the name is pinned in §13.4/§14.7/§16.
 5. SDK lifecycle verified: approvalStatus ∈ {approved, pending-review, rejected} on core/sdk/sequence-registry.ts + generator-module.ts (DECISION_LOG #38); objectives during a pending build use reviewStatus 'approved-for-implementation' then 'approved' (stats precedent #45/#46). Front matter mirrors this two-stage gate.
-6. exact-surd / exact-trig EXIST in the live answer.type enum but the brief forbids surds/irrationals; the proposal DEFERS them (they are deferred topics: Pythagoras/surds, circles/pi). Front matter lists them under DEFERRED via the no-irrationals rule. Ensure §4/§5 explicitly state the family never emits exact-surd/exact-trig answers despite their availability in the enum.
+6. exact-surd / exact-trig — NOTE (consistent). These EXIST in the live answer.type enum, but the family forbids surds/irrationals and DEFERS them (Pythagoras/surds, circles/pi). The front matter lists them under DEFERRED via the no-irrationals rule, and §4/§5 state the family never emits exact-surd/exact-trig answers despite their availability in the enum. No change needed.
 7. Objective IDs — RESOLVED. The owner pinned the IDs and the domain segment **MEAS** (not MENS). The eight objective IDs are: SPI.MIDDLE.MEAS.PERIM.RECTANGLE.01, SPI.MIDDLE.MEAS.PERIM.COMPOSITE_RECTILINEAR.01, SPI.MIDDLE.MEAS.AREA.RECTANGLE.01, SPI.MIDDLE.MEAS.AREA.TRIANGLE_BASE_HEIGHT.01, SPI.MIDDLE.MEAS.AREA.COMPOSITE_DECOMPOSITION.01, SPI.MIDDLE.MEAS.PERIM.MISSING_LENGTH.01, SPI.MIDDLE.MEAS.AREA.MISSING_DIMENSION.01, SPI.MIDDLE.MEAS.AREA.TRIANGLE_MISSING_BASE_HEIGHT.01. They follow the five-segment precedent depth and the schema regex.
 8. Objective file — RESOLVED/updated. The objective file is to be authored at build time as curriculum/objectives/SPI.MIDDLE.MEAS.json (the eight MEAS objectives), with `reviewStatus: "approved-for-implementation"`; the build is authorized (§15). The single-source OBJECTIVE_BY_TASK map and the bespoke family graph test (cf. core/curriculum/stats-graph.test.ts / stats-objective-ids.ts) are authored alongside it.
 
