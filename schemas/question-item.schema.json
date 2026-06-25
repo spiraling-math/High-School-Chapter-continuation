@@ -195,7 +195,7 @@
       "description": "Platform-wide answer type vocabulary. Shared by curriculum objectives, items, and answer checkers.",
       "enum": [
         "integer", "decimal", "fraction", "exact-rational", "mixed-number", "exact-surd", "exact-trig",
-        "quantity",
+        "quantity", "transformation",
         "algebraic-expression", "equation", "inequality", "interval", "set",
         "ordered-pair", "coordinate", "sequence", "permutation", "combination",
         "vector", "matrix", "complex-number",
@@ -281,6 +281,69 @@
           "$comment": "An 'exact-rational' answer must carry a normalized rational object {num, den>=1}.",
           "if": { "properties": { "type": { "const": "exact-rational" } }, "required": ["type"] },
           "then": { "properties": { "canonical": { "type": "object", "required": ["num", "den"], "properties": { "num": { "type": "integer" }, "den": { "type": "integer", "minimum": 1 } } } } }
+        },
+        {
+          "$comment": "A 'transformation' answer's canonical IS the structured transformation descriptor (canonical-first; no sibling field). display is derived; transformation answers never carry units/measure/tolerance. The discriminated union is enforced by the per-kind if/then/const rules below (translation/reflection/rotation).",
+          "if": { "properties": { "type": { "const": "transformation" } }, "required": ["type"] },
+          "then": {
+            "required": ["canonical"],
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind"],
+                "properties": {
+                  "kind": { "type": "string", "enum": ["translation", "reflection", "rotation"] },
+                  "vector": { "type": "object", "additionalProperties": false, "required": ["dx", "dy"], "properties": { "dx": { "type": "integer" }, "dy": { "type": "integer" } } },
+                  "axis": { "type": "object", "additionalProperties": false, "required": ["kind"], "properties": { "kind": { "type": "string", "enum": ["vertical", "horizontal", "diagonal"] }, "value": { "type": "integer" }, "equation": { "type": "string", "enum": ["y=x", "y=-x"] } } },
+                  "centre": { "type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": { "x": { "type": "integer" }, "y": { "type": "integer" } } },
+                  "quarterTurnsCCW": { "type": "integer", "enum": [1, 2, 3] }
+                }
+              },
+              "units": false,
+              "measure": false,
+              "tolerance": false
+            }
+          }
+        },
+        {
+          "$comment": "a transformation descriptor (a canonical object carrying a transformation 'kind') is valid ONLY under answer.type='transformation' — never under another answer type.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["kind"], "properties": { "kind": { "enum": ["translation", "reflection", "rotation"] } } } } },
+          "then": { "required": ["type"], "properties": { "type": { "const": "transformation" } } }
+        },
+        {
+          "$comment": "translation descriptor: requires vector; the vector must not be (0,0); forbids axis/centre/quarterTurnsCCW.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "translation" } } } } },
+          "then": { "properties": { "canonical": {
+            "required": ["kind", "vector"],
+            "properties": { "axis": false, "centre": false, "quarterTurnsCCW": false },
+            "not": { "required": ["vector"], "properties": { "vector": { "required": ["dx", "dy"], "properties": { "dx": { "const": 0 }, "dy": { "const": 0 } } } } }
+          } } }
+        },
+        {
+          "$comment": "reflection descriptor: requires axis; forbids vector/centre/quarterTurnsCCW.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "reflection" } } } } },
+          "then": { "properties": { "canonical": { "required": ["kind", "axis"], "properties": { "vector": false, "centre": false, "quarterTurnsCCW": false } } } }
+        },
+        {
+          "$comment": "a vertical reflection axis (x=a) requires an integer value.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "required": ["axis"], "properties": { "axis": { "required": ["kind"], "properties": { "kind": { "const": "vertical" } } } } } } },
+          "then": { "properties": { "canonical": { "properties": { "axis": { "required": ["value"] } } } } }
+        },
+        {
+          "$comment": "a horizontal reflection axis (y=b) requires an integer value.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "required": ["axis"], "properties": { "axis": { "required": ["kind"], "properties": { "kind": { "const": "horizontal" } } } } } } },
+          "then": { "properties": { "canonical": { "properties": { "axis": { "required": ["value"] } } } } }
+        },
+        {
+          "$comment": "a diagonal reflection axis requires equation exactly 'y=x' or 'y=-x'.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "required": ["axis"], "properties": { "axis": { "required": ["kind"], "properties": { "kind": { "const": "diagonal" } } } } } } },
+          "then": { "properties": { "canonical": { "properties": { "axis": { "required": ["equation"] } } } } }
+        },
+        {
+          "$comment": "rotation descriptor: requires centre + quarterTurnsCCW(1|2|3); forbids vector/axis.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "rotation" } } } } },
+          "then": { "properties": { "canonical": { "required": ["kind", "centre", "quarterTurnsCCW"], "properties": { "vector": false, "axis": false } } } }
         }
       ]
     },

@@ -86,6 +86,8 @@ def check(instance, schema, registry, root, path, errors):
         branch = "then" if _validates(instance, schema["if"], registry, root) else "else"
         if branch in schema:
             check(instance, schema[branch], registry, root, path, errors)
+    if "not" in schema and _validates(instance, schema["not"], registry, root):
+        errors.append(f"{path}: must NOT match the forbidden subschema")
 
     t = schema.get("type")
     if t:
