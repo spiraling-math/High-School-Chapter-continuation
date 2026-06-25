@@ -188,12 +188,12 @@ approved-exemplar status is recorded here.
 
 ## Pending-review generators (built, gated, awaiting owner review)
 
-- **`gen.stats.data-handling` 1.0.1 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45 spec-approve, #46 REVISE applied).
-  Built oracle-first, then corrected to v1.0.1 after the owner's curriculum/semantic REVISE
-  (context-domain registry; unique-mode-gated distractors; pictogram exact-symbol policy; blank-kind
-  frequency diagnostics; even-median solutions; representation-specific solutions; single-source
-  ranges + registry-as-single-source misconceptions; signed-arithmetic display). **v1.0.0 preserved
-  unchanged** (tags `stats-data-handling-v1.0.0`; v1.0.1 = `stats-data-handling-v1.0.1`). **Not yet
+- **`gen.stats.data-handling` 1.0.2 — IMPLEMENTED, `approvalStatus: pending-review`** (`DECISION_LOG.md` #45 spec-approve, #46 + #47 REVISE applied).
+  Built oracle-first, corrected to v1.0.1 (curriculum/semantic REVISE), then to v1.0.2 after a
+  direct-chart-readability REVISE: a direct-read scale contract for bar/line charts — every queried
+  value lands on a visible major tick or a rendered minor subdivision (no pixel estimation; 10k audit
+  0 off-grid); nine SVG-inspecting readability checks. **v1.0.0 + v1.0.1 preserved unchanged**
+  (tags `stats-data-handling-v1.0.0`, `stats-data-handling-v1.0.1`; v1.0.2 = `stats-data-handling-v1.0.2`). **Not yet
   curriculum-approved and NOT selectable** in normal Generator Studio or production samples (gated;
   0 stats records in `bank.json`). The eleven `SPI.MIDDLE.STAT.*` objectives are
   `reviewStatus: approved-for-implementation` (curriculum-approved only after the owner reviews the

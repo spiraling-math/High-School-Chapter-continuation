@@ -2,17 +2,19 @@
 
 Last updated: 2026-06-25.
 
-## `gen.stats.data-handling` v1.0.1 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
+## `gen.stats.data-handling` v1.0.2 — IMPLEMENTED, PENDING-REVIEW (2026-06-25)
 
-Statistics & Data Handling — the next architecture-proving family, built **oracle-first** after
-the owner's **APPROVE-WITH-REQUIRED-REVISIONS** of the spec (`DECISION_LOG.md` #45; decisions
-A–P applied), then **corrected to v1.0.1** after a curriculum/semantic REVISE (`DECISION_LOG.md`
-#46): a context-domain registry (negatives only in signed/context-free contexts); a unique-mode
-gate on the mode distractor + new always-true averages fallbacks; pictogram exact-symbol policy;
-blank-kind-specific frequency-table diagnostics; even-length median solutions that average the
-two middles; representation-specific worked solutions; single-source difficulty ranges + registry-
-as-single-source misconceptions; natural signed-arithmetic display. v1.0.0 preserved unchanged
-(tag `stats-data-handling-v1.0.0`). **11 tasks** under the new `statistics` domain / `data-handling-and-probability`
+Statistics & Data Handling — built **oracle-first** (`DECISION_LOG.md` #45, decisions A–P),
+**corrected to v1.0.1** after a curriculum/semantic REVISE (#46: context-domain registry;
+unique-mode-gated mode distractor + averages fallbacks; pictogram exact-symbol policy; blank-kind
+frequency diagnostics; even-median solutions; representation-specific solutions; single-source
+ranges + registry-as-single-source misconceptions; signed-arithmetic display), then **corrected
+to v1.0.2** after a direct-chart-readability REVISE (#47): a **direct-read scale contract** for
+bar charts + line graphs — every queried (and plotted) value now lands on a visible major tick or
+a rendered **minor subdivision** (gcd-derived step dividing all values), with nine blocking checks
+that inspect the serialized student SVG. 10,000-seed direct-read audit: **0 off-grid, 0 readability
+redraws, 33px min separation, 0 items requiring visual estimation**. v1.0.0 + v1.0.1 preserved
+unchanged (tags `stats-data-handling-v1.0.0`, `stats-data-handling-v1.0.1`). **11 tasks** under the new `statistics` domain / `data-handling-and-probability`
 strand, 1:1 with the eleven `SPI.MIDDLE.STAT.*` objectives (`reviewStatus: approved-for-implementation`)
 via the single-source `OBJECTIVE_BY_TASK` (`core/curriculum/stats-objective-ids.ts`): read a value
 from a bar chart / pictogram / frequency table / line graph; complete a frequency table
@@ -33,7 +35,7 @@ schema-valid axes incl. a dedicated `scaffolding` axis; **every declared band is
 
 **Registry: `approvalStatus: pending-review`** — gated OUT of normal Generator Studio and
 production samples (0 stats records in `bank.json`); items begin machine-validated; nothing
-auto-published. **Next:** owner **APPROVE or REJECT** of the implemented v1.0.1 generator + corrected
+auto-published. **Next:** owner **APPROVE or REJECT** of the implemented v1.0.2 generator + corrected
 review pack (`docs/review/stats_data_handling_*`). Provisional note: some reading/range tasks lean to
 the upper declared band (owner M — provisional pending review; reachability gate met).
 
