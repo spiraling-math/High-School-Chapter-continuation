@@ -1,0 +1,25 @@
+{
+  "schema": "spi-math-mensuration-theme/1",
+  "extends": "spi-math-cartesian-theme/1",
+  "description": "ADDITIVE per-root presentation theme for gen.measurement.mensuration dimensioned figures (rectangles, L-shaped composites, triangles). It REUSES the approved cartesian-theme: the same cx-figure root isolation, the same per-root-variable + one-common-ruleset model, and the same presentationSvg()/exportSvg() materialised-export contract — the coordinate-lines v1.0.2 visual contract is NOT modified, and it does NOT depend on data-chart-theme. It ADDS dimension-rendering primitives (shape fill/edge, dimension + extension lines, arrowheads, right-angle + perpendicular-height markers, measurement labels, the unknown-side marker, the NOT-TO-SCALE banner, the decomposition cut line, and the answer-key result/overlay labels) as new --cx-* variables plus one additive common ruleset. Colour never carries meaning alone: the unknown side is the text '?', the NOT-TO-SCALE banner is text, the decomposition cut is dashed, dimension lines are offset with arrowheads, and the monochrome 'print' mode is the colour-free authoritative rendering.",
+  "variables": ["--cx-fill", "--cx-edge", "--cx-dim", "--cx-unknown", "--cx-nts", "--cx-cut", "--cx-result"],
+  "modes": {
+    "print": {
+      "--cx-fill": "#f0f0f0", "--cx-edge": "#111111", "--cx-dim": "#333333",
+      "--cx-unknown": "#111111", "--cx-nts": "#111111", "--cx-cut": "#111111", "--cx-result": "#111111"
+    },
+    "premium": {
+      "--cx-fill": "#eef2f7", "--cx-edge": "#1b2733", "--cx-dim": "#334155",
+      "--cx-unknown": "#b91c1c", "--cx-nts": "#92400e", "--cx-cut": "#2563eb", "--cx-result": "#166534"
+    },
+    "premium-dark": {
+      "--cx-fill": "#1e293b", "--cx-edge": "#e2e8f0", "--cx-dim": "#cbd5e1",
+      "--cx-unknown": "#fca5a5", "--cx-nts": "#fcd34d", "--cx-cut": "#93c5fd", "--cx-result": "#86efac"
+    },
+    "accessible": {
+      "--cx-fill": "#ffffff", "--cx-edge": "#000000", "--cx-dim": "#000000",
+      "--cx-unknown": "#000000", "--cx-nts": "#000000", "--cx-cut": "#0072b2", "--cx-result": "#000000"
+    }
+  },
+  "commonCss": ".cx-figure .cx-shape{fill:var(--cx-fill);stroke:var(--cx-edge);stroke-width:3;stroke-linejoin:round}.cx-figure .cx-dimline{stroke:var(--cx-dim);stroke-width:1.5}.cx-figure .cx-ext{stroke:var(--cx-dim);stroke-width:1}.cx-figure .cx-arrow{fill:var(--cx-dim)}.cx-figure .cx-rightangle{fill:none;stroke:var(--cx-edge);stroke-width:1.5}.cx-figure .cx-altitude{stroke:var(--cx-edge);stroke-width:1.5;stroke-dasharray:5 4}.cx-figure .cx-dimlbl{fill:var(--cx-dim);font-size:19px}.cx-figure .cx-unknown{fill:var(--cx-unknown);font-size:21px;font-weight:600}.cx-figure .cx-nts{fill:var(--cx-nts);font-size:17px;font-weight:600;letter-spacing:1px}.cx-figure .cx-cut{stroke:var(--cx-cut);stroke-width:2;stroke-dasharray:6 4}.cx-figure .cx-result{fill:var(--cx-result);font-size:21px;font-weight:600}.cx-figure .cx-keylbl{fill:var(--cx-result);font-size:19px;font-weight:600}"
+}
