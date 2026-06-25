@@ -35,9 +35,13 @@ schema-valid axes incl. a dedicated `scaffolding` axis; **every declared band is
 
 **Registry: `approvalStatus: pending-review`** — gated OUT of normal Generator Studio and
 production samples (0 stats records in `bank.json`); items begin machine-validated; nothing
-auto-published. **Next:** owner **APPROVE or REJECT** of the implemented v1.0.2 generator + corrected
-review pack (`docs/review/stats_data_handling_*`). Provisional note: some reading/range tasks lean to
-the upper declared band (owner M — provisional pending review; reachability gate met).
+auto-published. The v1.0.2 generator is accepted; its review PACKAGE was corrected (`DECISION_LOG.md`
+#48) after a coverage REJECT — the review pack now derives its required cells from the distribution
+report and carries an explicit coverage matrix (**57/57** task × interaction/band/answer-shape cells,
+`allCovered: true`), with six blocking coverage tests; generator bytes unchanged (no v1.0.3).
+**Next:** owner **APPROVE or REJECT** of the corrected v1.0.2 review package (`docs/review/stats_data_handling_*`).
+Provisional note: some reading/range tasks lean to the upper declared band (owner M — provisional
+pending review; reachability gate met).
 
 ## `gen.geometry.coordinate-lines` v1.0.2 — CURRICULUM-APPROVED (2026-06-24)
 
