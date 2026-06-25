@@ -158,5 +158,126 @@ class TestArtifactIntegrity(unittest.TestCase):
         self.assertEqual(manifest["objectiveIds"], [dh.OBJECTIVE_BY_TASK[t] for t in dh.TASKS])
 
 
+class TestUniqueMode(unittest.TestCase):
+    def test_unique_mode(self):
+        self.assertIsNone(dh.unique_mode([1, 2, 3, 4]))        # all distinct
+        self.assertIsNone(dh.unique_mode([1, 1, 2, 2]))        # tie for greatest
+        self.assertIsNone(dh.unique_mode([]))
+        self.assertEqual(dh.unique_mode([4, 4, 4, 7, 9]), 4)
+        self.assertEqual(dh.unique_mode([2, 5, 5, 8]), 5)
+
+
+class TestContextDomains(unittest.TestCase):
+    def test_no_negative_in_count_context(self):
+        # full sweep: any list/frequency context with a negative value must be signed/context-free.
+        for seed in range(1, 3001):
+            for cfg in ({}, {"interactionType": "multiple-choice"}):
+                it = dh.generate(seed, cfg)
+                ds = it["params"]["dataset"]
+                vals = ds.get("values") if "values" in ds else ds.get("frequencies", [])
+                if any(v < 0 for v in vals):
+                    dom = dh.CONTEXT_DOMAINS.get(ds.get("title"))
+                    self.assertIn(dom, ("signed", "context-free"),
+                                  f"negative value in non-signed context {ds.get('title')!r} (seed {seed})")
+
+    def test_regression_mean_seeds_3_and_6(self):
+        for seed in (3, 6):
+            for cfg in ({}, {"interactionType": "multiple-choice", "task": "mean_from_list"}):
+                it = dh.generate(seed, cfg if "task" in cfg else {"task": "mean_from_list"})
+                self.assertEqual(dh.validate(it)["status"], "pass", f"mean seed {seed} must be valid")
+                ds = it["params"]["dataset"]
+                if any(v < 0 for v in ds["values"]):
+                    self.assertIn(dh.CONTEXT_DOMAINS.get(ds["title"]), ("signed", "context-free"))
+
+
+class TestModeDistractor(unittest.TestCase):
+    def test_avg_uses_mode_only_with_unique_mode(self):
+        for seed in range(1, 3001):
+            it = dh.generate(seed, {"interactionType": "multiple-choice"})
+            mids = [o.get("misconceptionId") for o in it.get("options", [])]
+            if "MISC.STAT.AVG_USES_MODE" in mids:
+                self.assertIsNotNone(dh.unique_mode(it["params"]["dataset"]["values"]),
+                                     f"AVG_USES_MODE used without a unique mode (seed {seed})")
+
+
+class TestPictogram(unittest.TestCase):
+    def test_exact_symbol_and_distinct_half_rules(self):
+        for seed in range(1, 2000):
+            it = dh.generate(seed, {"interactionType": "multiple-choice", "task": "read_pictogram"})
+            ds = it["params"]["dataset"]; key = ds["pictogramKey"]
+            fr = ds["frequencies"][it["params"]["queryIndex"]]
+            unit = key // 2 if key % 2 == 0 else key
+            self.assertEqual(fr % unit, 0, "queried symbol count must be exact")
+            half = (fr % key) == (key // 2) and key % 2 == 0
+            mids = [o.get("misconceptionId") for o in it["options"]]
+            if half:  # owner #3: no exact-whole-count distractor when a half symbol is shown
+                self.assertNotIn("MISC.STAT.PICTO_COUNTS_SYMBOLS", mids)
+
+
+class TestFreqDiagnostics(unittest.TestCase):
+    def test_blank_kind_solution_operation(self):
+        for seed in range(1, 3001):
+            it = dh.generate(seed, {"task": "complete_frequency_table"})
+            kind = it["params"]["blank"]["kind"]
+            first = it["solution"]["steps"][0]["transformation"].lower()
+            if kind == "total":
+                self.assertIn("add", first)
+                self.assertNotIn("subtract", first)
+            else:
+                self.assertIn("subtract", first)
+
+    def test_regression_seeds_14_and_21(self):
+        for seed in (14, 21):
+            it = dh.generate(seed, {"task": "complete_frequency_table"})
+            self.assertEqual(dh.validate(it)["status"], "pass")
+
+
+class TestMedianSolution(unittest.TestCase):
+    def test_even_length_shows_average(self):
+        seen_even = False
+        for seed in range(1, 2000):
+            it = dh.generate(seed, {"task": "median_from_list"})
+            v = it["params"]["dataset"]["values"]
+            text = " ".join(s.get("transformation", "") + " " + s.get("intermediateResult", "") for s in it["solution"]["steps"]).lower()
+            if len(v) % 2 == 0:
+                seen_even = True
+                self.assertIn("two middle values", text)
+                self.assertIn("average", text)
+            else:
+                self.assertIn("single middle value", text)
+        self.assertTrue(seen_even, "an even-length median example must occur")
+
+
+class TestSignedDisplay(unittest.TestCase):
+    def test_signed_sum_expression(self):
+        self.assertEqual(dh._sum_expr([8, -5, -6]), "8 − 5 − 6")
+        self.assertEqual(dh._sum_expr([-1, -4, 13, 6, 15]), "-1 − 4 + 13 + 6 + 15")
+
+
+class TestReconciliation(unittest.TestCase):
+    """Owner #7 — a single authoritative source for difficulty ranges + misconception IDs."""
+
+    def test_ranges_single_source(self):
+        objs = {o["objectiveId"]: o for o in json.load(open(os.path.join(ROOT, "curriculum", "objectives", "SPI.MIDDLE.STAT.json"), encoding="utf-8"))}
+        desc = dh.describe()
+        for task, band in dh.TASK_BANDS.items():
+            oid = dh.OBJECTIVE_BY_TASK[task]
+            o = objs[oid]
+            self.assertEqual([o["difficultyRange"]["min"], o["difficultyRange"]["max"]], list(band), f"objective range {oid}")
+            self.assertEqual(desc["difficultyRanges"][oid], list(band), f"descriptor range {oid}")
+
+    def test_review_ranges_match_objective(self):
+        pack = json.load(open(os.path.join(REVIEW, "stats_data_handling_review_pack.json"), encoding="utf-8"))
+        for r in pack["records"]:
+            lo, hi = dh.TASK_BANDS[r["task"]]
+            self.assertTrue(lo <= r["difficulty"]["overallBand"] <= hi, f"{r['task']} band out of declared range")
+
+    def test_misconception_ids_resolve_no_stale(self):
+        objs = json.load(open(os.path.join(ROOT, "curriculum", "objectives", "SPI.MIDDLE.STAT.json"), encoding="utf-8"))
+        for o in objs:
+            for mid in o["commonMisconceptions"]:
+                self.assertIn(mid, mis.MISCONCEPTIONS, f"stale misconception id {mid} in {o['objectiveId']}")
+
+
 if __name__ == "__main__":
     print("OK" if unittest.main(exit=False, verbosity=1).result.wasSuccessful() else "FAIL")

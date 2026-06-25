@@ -1,11 +1,11 @@
 {
   "summary": {
     "generatorId": "gen.stats.data-handling",
-    "generatorVersion": "1.0.0",
-    "validatorVersion": "1.0.0",
-    "itemCount": 30,
-    "svgItems": 9,
-    "tableItems": 21,
+    "generatorVersion": "1.0.1",
+    "validatorVersion": "1.0.1",
+    "itemCount": 33,
+    "svgItems": 11,
+    "tableItems": 22,
     "tasksCovered": [
       "complete_frequency_table",
       "mean_from_freq_table",
@@ -30,23 +30,31 @@
       "MISC.STAT.AVG_USES_MODE",
       "MISC.STAT.FREQ_IGNORES_TOTAL",
       "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
+      "MISC.STAT.FREQ_TOTAL_COPIES_ONE",
+      "MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY",
       "MISC.STAT.LINE_SWAPS_AXES",
       "MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES",
       "MISC.STAT.MEANFT_NO_WEIGHT",
       "MISC.STAT.MEAN_DIVIDE_WRONG_N",
+      "MISC.STAT.MEAN_MIDRANGE",
       "MISC.STAT.MEAN_NO_DIVIDE",
+      "MISC.STAT.MEDIAN_MIDRANGE",
       "MISC.STAT.MEDIAN_NO_ORDER",
+      "MISC.STAT.MEDIAN_USES_MEAN",
       "MISC.STAT.MEDIAN_WRONG_MIDDLE",
       "MISC.STAT.MODE_USES_FREQUENCY",
       "MISC.STAT.MODE_USES_HIGHEST",
       "MISC.STAT.PICTO_COUNTS_SYMBOLS",
+      "MISC.STAT.PICTO_HALF_AS_WHOLE",
       "MISC.STAT.PICTO_IGNORES_HALF",
+      "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL",
       "MISC.STAT.PROB_COMPLEMENT",
       "MISC.STAT.PROB_ODDS",
       "MISC.STAT.PROB_OFF_BY_ONE",
       "MISC.STAT.PROB_UNREDUCED",
       "MISC.STAT.RANGE_ADDS",
       "MISC.STAT.RANGE_IS_MAX",
+      "MISC.STAT.RANGE_IS_MIN",
       "MISC.STAT.READ_MISCOUNT_SCALE",
       "MISC.STAT.READ_OFF_BY_STEP",
       "MISC.STAT.READ_WRONG_CATEGORY",
@@ -54,8 +62,8 @@
       "MISC.STAT.TABLE_READS_LARGEST",
       "MISC.STAT.TABLE_READS_TOTAL"
     ],
-    "requiredTokens": 80,
-    "coveredTokens": 80,
+    "requiredTokens": 89,
+    "coveredTokens": 89,
     "missingCoverage": [],
     "allValid": true
   },
@@ -109,8 +117,13 @@
         },
         {
           "number": 2,
-          "transformation": "Find the middle value",
-          "intermediateResult": "14"
+          "transformation": "Identify the two middle values",
+          "intermediateResult": "13 and 15"
+        },
+        {
+          "number": 3,
+          "transformation": "Average the two middle values",
+          "intermediateResult": "(13 + 15) \u00f7 2 = 14"
         }
       ],
       "distractors": [],
@@ -168,7 +181,15 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "even-median-identifies-two-middle-values",
+        "even-median-shows-average",
+        "median-solution-parity-correct",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(1,{'interactionType':'free-response'})))\""
@@ -239,10 +260,10 @@
         },
         {
           "id": "d3",
-          "value": 13,
-          "display": "13",
-          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
-          "rationale": "Gives the most common value instead of the one asked for."
+          "value": 9,
+          "display": "9",
+          "misconceptionId": "MISC.STAT.RANGE_IS_MIN",
+          "rationale": "Gives the smallest value instead of the difference."
         }
       ],
       "accessibility": {
@@ -297,7 +318,16 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(1,{'interactionType':'multiple-choice'})))\""
@@ -312,8 +342,8 @@
         "task": "range_from_list",
         "dataset": {
           "kind": "list",
-          "title": "Goals scored",
-          "unit": "goals",
+          "title": "Ages",
+          "unit": "years",
           "values": [
             27,
             19,
@@ -327,8 +357,8 @@
       },
       "dataset": {
         "kind": "list",
-        "title": "Goals scored",
-        "unit": "goals",
+        "title": "Ages",
+        "unit": "years",
         "values": [
           27,
           19,
@@ -340,7 +370,7 @@
       },
       "prompt": "Work out the range of the data.",
       "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>27</td>\n<td>19</td>\n<td>15</td>\n<td>11</td>\n<td>24</td>\n<td>4</td>\n</tr></tbody></table>",
+      "figure": "<table class=\"cx-list\">\n<caption>Ages</caption>\n<tbody><tr>\n<td>27</td>\n<td>19</td>\n<td>15</td>\n<td>11</td>\n<td>24</td>\n<td>4</td>\n</tr></tbody></table>",
       "answer": "23",
       "answerCanonical": 23,
       "solution": [
@@ -357,7 +387,7 @@
       ],
       "distractors": [],
       "accessibility": {
-        "spokenMath": "A list of values titled Goals scored.",
+        "spokenMath": "A list of values titled Ages.",
         "dataTable": {
           "columns": [
             "Value"
@@ -410,165 +440,15 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'free-response'})))\""
-    },
-    {
-      "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
-      "task": "read_table_value",
-      "interaction": "multiple-choice",
-      "answerType": "integer",
-      "seed": 2,
-      "params": {
-        "task": "read_table_value",
-        "dataset": {
-          "kind": "frequency",
-          "title": "Sport played",
-          "unit": "pupils",
-          "categories": [
-            "Football",
-            "Tennis",
-            "Hockey",
-            "Netball",
-            "Rugby"
-          ],
-          "frequencies": [
-            15,
-            5,
-            18,
-            10,
-            25
-          ]
-        },
-        "queryIndex": 0,
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "frequency",
-        "title": "Sport played",
-        "unit": "pupils",
-        "categories": [
-          "Football",
-          "Tennis",
-          "Hockey",
-          "Netball",
-          "Rugby"
-        ],
-        "frequencies": [
-          15,
-          5,
-          18,
-          10,
-          25
-        ]
-      },
-      "prompt": "How many pupils are in the category \u201cFootball\u201d?",
-      "mediaKind": "table",
-      "figure": "<table class=\"cx-table\">\n<caption>Sport played</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Football</th><td>15</td></tr>\n<tr><th scope=\"row\">Tennis</th><td>5</td></tr>\n<tr><th scope=\"row\">Hockey</th><td>18</td></tr>\n<tr><th scope=\"row\">Netball</th><td>10</td></tr>\n<tr><th scope=\"row\">Rugby</th><td>25</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>73</td></tr>\n</tbody></table>",
-      "answer": "15",
-      "answerCanonical": 15,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
-        },
-        {
-          "number": 2,
-          "transformation": "Read the value from the labelled axis",
-          "intermediateResult": "15"
-        }
-      ],
-      "distractors": [
-        {
-          "id": "d1",
-          "value": 73,
-          "display": "73",
-          "misconceptionId": "MISC.STAT.TABLE_READS_TOTAL",
-          "rationale": "Reads the total instead of the row that was asked for."
-        },
-        {
-          "id": "d2",
-          "value": 5,
-          "display": "5",
-          "misconceptionId": "MISC.STAT.TABLE_ADJACENT_ROW",
-          "rationale": "Reads the frequency from the wrong row of the table."
-        },
-        {
-          "id": "d3",
-          "value": 25,
-          "display": "25",
-          "misconceptionId": "MISC.STAT.TABLE_READS_LARGEST",
-          "rationale": "Reads the largest frequency in the table instead of the named category."
-        }
-      ],
-      "accessibility": {
-        "spokenMath": "A frequency table titled Sport played.",
-        "dataTable": {
-          "columns": [
-            "Category",
-            "Frequency"
-          ],
-          "rows": [
-            [
-              "Football",
-              "15"
-            ],
-            [
-              "Tennis",
-              "5"
-            ],
-            [
-              "Hockey",
-              "18"
-            ],
-            [
-              "Netball",
-              "10"
-            ],
-            [
-              "Rugby",
-              "25"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 2,
-        "axes": {
-          "numericalComplexity": 0.5,
-          "readingDemand": 0.25,
-          "interpretationDemand": 0.1,
-          "reasoningSteps": 0.1,
-          "informationDensity": 0.667,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "html-table-realises-data",
-        "table-round-trip",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid",
-        "mc-option-count",
-        "mc-options-distinct",
-        "mc-one-correct",
-        "mc-distractors-recompute"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.AVG.MODE_LIST.01",
@@ -581,7 +461,7 @@
         "dataset": {
           "kind": "list",
           "title": "Goals scored",
-          "unit": "values",
+          "unit": "goals",
           "values": [
             7,
             5,
@@ -595,7 +475,7 @@
       "dataset": {
         "kind": "list",
         "title": "Goals scored",
-        "unit": "values",
+        "unit": "goals",
         "values": [
           7,
           5,
@@ -673,7 +553,12 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(3,{'interactionType':'free-response'})))\""
@@ -688,8 +573,8 @@
         "task": "mean_from_list",
         "dataset": {
           "kind": "list",
-          "title": "Goals scored",
-          "unit": "goals",
+          "title": "Temperature change",
+          "unit": "\u00b0C",
           "values": [
             -1,
             -4,
@@ -702,8 +587,8 @@
       },
       "dataset": {
         "kind": "list",
-        "title": "Goals scored",
-        "unit": "goals",
+        "title": "Temperature change",
+        "unit": "\u00b0C",
         "values": [
           -1,
           -4,
@@ -714,7 +599,7 @@
       },
       "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
       "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Goals scored</caption>\n<tbody><tr>\n<td>-1</td>\n<td>-4</td>\n<td>13</td>\n<td>6</td>\n<td>15</td>\n</tr></tbody></table>",
+      "figure": "<table class=\"cx-list\">\n<caption>Temperature change</caption>\n<tbody><tr>\n<td>-1</td>\n<td>-4</td>\n<td>13</td>\n<td>6</td>\n<td>15</td>\n</tr></tbody></table>",
       "answer": "29/5",
       "answerCanonical": {
         "num": 29,
@@ -724,7 +609,7 @@
         {
           "number": 1,
           "transformation": "Add the values",
-          "intermediateResult": "-1 + -4 + 13 + 6 + 15 = 29"
+          "intermediateResult": "-1 \u2212 4 + 13 + 6 + 15 = 29"
         },
         {
           "number": 2,
@@ -752,14 +637,17 @@
         },
         {
           "id": "d3",
-          "value": -1,
-          "display": "-1",
-          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
-          "rationale": "Gives the most common value instead of the one asked for."
+          "value": {
+            "num": 11,
+            "den": 2
+          },
+          "display": "11/2",
+          "misconceptionId": "MISC.STAT.MEAN_MIDRANGE",
+          "rationale": "Averages only the largest and smallest values instead of all of them."
         }
       ],
       "accessibility": {
-        "spokenMath": "A list of values titled Goals scored.",
+        "spokenMath": "A list of values titled Temperature change.",
         "dataTable": {
           "columns": [
             "Value"
@@ -813,7 +701,16 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(3,{'interactionType':'multiple-choice'})))\""
@@ -933,14 +830,20 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
           "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
           "title": "Leaves the fraction unsimplified",
           "observableError": "Writes a correct but unsimplified fraction.",
-          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form.",
+          "blankKind": null
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(4,{'interactionType':'free-response'})))\""
@@ -1112,14 +1015,24 @@
         "mc-options-distinct",
         "mc-one-correct",
         "mc-distractors-recompute",
-        "mc-probability-options-in-range"
+        "mc-probability-options-in-range",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
           "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
           "title": "Leaves the fraction unsimplified",
           "observableError": "Writes a correct but unsimplified fraction.",
-          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form.",
+          "blankKind": null
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(4,{'interactionType':'multiple-choice'})))\""
@@ -1191,10 +1104,10 @@
         },
         {
           "id": "d3",
-          "value": 17,
-          "display": "17",
-          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
-          "rationale": "Gives the most common value instead of the one asked for."
+          "value": 12,
+          "display": "12",
+          "misconceptionId": "MISC.STAT.MEAN_MIDRANGE",
+          "rationale": "Averages only the largest and smallest values instead of all of them."
         }
       ],
       "accessibility": {
@@ -1246,7 +1159,16 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(5,{'interactionType':'multiple-choice'})))\""
@@ -1261,8 +1183,8 @@
         "task": "mean_from_list",
         "dataset": {
           "kind": "list",
-          "title": "Shoe sizes",
-          "unit": "sizes",
+          "title": "Change in value",
+          "unit": "points",
           "values": [
             8,
             -5,
@@ -1273,8 +1195,8 @@
       },
       "dataset": {
         "kind": "list",
-        "title": "Shoe sizes",
-        "unit": "sizes",
+        "title": "Change in value",
+        "unit": "points",
         "values": [
           8,
           -5,
@@ -1283,14 +1205,14 @@
       },
       "prompt": "Calculate the mean of the data. Give your answer as an integer or a fraction in its simplest form.",
       "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Shoe sizes</caption>\n<tbody><tr>\n<td>8</td>\n<td>-5</td>\n<td>-6</td>\n</tr></tbody></table>",
+      "figure": "<table class=\"cx-list\">\n<caption>Change in value</caption>\n<tbody><tr>\n<td>8</td>\n<td>-5</td>\n<td>-6</td>\n</tr></tbody></table>",
       "answer": "-1",
       "answerCanonical": -1,
       "solution": [
         {
           "number": 1,
           "transformation": "Add the values",
-          "intermediateResult": "8 + -5 + -6 = -3"
+          "intermediateResult": "8 \u2212 5 \u2212 6 = -3"
         },
         {
           "number": 2,
@@ -1300,7 +1222,7 @@
       ],
       "distractors": [],
       "accessibility": {
-        "spokenMath": "A list of values titled Shoe sizes.",
+        "spokenMath": "A list of values titled Change in value.",
         "dataTable": {
           "columns": [
             "Value"
@@ -1344,10 +1266,177 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(6,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 6,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Test scores",
+          "unit": "marks",
+          "values": [
+            5,
+            11,
+            2,
+            1,
+            19,
+            20
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Test scores",
+        "unit": "marks",
+        "values": [
+          5,
+          11,
+          2,
+          1,
+          19,
+          20
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Test scores</caption>\n<tbody><tr>\n<td>5</td>\n<td>11</td>\n<td>2</td>\n<td>1</td>\n<td>19</td>\n<td>20</td>\n</tr></tbody></table>",
+      "answer": "8",
+      "answerCanonical": 8,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "1, 2, 5, 11, 19, 20"
+        },
+        {
+          "number": 2,
+          "transformation": "Identify the two middle values",
+          "intermediateResult": "5 and 11"
+        },
+        {
+          "number": 3,
+          "transformation": "Average the two middle values",
+          "intermediateResult": "(5 + 11) \u00f7 2 = 8"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": {
+            "num": 3,
+            "den": 2
+          },
+          "display": "3/2",
+          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
+          "rationale": "Takes the middle value without putting the list in order first."
+        },
+        {
+          "id": "d2",
+          "value": 5,
+          "display": "5",
+          "misconceptionId": "MISC.STAT.MEDIAN_WRONG_MIDDLE",
+          "rationale": "Picks one of the two middle values instead of their average."
+        },
+        {
+          "id": "d3",
+          "value": {
+            "num": 29,
+            "den": 3
+          },
+          "display": "29/3",
+          "misconceptionId": "MISC.STAT.MEDIAN_USES_MEAN",
+          "rationale": "Adds the values and divides instead of finding the middle value."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Test scores.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "5"
+            ],
+            [
+              "11"
+            ],
+            [
+              "2"
+            ],
+            [
+              "1"
+            ],
+            [
+              "19"
+            ],
+            [
+              "20"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "even-median-identifies-two-middle-values",
+        "even-median-shows-average",
+        "median-solution-parity-correct",
+        "solution-method-produces-canonical-answer"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(6,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
@@ -1406,12 +1495,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cScience\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read its height using the vertical-axis scale",
           "intermediateResult": "2"
         }
       ],
@@ -1475,7 +1564,14 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(7,{'interactionType':'free-response'})))\""
@@ -1531,29 +1627,29 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Count the symbols",
-          "intermediateResult": "5 whole and a half symbol(s)"
+          "transformation": "Count the whole and half symbols in the named row",
+          "intermediateResult": "5 whole symbols and 1 half symbol"
         },
         {
           "number": 2,
-          "transformation": "Apply the key",
+          "transformation": "Apply the displayed key",
           "intermediateResult": "5 \u00d7 10 + 5 = 55"
         }
       ],
       "distractors": [
         {
           "id": "d1",
-          "value": 5,
-          "display": "5",
-          "misconceptionId": "MISC.STAT.PICTO_COUNTS_SYMBOLS",
-          "rationale": "Counts the symbols without using the key."
-        },
-        {
-          "id": "d2",
           "value": 50,
           "display": "50",
           "misconceptionId": "MISC.STAT.PICTO_IGNORES_HALF",
           "rationale": "Leaves out the value of the half symbol."
+        },
+        {
+          "id": "d2",
+          "value": 60,
+          "display": "60",
+          "misconceptionId": "MISC.STAT.PICTO_HALF_AS_WHOLE",
+          "rationale": "Counts the half symbol as if it were a whole symbol."
         },
         {
           "id": "d3",
@@ -1573,15 +1669,15 @@
           "rows": [
             [
               "Football",
-              "2 and a half symbol(s)"
+              "2 whole symbols and 1 half symbol"
             ],
             [
               "Tennis",
-              "3 and a half symbol(s)"
+              "3 whole symbols and 1 half symbol"
             ],
             [
               "Hockey",
-              "5 and a half symbol(s)"
+              "5 whole symbols and 1 half symbol"
             ]
           ]
         }
@@ -1617,7 +1713,21 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "pictogram-symbol-count-exact",
+        "pictogram-distractor-matches-visible-symbols",
+        "half-symbol-misconceptions-distinct",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(7,{'interactionType':'multiple-choice'})))\""
@@ -1681,12 +1791,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Count the symbols",
-          "intermediateResult": "3 whole symbol(s)"
+          "transformation": "Count the whole and half symbols in the named row",
+          "intermediateResult": "3 whole symbols"
         },
         {
           "number": 2,
-          "transformation": "Apply the key",
+          "transformation": "Apply the displayed key",
           "intermediateResult": "3 \u00d7 5 = 15"
         }
       ],
@@ -1701,23 +1811,23 @@
           "rows": [
             [
               "Apple",
-              "3 symbol(s)"
+              "3 whole symbols"
             ],
             [
               "Banana",
-              "3 symbol(s)"
+              "3 whole symbols"
             ],
             [
               "Grape",
-              "5 symbol(s)"
+              "5 whole symbols"
             ],
             [
               "Orange",
-              "2 symbol(s)"
+              "2 whole symbols"
             ],
             [
               "Pear",
-              "3 symbol(s)"
+              "3 whole symbols"
             ]
           ]
         }
@@ -1749,10 +1859,177 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "pictogram-symbol-count-exact",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 8,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Shoe sizes",
+          "unit": "sizes",
+          "values": [
+            16,
+            1,
+            10,
+            8,
+            11,
+            7,
+            11
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Shoe sizes",
+        "unit": "sizes",
+        "values": [
+          16,
+          1,
+          10,
+          8,
+          11,
+          7,
+          11
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Shoe sizes</caption>\n<tbody><tr>\n<td>16</td>\n<td>1</td>\n<td>10</td>\n<td>8</td>\n<td>11</td>\n<td>7</td>\n<td>11</td>\n</tr></tbody></table>",
+      "answer": "10",
+      "answerCanonical": 10,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "1, 7, 8, 10, 11, 11, 16"
+        },
+        {
+          "number": 2,
+          "transformation": "Identify the single middle value",
+          "intermediateResult": "10"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 8,
+          "display": "8",
+          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
+          "rationale": "Takes the middle value without putting the list in order first."
+        },
+        {
+          "id": "d2",
+          "value": 11,
+          "display": "11",
+          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
+          "rationale": "Gives the most common value instead of the one asked for."
+        },
+        {
+          "id": "d3",
+          "value": {
+            "num": 64,
+            "den": 7
+          },
+          "display": "64/7",
+          "misconceptionId": "MISC.STAT.MEDIAN_USES_MEAN",
+          "rationale": "Adds the values and divides instead of finding the middle value."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Shoe sizes.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "16"
+            ],
+            [
+              "1"
+            ],
+            [
+              "10"
+            ],
+            [
+              "8"
+            ],
+            [
+              "11"
+            ],
+            [
+              "7"
+            ],
+            [
+              "11"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "even-median-identifies-two-middle-values",
+        "even-median-shows-average",
+        "median-solution-parity-correct",
+        "solution-method-produces-canonical-answer"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
@@ -1803,12 +2080,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the row for the named category",
+          "intermediateResult": "the row for \u201cMystery\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read the frequency in that row",
           "intermediateResult": "21"
         }
       ],
@@ -1862,7 +2139,15 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "table-solution-does-not-reference-axis",
+        "table-solution-does-not-reference-bar-or-point",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'free-response'})))\""
@@ -1928,12 +2213,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the requested position on the horizontal axis",
+          "intermediateResult": "Day 4"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read the value of the marked point from the vertical axis",
           "intermediateResult": "10"
         }
       ],
@@ -2027,10 +2312,180 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(9,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
+      "task": "median_from_list",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 10,
+      "params": {
+        "task": "median_from_list",
+        "dataset": {
+          "kind": "list",
+          "title": "Data values",
+          "unit": "values",
+          "values": [
+            17,
+            10,
+            9,
+            5,
+            2,
+            1
+          ]
+        },
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "list",
+        "title": "Data values",
+        "unit": "values",
+        "values": [
+          17,
+          10,
+          9,
+          5,
+          2,
+          1
+        ]
+      },
+      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-list\">\n<caption>Data values</caption>\n<tbody><tr>\n<td>17</td>\n<td>10</td>\n<td>9</td>\n<td>5</td>\n<td>2</td>\n<td>1</td>\n</tr></tbody></table>",
+      "answer": "7",
+      "answerCanonical": 7,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Order the values",
+          "intermediateResult": "1, 2, 5, 9, 10, 17"
+        },
+        {
+          "number": 2,
+          "transformation": "Identify the two middle values",
+          "intermediateResult": "5 and 9"
+        },
+        {
+          "number": 3,
+          "transformation": "Average the two middle values",
+          "intermediateResult": "(5 + 9) \u00f7 2 = 7"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 5,
+          "display": "5",
+          "misconceptionId": "MISC.STAT.MEDIAN_WRONG_MIDDLE",
+          "rationale": "Picks one of the two middle values instead of their average."
+        },
+        {
+          "id": "d2",
+          "value": {
+            "num": 22,
+            "den": 3
+          },
+          "display": "22/3",
+          "misconceptionId": "MISC.STAT.MEDIAN_USES_MEAN",
+          "rationale": "Adds the values and divides instead of finding the middle value."
+        },
+        {
+          "id": "d3",
+          "value": 9,
+          "display": "9",
+          "misconceptionId": "MISC.STAT.MEDIAN_MIDRANGE",
+          "rationale": "Averages the largest and smallest values instead of finding the middle."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A list of values titled Data values.",
+        "dataTable": {
+          "columns": [
+            "Value"
+          ],
+          "rows": [
+            [
+              "17"
+            ],
+            [
+              "10"
+            ],
+            [
+              "9"
+            ],
+            [
+              "5"
+            ],
+            [
+              "2"
+            ],
+            [
+              "1"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.3,
+          "reasoningSteps": 0.35,
+          "informationDensity": 1,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "even-median-identifies-two-middle-values",
+        "even-median-shows-average",
+        "median-solution-parity-correct",
+        "solution-method-produces-canonical-answer"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(10,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.LINE_GRAPH.01",
@@ -2093,12 +2548,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the requested position on the horizontal axis",
+          "intermediateResult": "Mon"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read the value of the marked point from the vertical axis",
           "intermediateResult": "10"
         }
       ],
@@ -2166,10 +2621,176 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(12,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.TABLE_VALUE.01",
+      "task": "read_table_value",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 12,
+      "params": {
+        "task": "read_table_value",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Favourite pet",
+          "unit": "students",
+          "categories": [
+            "Cat",
+            "Dog",
+            "Fish",
+            "Bird"
+          ],
+          "frequencies": [
+            24,
+            5,
+            2,
+            18
+          ]
+        },
+        "queryIndex": 2,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Favourite pet",
+        "unit": "students",
+        "categories": [
+          "Cat",
+          "Dog",
+          "Fish",
+          "Bird"
+        ],
+        "frequencies": [
+          24,
+          5,
+          2,
+          18
+        ]
+      },
+      "prompt": "How many students are in the category \u201cFish\u201d?",
+      "mediaKind": "table",
+      "figure": "<table class=\"cx-table\">\n<caption>Favourite pet</caption>\n<thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Frequency</th></tr></thead>\n<tbody>\n<tr><th scope=\"row\">Cat</th><td>24</td></tr>\n<tr><th scope=\"row\">Dog</th><td>5</td></tr>\n<tr><th scope=\"row\">Fish</th><td>2</td></tr>\n<tr><th scope=\"row\">Bird</th><td>18</td></tr>\n<tr class=\"cx-total\"><th scope=\"row\">Total</th><td>49</td></tr>\n</tbody></table>",
+      "answer": "2",
+      "answerCanonical": 2,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Locate the row for the named category",
+          "intermediateResult": "the row for \u201cFish\u201d"
+        },
+        {
+          "number": 2,
+          "transformation": "Read the frequency in that row",
+          "intermediateResult": "2"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 49,
+          "display": "49",
+          "misconceptionId": "MISC.STAT.TABLE_READS_TOTAL",
+          "rationale": "Reads the total instead of the row that was asked for."
+        },
+        {
+          "id": "d2",
+          "value": 18,
+          "display": "18",
+          "misconceptionId": "MISC.STAT.TABLE_ADJACENT_ROW",
+          "rationale": "Reads the frequency from the wrong row of the table."
+        },
+        {
+          "id": "d3",
+          "value": 24,
+          "display": "24",
+          "misconceptionId": "MISC.STAT.TABLE_READS_LARGEST",
+          "rationale": "Reads the largest frequency in the table instead of the named category."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A frequency table titled Favourite pet.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Frequency"
+          ],
+          "rows": [
+            [
+              "Cat",
+              "24"
+            ],
+            [
+              "Dog",
+              "5"
+            ],
+            [
+              "Fish",
+              "2"
+            ],
+            [
+              "Bird",
+              "18"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.48,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.1,
+          "reasoningSteps": 0.1,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "html-table-realises-data",
+        "table-round-trip",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer",
+        "table-solution-does-not-reference-axis",
+        "table-solution-does-not-reference-bar-or-point",
+        "solution-language-matches-representation"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(12,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01",
@@ -2233,7 +2854,7 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Add the frequencies",
+          "transformation": "Add every displayed frequency",
           "intermediateResult": "8 + 5 + 9 + 13 = 35"
         }
       ],
@@ -2292,141 +2913,34 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "total-blank-uses-addition",
+        "frequency-blank-uses-subtraction",
+        "frequency-diagnostic-applicable-to-blank-kind",
+        "feedback-matches-displayed-table",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
-          "misconceptionId": "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
-          "title": "Adds instead of subtracting",
-          "observableError": "Adds the known frequencies to the total instead of subtracting.",
-          "feedback": "The frequencies add up to the total, so subtract the ones you know from the total."
+          "misconceptionId": "MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY",
+          "title": "Omits a category from the total",
+          "observableError": "Leaves a category out when adding up the total.",
+          "feedback": "Add every category's frequency \u2014 don't miss one out.",
+          "blankKind": "total"
         },
         {
-          "misconceptionId": "MISC.STAT.FREQ_IGNORES_TOTAL",
-          "title": "Ignores the total",
-          "observableError": "Adds up the other frequencies but ignores the given total.",
-          "feedback": "Use the total: the missing frequency is the total minus the frequencies you already have."
+          "misconceptionId": "MISC.STAT.FREQ_TOTAL_COPIES_ONE",
+          "title": "Copies one frequency as the total",
+          "observableError": "Writes one of the frequencies as the total instead of their sum.",
+          "feedback": "The total is the sum of all the frequencies, not a single one of them.",
+          "blankKind": "total"
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(14,{'interactionType':'free-response'})))\""
-    },
-    {
-      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
-      "task": "median_from_list",
-      "interaction": "free-response",
-      "answerType": "integer",
-      "seed": 16,
-      "params": {
-        "task": "median_from_list",
-        "dataset": {
-          "kind": "list",
-          "title": "Test scores",
-          "unit": "marks",
-          "values": [
-            8,
-            7,
-            1,
-            19,
-            11,
-            4,
-            19
-          ]
-        },
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "list",
-        "title": "Test scores",
-        "unit": "marks",
-        "values": [
-          8,
-          7,
-          1,
-          19,
-          11,
-          4,
-          19
-        ]
-      },
-      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
-      "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Test scores</caption>\n<tbody><tr>\n<td>8</td>\n<td>7</td>\n<td>1</td>\n<td>19</td>\n<td>11</td>\n<td>4</td>\n<td>19</td>\n</tr></tbody></table>",
-      "answer": "8",
-      "answerCanonical": 8,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Order the values",
-          "intermediateResult": "1, 4, 7, 8, 11, 19, 19"
-        },
-        {
-          "number": 2,
-          "transformation": "Find the middle value",
-          "intermediateResult": "8"
-        }
-      ],
-      "distractors": [],
-      "accessibility": {
-        "spokenMath": "A list of values titled Test scores.",
-        "dataTable": {
-          "columns": [
-            "Value"
-          ],
-          "rows": [
-            [
-              "8"
-            ],
-            [
-              "7"
-            ],
-            [
-              "1"
-            ],
-            [
-              "19"
-            ],
-            [
-              "11"
-            ],
-            [
-              "4"
-            ],
-            [
-              "19"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 2,
-        "axes": {
-          "numericalComplexity": 0.3,
-          "readingDemand": 0.2,
-          "interpretationDemand": 0.3,
-          "reasoningSteps": 0.35,
-          "informationDensity": 1,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "html-table-realises-data",
-        "table-round-trip",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(16,{'interactionType':'free-response'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
@@ -2485,12 +2999,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cRugby\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read its height using the vertical-axis scale",
           "intermediateResult": "9"
         }
       ],
@@ -2554,7 +3068,14 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(19,{'interactionType':'free-response'})))\""
@@ -2618,7 +3139,7 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Subtract the known frequencies from the total",
+          "transformation": "Subtract the sum of the known frequencies from the displayed total",
           "intermediateResult": "35 \u2212 25 = 10"
         }
       ],
@@ -2673,20 +3194,31 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "total-blank-uses-addition",
+        "frequency-blank-uses-subtraction",
+        "frequency-diagnostic-applicable-to-blank-kind",
+        "feedback-matches-displayed-table",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
           "misconceptionId": "MISC.STAT.FREQ_SUBTRACT_WRONG_WAY",
           "title": "Adds instead of subtracting",
           "observableError": "Adds the known frequencies to the total instead of subtracting.",
-          "feedback": "The frequencies add up to the total, so subtract the ones you know from the total."
+          "feedback": "The frequencies add up to the total, so subtract the ones you know from the total.",
+          "blankKind": "frequency"
         },
         {
           "misconceptionId": "MISC.STAT.FREQ_IGNORES_TOTAL",
           "title": "Ignores the total",
           "observableError": "Adds up the other frequencies but ignores the given total.",
-          "feedback": "Use the total: the missing frequency is the total minus the frequencies you already have."
+          "feedback": "Use the total: the missing frequency is the total minus the frequencies you already have.",
+          "blankKind": "frequency"
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(21,{'interactionType':'free-response'})))\""
@@ -2702,7 +3234,7 @@
         "dataset": {
           "kind": "list",
           "title": "Goals scored",
-          "unit": "values",
+          "unit": "goals",
           "values": [
             3,
             1,
@@ -2717,7 +3249,7 @@
       "dataset": {
         "kind": "list",
         "title": "Goals scored",
-        "unit": "values",
+        "unit": "goals",
         "values": [
           3,
           1,
@@ -2825,149 +3357,19 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(22,{'interactionType':'multiple-choice'})))\""
-    },
-    {
-      "objectiveId": "SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01",
-      "task": "median_from_list",
-      "interaction": "multiple-choice",
-      "answerType": "integer",
-      "seed": 25,
-      "params": {
-        "task": "median_from_list",
-        "dataset": {
-          "kind": "list",
-          "title": "Numbers of pets",
-          "unit": "pets",
-          "values": [
-            15,
-            6,
-            3,
-            9,
-            10,
-            7
-          ]
-        },
-        "scaffold": false
-      },
-      "dataset": {
-        "kind": "list",
-        "title": "Numbers of pets",
-        "unit": "pets",
-        "values": [
-          15,
-          6,
-          3,
-          9,
-          10,
-          7
-        ]
-      },
-      "prompt": "Find the median of the data. Give your answer as an integer or a fraction in its simplest form.",
-      "mediaKind": "table",
-      "figure": "<table class=\"cx-list\">\n<caption>Numbers of pets</caption>\n<tbody><tr>\n<td>15</td>\n<td>6</td>\n<td>3</td>\n<td>9</td>\n<td>10</td>\n<td>7</td>\n</tr></tbody></table>",
-      "answer": "8",
-      "answerCanonical": 8,
-      "solution": [
-        {
-          "number": 1,
-          "transformation": "Order the values",
-          "intermediateResult": "3, 6, 7, 9, 10, 15"
-        },
-        {
-          "number": 2,
-          "transformation": "Find the middle value",
-          "intermediateResult": "8"
-        }
-      ],
-      "distractors": [
-        {
-          "id": "d1",
-          "value": 6,
-          "display": "6",
-          "misconceptionId": "MISC.STAT.MEDIAN_NO_ORDER",
-          "rationale": "Takes the middle value without putting the list in order first."
-        },
-        {
-          "id": "d2",
-          "value": 7,
-          "display": "7",
-          "misconceptionId": "MISC.STAT.MEDIAN_WRONG_MIDDLE",
-          "rationale": "Picks one of the two middle values instead of their average."
-        },
-        {
-          "id": "d3",
-          "value": 15,
-          "display": "15",
-          "misconceptionId": "MISC.STAT.AVG_USES_MODE",
-          "rationale": "Gives the most common value instead of the one asked for."
-        }
-      ],
-      "accessibility": {
-        "spokenMath": "A list of values titled Numbers of pets.",
-        "dataTable": {
-          "columns": [
-            "Value"
-          ],
-          "rows": [
-            [
-              "15"
-            ],
-            [
-              "6"
-            ],
-            [
-              "3"
-            ],
-            [
-              "9"
-            ],
-            [
-              "10"
-            ],
-            [
-              "7"
-            ]
-          ]
-        }
-      },
-      "difficulty": {
-        "overallBand": 2,
-        "axes": {
-          "numericalComplexity": 0.3,
-          "readingDemand": 0.2,
-          "interpretationDemand": 0.3,
-          "reasoningSteps": 0.35,
-          "informationDensity": 1,
-          "scaffolding": 0.5
-        }
-      },
-      "validation": "pass",
-      "validationChecks": [
-        "objective-mapping",
-        "interaction-type",
-        "free-response-only-respected",
-        "closure-agreement",
-        "answer-type-consistency",
-        "media-present",
-        "media-kind",
-        "html-table-realises-data",
-        "table-round-trip",
-        "no-derived-statistic-annotation",
-        "student-a11y-does-not-state-result",
-        "no-solution-overlay-in-student-render",
-        "difficulty-in-band",
-        "difficulty-axes-valid",
-        "mc-option-count",
-        "mc-options-distinct",
-        "mc-one-correct",
-        "mc-distractors-recompute"
-      ],
-      "pitfalls": [],
-      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(25,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01",
@@ -3087,7 +3489,12 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(30,{'interactionType':'free-response'})))\""
@@ -3239,10 +3646,183 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(30,{'interactionType':'multiple-choice'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+      "task": "read_pictogram",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 32,
+      "params": {
+        "task": "read_pictogram",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Colour of car",
+          "unit": "cars",
+          "categories": [
+            "Red",
+            "Blue",
+            "Black",
+            "White"
+          ],
+          "frequencies": [
+            5,
+            4,
+            7,
+            7
+          ],
+          "pictogramKey": 2
+        },
+        "queryIndex": 3,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Colour of car",
+        "unit": "cars",
+        "categories": [
+          "Red",
+          "Blue",
+          "Black",
+          "White"
+        ],
+        "frequencies": [
+          5,
+          4,
+          7,
+          7
+        ],
+        "pictogramKey": 2
+      },
+      "prompt": "Use the key to find the number of cars for \u201cWhite\u201d.",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Colour of car.\">\n<title>Colour of car</title>\n<desc>A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 2 cars.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Red</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" data-half=\"1\" x=\"368\" y=\"90\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Blue</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Black</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" data-half=\"1\" x=\"412\" y=\"230\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"324\" text-anchor=\"start\">White</text>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"280\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"324\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" x=\"368\" y=\"300\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"3\" data-half=\"1\" x=\"412\" y=\"300\" width=\"17\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
+      "answer": "7",
+      "answerCanonical": 7,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count the whole and half symbols in the named row",
+          "intermediateResult": "3 whole symbols and 1 half symbol"
+        },
+        {
+          "number": 2,
+          "transformation": "Apply the displayed key",
+          "intermediateResult": "3 \u00d7 2 + 1 = 7"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 6,
+          "display": "6",
+          "misconceptionId": "MISC.STAT.PICTO_IGNORES_HALF",
+          "rationale": "Leaves out the value of the half symbol."
+        },
+        {
+          "id": "d2",
+          "value": 8,
+          "display": "8",
+          "misconceptionId": "MISC.STAT.PICTO_HALF_AS_WHOLE",
+          "rationale": "Counts the half symbol as if it were a whole symbol."
+        },
+        {
+          "id": "d3",
+          "value": 5,
+          "display": "5",
+          "misconceptionId": "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL",
+          "rationale": "Counts one symbol too few when reading the row."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Symbols (1 symbol = 2 cars)"
+          ],
+          "rows": [
+            [
+              "Red",
+              "2 whole symbols and 1 half symbol"
+            ],
+            [
+              "Blue",
+              "2 whole symbols"
+            ],
+            [
+              "Black",
+              "3 whole symbols and 1 half symbol"
+            ],
+            [
+              "White",
+              "3 whole symbols and 1 half symbol"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.3,
+          "readingDemand": 0.2,
+          "interpretationDemand": 0.25,
+          "reasoningSteps": 0.15,
+          "informationDensity": 0.333,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "pictogram-symbol-count-exact",
+        "pictogram-distractor-matches-visible-symbols",
+        "half-symbol-misconceptions-distinct",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(32,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
@@ -3293,12 +3873,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cHockey\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read its height using the vertical-axis scale",
           "intermediateResult": "12"
         }
       ],
@@ -3380,7 +3960,18 @@
         "mc-option-count",
         "mc-options-distinct",
         "mc-one-correct",
-        "mc-distractors-recompute"
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(34,{'interactionType':'multiple-choice'})))\""
@@ -3442,12 +4033,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cBlue\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read its height using the vertical-axis scale",
           "intermediateResult": "13"
         }
       ],
@@ -3511,7 +4102,14 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(35,{'interactionType':'free-response'})))\""
@@ -3565,12 +4163,12 @@
       "solution": [
         {
           "number": 1,
-          "transformation": "Locate the named category/position",
-          "intermediateResult": "Find the matching bar, row, or marked point."
+          "transformation": "Locate the bar for the named category",
+          "intermediateResult": "the bar for \u201cFootball\u201d"
         },
         {
           "number": 2,
-          "transformation": "Read the value from the labelled axis",
+          "transformation": "Read its height using the vertical-axis scale",
           "intermediateResult": "49"
         }
       ],
@@ -3626,10 +4224,173 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(39,{'interactionType':'free-response'})))\""
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.STAT.READ.PICTOGRAM.01",
+      "task": "read_pictogram",
+      "interaction": "multiple-choice",
+      "answerType": "integer",
+      "seed": 56,
+      "params": {
+        "task": "read_pictogram",
+        "dataset": {
+          "kind": "frequency",
+          "title": "Colour of car",
+          "unit": "cars",
+          "categories": [
+            "Red",
+            "Blue",
+            "Black"
+          ],
+          "frequencies": [
+            15,
+            15,
+            25
+          ],
+          "pictogramKey": 5
+        },
+        "queryIndex": 1,
+        "scaffold": false
+      },
+      "dataset": {
+        "kind": "frequency",
+        "title": "Colour of car",
+        "unit": "cars",
+        "categories": [
+          "Red",
+          "Blue",
+          "Black"
+        ],
+        "frequencies": [
+          15,
+          15,
+          25
+        ],
+        "pictogramKey": 5
+      },
+      "prompt": "Use the key to find the number of cars for \u201cBlue\u201d.",
+      "mediaKind": "svg",
+      "figure": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Pictogram: Colour of car.\">\n<title>Colour of car</title>\n<desc>A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.</desc>\n<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>\n<text class=\"cx-keylbl\" x=\"120\" y=\"48\">Key: 1 symbol represents 5 cars.</text>\n<text class=\"cx-catlbl\" x=\"80\" y=\"114\" text-anchor=\"start\">Red</text>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"280\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"324\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"0\" x=\"368\" y=\"90\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"184\" text-anchor=\"start\">Blue</text>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"280\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"324\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"1\" x=\"368\" y=\"160\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-catlbl\" x=\"80\" y=\"254\" text-anchor=\"start\">Black</text>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"280\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"324\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"368\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"412\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<rect class=\"cx-symbol\" data-cat=\"2\" x=\"456\" y=\"230\" width=\"34\" height=\"34\" rx=\"6\"/>\n<text class=\"cx-axislbl\" x=\"500\" y=\"682\" text-anchor=\"middle\">Colour of car</text>\n</svg>",
+      "answer": "15",
+      "answerCanonical": 15,
+      "solution": [
+        {
+          "number": 1,
+          "transformation": "Count the whole and half symbols in the named row",
+          "intermediateResult": "3 whole symbols"
+        },
+        {
+          "number": 2,
+          "transformation": "Apply the displayed key",
+          "intermediateResult": "3 \u00d7 5 = 15"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "d1",
+          "value": 3,
+          "display": "3",
+          "misconceptionId": "MISC.STAT.PICTO_COUNTS_SYMBOLS",
+          "rationale": "Counts the symbols without using the key."
+        },
+        {
+          "id": "d2",
+          "value": 25,
+          "display": "25",
+          "misconceptionId": "MISC.STAT.READ_WRONG_CATEGORY",
+          "rationale": "Reads the frequency of a neighbouring category."
+        },
+        {
+          "id": "d3",
+          "value": 10,
+          "display": "10",
+          "misconceptionId": "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL",
+          "rationale": "Counts one symbol too few when reading the row."
+        }
+      ],
+      "accessibility": {
+        "spokenMath": "A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.",
+        "dataTable": {
+          "columns": [
+            "Category",
+            "Symbols (1 symbol = 5 cars)"
+          ],
+          "rows": [
+            [
+              "Red",
+              "3 whole symbols"
+            ],
+            [
+              "Blue",
+              "3 whole symbols"
+            ],
+            [
+              "Black",
+              "5 whole symbols"
+            ]
+          ]
+        }
+      },
+      "difficulty": {
+        "overallBand": 2,
+        "axes": {
+          "numericalComplexity": 0.4,
+          "readingDemand": 0.15,
+          "interpretationDemand": 0.25,
+          "reasoningSteps": 0.15,
+          "informationDensity": 0,
+          "scaffolding": 0.5
+        }
+      },
+      "validation": "pass",
+      "validationChecks": [
+        "objective-mapping",
+        "interaction-type",
+        "free-response-only-respected",
+        "closure-agreement",
+        "answer-type-consistency",
+        "media-present",
+        "media-kind",
+        "svg-realises-data",
+        "chart-realises-data",
+        "premium-spec-parity",
+        "no-derived-statistic-annotation",
+        "student-a11y-does-not-state-result",
+        "no-solution-overlay-in-student-render",
+        "difficulty-in-band",
+        "difficulty-axes-valid",
+        "mc-option-count",
+        "mc-options-distinct",
+        "mc-one-correct",
+        "mc-distractors-recompute",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "mode-distractor-requires-unique-mode",
+        "distractor-statistic-exists",
+        "distractor-value-is-actual-statistic",
+        "distractor-rationale-true-for-dataset",
+        "pictogram-symbol-count-exact",
+        "pictogram-distractor-matches-visible-symbols",
+        "half-symbol-misconceptions-distinct",
+        "solution-method-produces-canonical-answer",
+        "chart-solution-references-correct-chart-elements",
+        "solution-language-matches-representation"
+      ],
+      "pitfalls": [],
+      "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(56,{'interactionType':'multiple-choice'})))\""
     },
     {
       "objectiveId": "SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01",
@@ -3762,14 +4523,20 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
           "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
           "title": "Leaves the fraction unsimplified",
           "observableError": "Writes a correct but unsimplified fraction.",
-          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form.",
+          "blankKind": null
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(104,{'interactionType':'free-response'})))\""
@@ -3785,7 +4552,7 @@
         "dataset": {
           "kind": "list",
           "title": "Numbers of pets",
-          "unit": "values",
+          "unit": "pets",
           "values": [
             6,
             6,
@@ -3797,7 +4564,7 @@
       "dataset": {
         "kind": "list",
         "title": "Numbers of pets",
-        "unit": "values",
+        "unit": "pets",
         "values": [
           6,
           6,
@@ -3867,7 +4634,12 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(166,{'interactionType':'free-response'})))\""
@@ -3987,14 +4759,20 @@
         "student-a11y-does-not-state-result",
         "no-solution-overlay-in-student-render",
         "difficulty-in-band",
-        "difficulty-axes-valid"
+        "difficulty-axes-valid",
+        "context-values-in-domain",
+        "count-context-nonnegative",
+        "signed-context-explicit",
+        "context-unit-compatible-with-values",
+        "solution-method-produces-canonical-answer"
       ],
       "pitfalls": [
         {
           "misconceptionId": "MISC.STAT.PROB_UNREDUCED",
           "title": "Leaves the fraction unsimplified",
           "observableError": "Writes a correct but unsimplified fraction.",
-          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form."
+          "feedback": "Your value is equivalent, but simplify the fraction to its simplest form.",
+          "blankKind": null
         }
       ],
       "reproduce": "python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(228,{'interactionType':'free-response'})))\""

@@ -1,6 +1,6 @@
 {
   "generatorId": "gen.stats.data-handling",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
   "tool": "chromium-getComputedStyle + canvas rasterize (preview)",
   "checks": [
     {

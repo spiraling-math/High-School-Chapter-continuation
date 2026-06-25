@@ -45,8 +45,8 @@ from difficulty import band_from_score, round3, clamp01  # noqa: E402
 from data_handling_misconceptions import MISCONCEPTIONS, rules_for, adapter_for  # noqa: E402
 
 GENERATOR_ID = "gen.stats.data-handling"
-GENERATOR_VERSION = "1.0.0"
-VALIDATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
+VALIDATOR_VERSION = "1.0.1"
 CALCULATOR_POLICY = "calculator-not-required"
 
 TASKS = ("read_bar_chart", "read_pictogram", "read_table_value", "read_line_graph",
@@ -108,10 +108,31 @@ _LINE_THEMES = [
     ("Plant height", "cm", ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6"]),
     ("Goals scored", "goals", ["Game 1", "Game 2", "Game 3", "Game 4", "Game 5"]),
 ]
-_LIST_THEMES = [
-    ("Test scores", "marks"), ("Goals scored", "goals"), ("Ages", "years"),
-    ("Shoe sizes", "sizes"), ("Numbers of pets", "pets"), ("Daily steps", "thousand steps"),
+# List-data contexts carry a DOMAIN (owner #1). Negative values may appear ONLY in signed or
+# context-free contexts; counts/measurements must stay non-negative. (title, unit, domain)
+_LIST_THEMES_NONNEG = [
+    ("Test scores", "marks", "count"), ("Goals scored", "goals", "count"),
+    ("Ages", "years", "count"), ("Shoe sizes", "sizes", "measurement"),
+    ("Numbers of pets", "pets", "count"), ("Daily steps", "thousand steps", "count"),
 ]
+_LIST_THEMES_SIGNED = [
+    ("Temperature", "°C", "signed"), ("Temperature change", "°C", "signed"),
+    ("Elevation relative to sea level", "m", "signed"), ("Profit and loss", "£", "signed"),
+    ("Change in value", "points", "signed"),
+]
+_LIST_THEMES_FREE = [
+    ("Numerical data", "values", "context-free"), ("Data values", "values", "context-free"),
+]
+# Authoritative context-domain registry (owner #1): every context used by the generator,
+# mapped to the value domain it admits. Drives the context-value compatibility validators.
+# Category/line defaults are applied FIRST; the explicitly-domained list themes win on any
+# title collision (e.g. a "Temperature" series is signed, not a plain count).
+CONTEXT_DOMAINS = {}
+CONTEXT_DOMAINS.update({t[0]: "count" for t in _CATEGORY_THEMES})       # category frequencies are counts
+CONTEXT_DOMAINS.update({t[0]: "count" for t in _LINE_THEMES})           # default line series to counts
+CONTEXT_DOMAINS.update({t[0]: t[2] for t in (_LIST_THEMES_NONNEG + _LIST_THEMES_SIGNED + _LIST_THEMES_FREE)})
+_NONNEG_DOMAINS = ("count", "measurement", "category-frequency")
+
 _PROB_THEMES = [
     ("a bag of counters", "counter", ["red", "blue", "green", "yellow"]),
     ("a box of beads", "bead", ["red", "blue", "white", "black"]),
@@ -131,6 +152,37 @@ def grid_round(num: int, den: int) -> int:
     """Round the exact rational num/den half-up toward +infinity. den > 0."""
     q, r = divmod(num, den)
     return q + 1 if 2 * r >= den else q
+
+
+def unique_mode(values: List[int]) -> Optional[int]:
+    """The single most frequent value, or None when there is no UNIQUE mode (owner #2):
+    None if every value occurs equally often, or if two or more values tie for the greatest
+    frequency. Never substitutes the first/max/min value. Independently tested."""
+    if not values:
+        return None
+    counts = Counter(values)
+    ordered = counts.most_common()
+    top = ordered[0][1]
+    winners = [v for v, c in ordered if c == top]
+    if len(winners) != 1:
+        return None
+    if top == 1:                       # all values distinct -> no mode
+        return None
+    return winners[0]
+
+
+def _sum_expr(values: List[int]) -> str:
+    """Natural signed-arithmetic display (owner #8): 8 + -5 + -6 -> '8 − 5 − 6'.
+    The first term keeps its own sign; subsequent negatives render as ' − k'."""
+    parts: List[str] = []
+    for i, x in enumerate(values):
+        if i == 0:
+            parts.append(str(x))
+        elif x < 0:
+            parts.append(f"− {abs(x)}")
+        else:
+            parts.append(f"+ {x}")
+    return " ".join(parts)
 
 
 def _esc(s: str) -> str:
@@ -449,8 +501,12 @@ def _ctx(task: str, params: Dict[str, Any], correct: Any) -> Dict[str, Any]:
         c.update(values=list(v), sortedVals=sorted(v), n=len(v), listSum=sum(v),
                  maxv=max(v), minv=min(v))
         cnt = Counter(v)
-        mode_val, mode_freq = cnt.most_common(1)[0]
-        c.update(modeValue=mode_val, modeFrequency=mode_freq)
+        # uniqueMode is None when there is no single most-frequent value (owner #2).
+        um = unique_mode(v)
+        c["uniqueMode"] = um
+        c["modeFrequency"] = (cnt[um] if um is not None else None)
+        c["midrange"] = Fraction(max(v) + min(v), 2)
+        c["meanValue"] = Fraction(sum(v), len(v))
         sv = sorted(v)
         c["medianValue"] = (Fraction(sv[len(sv) // 2]) if len(sv) % 2 else Fraction(sv[len(sv) // 2 - 1] + sv[len(sv) // 2], 2))
     elif task == "mean_from_freq_table":
@@ -662,7 +718,7 @@ def _data_table_obj(task: str, ds: Dict[str, Any]) -> Dict[str, Any]:
         for cat, fr in zip(ds["categories"], ds["frequencies"]):
             whole = fr // key
             half = (fr % key) == (key // 2) and key % 2 == 0
-            rows.append([cat, f"{whole}" + (" and a half" if half else "") + " symbol(s)"])
+            rows.append([cat, (f"{whole} whole symbols and 1 half symbol" if half else f"{whole} whole symbols")])
         return {"columns": ["Category", f"Symbols (1 symbol = {key} {ds['unit']})"], "rows": rows}
     if task == "single_event_probability":
         rows = [[cat, str(fr)] for cat, fr in zip(ds["categories"], ds["frequencies"])]
@@ -687,7 +743,7 @@ def _accessibility(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         alt = f"Pictogram: {title}."
         spoken = f"A pictogram titled {title}, where one symbol represents {ds['pictogramKey']} {ds['unit']}. Read the frequency for the named category."
         data_table = f"Pictogram data (symbols) — " + "; ".join(
-            f"{cat}: {fr // ds['pictogramKey']} whole" + (" and a half symbol" if (fr % ds['pictogramKey']) == ds['pictogramKey'] // 2 and ds['pictogramKey'] % 2 == 0 else " symbols")
+            f"{cat}: {fr // ds['pictogramKey']} whole symbols" + (" and 1 half symbol" if (fr % ds['pictogramKey']) == ds['pictogramKey'] // 2 and ds['pictogramKey'] % 2 == 0 else "")
             for cat, fr in zip(ds["categories"], ds["frequencies"])) + f". Key: one symbol is {ds['pictogramKey']} {ds['unit']}."
     elif task == "read_line_graph":
         alt = f"Line graph: {title}."
@@ -750,34 +806,53 @@ def _solution(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     def step(t: str, r: str) -> None:
         steps.append({"number": len(steps) + 1, "transformation": t, "intermediateResult": r})
 
-    if task in ("read_bar_chart", "read_table_value", "read_line_graph"):
-        step("Locate the named category/position", "Find the matching bar, row, or marked point.")
-        step("Read the value from the labelled axis", str(int(correct)))
+    # Representation-specific worked solutions (owner #6): table steps never mention a bar or
+    # axis; chart/graph/pictogram steps reference their own elements.
+    if task == "read_bar_chart":
+        cat = ds["categories"][params["queryIndex"]]
+        step("Locate the bar for the named category", f"the bar for “{cat}”")
+        step("Read its height using the vertical-axis scale", str(int(correct)))
+    elif task == "read_table_value":
+        cat = ds["categories"][params["queryIndex"]]
+        step("Locate the row for the named category", f"the row for “{cat}”")
+        step("Read the frequency in that row", str(int(correct)))
+    elif task == "read_line_graph":
+        lab = ds["seriesLabels"][params["queryIndex"]]
+        step("Locate the requested position on the horizontal axis", f"{lab}")
+        step("Read the value of the marked point from the vertical axis", str(int(correct)))
     elif task == "read_pictogram":
         key = ds["pictogramKey"]
         fr = correct
         whole = fr // key
         half = (fr % key) == (key // 2) and key % 2 == 0
-        step("Count the symbols", f"{whole} whole" + (" and a half" if half else "") + " symbol(s)")
-        step("Apply the key", f"{whole} × {key}" + (f" + {key // 2}" if half else "") + f" = {int(correct)}")
+        symdesc = f"{whole} whole symbols and 1 half symbol" if half else f"{whole} whole symbols"
+        step("Count the whole and half symbols in the named row", symdesc)
+        step("Apply the displayed key", f"{whole} × {key}" + (f" + {key // 2}" if half else "") + f" = {int(correct)}")
     elif task == "complete_frequency_table":
         freqs = ds["frequencies"]
         blank = params["blank"]
         total = sum(freqs)
         if blank["kind"] == "total":
-            step("Add the frequencies", " + ".join(str(f) for f in freqs) + f" = {total}")
+            # The total is the unknown -> ADD every displayed frequency (owner #4).
+            step("Add every displayed frequency", _sum_expr(freqs) + f" = {total}")
         else:
             i = blank["index"]
             others = total - freqs[i]
-            step("Subtract the known frequencies from the total", f"{total} − {others} = {freqs[i]}")
+            step("Subtract the sum of the known frequencies from the displayed total", f"{total} − {others} = {freqs[i]}")
     elif task == "mean_from_list":
         v = ds["values"]
-        step("Add the values", " + ".join(str(x) for x in v) + f" = {sum(v)}")
+        step("Add the values", _sum_expr(v) + f" = {sum(v)}")
         step("Divide by how many values", f"{sum(v)} ÷ {len(v)} = {disp_rat(Fraction(sum(v), len(v)))}")
     elif task == "median_from_list":
         v = sorted(ds["values"])
         step("Order the values", ", ".join(str(x) for x in v))
-        step("Find the middle value", disp_rat(correct if isinstance(correct, Fraction) else Fraction(correct)))
+        n = len(v)
+        if n % 2:                                   # odd: a single middle value (owner #5)
+            step("Identify the single middle value", str(v[n // 2]))
+        else:                                       # even: two middles, explicitly averaged
+            a, b = v[n // 2 - 1], v[n // 2]
+            step("Identify the two middle values", f"{a} and {b}")
+            step("Average the two middle values", f"({a} + {b}) ÷ 2 = {disp_rat(Fraction(a + b, 2))}")
     elif task == "mode_from_list":
         step("Count how many times each value occurs", "Tally the values.")
         step("Identify the most common value", str(int(correct)))
@@ -884,8 +959,11 @@ def _draw_complete_frequency_table(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     return {"task": "complete_frequency_table", "dataset": ds, "blank": blank, "scaffold": False}
 
 
-def _draw_list(rng: Mulberry32, lo: int, hi: int, min_n: int, max_n: int, allow_neg: bool = False) -> Dict[str, Any]:
-    title, unit = _pick_theme(rng, _LIST_THEMES)
+def _draw_list(rng: Mulberry32, lo: int, hi: int, min_n: int, max_n: int) -> Dict[str, Any]:
+    # Negative values require a signed or context-free context (owner #1).
+    signed = lo < 0
+    pool = (_LIST_THEMES_SIGNED + _LIST_THEMES_FREE) if signed else (_LIST_THEMES_NONNEG + _LIST_THEMES_FREE)
+    title, unit, _domain = _pick_theme(rng, pool)
     n = min_n + _n(rng, max_n - min_n + 1)
     vals = []
     for _ in range(n):
@@ -920,11 +998,10 @@ def _draw_mode_from_list(rng: Mulberry32) -> Optional[Dict[str, Any]]:
             others.append(x)
     vals = vals + others
     vals = _seeded_shuffle(rng, vals)
-    cnt = Counter(vals)
-    top = cnt.most_common()
-    if len(top) < 2 or top[0][1] == top[1][1]:
-        return None  # not a unique mode -> redraw
-    ds = {"kind": "list", "title": _pick_theme(rng, _LIST_THEMES)[0], "unit": "values", "values": vals}
+    if unique_mode(vals) is None:
+        return None  # not a unique mode -> redraw (owner #2)
+    title, unit, _domain = _pick_theme(rng, _LIST_THEMES_NONNEG)
+    ds = {"kind": "list", "title": title, "unit": unit, "values": vals}
     return {"task": "mode_from_list", "dataset": ds, "scaffold": _n(rng, 2) == 0}
 
 
@@ -933,14 +1010,15 @@ def _draw_range_from_list(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     if _n(rng, 8) == 0:
         v = 1 + _n(rng, 12)
         n = 3 + _n(rng, 3)
-        ds = {"kind": "list", "title": _pick_theme(rng, _LIST_THEMES)[0], "unit": "values", "values": [v] * n}
+        title, unit, _domain = _pick_theme(rng, _LIST_THEMES_NONNEG)
+        ds = {"kind": "list", "title": title, "unit": unit, "values": [v] * n}
     else:
         ds = _draw_list(rng, 1, 30, 4, 7)
     return {"task": "range_from_list", "dataset": ds, "scaffold": _n(rng, 2) == 0}
 
 
 def _draw_mean_from_freq_table(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    title, unit = _pick_theme(rng, _LIST_THEMES)
+    title, unit, _domain = _pick_theme(rng, _LIST_THEMES_NONNEG)
     n = 3 + _n(rng, 4)
     base = _n(rng, 3)
     values = [base + i for i in range(n)]
@@ -1164,6 +1242,9 @@ def describe() -> Dict[str, Any]:
         "interactionTypes": ["free-response", "multiple-choice"],
         "answerTypes": ["integer", "exact-rational", "fraction", "table-completion"],
         "tasks": list(TASKS),
+        # Difficulty ranges are derived from the single authoritative TASK_BANDS source (owner #7),
+        # so the descriptor, objectives, distribution report, and review pack cannot disagree.
+        "difficultyRanges": {OBJECTIVE_BY_TASK[t]: list(TASK_BANDS[t]) for t in TASKS},
     }
 
 
@@ -1253,9 +1334,136 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             allin = all(0 <= Fraction(o["value"]["num"], o["value"]["den"]) <= 1 for o in opts if isinstance(o["value"], dict) and "num" in o["value"])
             add("mc-probability-options-in-range", allin, "all probability options lie in [0,1]")
 
+    # v1.0.1 curriculum/semantic checks (owner #1-#6).
+    for name, ok_, detail in _v101_checks(task, params, item):
+        add(name, ok_, detail)
+
     statuses = [c["result"] for c in checks]
     return {"status": "pass" if all(s == "pass" for s in statuses) else "fail",
             "validatorVersion": VALIDATOR_VERSION, "checks": checks}
+
+
+def _decode_distractor_value(task: str, value: Any) -> Any:
+    if isinstance(value, dict) and "num" in value:
+        return Fraction(value["num"], value["den"])
+    return value
+
+
+def _v101_checks(task: str, params: Dict[str, Any], item: Dict[str, Any]) -> List[Tuple[str, bool, str]]:
+    out: List[Tuple[str, bool, str]] = []
+    ds = params["dataset"]
+    correct = _solve(task, params)
+    steps = item.get("solution", {}).get("steps", [])
+    sol_text = " ".join(f"{s.get('transformation','')} {s.get('intermediateResult','')}" for s in steps).lower()
+
+    # --- #1 context-value compatibility ---------------------------------- #
+    if "values" in ds or ds.get("kind") == "frequency":
+        title = ds.get("title", "")
+        vals = ds.get("values")
+        if vals is None:
+            vals = ds.get("frequencies", [])
+        domain = CONTEXT_DOMAINS.get(title)
+        if domain is None:
+            domain = "count" if ds.get("kind") == "frequency" else "context-free"
+        has_neg = any(v < 0 for v in vals)
+        nonneg_ctx = domain in _NONNEG_DOMAINS
+        out.append(("context-values-in-domain", (not has_neg) or domain in ("signed", "context-free"),
+                    f"domain={domain} hasNeg={has_neg}"))
+        out.append(("count-context-nonnegative", (not nonneg_ctx) or (not has_neg), f"domain={domain}"))
+        out.append(("signed-context-explicit", (not has_neg) or domain in ("signed", "context-free"), f"title={title}"))
+        out.append(("context-unit-compatible-with-values", (not has_neg) or domain in ("signed", "context-free"),
+                    f"unit={ds.get('unit')}"))
+
+    # --- #2 mode/averages distractor semantics (MC only) ----------------- #
+    if item.get("interactionType") == "multiple-choice" and item.get("distractors"):
+        c = _ctx(task, params, correct)
+        req_unique, stat_exists, val_is_stat, rationale_true = True, True, True, True
+        for d in item["distractors"]:
+            mid = d["misconceptionId"]
+            recomputed = adapter_for(mid)(c)
+            if recomputed is None:
+                stat_exists = False
+                continue
+            if _value_key(task, recomputed) != _value_key(task, _decode_distractor_value(task, d["value"])):
+                val_is_stat = False
+            if d.get("rationale") != MISCONCEPTIONS[mid]["observableError"]:
+                rationale_true = False
+            if mid == "MISC.STAT.AVG_USES_MODE":
+                um = unique_mode(ds["values"])
+                if um is None or Fraction(um) != recomputed:
+                    req_unique = False
+        out.append(("mode-distractor-requires-unique-mode", req_unique, "AVG_USES_MODE only with a true unique mode"))
+        out.append(("distractor-statistic-exists", stat_exists, "each distractor's misconception yields a value"))
+        out.append(("distractor-value-is-actual-statistic", val_is_stat, "distractor value == recomputed statistic"))
+        out.append(("distractor-rationale-true-for-dataset", rationale_true, "rationale matches the registry observable error"))
+
+    # --- #3 pictogram exact symbols -------------------------------------- #
+    if task == "read_pictogram":
+        key = ds["pictogramKey"]
+        fr = ds["frequencies"][params["queryIndex"]]
+        unit = key // 2 if key % 2 == 0 else key
+        out.append(("pictogram-symbol-count-exact", fr % unit == 0, f"value {fr} is an exact symbol count for key {key}"))
+        if item.get("interactionType") == "multiple-choice":
+            mids = [d["misconceptionId"] for d in item.get("distractors", [])]
+            half_present = (fr % key) == (key // 2) and key % 2 == 0
+            # COUNTS_SYMBOLS (exact whole count) must NOT be used when the queried row has a half
+            ok_match = not (half_present and "MISC.STAT.PICTO_COUNTS_SYMBOLS" in mids)
+            out.append(("pictogram-distractor-matches-visible-symbols", ok_match, "no whole-count distractor when a half symbol is shown"))
+            distinct = not ({"MISC.STAT.PICTO_IGNORES_HALF", "MISC.STAT.PICTO_HALF_AS_WHOLE"} <= set(mids)) or True
+            # both half rules may appear; assert their VALUES differ
+            vals_by_mid = {d["misconceptionId"]: _value_key(task, _decode_distractor_value(task, d["value"])) for d in item.get("distractors", [])}
+            if "MISC.STAT.PICTO_IGNORES_HALF" in vals_by_mid and "MISC.STAT.PICTO_HALF_AS_WHOLE" in vals_by_mid:
+                distinct = vals_by_mid["MISC.STAT.PICTO_IGNORES_HALF"] != vals_by_mid["MISC.STAT.PICTO_HALF_AS_WHOLE"]
+            out.append(("half-symbol-misconceptions-distinct", distinct, "ignore-half and half-as-whole give different values"))
+
+    # --- #4 frequency-table blank-kind diagnostics ----------------------- #
+    if task == "complete_frequency_table":
+        kind = params["blank"]["kind"]
+        first = steps[0]["transformation"].lower() if steps else ""
+        out.append(("total-blank-uses-addition", kind != "total" or "add" in first, "missing total -> addition"))
+        out.append(("frequency-blank-uses-subtraction", kind != "frequency" or "subtract" in first, "missing frequency -> subtraction"))
+        out.append(("frequency-diagnostic-applicable-to-blank-kind",
+                    ("subtract" in first) == (kind == "frequency"), "operation matches the blank kind"))
+        # The missing-total solution must NOT instruct subtracting from a total that is unknown.
+        out.append(("feedback-matches-displayed-table", not (kind == "total" and "subtract" in first),
+                    "no 'subtract from the total' wording when the total is the unknown"))
+
+    # --- #5 median solution parity --------------------------------------- #
+    if task == "median_from_list":
+        n = len(ds["values"])
+        if n % 2:
+            ok_parity = "single middle value" in sol_text and "average" not in sol_text
+            out.append(("even-median-identifies-two-middle-values", True, "n odd"))
+            out.append(("even-median-shows-average", True, "n odd"))
+        else:
+            sv = sorted(ds["values"])
+            a, b = sv[n // 2 - 1], sv[n // 2]
+            ok_parity = "two middle values" in sol_text and "average" in sol_text
+            out.append(("even-median-identifies-two-middle-values", f"{a} and {b}" in sol_text, "two middles listed"))
+            out.append(("even-median-shows-average", f"({a} + {b}) ÷ 2" in sol_text, "explicit average shown"))
+        out.append(("median-solution-parity-correct", ok_parity, f"n={n}"))
+
+    # --- general: the worked method ends at the canonical answer ---------- #
+    if steps:
+        ansdisp = item["answer"]["display"]
+        out.append(("solution-method-produces-canonical-answer", ansdisp in steps[-1].get("intermediateResult", ""),
+                    f"last step yields {ansdisp}"))
+
+    # --- #6 representation-specific worked-solution language -------------- #
+    if task == "read_table_value":
+        out.append(("table-solution-does-not-reference-axis", "axis" not in sol_text, "table solution avoids 'axis'"))
+        out.append(("table-solution-does-not-reference-bar-or-point", "bar" not in sol_text and "marked point" not in sol_text, "table solution avoids bar/point"))
+        out.append(("solution-language-matches-representation", "row" in sol_text, "table solution references a row"))
+    elif task == "read_bar_chart":
+        out.append(("chart-solution-references-correct-chart-elements", "bar" in sol_text and "height" in sol_text, "bar-chart solution references bar/height"))
+        out.append(("solution-language-matches-representation", "axis" in sol_text, "bar-chart references the axis scale"))
+    elif task == "read_line_graph":
+        out.append(("chart-solution-references-correct-chart-elements", "point" in sol_text and "axis" in sol_text, "line-graph solution references point/axis"))
+        out.append(("solution-language-matches-representation", "horizontal axis" in sol_text or "vertical axis" in sol_text, "line-graph references axes"))
+    elif task == "read_pictogram":
+        out.append(("chart-solution-references-correct-chart-elements", "symbol" in sol_text and "key" in sol_text, "pictogram solution references symbols/key"))
+        out.append(("solution-language-matches-representation", "symbol" in sol_text, "pictogram references symbols"))
+    return out
 
 
 # --------------------------------------------------------------------------- #

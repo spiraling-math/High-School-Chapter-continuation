@@ -1,6 +1,6 @@
-# Review pack — `gen.stats.data-handling` v1.0.0
+# Review pack — `gen.stats.data-handling` v1.0.1
 
-Validator v1.0.0. **30 items** (9 chart SVGs + 21 semantic tables). Coverage: 80/80 required dimensions; misconceptions shown: 27/27. All items machine-valid: **True**.
+Validator v1.0.1. **33 items** (11 chart SVGs + 22 semantic tables). Coverage: 89/89 required dimensions; misconceptions shown: 35/35. All items machine-valid: **True**.
 
 Status: **PENDING REVIEW** — gated out of normal Studio + production until owner approval.
 Objectives are `approved-for-implementation`; items are machine-validated, never auto-published.
@@ -30,7 +30,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 **Worked solution:**
   1. Order the values: 6, 9, 13, 15, 20, 20
-  2. Find the middle value: 14
+  2. Identify the two middle values: 13 and 15
+  3. Average the two middle values: (13 + 15) ÷ 2 = 14
 
 - **Accessibility (spoken):** A list of values titled Test scores.
 - **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
@@ -66,7 +67,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 **Distractors (misconception-backed):**
   - `24` — MISC.STAT.RANGE_IS_MAX: Gives the largest value instead of the difference.
   - `33` — MISC.STAT.RANGE_ADDS: Adds the largest and smallest values instead of subtracting.
-  - `13` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
+  - `9` — MISC.STAT.RANGE_IS_MIN: Gives the smallest value instead of the difference.
 
 - **Accessibility (spoken):** A list of values titled Goals scored.
 - **Difficulty axes:** {'numericalComplexity': 0.35, 'readingDemand': 0.2, 'interpretationDemand': 0.2, 'reasoningSteps': 0.2, 'informationDensity': 0, 'scaffolding': 0.1}
@@ -85,7 +86,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <details><summary>figure (semantic HTML table)</summary>
 
 <table class="cx-list">
-<caption>Goals scored</caption>
+<caption>Ages</caption>
 <tbody><tr>
 <td>27</td>
 <td>19</td>
@@ -101,52 +102,13 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
   1. Identify the largest and smallest values: largest 27, smallest 4
   2. Subtract: 27 − 4 = 23
 
-- **Accessibility (spoken):** A list of values titled Goals scored.
+- **Accessibility (spoken):** A list of values titled Ages.
 - **Difficulty axes:** {'numericalComplexity': 0.45, 'readingDemand': 0.2, 'interpretationDemand': 0.2, 'reasoningSteps': 0.2, 'informationDensity': 0.667, 'scaffolding': 0.5}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'free-response'})))"`
 
 ---
 
-## 4. read_table_value (multiple-choice) — band 2
-
-- **Objective:** `SPI.MIDDLE.STAT.READ.TABLE_VALUE.01`
-- **Answer type:** integer
-- **Seed:** 2
-- **Prompt:** How many pupils are in the category “Football”?
-- **Canonical answer:** `15`
-
-<details><summary>figure (semantic HTML table)</summary>
-
-<table class="cx-table">
-<caption>Sport played</caption>
-<thead><tr><th scope="col">Category</th><th scope="col">Frequency</th></tr></thead>
-<tbody>
-<tr><th scope="row">Football</th><td>15</td></tr>
-<tr><th scope="row">Tennis</th><td>5</td></tr>
-<tr><th scope="row">Hockey</th><td>18</td></tr>
-<tr><th scope="row">Netball</th><td>10</td></tr>
-<tr><th scope="row">Rugby</th><td>25</td></tr>
-<tr class="cx-total"><th scope="row">Total</th><td>73</td></tr>
-</tbody></table>
-
-</details>
-
-**Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 15
-
-**Distractors (misconception-backed):**
-  - `73` — MISC.STAT.TABLE_READS_TOTAL: Reads the total instead of the row that was asked for.
-  - `5` — MISC.STAT.TABLE_ADJACENT_ROW: Reads the frequency from the wrong row of the table.
-  - `25` — MISC.STAT.TABLE_READS_LARGEST: Reads the largest frequency in the table instead of the named category.
-
-- **Accessibility (spoken):** A frequency table titled Sport played.
-- **Difficulty axes:** {'numericalComplexity': 0.5, 'readingDemand': 0.25, 'interpretationDemand': 0.1, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(2,{'interactionType':'multiple-choice'})))"`
-
----
-
-## 5. mode_from_list (free-response) — band 1
+## 4. mode_from_list (free-response) — band 1
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MODE_LIST.01`
 - **Answer type:** integer
@@ -178,7 +140,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 6. mean_from_list (multiple-choice) — band 3
+## 5. mean_from_list (multiple-choice) — band 3
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01`
 - **Answer type:** exact-rational
@@ -189,7 +151,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <details><summary>figure (semantic HTML table)</summary>
 
 <table class="cx-list">
-<caption>Goals scored</caption>
+<caption>Temperature change</caption>
 <tbody><tr>
 <td>-1</td>
 <td>-4</td>
@@ -201,21 +163,21 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Add the values: -1 + -4 + 13 + 6 + 15 = 29
+  1. Add the values: -1 − 4 + 13 + 6 + 15 = 29
   2. Divide by how many values: 29 ÷ 5 = 29/5
 
 **Distractors (misconception-backed):**
   - `29` — MISC.STAT.MEAN_NO_DIVIDE: Adds the values but forgets to divide by how many there are.
   - `29/4` — MISC.STAT.MEAN_DIVIDE_WRONG_N: Divides by the wrong number of values.
-  - `-1` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
+  - `11/2` — MISC.STAT.MEAN_MIDRANGE: Averages only the largest and smallest values instead of all of them.
 
-- **Accessibility (spoken):** A list of values titled Goals scored.
+- **Accessibility (spoken):** A list of values titled Temperature change.
 - **Difficulty axes:** {'numericalComplexity': 0.55, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 0.667, 'scaffolding': 0.5}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(3,{'interactionType':'multiple-choice'})))"`
 
 ---
 
-## 7. single_event_probability (free-response) — band 2
+## 6. single_event_probability (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction
@@ -249,7 +211,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 8. single_event_probability (multiple-choice) — band 3
+## 7. single_event_probability (multiple-choice) — band 3
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction
@@ -290,7 +252,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 9. mean_from_list (multiple-choice) — band 2
+## 8. mean_from_list (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01`
 - **Answer type:** integer
@@ -317,7 +279,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 **Distractors (misconception-backed):**
   - `33` — MISC.STAT.MEAN_NO_DIVIDE: Adds the values but forgets to divide by how many there are.
   - `33/2` — MISC.STAT.MEAN_DIVIDE_WRONG_N: Divides by the wrong number of values.
-  - `17` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
+  - `12` — MISC.STAT.MEAN_MIDRANGE: Averages only the largest and smallest values instead of all of them.
 
 - **Accessibility (spoken):** A list of values titled Goals scored.
 - **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 0, 'scaffolding': 0.5}
@@ -325,7 +287,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 10. mean_from_list (free-response) — band 2
+## 9. mean_from_list (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_LIST.01`
 - **Answer type:** integer
@@ -336,7 +298,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 <details><summary>figure (semantic HTML table)</summary>
 
 <table class="cx-list">
-<caption>Shoe sizes</caption>
+<caption>Change in value</caption>
 <tbody><tr>
 <td>8</td>
 <td>-5</td>
@@ -346,12 +308,51 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Add the values: 8 + -5 + -6 = -3
+  1. Add the values: 8 − 5 − 6 = -3
   2. Divide by how many values: -3 ÷ 3 = -1
 
-- **Accessibility (spoken):** A list of values titled Shoe sizes.
+- **Accessibility (spoken):** A list of values titled Change in value.
 - **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 0, 'scaffolding': 0.5}
 - **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(6,{'interactionType':'free-response'})))"`
+
+---
+
+## 10. median_from_list (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
+- **Answer type:** integer
+- **Seed:** 6
+- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
+- **Canonical answer:** `8`
+
+<details><summary>figure (semantic HTML table)</summary>
+
+<table class="cx-list">
+<caption>Test scores</caption>
+<tbody><tr>
+<td>5</td>
+<td>11</td>
+<td>2</td>
+<td>1</td>
+<td>19</td>
+<td>20</td>
+</tr></tbody></table>
+
+</details>
+
+**Worked solution:**
+  1. Order the values: 1, 2, 5, 11, 19, 20
+  2. Identify the two middle values: 5 and 11
+  3. Average the two middle values: (5 + 11) ÷ 2 = 8
+
+**Distractors (misconception-backed):**
+  - `3/2` — MISC.STAT.MEDIAN_NO_ORDER: Takes the middle value without putting the list in order first.
+  - `5` — MISC.STAT.MEDIAN_WRONG_MIDDLE: Picks one of the two middle values instead of their average.
+  - `29/3` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
+
+- **Accessibility (spoken):** A list of values titled Test scores.
+- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(6,{'interactionType':'multiple-choice'})))"`
 
 ---
 
@@ -388,8 +389,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 2
+  1. Locate the bar for the named category: the bar for “Science”
+  2. Read its height using the vertical-axis scale: 2
 
 - **Accessibility (spoken):** A bar chart titled Books read. Read the frequency for the named category from the labelled axis.
 - **Difficulty axes:** {'numericalComplexity': 0.1, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.1}
@@ -427,12 +428,12 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Count the symbols: 5 whole and a half symbol(s)
-  2. Apply the key: 5 × 10 + 5 = 55
+  1. Count the whole and half symbols in the named row: 5 whole symbols and 1 half symbol
+  2. Apply the displayed key: 5 × 10 + 5 = 55
 
 **Distractors (misconception-backed):**
-  - `5` — MISC.STAT.PICTO_COUNTS_SYMBOLS: Counts the symbols without using the key.
   - `50` — MISC.STAT.PICTO_IGNORES_HALF: Leaves out the value of the half symbol.
+  - `60` — MISC.STAT.PICTO_HALF_AS_WHOLE: Counts the half symbol as if it were a whole symbol.
   - `35` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
 
 - **Accessibility (spoken):** A pictogram titled Sport played, where one symbol represents 10 pupils. Read the frequency for the named category.
@@ -471,8 +472,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Count the symbols: 3 whole symbol(s)
-  2. Apply the key: 3 × 5 = 15
+  1. Count the whole and half symbols in the named row: 3 whole symbols
+  2. Apply the displayed key: 3 × 5 = 15
 
 - **Accessibility (spoken):** A pictogram titled Favourite fruit, where one symbol represents 5 children. Read the frequency for the named category.
 - **Difficulty axes:** {'numericalComplexity': 0.4, 'readingDemand': 0.25, 'interpretationDemand': 0.25, 'reasoningSteps': 0.15, 'informationDensity': 0.667, 'scaffolding': 0.5}
@@ -480,7 +481,46 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 14. read_table_value (free-response) — band 2
+## 14. median_from_list (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
+- **Answer type:** integer
+- **Seed:** 8
+- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
+- **Canonical answer:** `10`
+
+<details><summary>figure (semantic HTML table)</summary>
+
+<table class="cx-list">
+<caption>Shoe sizes</caption>
+<tbody><tr>
+<td>16</td>
+<td>1</td>
+<td>10</td>
+<td>8</td>
+<td>11</td>
+<td>7</td>
+<td>11</td>
+</tr></tbody></table>
+
+</details>
+
+**Worked solution:**
+  1. Order the values: 1, 7, 8, 10, 11, 11, 16
+  2. Identify the single middle value: 10
+
+**Distractors (misconception-backed):**
+  - `8` — MISC.STAT.MEDIAN_NO_ORDER: Takes the middle value without putting the list in order first.
+  - `11` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
+  - `64/7` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
+
+- **Accessibility (spoken):** A list of values titled Shoe sizes.
+- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(8,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 15. read_table_value (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.TABLE_VALUE.01`
 - **Answer type:** integer
@@ -503,8 +543,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 21
+  1. Locate the row for the named category: the row for “Mystery”
+  2. Read the frequency in that row: 21
 
 - **Accessibility (spoken):** A frequency table titled Books read.
 - **Difficulty axes:** {'numericalComplexity': 0.42, 'readingDemand': 0.15, 'interpretationDemand': 0.1, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.5}
@@ -512,7 +552,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 15. read_line_graph (multiple-choice) — band 2
+## 16. read_line_graph (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
 - **Answer type:** integer
@@ -544,8 +584,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 10
+  1. Locate the requested position on the horizontal axis: Day 4
+  2. Read the value of the marked point from the vertical axis: 10
 
 **Distractors (misconception-backed):**
   - `15` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
@@ -558,7 +598,46 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 16. read_line_graph (free-response) — band 2
+## 17. median_from_list (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
+- **Answer type:** integer
+- **Seed:** 10
+- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
+- **Canonical answer:** `7`
+
+<details><summary>figure (semantic HTML table)</summary>
+
+<table class="cx-list">
+<caption>Data values</caption>
+<tbody><tr>
+<td>17</td>
+<td>10</td>
+<td>9</td>
+<td>5</td>
+<td>2</td>
+<td>1</td>
+</tr></tbody></table>
+
+</details>
+
+**Worked solution:**
+  1. Order the values: 1, 2, 5, 9, 10, 17
+  2. Identify the two middle values: 5 and 9
+  3. Average the two middle values: (5 + 9) ÷ 2 = 7
+
+**Distractors (misconception-backed):**
+  - `5` — MISC.STAT.MEDIAN_WRONG_MIDDLE: Picks one of the two middle values instead of their average.
+  - `22/3` — MISC.STAT.MEDIAN_USES_MEAN: Adds the values and divides instead of finding the middle value.
+  - `9` — MISC.STAT.MEDIAN_MIDRANGE: Averages the largest and smallest values instead of finding the middle.
+
+- **Accessibility (spoken):** A list of values titled Data values.
+- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(10,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 18. read_line_graph (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.LINE_GRAPH.01`
 - **Answer type:** integer
@@ -591,8 +670,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 10
+  1. Locate the requested position on the horizontal axis: Mon
+  2. Read the value of the marked point from the vertical axis: 10
 
 - **Accessibility (spoken):** A line graph titled Temperature with marked points at each labelled position. Read the value at the named position.
 - **Difficulty axes:** {'numericalComplexity': 0.62, 'readingDemand': 0.3, 'interpretationDemand': 0.2, 'reasoningSteps': 0.1, 'informationDensity': 0.333, 'scaffolding': 0.5}
@@ -600,7 +679,45 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 17. complete_frequency_table (free-response) — band 2
+## 19. read_table_value (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.READ.TABLE_VALUE.01`
+- **Answer type:** integer
+- **Seed:** 12
+- **Prompt:** How many students are in the category “Fish”?
+- **Canonical answer:** `2`
+
+<details><summary>figure (semantic HTML table)</summary>
+
+<table class="cx-table">
+<caption>Favourite pet</caption>
+<thead><tr><th scope="col">Category</th><th scope="col">Frequency</th></tr></thead>
+<tbody>
+<tr><th scope="row">Cat</th><td>24</td></tr>
+<tr><th scope="row">Dog</th><td>5</td></tr>
+<tr><th scope="row">Fish</th><td>2</td></tr>
+<tr><th scope="row">Bird</th><td>18</td></tr>
+<tr class="cx-total"><th scope="row">Total</th><td>49</td></tr>
+</tbody></table>
+
+</details>
+
+**Worked solution:**
+  1. Locate the row for the named category: the row for “Fish”
+  2. Read the frequency in that row: 2
+
+**Distractors (misconception-backed):**
+  - `49` — MISC.STAT.TABLE_READS_TOTAL: Reads the total instead of the row that was asked for.
+  - `18` — MISC.STAT.TABLE_ADJACENT_ROW: Reads the frequency from the wrong row of the table.
+  - `24` — MISC.STAT.TABLE_READS_LARGEST: Reads the largest frequency in the table instead of the named category.
+
+- **Accessibility (spoken):** A frequency table titled Favourite pet.
+- **Difficulty axes:** {'numericalComplexity': 0.48, 'readingDemand': 0.2, 'interpretationDemand': 0.1, 'reasoningSteps': 0.1, 'informationDensity': 0.333, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(12,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 20. complete_frequency_table (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01`
 - **Answer type:** table-completion
@@ -624,11 +741,11 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Add the frequencies: 8 + 5 + 9 + 13 = 35
+  1. Add every displayed frequency: 8 + 5 + 9 + 13 = 35
 
 **Common-error notes:**
-  - MISC.STAT.FREQ_SUBTRACT_WRONG_WAY: Adds the known frequencies to the total instead of subtracting. → _The frequencies add up to the total, so subtract the ones you know from the total._
-  - MISC.STAT.FREQ_IGNORES_TOTAL: Adds up the other frequencies but ignores the given total. → _Use the total: the missing frequency is the total minus the frequencies you already have._
+  - MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY: Leaves a category out when adding up the total. → _Add every category's frequency — don't miss one out._
+  - MISC.STAT.FREQ_TOTAL_COPIES_ONE: Writes one of the frequencies as the total instead of their sum. → _The total is the sum of all the frequencies, not a single one of them._
 
 - **Accessibility (spoken):** A frequency table titled Sport played.
 - **Difficulty axes:** {'numericalComplexity': 0.583, 'readingDemand': 0.3, 'interpretationDemand': 0.3, 'reasoningSteps': 0.3, 'informationDensity': 0.333, 'scaffolding': 0.5}
@@ -636,41 +753,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 18. median_from_list (free-response) — band 2
-
-- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
-- **Answer type:** integer
-- **Seed:** 16
-- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
-- **Canonical answer:** `8`
-
-<details><summary>figure (semantic HTML table)</summary>
-
-<table class="cx-list">
-<caption>Test scores</caption>
-<tbody><tr>
-<td>8</td>
-<td>7</td>
-<td>1</td>
-<td>19</td>
-<td>11</td>
-<td>4</td>
-<td>19</td>
-</tr></tbody></table>
-
-</details>
-
-**Worked solution:**
-  1. Order the values: 1, 4, 7, 8, 11, 19, 19
-  2. Find the middle value: 8
-
-- **Accessibility (spoken):** A list of values titled Test scores.
-- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(16,{'interactionType':'free-response'})))"`
-
----
-
-## 19. read_bar_chart (free-response) — band 2
+## 21. read_bar_chart (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
@@ -703,8 +786,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 9
+  1. Locate the bar for the named category: the bar for “Rugby”
+  2. Read its height using the vertical-axis scale: 9
 
 - **Accessibility (spoken):** A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.
 - **Difficulty axes:** {'numericalComplexity': 0.32, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.1}
@@ -712,7 +795,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 20. complete_frequency_table (free-response) — band 2
+## 22. complete_frequency_table (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.FREQ.COMPLETE_TABLE.01`
 - **Answer type:** table-completion
@@ -735,7 +818,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Subtract the known frequencies from the total: 35 − 25 = 10
+  1. Subtract the sum of the known frequencies from the displayed total: 35 − 25 = 10
 
 **Common-error notes:**
   - MISC.STAT.FREQ_SUBTRACT_WRONG_WAY: Adds the known frequencies to the total instead of subtracting. → _The frequencies add up to the total, so subtract the ones you know from the total._
@@ -747,7 +830,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 21. mode_from_list (multiple-choice) — band 2
+## 23. mode_from_list (multiple-choice) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MODE_LIST.01`
 - **Answer type:** integer
@@ -785,45 +868,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 22. median_from_list (multiple-choice) — band 2
-
-- **Objective:** `SPI.MIDDLE.STAT.AVG.MEDIAN_LIST.01`
-- **Answer type:** integer
-- **Seed:** 25
-- **Prompt:** Find the median of the data. Give your answer as an integer or a fraction in its simplest form.
-- **Canonical answer:** `8`
-
-<details><summary>figure (semantic HTML table)</summary>
-
-<table class="cx-list">
-<caption>Numbers of pets</caption>
-<tbody><tr>
-<td>15</td>
-<td>6</td>
-<td>3</td>
-<td>9</td>
-<td>10</td>
-<td>7</td>
-</tr></tbody></table>
-
-</details>
-
-**Worked solution:**
-  1. Order the values: 3, 6, 7, 9, 10, 15
-  2. Find the middle value: 8
-
-**Distractors (misconception-backed):**
-  - `6` — MISC.STAT.MEDIAN_NO_ORDER: Takes the middle value without putting the list in order first.
-  - `7` — MISC.STAT.MEDIAN_WRONG_MIDDLE: Picks one of the two middle values instead of their average.
-  - `15` — MISC.STAT.AVG_USES_MODE: Gives the most common value instead of the one asked for.
-
-- **Accessibility (spoken):** A list of values titled Numbers of pets.
-- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.3, 'reasoningSteps': 0.35, 'informationDensity': 1, 'scaffolding': 0.5}
-- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(25,{'interactionType':'multiple-choice'})))"`
-
----
-
-## 23. mean_from_freq_table (free-response) — band 4
+## 24. mean_from_freq_table (free-response) — band 4
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01`
 - **Answer type:** exact-rational
@@ -855,7 +900,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 24. mean_from_freq_table (multiple-choice) — band 4
+## 25. mean_from_freq_table (multiple-choice) — band 4
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01`
 - **Answer type:** exact-rational
@@ -892,7 +937,51 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 25. read_bar_chart (multiple-choice) — band 1
+## 26. read_pictogram (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.READ.PICTOGRAM.01`
+- **Answer type:** integer
+- **Seed:** 32
+- **Prompt:** Use the key to find the number of cars for “White”.
+- **Canonical answer:** `7`
+
+<details><summary>figure (canonical SVG)</summary>
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Colour of car.">
+<title>Colour of car</title>
+<desc>A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 2 cars.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Red</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" data-half="1" x="368" y="90" width="17" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Blue</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254" text-anchor="start">Black</text>
+<rect class="cx-symbol" data-cat="2"
+```
+
+</details>
+
+**Worked solution:**
+  1. Count the whole and half symbols in the named row: 3 whole symbols and 1 half symbol
+  2. Apply the displayed key: 3 × 2 + 1 = 7
+
+**Distractors (misconception-backed):**
+  - `6` — MISC.STAT.PICTO_IGNORES_HALF: Leaves out the value of the half symbol.
+  - `8` — MISC.STAT.PICTO_HALF_AS_WHOLE: Counts the half symbol as if it were a whole symbol.
+  - `5` — MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL: Counts one symbol too few when reading the row.
+
+- **Accessibility (spoken):** A pictogram titled Colour of car, where one symbol represents 2 cars. Read the frequency for the named category.
+- **Difficulty axes:** {'numericalComplexity': 0.3, 'readingDemand': 0.2, 'interpretationDemand': 0.25, 'reasoningSteps': 0.15, 'informationDensity': 0.333, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(32,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 27. read_bar_chart (multiple-choice) — band 1
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
@@ -925,8 +1014,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 12
+  1. Locate the bar for the named category: the bar for “Hockey”
+  2. Read its height using the vertical-axis scale: 12
 
 **Distractors (misconception-backed):**
   - `14` — MISC.STAT.READ_OFF_BY_STEP: Reads the value one step up or down the scale.
@@ -939,7 +1028,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 26. read_bar_chart (free-response) — band 2
+## 28. read_bar_chart (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
@@ -972,8 +1061,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 13
+  1. Locate the bar for the named category: the bar for “Blue”
+  2. Read its height using the vertical-axis scale: 13
 
 - **Accessibility (spoken):** A bar chart titled Colour of car. Read the frequency for the named category from the labelled axis.
 - **Difficulty axes:** {'numericalComplexity': 0.62, 'readingDemand': 0.25, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0.667, 'scaffolding': 0.5}
@@ -981,7 +1070,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 27. read_bar_chart (free-response) — band 2
+## 29. read_bar_chart (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.READ.BAR_CHART.01`
 - **Answer type:** integer
@@ -1014,8 +1103,8 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 </details>
 
 **Worked solution:**
-  1. Locate the named category/position: Find the matching bar, row, or marked point.
-  2. Read the value from the labelled axis: 49
+  1. Locate the bar for the named category: the bar for “Football”
+  2. Read its height using the vertical-axis scale: 49
 
 - **Accessibility (spoken):** A bar chart titled Sport played. Read the frequency for the named category from the labelled axis.
 - **Difficulty axes:** {'numericalComplexity': 0.98, 'readingDemand': 0.15, 'interpretationDemand': 0.15, 'reasoningSteps': 0.1, 'informationDensity': 0, 'scaffolding': 0.5}
@@ -1023,7 +1112,51 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 28. single_event_probability (free-response) — band 2
+## 30. read_pictogram (multiple-choice) — band 2
+
+- **Objective:** `SPI.MIDDLE.STAT.READ.PICTOGRAM.01`
+- **Answer type:** integer
+- **Seed:** 56
+- **Prompt:** Use the key to find the number of cars for “Blue”.
+- **Canonical answer:** `15`
+
+<details><summary>figure (canonical SVG)</summary>
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Pictogram: Colour of car.">
+<title>Colour of car</title>
+<desc>A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.</desc>
+<style>.cx-axis{stroke:#111;stroke-width:3;fill:none}.cx-tick{stroke:#111;stroke-width:2}.cx-grid-major{stroke:#888;stroke-width:1.25;fill:none}.cx-bar{fill:#bbb;stroke:#111;stroke-width:2}.cx-line{stroke:#111;stroke-width:3;fill:none}.cx-pt-outline{fill:#fff;stroke:#111;stroke-width:4}.cx-pt-core{fill:#111}.cx-symbol{fill:#555;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:24px;fill:#111}.cx-ticklbl{font-size:20px;fill:#333}.cx-catlbl{font-size:20px;fill:#111}.cx-axislbl{font-size:22px;fill:#111}.cx-keylbl{font-size:20px;fill:#111}</style>
+<text class="cx-keylbl" x="120" y="48">Key: 1 symbol represents 5 cars.</text>
+<text class="cx-catlbl" x="80" y="114" text-anchor="start">Red</text>
+<rect class="cx-symbol" data-cat="0" x="280" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="324" y="90" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="0" x="368" y="90" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="184" text-anchor="start">Blue</text>
+<rect class="cx-symbol" data-cat="1" x="280" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="324" y="160" width="34" height="34" rx="6"/>
+<rect class="cx-symbol" data-cat="1" x="368" y="160" width="34" height="34" rx="6"/>
+<text class="cx-catlbl" x="80" y="254
+```
+
+</details>
+
+**Worked solution:**
+  1. Count the whole and half symbols in the named row: 3 whole symbols
+  2. Apply the displayed key: 3 × 5 = 15
+
+**Distractors (misconception-backed):**
+  - `3` — MISC.STAT.PICTO_COUNTS_SYMBOLS: Counts the symbols without using the key.
+  - `25` — MISC.STAT.READ_WRONG_CATEGORY: Reads the frequency of a neighbouring category.
+  - `10` — MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL: Counts one symbol too few when reading the row.
+
+- **Accessibility (spoken):** A pictogram titled Colour of car, where one symbol represents 5 cars. Read the frequency for the named category.
+- **Difficulty axes:** {'numericalComplexity': 0.4, 'readingDemand': 0.15, 'interpretationDemand': 0.25, 'reasoningSteps': 0.15, 'informationDensity': 0, 'scaffolding': 0.5}
+- **Reproduce:** `python -c "import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate(56,{'interactionType':'multiple-choice'})))"`
+
+---
+
+## 31. single_event_probability (free-response) — band 2
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction
@@ -1059,7 +1192,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 29. range_from_list (free-response) — band 1
+## 32. range_from_list (free-response) — band 1
 
 - **Objective:** `SPI.MIDDLE.STAT.AVG.RANGE_LIST.01`
 - **Answer type:** integer
@@ -1089,7 +1222,7 @@ Objectives are `approved-for-implementation`; items are machine-validated, never
 
 ---
 
-## 30. single_event_probability (free-response) — band 3
+## 33. single_event_probability (free-response) — band 3
 
 - **Objective:** `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01`
 - **Answer type:** fraction

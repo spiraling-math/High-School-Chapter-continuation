@@ -13,7 +13,7 @@ table.cx-table th,table.cx-table td,table.cx-list td{border:1px solid #cbd5e1;pa
 .cx-figure .cx-axis{stroke:var(--cx-axis);stroke-width:3;fill:none}.cx-figure .cx-tick{stroke:var(--cx-tick);stroke-width:2}.cx-figure .cx-grid-major{stroke:var(--cx-grid-major);stroke-width:1.25;fill:none}.cx-figure .cx-grid-minor{stroke:var(--cx-grid-minor);stroke-width:0.75;fill:none}.cx-figure .cx-line{stroke:var(--cx-line);stroke-width:3;fill:none}.cx-figure .cx-pt-outline{fill:var(--cx-pt-outline-fill);stroke:var(--cx-pt-outline-stroke);stroke-width:4}.cx-figure .cx-pt-core{fill:var(--cx-pt-core)}.cx-figure .cx-guide{stroke:var(--cx-guide);stroke-width:1.5;stroke-dasharray:5 4;stroke-linecap:round;fill:none}.cx-figure text{font-family:sans-serif;font-size:28px;fill:var(--cx-text)}.cx-figure .cx-ticklbl{font-size:20px;fill:var(--cx-ticklbl)}.cx-figure .cx-lbl{font-size:28px;fill:var(--cx-text)}.cx-figure .cx-bar{fill:var(--cx-bar-fill);stroke:var(--cx-bar-stroke);stroke-width:2}.cx-figure .cx-symbol{fill:var(--cx-symbol-fill);stroke:var(--cx-symbol-stroke);stroke-width:1.5}.cx-figure .cx-catlbl{font-size:20px;fill:var(--cx-catlbl)}.cx-figure .cx-axislbl{font-size:22px;fill:var(--cx-axislbl)}.cx-figure .cx-keylbl{font-size:20px;fill:var(--cx-keylbl)}
 </style></head><body>
 <h1>gen.stats.data-handling — visual audit</h1>
-<p>Generator 1.0.0; validator 1.0.0. Four render modes via per-root CSS custom properties (class <code>cx-figure</code>) + one common ruleset (cartesian shared + data-chart additive). Colour never carries meaning alone: every category/series is labelled; the monochrome <b>print</b> mode is the colour-free authoritative rendering.</p>
+<p>Generator 1.0.1; validator 1.0.1. Four render modes via per-root CSS custom properties (class <code>cx-figure</code>) + one common ruleset (cartesian shared + data-chart additive). Colour never carries meaning alone: every category/series is labelled; the monochrome <b>print</b> mode is the colour-free authoritative rendering.</p>
 <h2>bar5 — read_bar_chart</h2><div class='grid'>
 <div class='card'><div class='mode'>premium</div><svg class="cx-figure" style="--cx-axis:#1e293b;--cx-tick:#1e293b;--cx-grid-major:#c7d2fe;--cx-grid-minor:#e9edff;--cx-line:#2563eb;--cx-pt-core:#dc2626;--cx-pt-outline-fill:#ffffff;--cx-pt-outline-stroke:#dc2626;--cx-guide:#7c3aed;--cx-text:#111827;--cx-ticklbl:#475569;--cx-bg:#ffffff;--cx-bar-fill:#3b82f6;--cx-bar-stroke:#1e3a8a;--cx-symbol-fill:#6366f1;--cx-symbol-stroke:#312e81;--cx-catlbl:#111827;--cx-axislbl:#111827;--cx-keylbl:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Vertical bar chart: Favourite pet.">
 <title>Favourite pet</title>
@@ -1234,7 +1234,7 @@ table.cx-table th,table.cx-table td,table.cx-list td{border:1px solid #cbd5e1;pa
 <tr class="cx-total"><th scope="row">Total</th><td>11</td></tr>
 </tbody></table>
 <h3>mean_from_list</h3><table class="cx-list">
-<caption>Test scores</caption>
+<caption>Temperature</caption>
 <tbody><tr>
 <td>12</td>
 <td>8</td>
@@ -1300,5 +1300,5 @@ window.__dc = {
     img.onerror=function(e){ rej(''+e); }; img.src=url; }); }
 };
 </script>
-<footer style='margin-top:24px;color:#6b7280;font-size:12px'>Build: gen.stats.data-handling 1.0.0; modes premium, premium-dark, accessible, print; per-root cx-figure isolation; export 6000×4200.</footer>
+<footer style='margin-top:24px;color:#6b7280;font-size:12px'>Build: gen.stats.data-handling 1.0.1; modes premium, premium-dark, accessible, print; per-root cx-figure isolation; export 6000×4200.</footer>
 </body></html>

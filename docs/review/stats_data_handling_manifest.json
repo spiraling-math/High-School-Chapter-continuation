@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.stats.data-handling",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "approvalStatus": "pending-review",
   "objectiveIds": [
     "SPI.MIDDLE.STAT.READ.BAR_CHART.01",
@@ -32,52 +32,52 @@
   "artifacts": {
     "golden": {
       "path": "oracle/golden/data_handling.golden.json",
-      "sha256": "d052b372b10b4ccc48a1e31c37ca57a1899def3a8115e97d3f025122baf09d93",
+      "sha256": "462c45dc931e0d36b5c551208019d0756dae1a291a2a0c9040878175210ae4f0",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/data_handling.parity.json",
-      "sha256": "f8073f60686943a1184c8d06140f82a838a258b2e181f1433f510254b5ec0240",
+      "sha256": "7bd28f40e743159a99cf48ccac6c0d4467a0ebec32a077285850fc0e8f6b303b",
       "present": true
     },
     "distribution": {
       "path": "docs/review/stats_data_handling_distribution.json",
-      "sha256": "584513774efed604bbb6258edd7e8ae746aa91e2aa76027bc3003b713a8415cf",
+      "sha256": "82a2072041f1ab877390cb7100143eecf6392eb8d6335d53043476cd22eea455",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/stats_data_handling_review_pack.json",
-      "sha256": "c40f49dc3d40cd11af24baec0fcfd6701d9ab803428a24b03f2b3cf378fab96e",
+      "sha256": "2f6a4dd1491d3671828159e3f27355fe002cb3734baf7339748fb4dfa453df3c",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/stats_data_handling_review_pack.md",
-      "sha256": "3a38664d39f1503fec9d3677acec18b1689b20ba14e0f1df0ebfdacadd912078",
+      "sha256": "0a420dfcccdccd17aa40179959063ee2c02e58b7eb69d24d096f7c695d2faf13",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/stats_data_handling_visual_audit.html",
-      "sha256": "795403408bd24fa3224a789e0334fa5cc5f52b55b3bc80ed964259f3221b2a6d",
+      "sha256": "ec2fcbd5ff78c4745e4fe37095f3d5d6358e8f7923e535348c8422d3eecf1b47",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/stats_data_handling_browser_verification.json",
-      "sha256": "cb5daa4c06fd4b54d7a85e11218d2c69b0448c5ec645f8b411c827fe9fcbc67c",
+      "sha256": "89773ec71828f9d8add70d1cc17bff4118530a31a46770545e2caef1fbb7ef8a",
       "present": true
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
-      "sha256": "60f107788300f2e04545e65c61bd287314bacad0b3b570a83492c290c770bd4f",
+      "sha256": "297725b40477d940cee373bc2ed1e8ced0f1c57d9e62da7e24f0e13ad2988a35",
       "present": true
     },
     "oracle": {
       "path": "oracle/spi_oracle/data_handling.py",
-      "sha256": "24e5d54ecca594dd2f43da136e6c8af7cce095495d5be77e7e1951535f0d6075",
+      "sha256": "f2783c29dc037647e3a1b819ffd1d66706e93caf438e328b7c28e8904a141908",
       "present": true
     },
     "misconceptions": {
       "path": "oracle/spi_oracle/data_handling_misconceptions.py",
-      "sha256": "cafb5c1900d44b079de2578f38f66adeab96d92b6d566054187c3818b0d8ac51",
+      "sha256": "274e9d81b55f1fe1833aae02dc44534839097238c8f635617279224afa75ad74",
       "present": true
     },
     "dataChartTheme": {

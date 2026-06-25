@@ -65,6 +65,16 @@ def _features(item):
     if task in ("mean_from_list", "median_from_list", "mode_from_list", "range_from_list"):
         if any(v < 0 for v in ds["values"]):
             toks.add("list:negative")
+            dom = dh.CONTEXT_DOMAINS.get(ds.get("title"))
+            if dom in ("signed", "context-free"):
+                toks.add("list:signed-context-free")     # a negative list in a permitted context (#1/#11)
+        # an averages MC item demonstrates mode-distractor handling (#2/#11)
+        if task in ("mean_from_list", "median_from_list", "range_from_list") and it == "multiple-choice":
+            mids = [o.get("misconceptionId") for o in item.get("options", [])]
+            if "MISC.STAT.AVG_USES_MODE" in mids:
+                toks.add("misc-mode-valid")             # a valid unique-mode distractor
+            elif dh.unique_mode(ds["values"]) is None:
+                toks.add("no-mode-rejected")            # no-mode dataset, mode distractor correctly NOT used
     if task == "single_event_probability":
         f = dh._solve(task, item["params"])
         toks.add("prob:0" if f == 0 else "prob:1" if f == 1 else "prob:half" if f == Fraction(1, 2) else "prob:other")
@@ -91,27 +101,29 @@ def _required_tokens():
     req |= {"barscale:1", "barscale:2", "barscale:5", "barscale:10"}
     req |= {"picto:whole", "picto:half", "median:odd", "median:even", "mean:int", "mean:frac",
             "range:zero", "range:pos", "list:negative", "prob:0", "prob:1", "prob:half", "prob:other",
-            "table:total", "table:freqcell", "dense"}
+            "table:total", "table:freqcell", "dense",
+            # owner #11 required examples:
+            "list:signed-context-free", "misc-mode-valid", "no-mode-rejected"}
     return req
 
 
 def _pitfalls(task, params):
-    """Misconception pitfalls to display (covers FR-only freq-table rules + unreduced-probability)."""
+    """Misconception pitfalls to display — blank-kind-specific for frequency tables (owner #4):
+    a missing TOTAL only attaches addition-side diagnostics; a missing FREQUENCY only attaches
+    the subtraction-side diagnostics. Probability shows the unreduced-fraction feedback rule."""
     out = []
-    correct = dh._solve(task, params)
-    c = dh._ctx(task, params, correct)
-    if task == "complete_frequency_table":
-        c["otherSum"] = sum(params["dataset"]["frequencies"]) - dh._complete_value(params) if params["blank"]["kind"] != "total" else None
-        c["total"] = sum(params["dataset"]["frequencies"])
     extra = []
     if task == "complete_frequency_table":
-        extra = ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL"]
+        if params["blank"]["kind"] == "total":
+            extra = ["MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "MISC.STAT.FREQ_TOTAL_COPIES_ONE"]
+        else:
+            extra = ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL"]
     if task == "single_event_probability":
         extra = ["MISC.STAT.PROB_UNREDUCED"]
     for mid in extra:
         m = mis.MISCONCEPTIONS[mid]
         out.append({"misconceptionId": mid, "title": m["title"], "observableError": m["observableError"],
-                    "feedback": m["feedback"]})
+                    "feedback": m["feedback"], "blankKind": params.get("blank", {}).get("kind")})
     return out
 
 

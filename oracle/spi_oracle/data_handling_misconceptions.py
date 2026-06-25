@@ -51,9 +51,29 @@ def _picto_count_symbols(c: Dict[str, Any]) -> Optional[int]:
     key = c.get("key")
     if not key or key <= 1:
         return None
-    # number of symbols shown for the queried category (whole + half counts as ~1.5 -> floor)
+    # Owner #3, policy B: the exact whole-symbol count is an integer ONLY when the queried
+    # category has no half symbol. When a half is present, the symbol count is non-integer
+    # (e.g. 5½), so this rule is INAPPLICABLE and must not return a misleading floored value.
+    if c.get("halfPresent"):
+        return None
     v = c["correct"] // key
     return v if v != c["correct"] else None
+
+
+def _picto_half_as_whole(c: Dict[str, Any]) -> Optional[int]:
+    if not c.get("halfPresent"):
+        return None
+    key = c.get("key", 0)
+    v = c["correct"] + key // 2          # counts the half symbol as a whole one
+    return v if v != c["correct"] else None
+
+
+def _picto_off_by_one_symbol(c: Dict[str, Any]) -> Optional[int]:
+    key = c.get("key", 0)
+    if not key:
+        return None
+    v = c["correct"] - key               # miscounts by one whole symbol
+    return v if (v != c["correct"] and v >= 0) else None
 
 
 def _picto_ignore_half(c: Dict[str, Any]) -> Optional[int]:
@@ -110,8 +130,25 @@ def _mean_divide_wrong_n(c: Dict[str, Any]) -> Optional[Fraction]:
 
 
 def _uses_mode(c: Dict[str, Any]) -> Optional[Fraction]:
-    m = c.get("modeValue")
+    # Eligible ONLY when the dataset has a UNIQUE mode (owner #2). uniqueMode is None when
+    # every value occurs equally often or two+ values tie for the greatest frequency.
+    m = c.get("uniqueMode")
     return Fraction(m) if (m is not None and Fraction(m) != c["correct"]) else None
+
+
+def _midrange(c: Dict[str, Any]) -> Optional[Fraction]:
+    mr = c.get("midrange")
+    return mr if (mr is not None and mr != c["correct"]) else None
+
+
+def _uses_mean(c: Dict[str, Any]) -> Optional[Fraction]:
+    mv = c.get("meanValue")
+    return mv if (mv is not None and mv != c["correct"]) else None
+
+
+def _range_is_min(c: Dict[str, Any]) -> Optional[int]:
+    mn = c.get("minv")
+    return mn if (mn is not None and mn != c["correct"]) else None
 
 
 def _uses_median(c: Dict[str, Any]) -> Optional[Fraction]:
@@ -352,21 +389,72 @@ MISCONCEPTIONS: Dict[str, Dict[str, Any]] = {m["id"]: m for m in [
        "Writes a correct but unsimplified fraction.",
        "Your value is equivalent, but simplify the fraction to its simplest form.",
        lambda c: None),
+    # --- v1.0.1 additions (owner #2/#3/#4) --------------------------------- #
+    _r("MISC.STAT.MEAN_MIDRANGE", "Uses the midrange instead of the mean",
+       "(largest + smallest) / 2", "averages only the extremes",
+       "Averages only the largest and smallest values instead of all of them.",
+       "The mean uses every value, not only the largest and smallest.",
+       _midrange),
+    _r("MISC.STAT.MEDIAN_USES_MEAN", "Uses the mean instead of the median",
+       "the mean", "confuses the median with the mean",
+       "Adds the values and divides instead of finding the middle value.",
+       "The median is the middle value of the ordered list, not the mean.",
+       _uses_mean),
+    _r("MISC.STAT.MEDIAN_MIDRANGE", "Uses the midrange instead of the median",
+       "(largest + smallest) / 2", "averages the extremes instead of finding the middle",
+       "Averages the largest and smallest values instead of finding the middle.",
+       "The median is the middle value of the ordered list, not the average of the extremes.",
+       _midrange),
+    _r("MISC.STAT.RANGE_IS_MIN", "Range is the smallest value",
+       "the smallest value", "reports the minimum as the range",
+       "Gives the smallest value instead of the difference.",
+       "The range is the largest value minus the smallest value.",
+       _range_is_min),
+    _r("MISC.STAT.PICTO_HALF_AS_WHOLE", "Counts the half symbol as a whole",
+       "value + half-symbol's worth", "treats the part symbol as a full one",
+       "Counts the half symbol as if it were a whole symbol.",
+       "A half symbol is worth half of the key, not a whole one.",
+       _picto_half_as_whole),
+    _r("MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL", "Miscounts by one symbol",
+       "value - one symbol's worth", "counts one symbol too few",
+       "Counts one symbol too few when reading the row.",
+       "Count the symbols in the row carefully, then multiply by the key.",
+       _picto_off_by_one_symbol),
+    # Free-response missing-TOTAL diagnostics (owner #4) — feedback-only, applicable only when
+    # the total is the unknown. Never claim to subtract from a total that is itself missing.
+    _r("MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "Omits a category from the total",
+       "sum of all but one frequency", "leaves one frequency out when adding",
+       "Leaves a category out when adding up the total.",
+       "Add every category's frequency — don't miss one out.",
+       lambda c: None),
+    _r("MISC.STAT.FREQ_TOTAL_COPIES_ONE", "Copies one frequency as the total",
+       "one of the frequencies", "writes a single frequency as the total",
+       "Writes one of the frequencies as the total instead of their sum.",
+       "The total is the sum of all the frequencies, not a single one of them.",
+       lambda c: None),
 ]}
 
 
 # Which misconception ids each task may draw distractors from (order = preference).
 RULES_BY_TASK: Dict[str, List[str]] = {
     "read_bar_chart": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.READ_WRONG_CATEGORY", "MISC.STAT.READ_MISCOUNT_SCALE"],
-    "read_pictogram": ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF", "MISC.STAT.READ_WRONG_CATEGORY"],
+    # Whole-symbol count first; the half-symbol rules are mutually exclusive with it (owner #3);
+    # off-by-one is a fallback so a 3rd distinct distractor always exists.
+    "read_pictogram": ["MISC.STAT.PICTO_COUNTS_SYMBOLS", "MISC.STAT.PICTO_IGNORES_HALF",
+                       "MISC.STAT.PICTO_HALF_AS_WHOLE", "MISC.STAT.READ_WRONG_CATEGORY",
+                       "MISC.STAT.PICTO_OFF_BY_ONE_SYMBOL"],
     "read_table_value": ["MISC.STAT.TABLE_READS_TOTAL", "MISC.STAT.TABLE_ADJACENT_ROW", "MISC.STAT.TABLE_READS_LARGEST"],
     "read_line_graph": ["MISC.STAT.READ_OFF_BY_STEP", "MISC.STAT.LINE_SWAPS_AXES", "MISC.STAT.READ_MISCOUNT_SCALE"],
-    # complete_frequency_table is free-response only — no distractors; its rules appear as solution pitfalls.
-    "complete_frequency_table": ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL", "MISC.STAT.READ_WRONG_CATEGORY"],
-    "mean_from_list": ["MISC.STAT.MEAN_NO_DIVIDE", "MISC.STAT.MEAN_DIVIDE_WRONG_N", "MISC.STAT.AVG_USES_MODE"],
-    "median_from_list": ["MISC.STAT.MEDIAN_NO_ORDER", "MISC.STAT.MEDIAN_WRONG_MIDDLE", "MISC.STAT.AVG_USES_MODE"],
+    # complete_frequency_table is free-response only — no distractors; its rules appear as
+    # blank-kind-specific solution pitfalls (missing-total vs missing-frequency, owner #4).
+    "complete_frequency_table": ["MISC.STAT.FREQ_SUBTRACT_WRONG_WAY", "MISC.STAT.FREQ_IGNORES_TOTAL",
+                                 "MISC.STAT.FREQ_TOTAL_OMITS_CATEGORY", "MISC.STAT.FREQ_TOTAL_COPIES_ONE"],
+    # AVG_USES_MODE is PREFERRED when a unique mode exists; midrange/min/mean fallbacks guarantee
+    # three distinct, mathematically-true distractors when there is no mode (owner #2).
+    "mean_from_list": ["MISC.STAT.MEAN_NO_DIVIDE", "MISC.STAT.MEAN_DIVIDE_WRONG_N", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEAN_MIDRANGE"],
+    "median_from_list": ["MISC.STAT.MEDIAN_NO_ORDER", "MISC.STAT.MEDIAN_WRONG_MIDDLE", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.MEDIAN_USES_MEAN", "MISC.STAT.MEDIAN_MIDRANGE"],
     "mode_from_list": ["MISC.STAT.MODE_USES_HIGHEST", "MISC.STAT.MODE_USES_FREQUENCY", "MISC.STAT.AVG_USES_MEDIAN"],
-    "range_from_list": ["MISC.STAT.RANGE_IS_MAX", "MISC.STAT.RANGE_ADDS", "MISC.STAT.AVG_USES_MODE"],
+    "range_from_list": ["MISC.STAT.RANGE_IS_MAX", "MISC.STAT.RANGE_ADDS", "MISC.STAT.AVG_USES_MODE", "MISC.STAT.RANGE_IS_MIN"],
     "mean_from_freq_table": ["MISC.STAT.MEANFT_DIVIDE_BY_CATEGORIES", "MISC.STAT.MEANFT_NO_WEIGHT", "MISC.STAT.MEAN_DIVIDE_WRONG_N"],
     "single_event_probability": ["MISC.STAT.PROB_COMPLEMENT", "MISC.STAT.PROB_ODDS", "MISC.STAT.PROB_OFF_BY_ONE"],
 }
