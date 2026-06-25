@@ -175,5 +175,52 @@ class TestMisconceptions(unittest.TestCase):
         self.assertIsNone(MM.diagnose(t, it["params"], ans, U.format_quantity(ans)))
 
 
+class TestReviewPackCoverage(unittest.TestCase):
+    """Blocking coverage gates over the reachability-derived review pack (owner L)."""
+
+    @classmethod
+    def setUpClass(cls):
+        path = os.path.join(HERE, "..", "..", "docs", "review", "mensuration_review_pack.json")
+        cls.pack = json.load(open(path, encoding="utf-8"))
+        dpath = os.path.join(HERE, "..", "..", "docs", "review", "mensuration_distribution.json")
+        cls.dist = json.load(open(dpath, encoding="utf-8"))
+
+    def test_full_coverage_no_missing_cells(self):
+        self.assertEqual(self.pack["missingCells"], [])
+        self.assertTrue(self.pack["allCovered"])
+
+    def test_all_review_items_machine_valid(self):
+        self.assertTrue(self.pack["allValid"])
+        for r in self.pack["records"]:
+            self.assertEqual(r["validation"], "pass", f"{r['task']} seed {r['seed']}")
+
+    def test_every_reachable_task_band_is_a_required_cell(self):
+        cells = {row["cell"] for row in self.pack["coverageMatrix"]}
+        for t, info in self.dist["tasks"].items():
+            for b in info["bandCounts"]:
+                self.assertIn(f"band:{t}:{b}", cells, f"reachable band {t}:{b} missing from matrix")
+
+    def test_every_supported_dimension_unit_and_kind_covered(self):
+        covered = {row["cell"] for row in self.pack["coverageMatrix"] if row["covered"]}
+        for tok in ("dim:length", "dim:area", "num:integer", "num:rational",
+                    "unit:mm", "unit:cm", "unit:m",
+                    "kind:rectangle", "kind:rectilinear_composite", "kind:triangle_base_height",
+                    "decomp:additive", "decomp:subtractive"):
+            self.assertIn(tok, covered, f"{tok} not covered")
+
+    def test_feature_proofs_hold(self):
+        for k, v in self.pack["featureProofs"].items():
+            self.assertTrue(v, f"feature proof failed: {k}")
+
+    def test_quantity_checker_matrix_all_ok(self):
+        seen_codes = set()
+        for r in self.pack["records"]:
+            for row in r["checkerMatrix"]:
+                self.assertTrue(row["ok"], f"{r['task']} {row['scenario']}: {row['actualCode']} != {row['expectedCode']}")
+                seen_codes.add(row["actualCode"])
+        for code in ("correct", "missing-unit", "wrong-base-unit", "incorrect-value", "wrong-exponent", "wrong-dimension"):
+            self.assertIn(code, seen_codes, f"checker code {code} never demonstrated")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
