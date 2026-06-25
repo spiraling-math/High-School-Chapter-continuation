@@ -195,6 +195,7 @@
       "description": "Platform-wide answer type vocabulary. Shared by curriculum objectives, items, and answer checkers.",
       "enum": [
         "integer", "decimal", "fraction", "exact-rational", "mixed-number", "exact-surd", "exact-trig",
+        "quantity",
         "algebraic-expression", "equation", "inequality", "interval", "set",
         "ordered-pair", "coordinate", "sequence", "permutation", "combination",
         "vector", "matrix", "complex-number",
@@ -234,11 +235,43 @@
             "significantFigures": { "type": "integer" }
           }
         },
-        "units": { "type": "string", "description": "Units of the answer, if any (e.g. 'cm', 'm s^-1')." },
+        "units": { "type": "string", "description": "LEGACY free-form units string for non-quantity answer types (e.g. 'cm', 'm s^-1'). FORBIDDEN on type='quantity' answers, which carry the structured 'measure' instead." },
+        "measure": {
+          "type": "object",
+          "description": "Structured unit for type='quantity' answers (gen.measurement.mensuration). Required when type='quantity'; forbidden otherwise. Unit meaning is structural, not a text suffix. 'display' is NOT duplicated here — it is derived from the answer's canonical + measure.",
+          "additionalProperties": false,
+          "required": ["dimension", "baseUnit", "exponent"],
+          "properties": {
+            "dimension": { "type": "string", "enum": ["length", "area"] },
+            "baseUnit": { "type": "string", "enum": ["mm", "cm", "m"] },
+            "exponent": { "type": "integer", "enum": [1, 2], "description": "1 for length, 2 for area (enforced by the conditional rules below)." }
+          }
+        },
         "rounding": { "type": "string", "description": "Rounding instruction shown to the student and enforced by the checker (e.g. 'to 3 significant figures')." },
         "workingRequired": { "type": "boolean", "default": false, "description": "Whether working must be shown for full marks." }
       },
       "allOf": [
+        {
+          "$comment": "A 'quantity' answer carries a normalized rational canonical {num, den>=1}, a required structured 'measure', and NEVER the legacy free-form 'units' string.",
+          "if": { "properties": { "type": { "const": "quantity" } }, "required": ["type"] },
+          "then": {
+            "required": ["measure"],
+            "properties": {
+              "canonical": { "type": "object", "required": ["num", "den"], "properties": { "num": { "type": "integer" }, "den": { "type": "integer", "minimum": 1 } } },
+              "units": false
+            }
+          }
+        },
+        {
+          "$comment": "A length quantity (dimension=length) must have exponent 1.",
+          "if": { "required": ["measure"], "properties": { "measure": { "properties": { "dimension": { "const": "length" } }, "required": ["dimension"] } } },
+          "then": { "properties": { "measure": { "properties": { "exponent": { "const": 1 } } } } }
+        },
+        {
+          "$comment": "An area quantity (dimension=area) must have exponent 2.",
+          "if": { "required": ["measure"], "properties": { "measure": { "properties": { "dimension": { "const": "area" } }, "required": ["dimension"] } } },
+          "then": { "properties": { "measure": { "properties": { "exponent": { "const": 2 } } } } }
+        },
         {
           "$comment": "An 'integer' answer whose canonical is a rational object must have denominator 1 (no false labelling).",
           "if": { "properties": { "type": { "const": "integer" }, "canonical": { "type": "object", "required": ["den"] } }, "required": ["type"] },

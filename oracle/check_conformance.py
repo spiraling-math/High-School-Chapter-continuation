@@ -57,9 +57,35 @@ def resolve(ref: str, current: dict, registry: dict) -> dict:
     return node
 
 
+def _validates(instance, schema, registry, root) -> bool:
+    """True iff instance validates against schema (used silently by if/then)."""
+    tmp: list = []
+    check(instance, schema, registry, root, "$", tmp)
+    return not tmp
+
+
 def check(instance, schema, registry, root, path, errors):
+    # Boolean schemas: true accepts anything, false rejects anything (e.g. `units: false`).
+    if schema is True:
+        return
+    if schema is False:
+        errors.append(f"{path}: property is forbidden here")
+        return
+
     if "$ref" in schema:
         schema = resolve(schema["$ref"], root, registry)
+
+    if "const" in schema and instance != schema["const"]:
+        errors.append(f"{path}: value {instance!r} != const {schema['const']!r}")
+
+    # Conditional + combinator keywords (owner B: the conformance checker must NOT silently
+    # ignore the quantity answer's if/then/const rules).
+    for sub in schema.get("allOf", []):
+        check(instance, sub, registry, root, path, errors)
+    if "if" in schema:
+        branch = "then" if _validates(instance, schema["if"], registry, root) else "else"
+        if branch in schema:
+            check(instance, schema[branch], registry, root, path, errors)
 
     t = schema.get("type")
     if t:
