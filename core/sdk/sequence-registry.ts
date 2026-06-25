@@ -17,6 +17,7 @@ import * as linear from "../../domains/algebra/linear-equations.ts";
 import * as geometryAngles from "../../domains/geometry/angles.ts";
 import * as coordinateLines from "../../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../../domains/statistics/data-handling.ts";
+import * as mensuration from "../../domains/measurement/mensuration.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -132,6 +133,31 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => dataHandling.generate(s, c as dataHandling.Config),
     validate: dataHandling.validate,
     serialize: dataHandling.serialize,
+  },
+  {
+    id: mensuration.GENERATOR_ID,
+    version: mensuration.GENERATOR_VERSION,
+    label: "Mensuration — perimeter, area & composite shapes",
+    // PENDING-REVIEW (owner REVISE decision M): implementation is authorized and machine-validated
+    // oracle-first (byte-parity TS mirror, gated by oracle/golden/mensuration.*), but the family is
+    // GATED OUT of normal Generator Studio and production exports/samples until the owner's
+    // review-pack APPROVE/REJECT. Visible only in ?review developer mode. The eight objectives are
+    // approved-for-implementation; the dimensional-quantity answer.type "quantity" schema extension
+    // is approved. All eight tasks are FREE-RESPONSE only (no multiple-choice in v1.0.0).
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "perimeter_rectangle", label: "Perimeter of a rectangle", mc: false },
+      { value: "perimeter_composite", label: "Perimeter of a composite (L-shape)", mc: false },
+      { value: "area_rectangle", label: "Area of a rectangle", mc: false },
+      { value: "area_triangle", label: "Area of a triangle (base × height)", mc: false },
+      { value: "area_composite", label: "Area of a composite by decomposition", mc: false },
+      { value: "missing_length_perimeter", label: "Missing length from a perimeter", mc: false },
+      { value: "missing_dimension_area", label: "Missing dimension from an area", mc: false },
+      { value: "missing_triangle_base_height", label: "Missing triangle base/height from an area", mc: false },
+    ],
+    generate: (s, c) => mensuration.generate(s, c as Parameters<typeof mensuration.generate>[1]),
+    validate: mensuration.validate,
+    serialize: mensuration.serialize,
   },
 ];
 
