@@ -1,0 +1,200 @@
+[
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "translation", "subtopic": "translate a point by an integer vector",
+    "microSkill": "find the image of a labelled point under a translation by a given integer vector",
+    "objectiveWording": "Find the image of a labelled point under a translation by a given integer column vector, giving the image as exact integer coordinates.",
+    "prerequisites": ["SPI.MIDDLE.GEO.COORD.READ_POINT.01", "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01", "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"],
+    "successCriteria": [
+      "Reads the point's coordinates and the translation vector from the figure.",
+      "Adds the vector to each coordinate (x + dx, y + dy).",
+      "States the image as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["translation", "vector", "image", "coordinates"],
+    "answerTypes": ["coordinate"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 1, "max": 2 },
+    "commonMisconceptions": ["MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY", "MISC.TRANS.CHANGES_ONLY_X", "MISC.TRANS.WRONG_SIGN_ONE_COMPONENT"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (translation of a point)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "translation", "subtopic": "translate a shape by an integer vector",
+    "microSkill": "find the image of a labelled shape under a translation by a given integer vector",
+    "objectiveWording": "Find the image of a labelled shape under a translation by a given integer vector, giving each image vertex as exact integer coordinates with the correct label.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01"],
+    "successCriteria": [
+      "Translates every labelled vertex by the same vector.",
+      "Keeps vertex correspondence (A maps to A', B to B', and so on).",
+      "States each image vertex as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["translation", "vector", "image", "vertex", "congruent"],
+    "answerTypes": ["table-completion"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY", "MISC.TRANS.TRANSLATES_FROM_ORIGIN", "MISC.TRANS.WRONG_SIGN_ONE_COMPONENT"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (translation of a shape)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "reflection", "subtopic": "reflect a point in a supported mirror line",
+    "microSkill": "find the image of a labelled point under reflection in x=a, y=b, y=x, or y=-x",
+    "objectiveWording": "Find the image of a labelled point under reflection in a supported mirror line (x = a, y = b, y = x, or y = -x), giving the image as exact integer coordinates.",
+    "prerequisites": ["SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01", "SPI.MIDDLE.GEO.COORD.READ_POINT.01", "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01", "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"],
+    "successCriteria": [
+      "Identifies the mirror line and the point's coordinates.",
+      "Applies the exact reflection rule for that line.",
+      "States the image as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["reflection", "mirror line", "image", "coordinates"],
+    "answerTypes": ["coordinate"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NEGATES_WRONG_COORDINATE", "MISC.TRANS.YX_CHANGES_BOTH_SIGNS", "MISC.TRANS.REFLECTS_X0_FOR_XA"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (reflection of a point)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "reflection", "subtopic": "reflect a shape in a supported mirror line",
+    "microSkill": "find the image of a labelled shape under reflection in x=a, y=b, y=x, or y=-x",
+    "objectiveWording": "Find the image of a labelled shape under reflection in a supported mirror line (x = a, y = b, y = x, or y = -x), giving each image vertex as exact integer coordinates with the correct label.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01"],
+    "successCriteria": [
+      "Reflects every labelled vertex in the given mirror line.",
+      "Keeps vertex correspondence and the congruent image orientation reversed.",
+      "States each image vertex as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["reflection", "mirror line", "image", "vertex", "congruent"],
+    "answerTypes": ["table-completion"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NEGATES_WRONG_COORDINATE", "MISC.TRANS.YNEGX_ONLY_SWAPS", "MISC.TRANS.REFLECTS_Y0_FOR_YB"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (reflection of a shape)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "rotation", "subtopic": "rotate a point by a quarter-turn about an integer centre",
+    "microSkill": "find the image of a labelled point under a 90, 180, or 270 degree rotation about an integer centre",
+    "objectiveWording": "Find the image of a labelled point under a rotation of 90, 180, or 270 degrees about a given integer centre, giving the image as exact integer coordinates.",
+    "prerequisites": ["SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01", "SPI.MIDDLE.GEO.COORD.READ_POINT.01", "SPI.MIDDLE.GEO.COORD.PLOT_POINT.01", "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01"],
+    "successCriteria": [
+      "Identifies the centre, the angle, and the direction of rotation.",
+      "Applies the exact quarter-turn rule relative to the centre.",
+      "States the image as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["rotation", "centre of rotation", "quarter turn", "anticlockwise", "image"],
+    "answerTypes": ["coordinate"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.TRANS.ROTATES_WRONG_DIRECTION", "MISC.TRANS.ROTATES_ABOUT_ORIGIN", "MISC.TRANS.USES_180_RULE_FOR_90", "MISC.TRANS.SWAPS_WITHOUT_SIGN"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (rotation of a point)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "rotation", "subtopic": "rotate a shape by a quarter-turn about an integer centre",
+    "microSkill": "find the image of a labelled shape under a 90, 180, or 270 degree rotation about an integer centre",
+    "objectiveWording": "Find the image of a labelled shape under a rotation of 90, 180, or 270 degrees about a given integer centre, giving each image vertex as exact integer coordinates with the correct label.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01"],
+    "successCriteria": [
+      "Rotates every labelled vertex about the given centre.",
+      "Keeps vertex correspondence and the congruent image orientation preserved.",
+      "States each image vertex as exact integer coordinates."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "numeric", "symbolic"],
+    "vocabulary": ["rotation", "centre of rotation", "quarter turn", "image", "vertex", "congruent"],
+    "answerTypes": ["table-completion"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 3, "max": 4 },
+    "commonMisconceptions": ["MISC.TRANS.ROTATES_WRONG_DIRECTION", "MISC.TRANS.ROTATES_ABOUT_ORIGIN", "MISC.TRANS.ROTATES_THE_CENTRE", "MISC.TRANS.APPLIES_TO_ONE_VERTEX"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (rotation of a shape)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "describing transformations", "subtopic": "describe the translation mapping a shape onto its image",
+    "microSkill": "fully describe the translation that maps a labelled shape onto its labelled image",
+    "objectiveWording": "Describe fully the translation that maps a labelled shape onto its labelled image, giving the translation vector.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01"],
+    "successCriteria": [
+      "Recognises the mapping is a translation and uses labelled vertex correspondence.",
+      "Finds the translation vector from a corresponding pair and checks it for every vertex.",
+      "States the translation fully (the column vector)."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "symbolic", "verbal-context"],
+    "vocabulary": ["translation", "vector", "describe fully", "maps onto"],
+    "answerTypes": ["transformation"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 2, "max": 3 },
+    "commonMisconceptions": ["MISC.TRANS.RIGHT_TYPE_WRONG_VECTOR", "MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a translation)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "describing transformations", "subtopic": "describe the reflection mapping a shape onto its image",
+    "microSkill": "fully describe the reflection that maps a labelled shape onto its labelled image",
+    "objectiveWording": "Describe fully the reflection that maps a labelled shape onto its labelled image, giving the mirror line (x = a, y = b, y = x, or y = -x).",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01"],
+    "successCriteria": [
+      "Recognises the mapping is a reflection and uses labelled vertex correspondence.",
+      "Finds the mirror line from corresponding pairs (the perpendicular bisector of each pair).",
+      "States the reflection fully (the equation of the mirror line)."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "symbolic", "verbal-context"],
+    "vocabulary": ["reflection", "mirror line", "describe fully", "maps onto"],
+    "answerTypes": ["transformation"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 3, "max": 4 },
+    "commonMisconceptions": ["MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS", "MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a reflection)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  },
+  {
+    "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01",
+    "academy": "SPI-Math", "programme": "SPI-Math Middle School", "stage": "middle-school",
+    "course": "SPI-Math Middle School Mathematics", "domain": "geometry", "strand": "coordinate-transformations",
+    "topic": "describing transformations", "subtopic": "describe the rotation mapping a shape onto its image",
+    "microSkill": "fully describe the rotation that maps a labelled shape onto its labelled image",
+    "objectiveWording": "Describe fully the rotation that maps a labelled shape onto its labelled image, giving the centre, the angle, and the direction.",
+    "prerequisites": ["SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01"],
+    "successCriteria": [
+      "Recognises the mapping is a rotation and uses labelled vertex correspondence.",
+      "Finds the centre, angle, and direction (e.g. centre from the common midpoint for a half turn).",
+      "States the rotation fully (centre, angle, and direction)."
+    ],
+    "allowedRepresentations": ["graphical", "diagram", "symbolic", "verbal-context"],
+    "vocabulary": ["rotation", "centre of rotation", "angle", "direction", "describe fully", "maps onto"],
+    "answerTypes": ["transformation"], "calculatorPolicy": "calculator-not-required",
+    "difficultyRange": { "min": 3, "max": 4 },
+    "commonMisconceptions": ["MISC.TRANS.RIGHT_ANGLE_MISSING_CENTRE", "MISC.TRANS.RIGHT_CENTRE_WRONG_DIRECTION", "MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION"],
+    "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01"],
+    "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a rotation)" }],
+    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+  }
+]
