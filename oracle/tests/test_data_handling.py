@@ -102,10 +102,72 @@ class TestReviewPackCoverage(unittest.TestCase):
         pack = json.load(open(os.path.join(REVIEW, "stats_data_handling_review_pack.json"), encoding="utf-8"))
         s = pack["summary"]
         self.assertEqual(s["missingCoverage"], [], f"missing: {s['missingCoverage']}")
+        self.assertEqual(s["missingCells"], [], f"missing cells: {s['missingCells']}")
         self.assertTrue(s["allValid"])
+        self.assertTrue(s["allCovered"])
         self.assertEqual(s["coveredTokens"], s["requiredTokens"])
+        self.assertEqual(s["coveredCells"], s["requiredCells"])
         # every registered misconception appears at least once
         self.assertEqual(set(s["misconceptionsShown"]), set(mis.MISCONCEPTIONS))
+
+
+class TestReviewPackCoverageMatrix(unittest.TestCase):
+    """Owner coverage correction — the review pack must exhibit every reachable
+    task/interaction/band cell and every realised answer shape; the coverage claim must be honest."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.pack = json.load(open(os.path.join(REVIEW, "stats_data_handling_review_pack.json"), encoding="utf-8"))
+        cls.dist = json.load(open(os.path.join(REVIEW, "stats_data_handling_distribution.json"), encoding="utf-8"))
+        cls.matrix = cls.pack["coverageMatrix"]
+
+    def test_every_reachable_task_band_covered(self):
+        for task, t in self.dist["tasks"].items():
+            for b in (int(x) for x in t["bandCounts"]):
+                cell = self.matrix[task]["bands"][str(b)]
+                self.assertTrue(cell["reachable"] and cell["hasExemplar"],
+                                f"{task} band {b} reachable but not exemplified")
+
+    def test_every_supported_interaction_covered(self):
+        for task, t in self.dist["tasks"].items():
+            self.assertTrue(self.matrix[task]["interactions"]["free-response"]["hasExemplar"], f"{task} FR")
+            if t["multipleChoice"] > 0:
+                self.assertTrue(self.matrix[task]["interactions"]["multiple-choice"]["hasExemplar"], f"{task} MC")
+            else:  # genuinely unreachable -> must be documented, not silently omitted
+                self.assertFalse(self.matrix[task]["interactions"]["multiple-choice"]["reachable"])
+                self.assertNotEqual(self.matrix[task]["interactions"]["multiple-choice"]["note"], "")
+
+    def test_every_task_answer_shape_covered(self):
+        for task, t in self.dist["tasks"].items():
+            for shape in t["answerTypes"]:
+                self.assertTrue(self.matrix[task]["shapes"][shape]["hasExemplar"],
+                                f"{task} answer shape {shape} not exemplified")
+
+    def test_coverage_summary_matches_records(self):
+        s = self.pack["summary"]
+        recs = self.pack["records"]
+        self.assertEqual(s["itemCount"], len(recs))
+        # every matrix exemplar seed references an actual record of that task
+        seeds_by_task = {}
+        for r in recs:
+            seeds_by_task.setdefault(r["task"], set()).add(r["seed"])
+        for task, m in self.matrix.items():
+            for fam in ("interactions", "bands", "shapes"):
+                for _k, v in m[fam].items():
+                    if v.get("hasExemplar"):
+                        self.assertIn(v["exemplarSeed"], seeds_by_task.get(task, set()),
+                                      f"{task} {fam} exemplar seed {v['exemplarSeed']} not in records")
+
+    def test_required_token_count_derived_from_matrix(self):
+        s = self.pack["summary"]
+        derived = sum((1 + (1 if t["multipleChoice"] > 0 else 0)) + len(t["bandCounts"]) + len(t["answerTypes"])
+                      for t in self.dist["tasks"].values())
+        self.assertEqual(s["requiredCells"], derived)
+        self.assertEqual(s["derivedRequiredCells"], derived)
+
+    def test_no_false_full_coverage_claim(self):
+        s = self.pack["summary"]
+        self.assertEqual(s["allCovered"], (not s["missingCells"]) and (not s["missingCoverage"]))
 
 
 class TestDistribution(unittest.TestCase):

@@ -29,6 +29,7 @@ from spi_oracle import data_handling_misconceptions as mis  # noqa: E402
 
 REVIEW_DIR = os.path.join(ROOT, "docs", "review")
 MAX_SEED = 6000
+GATHER_SEEDS = 500   # per task per interaction — enough to surface every reachable cell
 
 
 def _axis_step(item) -> int | None:
@@ -88,29 +89,59 @@ def _features(item):
         toks.add("table:total" if item["params"]["blank"]["kind"] == "total" else "table:freqcell")
     if (ds.get("categories") and len(ds["categories"]) >= 5) or (ds.get("values") and len(ds["values"]) >= 6):
         toks.add("dense")
+    toks |= _cell_tokens(item)
     return toks
 
 
-def _required_tokens():
+def _cell_tokens(item):
+    """The systematic curriculum-review CELLS an item satisfies (owner coverage correction):
+    its task x interaction, its task x difficulty-band, and its task x answer-shape."""
+    task = item["params"]["task"]
+    return {
+        f"cell:{task}:inter:{item['interactionType']}",
+        f"cell:{task}:band:{item['difficulty']['overallBand']}",
+        f"cell:{task}:shape:{item['answer']['type']}",
+    }
+
+
+def _reachability():
+    """Per-task reachable {interactions, difficulty bands, answer shapes}, derived from the
+    distribution report (the authoritative reachability artifact, owner requirement #2)."""
+    dist = json.load(open(os.path.join(REVIEW_DIR, "stats_data_handling_distribution.json"), encoding="utf-8"))
+    reach = {}
+    for task, t in dist["tasks"].items():
+        inter = {"free-response"}
+        if t["multipleChoice"] > 0:
+            inter.add("multiple-choice")
+        reach[task] = {"interactions": inter,
+                       "bands": {int(b) for b in t["bandCounts"]},
+                       "shapes": set(t["answerTypes"])}
+    return reach
+
+
+def _required_tokens(reach):
+    """Required review dimensions. The BACKBONE is the systematic cells derived from reachability:
+    for every task, EVERY supported interaction, EVERY reachable difficulty band, and EVERY
+    realised answer shape must have an exemplar (owner requirement #1). Plus the misconception
+    registry and the extra qualitative dimensions."""
     req = set()
-    for t in dh.TASKS:
-        req.add(f"task:{t}")
-        req.add(f"interaction:{t}:free-response")
-        if t in dh.MC_TASKS:
-            req.add(f"interaction:{t}:multiple-choice")
+    for task, r in reach.items():
+        for i in r["interactions"]:
+            req.add(f"cell:{task}:inter:{i}")
+        for b in r["bands"]:
+            req.add(f"cell:{task}:band:{b}")
+        for s in r["shapes"]:
+            req.add(f"cell:{task}:shape:{s}")
     for t, ids in mis.RULES_BY_TASK.items():
         if t in dh.FREE_RESPONSE_ONLY:
             continue
         for mid in ids:
             req.add(f"misc:{mid}")
-    req |= {"answer:integer", "answer:exact-rational", "answer:fraction", "answer:table-completion"}
-    req |= {"barscale:1", "barscale:2", "barscale:5", "barscale:10"}
-    req |= {"picto:whole", "picto:half", "median:odd", "median:even", "mean:int", "mean:frac",
+    req |= {"barscale:1", "barscale:2", "barscale:5", "barscale:10",
+            "picto:whole", "picto:half", "median:odd", "median:even", "mean:int", "mean:frac",
             "range:zero", "range:pos", "list:negative", "prob:0", "prob:1", "prob:half", "prob:other",
             "table:total", "table:freqcell", "dense",
-            # owner #11 required examples:
             "list:signed-context-free", "misc-mode-valid", "no-mode-rejected",
-            # owner v1.0.2 direct-read examples: minor subdivisions on bar + line:
             "bar:minor-subdiv", "line:minor-subdiv"}
     return req
 
@@ -135,57 +166,105 @@ def _pitfalls(task, params):
     return out
 
 
+def _coverage_matrix(reach, chosen):
+    """Explicit coverage matrix (owner requirement #2): for every task, the reachability and
+    exemplar status of each interaction, difficulty band, and answer shape, plus the flat list
+    of (task, interaction, band, answerType) cells the chosen exemplars realise."""
+    cell_seed = {}
+    for seed, _cfg, item in chosen:
+        for tk in _cell_tokens(item):
+            cell_seed.setdefault(tk, seed)
+    matrix = {}
+    for task, r in reach.items():
+        m = {"interactions": {}, "bands": {}, "shapes": {}}
+        for i in ("free-response", "multiple-choice"):
+            reachable = i in r["interactions"]
+            seed = cell_seed.get(f"cell:{task}:inter:{i}")
+            m["interactions"][i] = {"reachable": reachable, "hasExemplar": seed is not None,
+                                    "exemplarSeed": seed,
+                                    "note": "" if reachable else "unreachable per distribution report (no items)"}
+        for b in range(1, 6):
+            reachable = b in r["bands"]
+            seed = cell_seed.get(f"cell:{task}:band:{b}")
+            if reachable or seed is not None:
+                m["bands"][b] = {"reachable": reachable, "hasExemplar": seed is not None, "exemplarSeed": seed}
+        for s in sorted(r["shapes"]):
+            seed = cell_seed.get(f"cell:{task}:shape:{s}")
+            m["shapes"][s] = {"reachable": True, "hasExemplar": seed is not None, "exemplarSeed": seed}
+        matrix[task] = m
+    flat = []
+    for seed, _cfg, item in chosen:
+        flat.append({"task": item["params"]["task"], "interaction": item["interactionType"],
+                     "band": item["difficulty"]["overallBand"], "answerType": item["answer"]["type"],
+                     "seed": seed, "reachable": True, "hasExemplar": True})
+    return matrix, flat
+
+
 def main() -> int:
     os.makedirs(REVIEW_DIR, exist_ok=True)
-    required = _required_tokens()
-    covered = set()
-    chosen = []
-    seen_keys = set()
+    reach = _reachability()
+    required = _required_tokens(reach)
 
-    # Greedy coverage pass over seeds (FR then MC), preferring items that add new tokens.
-    for seed in range(1, MAX_SEED + 1):
-        if required <= covered:
+    # 1) Targeted candidate gathering — task-pinned over both supported interactions, so EVERY
+    #    reachable cell (incl. rare ones like read_pictogram band 1, mode_from_list MC) has
+    #    candidates. Each candidate carries its full token set.
+    candidates = []  # (seed, config, item, tokens)
+    for task in dh.TASKS:
+        interactions = ["free-response"] + (["multiple-choice"] if "multiple-choice" in reach[task]["interactions"] else [])
+        for inter in interactions:
+            cfg = {"interactionType": inter, "task": task}
+            for seed in range(1, GATHER_SEEDS + 1):
+                try:
+                    item = dh.generate(seed, cfg)
+                except Exception:
+                    continue
+                candidates.append((seed, cfg, item, _features(item)))
+
+    # 2) Greedy set-cover: repeatedly pick the candidate adding the most still-uncovered REQUIRED
+    #    tokens (reusing one item across several cells where it is a genuine exemplar).
+    covered, chosen, seen = set(), [], set()
+    while True:
+        best, best_new = None, set()
+        for seed, cfg, item, toks in candidates:
+            key = (cfg["task"], cfg["interactionType"], seed)
+            if key in seen:
+                continue
+            new = (toks & required) - covered
+            if len(new) > len(best_new):
+                best, best_new, best_key = (seed, cfg, item), new, key
+        if best is None or not best_new:
             break
-        for mode in ("free-response", "multiple-choice"):
-            try:
-                item = dh.generate(seed, {"interactionType": mode})
-            except Exception:
-                continue
-            toks = _features(item)
-            new = toks - covered
-            if not (new & required):
-                continue
-            key = (item["params"]["task"], item["interactionType"], item["seed"])
-            if key in seen_keys:
-                continue
-            seen_keys.add(key)
-            chosen.append((seed, mode, item))
-            covered |= toks
+        seen.add(best_key)
+        chosen.append(best)
+        covered |= _features(best[2])
 
     missing = sorted(required - covered)
-    # Build records.
+    required_cells = {t for t in required if t.startswith("cell:")}
+    missing_cells = sorted(required_cells - covered)
+    matrix, flat = _coverage_matrix(reach, chosen)
+
     records = []
-    for seed, mode, item in chosen:
+    for seed, cfg, item in chosen:
         task = item["params"]["task"]
         v = dh.validate(item)
         media = item["media"][0]
         fig = media.get("svg") or (media.get("spec") or {}).get("html") or ""
-        rec = {
+        records.append({
             "objectiveId": item["objectiveIds"][0], "task": task, "interaction": item["interactionType"],
-            "answerType": item["answer"]["type"], "seed": seed, "params": item["params"],
-            "dataset": item["params"]["dataset"], "prompt": item["prompt"]["instruction"],
-            "mediaKind": media["kind"], "figure": fig, "answer": item["answer"]["display"],
-            "answerCanonical": item["answer"]["canonical"],
+            "answerType": item["answer"]["type"], "band": item["difficulty"]["overallBand"], "seed": seed,
+            "config": cfg, "params": item["params"], "dataset": item["params"]["dataset"],
+            "prompt": item["prompt"]["instruction"], "mediaKind": media["kind"], "figure": fig,
+            "answer": item["answer"]["display"], "answerCanonical": item["answer"]["canonical"],
             "solution": item["solution"]["steps"], "distractors": item.get("distractors", []),
-            "accessibility": {"spokenMath": item["accessibility"]["spokenMath"],
-                              "dataTable": media.get("dataTableFallback")},
+            "accessibility": {"spokenMath": item["accessibility"]["spokenMath"], "dataTable": media.get("dataTableFallback")},
             "difficulty": item["difficulty"], "validation": v["status"],
-            "validationChecks": [c["name"] for c in v["checks"]],
-            "pitfalls": _pitfalls(task, item["params"]),
-            "reproduce": f"python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate({seed},{{'interactionType':'{mode}'}})))\"",
-        }
-        records.append(rec)
+            "validationChecks": [c["name"] for c in v["checks"]], "pitfalls": _pitfalls(task, item["params"]),
+            "cells": sorted(_cell_tokens(item)),
+            "reproduce": f"python -c \"import sys;sys.path.insert(0,'oracle/spi_oracle');import data_handling as d;print(d.serialize(d.generate({seed},{json.dumps(cfg)})))\"",
+        })
 
+    # The required cell count must DERIVE from the matrix (reachability), not a hand-set number.
+    derived_required_cells = sum(len(r["interactions"]) + len(r["bands"]) + len(r["shapes"]) for r in reach.values())
     summary = {
         "generatorId": dh.GENERATOR_ID, "generatorVersion": dh.GENERATOR_VERSION,
         "validatorVersion": dh.VALIDATOR_VERSION, "itemCount": len(records),
@@ -195,19 +274,25 @@ def main() -> int:
         "answerTypes": sorted({r["answerType"] for r in records}),
         "misconceptionsShown": sorted({d["misconceptionId"] for r in records for d in r["distractors"]}
                                       | {p["misconceptionId"] for r in records for p in r["pitfalls"]}),
+        "requiredCells": len(required_cells), "coveredCells": len(required_cells & covered),
+        "derivedRequiredCells": derived_required_cells, "missingCells": missing_cells,
         "requiredTokens": len(required), "coveredTokens": len(required & covered),
-        "missingCoverage": missing, "allValid": all(r["validation"] == "pass" for r in records),
+        "missingCoverage": missing,
+        "allCovered": not missing,            # honest full-coverage flag (owner: no false claim)
+        "allValid": all(r["validation"] == "pass" for r in records),
     }
-    pack = {"summary": summary, "records": records}
+    pack = {"summary": summary, "coverageMatrix": matrix, "coverageCells": flat, "records": records}
     with open(os.path.join(REVIEW_DIR, "stats_data_handling_review_pack.json"), "w", encoding="utf-8") as fh:
         json.dump(pack, fh, indent=2)
 
     _write_md(pack)
-    print(f"Review pack: {len(records)} items, {summary['coveredTokens']}/{summary['requiredTokens']} tokens covered.")
+    print(f"Review pack: {len(records)} items; cells {summary['coveredCells']}/{summary['requiredCells']} "
+          f"(derived {derived_required_cells}); tokens {summary['coveredTokens']}/{summary['requiredTokens']}.")
     if missing:
         print("MISSING COVERAGE:", missing)
     print("misconceptions shown:", len(summary["misconceptionsShown"]), "/", len(mis.MISCONCEPTIONS))
-    return 0 if not missing and summary["allValid"] else 1
+    ok = (not missing) and summary["allValid"] and (len(required_cells) == derived_required_cells)
+    return 0 if ok else 1
 
 
 def _write_md(pack) -> None:
@@ -215,13 +300,35 @@ def _write_md(pack) -> None:
     lines = [f"# Review pack — `{s['generatorId']}` v{s['generatorVersion']}", "",
              f"Validator v{s['validatorVersion']}. **{s['itemCount']} items** "
              f"({s['svgItems']} chart SVGs + {s['tableItems']} semantic tables). "
-             f"Coverage: {s['coveredTokens']}/{s['requiredTokens']} required dimensions; "
-             f"misconceptions shown: {len(s['misconceptionsShown'])}/" + str(len(mis.MISCONCEPTIONS)) + ". "
-             f"All items machine-valid: **{s['allValid']}**.", ""]
+             f"**Curriculum-review cells: {s['coveredCells']}/{s['requiredCells']}** "
+             f"(derived from the distribution report: every task × supported interaction, × reachable "
+             f"difficulty band, × realised answer shape); extra dimensions {s['coveredTokens']}/{s['requiredTokens']}; "
+             f"misconceptions {len(s['misconceptionsShown'])}/" + str(len(mis.MISCONCEPTIONS)) + ". "
+             f"Full coverage: **{s['allCovered']}**; all items machine-valid: **{s['allValid']}**.", ""]
+    if s["missingCells"]:
+        lines += ["> **Missing required cells:** " + ", ".join(s["missingCells"]), ""]
     if s["missingCoverage"]:
         lines += ["> **Missing coverage:** " + ", ".join(s["missingCoverage"]), ""]
     lines += ["Status: **PENDING REVIEW** — gated out of normal Studio + production until owner approval.",
               "Objectives are `approved-for-implementation`; items are machine-validated, never auto-published.", ""]
+    # Explicit coverage matrix (owner requirement #2).
+    lines += ["## Coverage matrix (task × interaction / band / answer shape)", "",
+              "| Task | Interactions (reachable→seed) | Bands (reachable→seed) | Answer shapes (→seed) |",
+              "| --- | --- | --- | --- |"]
+    for task, m in pack["coverageMatrix"].items():
+        def _cells(d, keyfmt):
+            parts = []
+            for k, v in d.items():
+                if v.get("reachable"):
+                    parts.append(f"{keyfmt(k)}→{v['exemplarSeed']}" if v["hasExemplar"] else f"{keyfmt(k)}→MISSING")
+                elif v.get("note"):
+                    parts.append(f"{keyfmt(k)}=n/a")
+            return ", ".join(parts)
+        inter = _cells(m["interactions"], lambda k: {"free-response": "FR", "multiple-choice": "MC"}[k])
+        bands = _cells(m["bands"], str)
+        shapes = ", ".join(f"{sh}→{v['exemplarSeed']}" if v["hasExemplar"] else f"{sh}→MISSING" for sh, v in m["shapes"].items())
+        lines.append(f"| `{task}` | {inter} | {bands} | {shapes} |")
+    lines.append("")
     for i, r in enumerate(pack["records"], 1):
         lines += [f"## {i}. {r['task']} ({r['interaction']}) — band {r['difficulty']['overallBand']}", "",
                   f"- **Objective:** `{r['objectiveId']}`", f"- **Answer type:** {r['answerType']}",
