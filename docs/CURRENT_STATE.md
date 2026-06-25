@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-25.
 
-## `gen.measurement.mensuration` v1.0.0 — IMPLEMENTED · PENDING-REVIEW (2026-06-25)
+## `gen.measurement.mensuration` v1.0.1 — IMPLEMENTED · PENDING-REVIEW (2026-06-25)
 
 The first **unit-aware** family — built **oracle-first** after the owner's REVISE-with-authorization
 directive (`DECISION_LOG.md` #50, decisions A–M). Eight FREE-RESPONSE Middle-School mensuration
@@ -35,14 +35,35 @@ four modes (premium / premium-dark / accessible / monochrome-print) + a self-con
 export, with **live-Chromium** confirmation of four distinct mode fills. `MISC.MENS.*` provides 13
 free-response diagnostics (8 mathematical, 4 unit, 1 pedagogical `USES_SLOPING_SIDE`).
 
+**v1.0.1 corrections (owner curriculum REVISE, `DECISION_LOG.md` #51; v1.0.0 preserved at tag
+`mensuration-v1.0.0`):** **C1** decomposition coverage is now task-specific — `perimeter_composite`
+carries no `decompMode`, the review pack uses `decomp:area_composite:{additive,subtractive}` cells,
+perimeter items never satisfy an area-decomposition cell, and a genuine additive area_composite
+exemplar (split → both areas → explicit sum → shoelace agreement → additive overlay) sits beside a
+subtractive one. **C2** composite-perimeter worked solutions are numerically complete (derive both
+missing edges, trace all six exterior edges, sum once to the answer, no internal edge). **C3** the
+quantity-checker evidence is genuinely different (no-space / extra-space / unreduced fraction /
+terminating decimal / Unicode superscript accepted) and reaches **all seven** result codes including
+the eight malformed-response categories, with explicit cross-unit non-conversion proofs. **C4**
+diagnostics carry a kind (numeric/unit/pedagogical) and `diagnosticOnly`; no `predicted:null` with a
+numeric code; inapplicable rules dropped from the inverse tasks; `USES_SLOPING_SIDE` is
+diagnostic-only. **C5** missing-* prompts dropped the redundant sentence and the accessibility
+grammar is fixed ("An L-shaped…", "A triangle measured in … with its perpendicular height marked"),
+canonical units staying ASCII `^2`.
+
 **Status:** registered **`pending-review`** in `core/sdk/sequence-registry.ts` — gated out of normal
 Generator Studio and production exports/samples (visible only in `?review`), awaiting the owner's
-APPROVE / REVISE / REJECT. **Verification:** 10,000-seed sweep **0 invalid, 0 reproducibility
-failures, every declared band reachable**; conformance PASS; byte-parity golden (12) + task-pinned
-parity (304); 9 Python oracle suites (21 mensuration tests incl. 6 blocking coverage gates +
-artifact integrity); **231 TS tests**; review pack **17 items, 46/46 cells, allCovered**; manifest +
-SHA-256 integrity; **all six approved families’ output byte-for-byte unchanged**. Difficulty ranges
-are provisional (confirmed reachable by the distribution report) pending the curriculum decision.
+APPROVE / REJECT. **Verification:** 10,000-seed sweep **0 invalid, every declared band reachable, all
+seven checker codes, 0 matrix mismatches, no cross-unit conversion, 13 diagnostics (8 numeric / 4
+unit / 1 pedagogical), 0 inapplicable**; conformance PASS; byte-parity golden (12) + task-pinned
+parity (304); 9 Python oracle suites (**61 mensuration tests**); **231 TS tests**; review pack **16
+items, 46/46 cells, allCovered** + all feature proofs; manifest + SHA-256 integrity; **all six
+approved families’ output byte-for-byte unchanged**.
+
+**Non-blocking future calibration debt** (do NOT distort the mathematics to equalise percentages):
+difficulty concentration in `area_composite` band 4, `missing_triangle_base_height` band 3, and the
+low-band rectangle tasks. Difficulty ranges remain provisional pending the curriculum decision; a
+future calibration pass may rebalance these without changing the accepted mathematics.
 
 ## `gen.stats.data-handling` v1.0.2 — CURRICULUM-APPROVED (2026-06-25)
 
