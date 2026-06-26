@@ -165,15 +165,18 @@ export const GENERATORS: GeneratorModule[] = [
     id: transformations.GENERATOR_ID,
     version: transformations.GENERATOR_VERSION,
     label: "Coordinate transformations — translate, reflect & rotate",
-    // PENDING-REVIEW at v1.0.2 (owner REVISE-with-authorization, 2026-06-25). Implementation is
-    // authorized + machine-validated and the TS mirror is byte-parity with the Python oracle (gated by
-    // oracle/golden/transformations.*), but the family is GATED from normal Studio + production exports
-    // until the owner's APPROVE/REVISE/REJECT of the implemented v1.0.2 family — selectable only in
-    // review mode. The nine SPI.MIDDLE.GEO.TRANS.* objectives are approved-for-implementation; the
-    // additive answer.type "transformation" (canonical-first: the descriptor IS answer.canonical) is
-    // owner-approved. All nine tasks are FREE-RESPONSE only; an explicit MC request is rejected with
-    // interaction-not-supported (never silently converted).
-    approvalStatus: "pending-review",
+    // Curriculum-APPROVED at v1.0.2 (DECISION_LOG.md #57; tag approved-transformations-v1.0.2). The TS
+    // mirror is byte-parity with the Python oracle (gated by oracle/golden/transformations.*). Selectable
+    // in normal Studio use and included in production exports/samples; only v1.0.2 registered (v1.0.0/
+    // v1.0.1 preserved as historical, unapproved). The nine SPI.MIDDLE.GEO.TRANS.* objectives are
+    // curriculum-approved; the shared transformation-descriptor contract (answer.type "transformation"
+    // canonical-first + the translation/reflection/rotation descriptor union + parser/canonicalizer/
+    // formatter/equivalence checker + the 14 result codes) is approved — this does NOT authorize
+    // enlargements, compositions, arbitrary-angle rotations, arbitrary reflection lines, fractional
+    // vectors/centres, matrices, transformations of functions, tessellations, or 3D. All nine tasks are
+    // FREE-RESPONSE only; an explicit MC request is rejected with interaction-not-supported. Newly
+    // generated items begin at machine-validated.
+    approvalStatus: "approved",
     tasks: [
       { value: "translate_point", label: "Translate a point", mc: false },
       { value: "translate_shape", label: "Translate a shape", mc: false },

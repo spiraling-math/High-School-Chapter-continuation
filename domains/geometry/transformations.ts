@@ -1233,6 +1233,6 @@ export function describe(): Json {
     tasks: [..._TASKS],
     interactionTypes: [...SUPPORTED_INTERACTIONS],
     answerTypes: ["coordinate", "table-completion", "transformation"],
-    approvalStatus: "pending-review",
+    approvalStatus: "approved", // curriculum-approved at v1.0.2 (DECISION_LOG #57)
   };
 }

@@ -21,6 +21,7 @@ import * as geometryAngles from "../domains/geometry/angles.ts";
 import * as coordinateLines from "../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../domains/statistics/data-handling.ts";
 import * as mensuration from "../domains/measurement/mensuration.ts";
+import * as transformations from "../domains/geometry/transformations.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -72,6 +73,14 @@ for (const task of ["perimeter_rectangle", "perimeter_composite", "area_rectangl
   "area_composite", "missing_length_perimeter", "missing_dimension_area", "missing_triangle_base_height"]) {
   const item = mensuration.generate(13, { task, interactionType: "free-response" });
   records.push(makeRecord(item, mensuration.validate(item).status, { mode: "free-response", genConfig: { interactionType: "free-response", task } }));
+}
+
+// Include coordinate transformations (all nine FREE-RESPONSE tasks; coordinate / table-completion /
+// transformation-descriptor answers) — curriculum-approved at v1.0.2 (DECISION_LOG #57).
+for (const task of ["translate_point", "translate_shape", "reflect_point", "reflect_shape",
+  "rotate_point", "rotate_shape", "describe_translation", "describe_reflection", "describe_rotation"]) {
+  const item = transformations.generate(13, { task });
+  records.push(makeRecord(item, transformations.validate(item).status, { mode: "free-response", genConfig: { interactionType: "free-response", task } }));
 }
 
 const katexCss = inlineKatexCss();
