@@ -2,7 +2,35 @@
 
 Last updated: 2026-06-25.
 
-## `gen.geometry.transformations` v1.0.0 — PENDING-REVIEW (2026-06-25)
+## `gen.geometry.transformations` v1.0.1 — PENDING-REVIEW (2026-06-25)
+
+**Owner REVISE (DECISION_LOG #55): review-package corrected → v1.0.1; family accepted in principle;
+v1.0.0 preserved at tag `transformations-v1.0.0`.** The seven required corrections are applied (canonical
+mathematics unchanged — only the SVG rendering changed, which is why this is v1.0.1): **#1** every approval
+artifact is pinned to one build commit (`818617e`) — audit `data-git-commit` == manifest `gitCommit` ==
+browser `gitCommit`, all agree on v1.0.1, no stale "1.0.0", manifest 24/24 hashes match disk, versionTags
+`{previousVersionTag transformations-v1.0.0, currentImplementationTag transformations-v1.0.1, approvedTag
+null}`. **#2** the review pack is a full curriculum pack — 22 exemplars each carrying the complete record
+(objective/task/seed/band+axes/prompt/both figures/canonical answer/checker behaviour/worked
+solution/parameters/source+image coords/both-channel a11y + data tables/diagnostics/result-code
+evidence/validation checks/reproduction command/per-item decision field; descriptor exemplars add
+accepted+rejected wordings with codes; shape exemplars add the image-coordinate table); the builder fails
+on any missing field. **#3** answer-key accessibility is channel-specific — the student channel stays
+answer-free; the answer-key channel describes the displayed image + overlay (transformed coords +
+construction) and never says "image not shown"; a separate answer-key a11y bundle drives the
+solution/worksheet exports. **#4** the arrow marker id is namespaced `tx-arrow-{itemId}` (key-translation
+channel only) with the reference as a per-element attribute; the presentation/export layer namespaces
+every inline id per card. **#5** a new `core/visual-style/transformations-theme.{json,ts}` gives four real
+isolated per-root modes (premium / premium-dark / accessible / monochrome-print), reusing the cartesian
+scheme additively; the source/image distinction is carried by SHAPE + DASH (never colour-only); a themed
+audit + per-mode/per-element baked-colour checks + a REAL-browser `getComputedStyle` capture (72 figures,
+0 mismatches; print = canonical monochrome authoritative; dark contrast 14:1). **Verified:** TS 274/274;
+Python 11 suites (transformations 42 tests incl. 13 identity + visual-mode); typecheck exit 0; conformance
+PASS; 360-entry + canonical-SVG parity byte-for-byte; 10k sweep clean; offline samples build excludes
+transformations (pending-review); all seven approved families byte-for-byte unchanged. **Next owner
+decision: APPROVE or REJECT of v1.0.1.**
+
+### (Historical) v1.0.0 implementation
 
 The eighth generator family, implemented oracle-first per the owner's REVISE-with-authorization
 directive (`DECISION_LOG.md` #54, decisions A–P). Nine FREE-RESPONSE Middle-School coordinate-
