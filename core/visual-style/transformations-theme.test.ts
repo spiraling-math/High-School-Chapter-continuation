@@ -39,11 +39,11 @@ const CANON: Record<string, string> = {
 };
 const hex = (c: string) => c.replace("#", "").match(/.{2}/g)!.map((h) => parseInt(h, 16));
 const lum = (c: string) => {
-  const [r, g, b] = hex(c).map((v) => {
+  const ch = hex(c).map((v) => {
     const u = v / 255;
     return u <= 0.03928 ? u / 12.92 : ((u + 0.055) / 1.055) ** 2.4;
   });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return 0.2126 * (ch[0] ?? 0) + 0.7152 * (ch[1] ?? 0) + 0.0722 * (ch[2] ?? 0);
 };
 const contrast = (a: string, b: string) => {
   const la = lum(a), lb = lum(b), hi = Math.max(la, lb), lo = Math.min(la, lb);
@@ -94,10 +94,11 @@ test("print mode reproduces the canonical monochrome authoritative palette", () 
 
 test("dark mode is readable (dark bg, light ink, sufficient contrast)", () => {
   const d = modeVars("premium-dark");
-  assert.ok(lum(d["--tx-bg"]) < 0.1, "dark background");
-  assert.ok(lum(d["--tx-text"]) > 0.5, "light ink");
-  assert.ok(contrast(d["--tx-text"], d["--tx-bg"]) >= 4.5, "text contrast >= 4.5");
-  assert.ok(contrast(d["--tx-axis"], d["--tx-bg"]) >= 3.0, "axis contrast >= 3");
+  const bg = d["--tx-bg"]!, text = d["--tx-text"]!, axis = d["--tx-axis"]!;
+  assert.ok(lum(bg) < 0.1, "dark background");
+  assert.ok(lum(text) > 0.5, "light ink");
+  assert.ok(contrast(text, bg) >= 4.5, "text contrast >= 4.5");
+  assert.ok(contrast(axis, bg) >= 3.0, "axis contrast >= 3");
 });
 
 test("presentationSvg stamps the mode vars on the figure's own root (per-root isolation)", () => {
@@ -119,7 +120,7 @@ test("inline ids are namespaced per card so multiple SVGs never collide", () => 
   assert.match(a, /url\(#tx-arrow-ITEM-A--cardA\)/);
   assert.match(b, /id="tx-arrow-ITEM-A--cardB"/);
   // combined document: the two cards' marker ids differ -> no collision
-  const ids = [...(a + b).matchAll(/id="([^"]+)"/g)].map((m) => m[1]);
+  const ids = [...(a + b).matchAll(/id="([^"]+)"/g)].map((m) => m[1]!);
   assert.equal(new Set(ids).size, ids.length, "no duplicate ids across cards");
 });
 
