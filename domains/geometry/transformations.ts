@@ -1,5 +1,5 @@
 /**
- * gen.geometry.transformations v1.0.0 — generator, family-local Cartesian renderer, and validator.
+ * gen.geometry.transformations v1.0.1 — generator, family-local Cartesian renderer, and validator.
  *
  * Byte-for-byte TypeScript mirror of oracle/spi_oracle/transformations.py.
  * EXACT (owner F): integer coordinates only; no trig/float/tolerance/irrational.
@@ -15,8 +15,8 @@ import type { Point } from "./transformations-core.ts";
 type Json = any;
 
 export const GENERATOR_ID = "gen.geometry.transformations";
-export const GENERATOR_VERSION = "1.0.0";
-export const VALIDATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
+export const VALIDATOR_VERSION = "1.0.1";
 
 export const OBJECTIVE_BY_TASK: Record<string, string> = {
   translate_point: "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -104,7 +104,7 @@ const STYLE =
   ".tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}" +
   ".tx-img-open{fill:#fff;stroke:#111;stroke-width:3}" +
   ".tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}" +
-  ".tx-vec{stroke:#111;stroke-width:3;fill:none;marker-end:url(#tx-arrow)}" +
+  ".tx-vec{stroke:#111;stroke-width:3;fill:none}" +
   ".tx-centre{fill:#111;stroke:#fff;stroke-width:2}" +
   "text{font-family:sans-serif;font-size:26px;fill:#111}" +
   ".tx-ticklbl{font-size:18px;fill:#333}" +
@@ -232,15 +232,17 @@ function labelEls(placed: Json[]): string[] {
   );
 }
 
-function overlayEls(_task: string, desc: Json, src: Point[], img: Point[], lay: Json): string[] {
+function overlayEls(_task: string, desc: Json, src: Point[], img: Point[], lay: Json, uid: string): string[] {
   const out: string[] = ['<g class="tx-overlay">'];
   const kind = desc.kind;
   if (kind === "translation") {
+    // one representative vector arrow from a source vertex to its image; the marker-end is set as an
+    // ATTRIBUTE (not via the shared CSS class) so it references this SVG's namespaced marker (owner #4)
     const sx = projX(lay, (src[0] as Point)[0]);
     const sy = projY(lay, (src[0] as Point)[1]);
     const ix = projX(lay, (img[0] as Point)[0]);
     const iy = projY(lay, (img[0] as Point)[1]);
-    out.push(`<line class="tx-vec" x1="${sx}" y1="${sy}" x2="${ix}" y2="${iy}"/>`);
+    out.push(`<line class="tx-vec" x1="${sx}" y1="${sy}" x2="${ix}" y2="${iy}" marker-end="url(#tx-arrow-${uid})"/>`);
   } else if (kind === "reflection") {
     const ax = desc.axis;
     const { wx0, wx1, wy0, wy1 } = lay;
@@ -275,48 +277,59 @@ function overlayEls(_task: string, desc: Json, src: Point[], img: Point[], lay: 
   return out;
 }
 
-function arrowDefs(): string {
+function arrowDefs(uid: string): string {
+  // Per-SVG marker defs (owner #4): the marker id is namespaced by the item/channel uid so multiple
+  // inline SVGs in one document (worksheet/audit) never collide.
   return (
-    '<defs><marker id="tx-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" ' +
+    `<defs><marker id="tx-arrow-${uid}" markerWidth="10" markerHeight="10" refX="8" refY="3" ` +
     'orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#111"/></marker></defs>'
   );
 }
 
-function render(task: string, params: Json, answerKey: boolean): string {
+function render(task: string, params: Json, answerKey: boolean, uid: string): string {
   const src = params.source;
   const img = params.image;
   const desc = params.descriptor;
   const obj = params.objectType;
+  const kind = params.kind;
   const perform = !task.startsWith("describe");
   const lay = params.layout;
-  const acc = accessibility(task, params);
+  const acc = accessibility(task, params, answerKey);
 
   const out: string[] = [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW_W} ${VIEW_H}" role="img" aria-label="${esc(acc.alt)}">`,
   ];
   out.push(`<title>${esc(acc.title)}</title><desc>${esc(acc.desc)}</desc>`);
-  out.push(`<style>${STYLE}</style>${arrowDefs()}`);
-  out.push(...gridAxes(lay));
+  out.push(`<style>${STYLE}</style>`);
+  if (answerKey && kind === "translation") {
+    out.push(arrowDefs(uid)); // marker defs only in the channel that draws the vector (owner #4)
+  }
 
-  // base geometry + student annotations (identical in both channels)
-  out.push(...objectEls(src, lay, false));
+  // ----- shared base geometry + student annotations (byte-identical in both channels) -----
+  const base: string[] = [];
+  base.push(...gridAxes(lay));
+  base.push(...objectEls(src, lay, false));
   let labelItems: [string, number, number][] = zipLabels(TS.SOURCE_LABELS[obj] as string[], src, lay);
-  const showImageInStudent = !perform;
-  if (showImageInStudent) {
-    out.push(...objectEls(img, lay, true));
+  if (!perform) {
+    // describe tasks show the image to the student (owner N)
+    base.push(...objectEls(img, lay, true));
     labelItems = labelItems.concat(zipLabels(TS.imageLabels(obj), img, lay));
   }
   const placed = placeLabels(labelItems);
   params._labelPlacements = placed;
-  out.push(...labelEls(placed));
+  base.push(...labelEls(placed));
+  out.push('<g class="tx-base">');
+  out.push(...base);
+  out.push("</g>");
 
   if (answerKey) {
     if (perform) {
+      // the key reveals the image first, then the overlay (owner N)
       out.push(...objectEls(img, lay, true));
       const imgLabels = placeLabels(zipLabels(TS.imageLabels(obj), img, lay));
       out.push(...labelEls(imgLabels));
     }
-    out.push(...overlayEls(task, desc, src, img, lay));
+    out.push(...overlayEls(task, desc, src, img, lay, uid));
   }
 
   out.push("</svg>");
@@ -608,56 +621,104 @@ function srcLabelStr(obj: string): string {
   return (TS.SOURCE_LABELS[obj] as string[]).join("");
 }
 
+function imgLabelStr(obj: string): string {
+  return TS.imageLabels(obj).join("");
+}
+
+function overlayPhrase(desc: Json): string {
+  // How the answer-key overlay depicts the transformation (owner #3 — key channel describes it).
+  const kind = desc.kind;
+  if (kind === "translation") {
+    const v = desc.vector;
+    return `the translation vector (${v.dx}, ${v.dy}) is drawn as an arrow`;
+  }
+  if (kind === "reflection") {
+    return `the mirror line ${TC.axisEquation(desc.axis)} is drawn`;
+  }
+  const c = desc.centre;
+  return `the centre of rotation (${c.x}, ${c.y}) is marked`;
+}
+
 function capitalize(s: string): string {
   // Python str.capitalize(): first char upper, rest lower. All inputs here are single words / lowercase.
   if (s.length === 0) return s;
   return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 }
 
-function accessibility(task: string, params: Json): Json {
+function accessibility(task: string, params: Json, answerKey = false): Json {
+  // Channel-specific accessibility text (owner #3). The STUDENT channel is answer-free (perform: the
+  // image is not shown; describe: the transformation is never named). The ANSWER-KEY channel describes
+  // the displayed image and the solution overlay, and never repeats "the image is not shown.".
   const obj = params.objectType;
   const src = params.source as Point[];
+  const img = params.image as Point[];
+  const desc = params.descriptor;
   const perform = !task.startsWith("describe");
-  const srcLabels = TS.SOURCE_LABELS[obj] as string[];
-  const srcDesc = src.map((v, i) => `${srcLabels[i]} at (${v[0]}, ${v[1]})`).join("; ");
+  const labels = srcLabelStr(obj);
+  const imgLabels = imgLabelStr(obj);
+  const srcLabelsArr = TS.SOURCE_LABELS[obj] as string[];
+  const imgLabelsArr = TS.imageLabels(obj);
+  const srcDesc = src.map((v, i) => `${srcLabelsArr[i]} at (${v[0]}, ${v[1]})`).join("; ");
+  const imgDesc = img.map((v, i) => `${imgLabelsArr[i]} at (${v[0]}, ${v[1]})`).join("; ");
+  const srcTable: string[][] = [["Vertex", "Coordinates"]];
+  for (let i = 0; i < src.length; i++) {
+    srcTable.push([srcLabelsArr[i] as string, `(${(src[i] as Point)[0]}, ${(src[i] as Point)[1]})`]);
+  }
+  const fullTable: string[][] = [["Vertex", "Object", "Image"]];
+  for (let i = 0; i < src.length; i++) {
+    fullTable.push([
+      srcLabelsArr[i] as string,
+      `(${(src[i] as Point)[0]}, ${(src[i] as Point)[1]})`,
+      `(${(img[i] as Point)[0]}, ${(img[i] as Point)[1]})`,
+    ]);
+  }
+
   let alt: string;
   let title: string;
-  let desc: string;
+  let desc_t: string;
   let table: string[][];
-  if (perform) {
+  if (perform && !answerKey) {
     const instr = instruction(task, params);
-    alt = `A coordinate grid showing ${objPhrase(obj)} ${srcLabelStr(obj)} with vertices ${srcDesc}. ${instr}`;
-    title = `Coordinate grid with ${objPhrase(obj)} ${srcLabelStr(obj)}`;
-    desc = `${capitalize(objPhrase(obj))} ${srcLabelStr(obj)}: ${srcDesc}. The image is not shown.`;
-    table = [["Vertex", "Coordinates"]];
-    for (let i = 0; i < src.length; i++) {
-      table.push([srcLabels[i] as string, `(${(src[i] as Point)[0]}, ${(src[i] as Point)[1]})`]);
-    }
-  } else {
-    const img = params.image as Point[];
-    const imgLabels = TS.imageLabels(obj);
-    const imgDesc = img.map((v, i) => `${imgLabels[i]} at (${v[0]}, ${v[1]})`).join("; ");
+    alt = `A coordinate grid showing ${objPhrase(obj)} ${labels} with vertices ${srcDesc}. ${instr}`;
+    title = `Coordinate grid with ${objPhrase(obj)} ${labels}`;
+    desc_t = `${capitalize(objPhrase(obj))} ${labels}: ${srcDesc}. The image is not shown.`;
+    table = srcTable;
+  } else if (perform && answerKey) {
+    const disp = TC.formatDisplay(desc);
     alt =
-      `A coordinate grid showing ${objPhrase(obj)} ${srcLabelStr(obj)} (${srcDesc}) and its image ` +
+      `Answer key: ${objPhrase(obj)} ${labels} is mapped to its image ${imgLabels} with vertices ` +
+      `${imgDesc} by ${disp}; ${overlayPhrase(desc)}.`;
+    title = `Answer key — ${objPhrase(obj)} ${labels} mapped to ${imgLabels}`;
+    desc_t =
+      `${capitalize(objPhrase(obj))} ${labels}: ${srcDesc}. Image ${imgLabels}: ${imgDesc}. ` +
+      `The mapping is ${disp}; ${overlayPhrase(desc)}.`;
+    table = fullTable;
+  } else if (!perform && !answerKey) {
+    alt =
+      `A coordinate grid showing ${objPhrase(obj)} ${labels} (${srcDesc}) and its image ${imgLabels} ` +
       `(${imgDesc}). Describe the single transformation that maps the object onto its image.`;
     title = `Coordinate grid with an object and its image`;
-    desc = `Object ${srcLabelStr(obj)}: ${srcDesc}. Image: ${imgDesc}.`;
-    table = [["Vertex", "Object", "Image"]];
-    for (let i = 0; i < src.length; i++) {
-      table.push([
-        srcLabels[i] as string,
-        `(${(src[i] as Point)[0]}, ${(src[i] as Point)[1]})`,
-        `(${(img[i] as Point)[0]}, ${(img[i] as Point)[1]})`,
-      ]);
-    }
+    desc_t = `Object ${labels}: ${srcDesc}. Image ${imgLabels}: ${imgDesc}.`;
+    table = fullTable;
+  } else {
+    // describe + answer key
+    const disp = TC.formatDisplay(desc);
+    alt =
+      `Answer key: the transformation mapping ${objPhrase(obj)} ${labels} onto its image ` +
+      `${imgLabels} is ${disp}; ${overlayPhrase(desc)}.`;
+    title = `Answer key — ${disp}`;
+    desc_t =
+      `Object ${labels}: ${srcDesc}. Image ${imgLabels}: ${imgDesc}. ` +
+      `The transformation is ${disp}; ${overlayPhrase(desc)}.`;
+    table = fullTable;
   }
   return {
     alt,
     title,
-    desc,
+    desc: desc_t,
     dataTable: table,
     spokenMath: alt,
-    longDescription: `${title}. ${desc}`,
+    longDescription: `${title}. ${desc_t}`,
   };
 }
 
@@ -756,7 +817,7 @@ export function generate(seed: number, config?: Json): Json {
   const interaction = config.interactionType ?? "free-response";
   if (!SUPPORTED_INTERACTIONS.includes(interaction)) {
     throw new InteractionNotSupported(
-      `gen.geometry.transformations supports only free-response in v1.0.0 (requested ${pyRepr(interaction)})`,
+      `gen.geometry.transformations supports only free-response (requested ${pyRepr(interaction)})`,
     );
   }
   let task = config.task;
@@ -768,14 +829,17 @@ export function generate(seed: number, config?: Json): Json {
   }
 
   const params = paramsFor(seed, task);
-  const studentSvg = render(task, params, false);
-  const keySvg = render(task, params, true);
-  const acc = accessibility(task, params);
+  const itemId = `ITEM-TRANS-${task}-${seed}`;
+  const uid = itemId; // marker-id namespace base (owner #4); the audit/exports add a per-card suffix
+  const studentSvg = render(task, params, false, uid);
+  const keySvg = render(task, params, true, uid);
+  const acc = accessibility(task, params, false); // student channel (answer-free)
+  const accKey = accessibility(task, params, true); // answer-key channel (owner #3)
   const diff = difficulty(task, params);
   const ans = answer(task, params);
 
   const item: Json = {
-    itemId: `ITEM-TRANS-${task}-${seed}`,
+    itemId,
     schemaVersion: "1.0.0",
     objectiveIds: [OBJECTIVE_BY_TASK[task]],
     generatorId: GENERATOR_ID,
@@ -790,7 +854,15 @@ export function generate(seed: number, config?: Json): Json {
         id: "fig-1",
         kind: "svg",
         svg: studentSvg,
-        spec: { answerKeySvg: keySvg, labelPlacements: params._labelPlacements ?? [] },
+        spec: {
+          answerKeySvg: keySvg,
+          labelPlacements: params._labelPlacements ?? [],
+          markerIdBase: uid,
+          // answer-key channel accessibility (owner #3): describes the displayed image + overlay.
+          answerKeyAltText: accKey.alt,
+          answerKeyLongDescription: accKey.longDescription,
+          answerKeyDataTable: { columns: accKey.dataTable[0], rows: accKey.dataTable.slice(1) },
+        },
         toScale: true,
         altText: acc.alt,
         longDescription: acc.longDescription,
@@ -909,13 +981,17 @@ export function validate(item: Json): Json {
     add("descriptor-unique", uniq !== null && TC.descriptorsEqual(uniq, desc));
   }
 
+  // channels (owner N): the SHARED base-geometry group is byte-identical; the key is purely additive.
   const media = item.media[0];
   const student = media.svg as string;
   const key = media.spec.answerKeySvg as string;
-  const idx = student.lastIndexOf("</svg>");
-  add("answer-key-base-geometry-identical", key.startsWith(student.slice(0, idx)));
-  add("answer-key-overlay-additive-only", key.length >= student.length && student !== key);
+  add("answer-key-base-geometry-identical", txBase(student) !== "" && txBase(student) === txBase(key));
+  add(
+    "answer-key-overlay-additive-only",
+    key.length >= student.length && student !== key && key.includes('<g class="tx-overlay">'),
+  );
 
+  // leakage (owner N): the perform student channel must not draw the image or list its vertices.
   if (perform) {
     add("perform-student-image-hidden", !student.includes('<rect class="tx-img-open"'));
     const rows = media.dataTableFallback.rows as string[][];
@@ -927,6 +1003,44 @@ export function validate(item: Json): Json {
   } else {
     add("describe-student-shows-both-figures", student.includes('<rect class="tx-img-open"'));
     add("describe-student-no-descriptor-named", !student.includes(TC.formatDisplay(desc)));
+  }
+
+  // accessibility channels (owner #3): student answer-free; answer-key describes image + overlay.
+  const sDesc = svgDesc(student);
+  const kDesc = svgDesc(key);
+  const overlayPhraseStr = overlayPhrase(desc);
+  add("student-and-key-a11y-channel-specific", sDesc !== kDesc && sDesc !== "" && kDesc !== "");
+  add(
+    "answer-key-a11y-does-not-say-image-hidden",
+    !kDesc.toLowerCase().includes("not shown") &&
+      !(media.spec.answerKeyAltText as string).toLowerCase().includes("not shown"),
+  );
+  add(
+    "answer-key-a11y-describes-overlay",
+    kDesc.includes(overlayPhraseStr) && kDesc.includes(TC.formatDisplay(desc)),
+  );
+  if (perform) {
+    add(
+      "student-a11y-answer-free",
+      sDesc.toLowerCase().includes("the image is not shown") && !sDesc.includes(TC.formatDisplay(desc)),
+    );
+  } else {
+    add(
+      "student-a11y-answer-free",
+      !sDesc.includes(TC.formatDisplay(desc)) && !(media.altText as string).includes(TC.formatDisplay(desc)),
+    );
+  }
+
+  // SVG id safety (owner #4): no duplicate ids within an SVG; every url(#id) resolves in its own SVG.
+  for (const [chan, svg] of [
+    ["student", student],
+    ["key", key],
+  ] as [string, string][]) {
+    const ids = (svg.match(/id="([^"]+)"/g) ?? []).map((m) => m.slice(4, -1));
+    add(`no-duplicate-svg-ids-${chan}`, ids.length === new Set(ids).size);
+    const refs = (svg.match(/url\(#([^)]+)\)/g) ?? []).map((m) => m.slice(5, -1));
+    const idSet = new Set(ids);
+    add(`marker-reference-resolves-within-own-svg-${chan}`, refs.every((r) => idSet.has(r)));
   }
 
   const placements = (media.spec.labelPlacements ?? []) as Json[];
@@ -958,6 +1072,22 @@ function sameKeys(a: Record<string, unknown>, b: Record<string, unknown>): boole
 
 function arraysEqual(a: string[], b: string[]): boolean {
   return a.length === b.length && a.every((v, i) => v === b[i]);
+}
+
+function txBase(svg: string): string {
+  // The shared base-geometry group <g class="tx-base">...</g> (no nested groups), or "" if absent.
+  const a = svg.indexOf('<g class="tx-base">');
+  if (a < 0) {
+    return "";
+  }
+  const b = svg.indexOf("</g>", a);
+  return b >= 0 ? svg.slice(a, b) : "";
+}
+
+function svgDesc(svg: string): string {
+  const a = svg.indexOf("<desc>");
+  const b = svg.indexOf("</desc>", a);
+  return a >= 0 && b >= 0 ? svg.slice(a + 6, b) : "";
 }
 
 function labelsPairwiseClear(placements: Json[]): boolean {

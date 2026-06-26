@@ -37,12 +37,12 @@ test("the registered generators are the expected set", () => {
     "gen.geometry.coordinate-lines@1.0.2",
     "gen.stats.data-handling@1.0.2",
     "gen.measurement.mensuration@1.0.1",
-    "gen.geometry.transformations@1.0.0",
+    "gen.geometry.transformations@1.0.1",
   ]);
 });
 
 test("approval lifecycle: seven curriculum-approved families + transformations pending-review (gated)", () => {
-  // Seven families are curriculum-approved; gen.geometry.transformations is PENDING-REVIEW at v1.0.0
+  // Seven families are curriculum-approved; gen.geometry.transformations is PENDING-REVIEW at v1.0.1
   // (owner REVISE-with-authorization, 2026-06-25) and is GATED from normal Studio + production exports,
   // selectable only in review mode until the owner's APPROVE/REVISE/REJECT.
   for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations",

@@ -45,7 +45,8 @@ ARTIFACTS = {
     "objectiveIds": "core/curriculum/transformations-objective-ids.ts",
     "schema": "schemas/question-item.schema.json",
     "compiledValidator": "core/schema/compiled/question-item.validator.mjs",
-    "cartesianTheme": "core/visual-style/cartesian-theme.json",
+    "themeJson": "core/visual-style/transformations-theme.json",
+    "themeTs": "core/visual-style/transformations-theme.ts",
     "distribution": "docs/review/transformations_distribution.json",
     "reviewPackJson": "docs/review/transformations_review_pack.json",
     "reviewPackMd": "docs/review/transformations_review_pack.md",
@@ -83,10 +84,11 @@ def main() -> int:
         "approvalStatus": "pending-review",
         "objectiveReviewStatus": "approved-for-implementation",
         "gitCommit": os.environ.get("SPI_BUILD_COMMIT") or _git_commit(),
-        # First implemented version: no predecessor; the approved tag is created only on owner APPROVE.
+        # v1.0.0 implemented but unapproved (preserved at tag transformations-v1.0.0); v1.0.1 corrects the
+        # review-package defects (owner REVISE). The approved tag is created only on owner APPROVE.
         "versionTags": {
-            "previousVersionTag": None,
-            "currentImplementationTag": "transformations-v1.0.0",
+            "previousVersionTag": "transformations-v1.0.0",
+            "currentImplementationTag": "transformations-v1.0.1",
             "approvedTag": None,
         },
         "schemaExtension": "answer.type 'transformation' (canonical-first: descriptor IS answer.canonical) — APPROVED",

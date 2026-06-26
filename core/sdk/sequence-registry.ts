@@ -165,10 +165,10 @@ export const GENERATORS: GeneratorModule[] = [
     id: transformations.GENERATOR_ID,
     version: transformations.GENERATOR_VERSION,
     label: "Coordinate transformations — translate, reflect & rotate",
-    // PENDING-REVIEW at v1.0.0 (owner REVISE-with-authorization, 2026-06-25). Implementation is
+    // PENDING-REVIEW at v1.0.1 (owner REVISE-with-authorization, 2026-06-25). Implementation is
     // authorized + machine-validated and the TS mirror is byte-parity with the Python oracle (gated by
     // oracle/golden/transformations.*), but the family is GATED from normal Studio + production exports
-    // until the owner's APPROVE/REVISE/REJECT of the implemented v1.0.0 family — selectable only in
+    // until the owner's APPROVE/REVISE/REJECT of the implemented v1.0.1 family — selectable only in
     // review mode. The nine SPI.MIDDLE.GEO.TRANS.* objectives are approved-for-implementation; the
     // additive answer.type "transformation" (canonical-first: the descriptor IS answer.canonical) is
     // owner-approved. All nine tasks are FREE-RESPONSE only; an explicit MC request is rejected with

@@ -263,6 +263,66 @@ test("all 9 tasks generate and validate across several seeds", () => {
   }
 });
 
+test("v1.0.1 SVG structure: tx-base group, namespaced marker, channel-specific a11y", () => {
+  // translation perform task -> the answer key draws the vector via a namespaced marker.
+  const item = generate(7, { interactionType: "free-response", task: "translate_point" });
+  const student = item.media[0].svg as string;
+  const key = item.media[0].spec.answerKeySvg as string;
+  const uid = item.media[0].spec.markerIdBase as string;
+  assert.equal(uid, "ITEM-TRANS-translate_point-7");
+
+  // The shared base geometry lives in <g class="tx-base"> and is byte-identical across channels.
+  const txBase = (svg: string): string => {
+    const a = svg.indexOf('<g class="tx-base">');
+    const b = svg.indexOf("</g>", a);
+    return a >= 0 && b >= 0 ? svg.slice(a, b) : "";
+  };
+  assert.ok(txBase(student).length > 0);
+  assert.equal(txBase(student), txBase(key));
+
+  // The key is additive: it carries the overlay group; the student does not.
+  assert.ok(key.includes('<g class="tx-overlay">'));
+  assert.ok(!student.includes('<g class="tx-overlay">'));
+
+  // The marker id is namespaced by uid; marker-end is an ATTRIBUTE, not part of the .tx-vec class.
+  assert.ok(key.includes(`id="tx-arrow-${uid}"`));
+  assert.ok(key.includes(`marker-end="url(#tx-arrow-${uid})"`));
+  assert.ok(!key.includes(".tx-vec{stroke:#111;stroke-width:3;fill:none;marker-end"));
+  assert.ok(key.includes(".tx-vec{stroke:#111;stroke-width:3;fill:none}"));
+  // The student channel never emits the marker defs (only the channel that draws the vector does).
+  assert.ok(!student.includes("<marker"));
+
+  // Channel-specific a11y: student says the image is not shown; the key does not, and names the map.
+  const svgDesc = (svg: string): string => {
+    const a = svg.indexOf("<desc>");
+    const b = svg.indexOf("</desc>", a);
+    return a >= 0 && b >= 0 ? svg.slice(a + 6, b) : "";
+  };
+  assert.ok(svgDesc(student).includes("The image is not shown."));
+  assert.ok(!svgDesc(key).toLowerCase().includes("not shown"));
+  assert.ok(svgDesc(key).includes("translation by vector (5, 2)"));
+  assert.ok((item.media[0].spec.answerKeyAltText as string).startsWith("Answer key:"));
+
+  // Every url(#id) reference resolves within its own SVG (no cross-SVG marker collisions).
+  for (const svg of [student, key]) {
+    const ids = new Set((svg.match(/id="([^"]+)"/g) ?? []).map((m) => m.slice(4, -1)));
+    const refs = (svg.match(/url\(#([^)]+)\)/g) ?? []).map((m) => m.slice(5, -1));
+    assert.ok(refs.every((r) => ids.has(r)));
+  }
+});
+
+test("describe channel: student never names the transformation; key describes overlay", () => {
+  const item = generate(7, { interactionType: "free-response", task: "describe_translation" });
+  const student = item.media[0].svg as string;
+  const key = item.media[0].spec.answerKeySvg as string;
+  // student shows both figures but never names the transformation; key names + describes the overlay.
+  assert.ok(student.includes('<rect class="tx-img-open"'));
+  assert.ok(!student.includes("translation by vector"));
+  assert.ok(key.includes("translation by vector"));
+  assert.ok(key.includes("is drawn as an arrow"));
+  assert.equal(validate(item).valid, true);
+});
+
 test("random task selection when no task is pinned", () => {
   const item = generate(42, { interactionType: "free-response" });
   assert.ok(TASKS.includes(item.params.task));
@@ -279,7 +339,7 @@ test("unsupported interaction (e.g. multiple-choice) throws InteractionNotSuppor
 test("describe() advertises the generator surface", () => {
   const d = describe();
   assert.equal(d.generatorId, "gen.geometry.transformations");
-  assert.equal(d.version, "1.0.0");
+  assert.equal(d.version, "1.0.1");
   assert.deepEqual(d.tasks, TASKS);
   assert.deepEqual(d.interactionTypes, ["free-response"]);
   assert.deepEqual(d.answerTypes, ["coordinate", "table-completion", "transformation"]);

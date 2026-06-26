@@ -1,21 +1,26 @@
-"""gen.geometry.transformations visual audit page (self-contained HTML).
+"""gen.geometry.transformations visual audit (self-contained, themed, computed-style ready).
 
-Renders representative items in BOTH channels (student vs answer-key) across the four approved visual
-modes (premium-light / premium-dark / accessible-colour / monochrome-print), plus label-collision
-stress samples. The version is fully dynamic (from GENERATOR_VERSION) and the page carries artifact-
-identity metadata: data-generator-id / data-generator-version / data-validator-version / data-git-commit
-on the root and a window.__trans hook. Source = filled circle + solid edge; image = open square +
-dashed edge (distinct WITHOUT colour, owner M).
+Renders representative items in BOTH channels (student vs answer-key) across the four approved modes
+(premium-light / premium-dark / accessible-colour / monochrome-print) using the transformations-theme
+presentation layer: the document carries ONE var()-based COMMON_CSS ruleset and every figure stamps its
+mode's CSS custom properties on its OWN root (class="tx-figure"), so modes stay isolated per root and the
+mode order never changes any card's styles. Each embedded SVG's inline ids are namespaced per card, so
+the same item across four modes never collides in the shared DOM (owner #4). The page carries artifact-
+identity metadata (data-generator-id/version, data-validator-version, data-git-commit) and a
+window.__trans.computed() hook that calls real-browser getComputedStyle on each SVG element class under
+each mode (owner #5) — captured via the preview tool into the browser-verification report.
 
   python oracle/make_visual_audit_transformations.py
 
-Writes docs/review/transformations_visual_audit.html.
+Writes docs/review/transformations_visual_audit.html. Version is fully dynamic from GENERATOR_VERSION.
 """
 
 from __future__ import annotations
 
 import html
+import json
 import os
+import re
 import subprocess
 import sys
 
@@ -29,6 +34,11 @@ from spi_oracle import transformations as T  # noqa: E402
 
 GEN_VER = T.GENERATOR_VERSION
 VAL_VER = T.VALIDATOR_VERSION
+THEME = json.load(open(os.path.join(ROOT, "core", "visual-style", "transformations-theme.json"), encoding="utf-8"))
+MODES = ["premium", "premium-dark", "accessible", "print"]
+MODE_LABEL = {"premium": "Premium light", "premium-dark": "Premium dark",
+              "accessible": "Accessible colour", "print": "Monochrome print"}
+_STYLE_RE = re.compile(r"<style>.*?</style>", re.DOTALL)
 
 
 def _commit():
@@ -39,42 +49,51 @@ def _commit():
         return ""
 
 
-MODES = [
-    ("premium-light", "Premium light", "#ffffff", "#111111"),
-    ("premium-dark", "Premium dark", "#0f1420", "#f3f5f9"),
-    ("accessible", "Accessible colour", "#fbf9f4", "#1a1a1a"),
-    ("print", "Monochrome print", "#ffffff", "#000000"),
-]
+def _mode_var_style(mode: str) -> str:
+    return ";".join(f"{k}:{v}" for k, v in THEME["modes"][mode].items())
 
 
-def _panel(label, svg):
-    return f'<figure class="panel"><figcaption>{html.escape(label)}</figcaption>{svg}</figure>'
+def _presentation_svg(svg: str, mode: str, card_uid: str) -> str:
+    """Mirror of transformations-theme.presentationSvg: strip canonical <style>, stamp class + mode vars
+    on the root, and namespace every inline id (and url(#...) ref) by the card uid."""
+    body = _STYLE_RE.sub("", svg)
+    body = body.replace("<svg ", f'<svg class="tx-figure" style="{_mode_var_style(mode)}" ', 1)
+    body = re.sub(r'id="([^"]+)"', lambda m: f'id="{m.group(1)}--{card_uid}"', body)
+    body = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{m.group(1)}--{card_uid})", body)
+    return body
 
 
 def main() -> int:
     commit = _commit()
-    blocks = []
-    for task in T.TASKS:
-        item = T.generate(7, {"task": task})
-        m = item["media"][0]
-        prompt = item["prompt"]["blocks"][0]["text"]
-        blocks.append(
-            f'<section class="item"><h3>{html.escape(task)} '
-            f'<small>band {item["difficulty"]["overallBand"]} · {item["answer"]["type"]}</small></h3>'
-            f'<p class="prompt">{html.escape(prompt)}</p>'
-            f'<div class="channels">{_panel("Student", m["svg"])}{_panel("Answer key", m["spec"]["answerKeySvg"])}</div>'
-            f'</section>')
+    # one representative item per task (the answer-key SVG covers every element type incl. overlays).
+    items = [(task, T.generate(7, {"task": task})) for task in T.TASKS]
 
-    # Label-collision stress: clustered points that force the bbox-clearance engine to relocate labels.
+    gallery = []
+    for mode in MODES:
+        cards = []
+        for task, it in items:
+            m = it["media"][0]
+            uid_s = f"{task}-{mode}-s"
+            uid_k = f"{task}-{mode}-k"
+            stu = _presentation_svg(m["svg"], mode, uid_s)
+            key = _presentation_svg(m["spec"]["answerKeySvg"], mode, uid_k)
+            cards.append(
+                f'<div class="card" data-mode="{mode}" data-task="{task}">'
+                f'<div class="cap">{html.escape(task)} · band {it["difficulty"]["overallBand"]}</div>'
+                f'<div class="pair"><figure><figcaption>student</figcaption>{stu}</figure>'
+                f'<figure><figcaption>answer key</figcaption>{key}</figure></div></div>')
+        gallery.append(f'<section class="mode-block" data-mode="{mode}"><h2>{MODE_LABEL[mode]}</h2>'
+                       f'<div class="grid">{"".join(cards)}</div></section>')
+
+    # label-collision stress (clustered figures exercise the bbox-clearance engine) in premium-dark.
     stress = []
     for seed in (3, 17, 29):
-        it = T.generate(seed, {"task": "describe_quadrilateral" if False else "describe_rotation"})
-        stress.append(_panel(f"describe_rotation seed {seed}", it["media"][0]["svg"]))
+        it = T.generate(seed, {"task": "describe_rotation"})
+        stress.append(f'<figure><figcaption>describe_rotation seed {seed}</figcaption>'
+                      f'{_presentation_svg(it["media"][0]["svg"], "premium-dark", f"stress-{seed}")}</figure>')
 
-    mode_css = "\n".join(
-        f'.mode-{cls} {{ background:{bg}; color:{fg}; }}' for cls, _, bg, fg in MODES)
-    mode_buttons = "".join(
-        f'<button onclick="setMode(\'{cls}\')">{label}</button>' for cls, label, _, _ in MODES)
+    common_css = THEME["commonCss"]
+    mode_meta = json.dumps(THEME["modes"])
 
     doc = f"""<!doctype html>
 <html lang="en" data-generator-id="{T.GENERATOR_ID}" data-generator-version="{GEN_VER}"
@@ -82,40 +101,65 @@ def main() -> int:
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="{T.GENERATOR_ID}@{GEN_VER}">
-<title>Transformations visual audit · v{GEN_VER}</title>
+<title>{T.GENERATOR_ID} v{GEN_VER} — visual audit</title>
 <style>
   :root {{ font-family: system-ui, sans-serif; }}
-  body {{ margin:0; padding:24px; transition:background .2s,color .2s; }}
-  header {{ display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; border-bottom:1px solid #8888; padding-bottom:12px; }}
+  body {{ margin:0; padding:24px; background:#f6f7f9; color:#111; }}
+  header {{ border-bottom:1px solid #8888; padding-bottom:12px; margin-bottom:8px; }}
   header h1 {{ margin:0; font-size:20px; }}
   .meta {{ font:12px/1.5 ui-monospace,monospace; opacity:.75; }}
-  .controls {{ margin:16px 0; display:flex; gap:8px; flex-wrap:wrap; }}
-  button {{ padding:6px 12px; cursor:pointer; }}
-  .item {{ margin:28px 0; border-top:1px solid #8884; padding-top:16px; }}
-  .item h3 {{ margin:0 0 4px; }} .item h3 small {{ font-weight:400; opacity:.7; }}
-  .prompt {{ margin:.2em 0 .8em; }}
-  .channels, .stress {{ display:flex; gap:24px; flex-wrap:wrap; }}
-  figure.panel {{ margin:0; }} figure.panel svg {{ width:440px; height:auto; border:1px solid #8884; background:#fff; }}
-  figcaption {{ font:12px/1.5 ui-monospace,monospace; opacity:.8; margin-bottom:4px; }}
-  {mode_css}
+  .mode-block {{ margin:22px 0; }}
+  .mode-block[data-mode="premium-dark"] {{ background:#0b1220; color:#e5e7eb; padding:12px; border-radius:8px; }}
+  .grid, .pair {{ display:flex; gap:18px; flex-wrap:wrap; }}
+  .card {{ border:1px solid #8884; border-radius:6px; padding:8px; }}
+  .cap, figcaption {{ font:12px/1.4 ui-monospace,monospace; opacity:.8; }}
+  figure {{ margin:0; }}
+  svg.tx-figure {{ width:300px; height:auto; }}
+  /* The ONE document-level common ruleset; each figure root carries its mode's --tx-* vars. */
+  {common_css}
 </style>
 </head>
-<body class="mode-premium-light">
+<body>
 <header>
-  <h1>gen.geometry.transformations — visual audit</h1>
-  <span class="meta">v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · PENDING-REVIEW</span>
+  <h1>{T.GENERATOR_ID} v{GEN_VER} — visual audit</h1>
+  <div class="meta">validator v{VAL_VER} · commit {html.escape(commit[:12])} · PENDING-REVIEW · source = filled circle + solid edge; image = open square + dashed edge (distinct without colour)</div>
 </header>
-<div class="controls"><strong>Mode:</strong> {mode_buttons}</div>
-<p>Source = filled circle + solid edge; image = open square + dashed edge — distinct without colour.
-Perform items hide the image in the student channel; describe items show both figures. The answer-key
-channel shares byte-identical base geometry and adds only the solution overlay.</p>
-{''.join(blocks)}
-<section class="item"><h3>Label-collision stress</h3>
-<div class="stress">{''.join(stress)}</div></section>
-<footer class="meta">gen.geometry.transformations v{GEN_VER} · validator v{VAL_VER} · generated for curriculum review (pending-review).</footer>
+<p>Each figure stamps its mode's CSS custom properties on its own <code>class="tx-figure"</code> root; one
+shared <code>var()</code> ruleset reads them, so modes are isolated per root and reordering cards cannot
+change any card's computed styles. Perform items hide the image in the student channel; describe items
+show both figures. The answer-key channel shares byte-identical base geometry and adds only the overlay.</p>
+{''.join(gallery)}
+<section class="mode-block" data-mode="premium-dark"><h2>Label-collision stress (premium dark)</h2>
+<div class="pair">{''.join(stress)}</div></section>
+<footer class="meta">gen.geometry.transformations v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · generated for curriculum review (pending-review).</footer>
 <script>
-  window.__trans = {{ generatorId: "{T.GENERATOR_ID}", version: "{GEN_VER}", validatorVersion: "{VAL_VER}", commit: "{html.escape(commit)}" }};
-  function setMode(m) {{ document.body.className = "mode-" + m; }}
+  window.__trans = {{
+    generatorId: "{T.GENERATOR_ID}", version: "{GEN_VER}", validatorVersion: "{VAL_VER}", commit: "{html.escape(commit)}",
+    modes: {mode_meta},
+    // Real-browser computed styles of actual SVG elements, grouped by where (student/key) x mode (owner #5).
+    computed: function () {{
+      var sel = {{ axis: ".tx-axis", grid: ".tx-grid", srcEdge: ".tx-src-edge", srcCore: ".tx-src-core",
+        imgEdge: ".tx-img-edge", imgOpen: ".tx-img-open", mirror: ".tx-mirror", vec: ".tx-vec",
+        centre: ".tx-centre", label: ".tx-lbl", ticklbl: ".tx-ticklbl" }};
+      var out = {{}};
+      document.querySelectorAll('.card').forEach(function (card) {{
+        var mode = card.dataset.mode, task = card.dataset.task;
+        card.querySelectorAll('figure').forEach(function (fig) {{
+          var where = fig.querySelector('figcaption').textContent;  // student / answer key
+          var svg = fig.querySelector('svg'); if (!svg) return;
+          var row = {{ bg: getComputedStyle(svg).getPropertyValue('--tx-bg').trim() }};
+          for (var k in sel) {{ var e = svg.querySelector(sel[k]); if (e) {{
+            var cs = getComputedStyle(e);
+            row[k] = (sel[k] === '.tx-src-core' || sel[k] === '.tx-img-open' || k === 'label' || k === 'ticklbl') ? cs.fill : cs.stroke;
+            if (sel[k] === '.tx-img-edge' || sel[k] === '.tx-mirror') row[k + 'Dash'] = cs.strokeDasharray;
+          }} }}
+          (out[mode] = out[mode] || {{}})[task + ':' + where] = row;
+        }});
+      }});
+      return out;
+    }}
+  }};
+  document.title = "{T.GENERATOR_ID} v{GEN_VER} — visual audit";
 </script>
 </body>
 </html>
@@ -124,8 +168,11 @@ channel shares byte-identical base geometry and adds only the solution overlay.<
     out = os.path.join(REVIEW_DIR, "transformations_visual_audit.html")
     with open(out, "w", encoding="utf-8") as fh:
         fh.write(doc)
-    print(f"Visual audit written: {out} (v{GEN_VER}, commit {commit[:12]}).")
-    return 0
+    # duplicate-id self-check across the whole audit DOM (owner #4).
+    ids = re.findall(r'id="([^"]+)"', doc)
+    dup = len(ids) != len(set(ids))
+    print(f"Visual audit written: {out} (v{GEN_VER}, commit {commit[:12]}). duplicate ids in audit: {dup}.")
+    return 1 if dup else 0
 
 
 if __name__ == "__main__":

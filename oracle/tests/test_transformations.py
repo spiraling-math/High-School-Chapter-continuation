@@ -270,6 +270,131 @@ class TestDiagnostics(unittest.TestCase):
                         self.assertEqual(check_description(p["descriptor"], d["studentResponseText"]), d["expectedResultCode"])
 
 
+_REVIEW = os.path.join(ROOT, "docs", "review")
+
+
+def _read(name):
+    p = os.path.join(_REVIEW, name)
+    return open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+
+
+class TestArtifactIdentity(unittest.TestCase):
+    """Owner REVISE #1: every approval artifact must identify the SAME generator/validator version and
+    the SAME build commit; nothing stale; manifest hashes match the files on disk."""
+
+    @classmethod
+    def setUpClass(cls):
+        import re
+        cls.re = re
+        cls.audit = _read("transformations_visual_audit.html")
+        cls.manifest = json.loads(_read("transformations_manifest.json") or "{}")
+        cls.browser = json.loads(_read("transformations_browser_verification.json") or "{}")
+        cls.pack = json.loads(_read("transformations_review_pack.json") or "{}")
+
+    def _attr(self, name):
+        m = self.re.search(rf'{name}="([^"]*)"', self.audit)
+        return m.group(1) if m else None
+
+    def _present(self):
+        if not (self.audit and self.manifest and self.browser and self.pack):
+            self.skipTest("review artifacts not generated yet (run the make_* scripts)")
+
+    def test_audit_version_matches_generator(self):
+        self._present()
+        self.assertEqual(self._attr("data-generator-version"), T.GENERATOR_VERSION)
+        self.assertEqual(self._attr("data-generator-id"), T.GENERATOR_ID)
+        title = self.re.search(r"<title>([^<]+)</title>", self.audit).group(1)
+        h1 = self.re.search(r"<h1>([^<]+)</h1>", self.audit).group(1)
+        self.assertIn(f"v{T.GENERATOR_VERSION}", title)
+        self.assertIn(f"v{T.GENERATOR_VERSION}", h1)
+
+    def test_audit_validator_version_matches(self):
+        self._present()
+        self.assertEqual(self._attr("data-validator-version"), T.VALIDATOR_VERSION)
+
+    def test_audit_commit_matches_manifest(self):
+        self._present()
+        self.assertEqual(self._attr("data-git-commit"), self.manifest["gitCommit"])
+        self.assertEqual(self._attr("data-git-commit"), self.browser["gitCommit"])
+
+    def test_no_stale_commit_or_version_text(self):
+        self._present()
+        self.assertNotIn("1.0.0", self.audit, "stale v1.0.0 text in the visual audit")
+        self.assertIn(f"v{T.GENERATOR_VERSION}", self.audit)
+
+    def test_browser_report_version_matches_audit(self):
+        self._present()
+        self.assertEqual(self.browser["generatorVersion"], self._attr("data-generator-version"))
+        self.assertEqual(self.browser["generatorVersion"], T.GENERATOR_VERSION)
+
+    def test_review_pack_version_matches_generator(self):
+        self._present()
+        self.assertEqual(self.pack["generatorVersion"], T.GENERATOR_VERSION)
+        self.assertEqual(self.pack["validatorVersion"], T.VALIDATOR_VERSION)
+
+    def test_manifest_version_matches_audit(self):
+        self._present()
+        self.assertEqual(self.manifest["generatorVersion"], self._attr("data-generator-version"))
+        self.assertEqual(self.manifest["validatorVersion"], self._attr("data-validator-version"))
+
+    def test_manifest_tag_terminology(self):
+        self._present()
+        vt = self.manifest["versionTags"]
+        self.assertEqual(vt["previousVersionTag"], "transformations-v1.0.0")
+        self.assertEqual(vt["currentImplementationTag"], "transformations-v1.0.1")
+        self.assertIsNone(vt["approvedTag"])  # created only on owner APPROVE
+
+    def test_manifest_hashes_match_files(self):
+        self._present()
+        import hashlib
+        for name, a in self.manifest["artifacts"].items():
+            if not a["present"]:
+                continue
+            h = hashlib.sha256()
+            with open(os.path.join(ROOT, a["path"]), "rb") as fh:
+                for chunk in iter(lambda: fh.read(65536), b""):
+                    h.update(chunk)
+            self.assertEqual(a["sha256"], h.hexdigest(), f"{name} drift: {a['path']}")
+
+    def test_no_duplicate_svg_ids_in_audit(self):
+        self._present()
+        ids = self.re.findall(r'id="([^"]+)"', self.audit)
+        self.assertEqual(len(ids), len(set(ids)), "duplicate inline SVG ids in the audit DOM")
+
+
+class TestVisualModes(unittest.TestCase):
+    """Owner REVISE #5: real, readable, isolated presentation modes; computed styles verified."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.browser = json.loads(_read("transformations_browser_verification.json") or "{}")
+
+    def _present(self):
+        if not self.browser:
+            self.skipTest("browser verification not generated yet")
+
+    def test_all_visual_mode_checks_pass(self):
+        self._present()
+        bad = [c["name"] for c in self.browser["checks"] if not c["ok"]]
+        self.assertEqual(bad, [], f"failing visual-mode checks: {bad}")
+
+    def test_real_browser_computed_styles_match_baked(self):
+        self._present()
+        real = self.browser.get("realBrowserComputedStyles")
+        self.assertIsNotNone(real, "real-browser getComputedStyle capture missing")
+        self.assertEqual(real["mismatchesVsBakedTheme"], 0)
+        self.assertGreaterEqual(real["figuresCaptured"], 8)
+
+    def test_required_mode_invariants_present(self):
+        self._present()
+        names = {c["name"] for c in self.browser["checks"]}
+        for required in ("four-modes-genuinely-different", "source-image-distinction-not-colour-only",
+                         "dark-mode-grid-and-labels-readable", "print-mode-authoritative",
+                         "mode-order-does-not-change-styles", "mixed-mode-multi-svg-isolation",
+                         "no-duplicate-svg-ids-in-audit", "self-contained-6000x4200-export"):
+            self.assertIn(required, names, f"missing visual-mode check {required}")
+
+
 class TestParityFixture(unittest.TestCase):
     def test_parity_fixture_reproducible(self):
         path = os.path.join(ROOT, "oracle", "golden", "transformations.parity.json")
