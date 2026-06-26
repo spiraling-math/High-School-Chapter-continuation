@@ -89,6 +89,21 @@ test("parseRatio rejects with the exact result-code vocabulary", () => {
   assert.deepEqual(RC.parseRatio("2∶ 3"), [null, "unsupported-term"]); // U+2236
 });
 
+test("ASCII-anchored parser: unicode digits + oversized terms -> unsupported-term (Py<->TS parity corpus)", () => {
+  // Regression for the adversarial-review CRITICAL parity break. oracle/tests/test_ratio.py pins the SAME
+  // corpus + expected codes; pinning both engines asserts byte-for-byte agreement on the GRADING path,
+  // which the serialize-only golden/parity fixtures cannot exercise (generated items never carry unicode
+  // digits — only learner free-text does).
+  const unsupported = ["٢:٣", "３:４", "२:३", "𝟚:𝟛", "۲:۳", "๒:๓", "5:３", "２:40", "١٢:٣",
+    "1000000000000000000000:3", "9007199254740993:9007199254740993",
+    "2:33333333333333333333333333", "2∶3", "2 to 3", "2,3", "2.5:3"];
+  for (const s of unsupported) {
+    assert.equal(RC.checkRatio([2, 3], s).code, "unsupported-term", JSON.stringify(s));
+  }
+  assert.equal(RC.checkRatio([2, 3], "2:3").code, "correct");
+  assert.equal(RC.checkRatio([2, 3], "4:6").code, "equivalent-not-simplified");
+});
+
 // --------------------------------------------------------------------------- //
 // Checkers — both vocabularies (owner F)
 // --------------------------------------------------------------------------- //

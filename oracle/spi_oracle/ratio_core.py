@@ -139,8 +139,15 @@ def parse_ratio(text: str) -> Tuple[Optional[List[int]], Optional[str]]:
     if text is None or not str(text).strip():
         return None, "malformed-response"
     s = str(text).strip()
-    # unsupported unicode ratio colon (U+2236) or word form -> unsupported-term (named, not silently parsed)
-    if "∶" in s or re.search(r"\bto\b", s, re.IGNORECASE):
+    # ASCII-anchored parser (owner G): ANY non-ASCII character -> unsupported-term. This rejects the
+    # unicode ratio colon U+2236 AND every non-ASCII DIGIT (Arabic-Indic ٢, Persian ۲, Devanagari २,
+    # Thai ๒, fullwidth ３, mathematical-bold 𝟚, ...). Python's re \d and int() are Unicode-aware, so
+    # without this guard '٢:٣' would silently parse to [2,3] while the ASCII-only TS mirror rejects it —
+    # a grading-path parity break. The guard makes BOTH engines return the identical code.
+    if not s.isascii():
+        return None, "unsupported-term"
+    # unsupported word form -> unsupported-term (named, not silently parsed)
+    if re.search(r"\bto\b", s, re.IGNORECASE):
         return None, "unsupported-term"
     if "," in s:
         return None, "unsupported-term"  # comma-separated not supported in v1.0.0
@@ -164,6 +171,11 @@ def parse_ratio(text: str) -> Tuple[Optional[List[int]], Optional[str]]:
             if re.match(r"-?\d+\S", t) or re.match(r"-?\d+\s+\S", t):
                 return None, "unparsed-trailing-text"
             return None, "malformed-response"
+        # Exactness/parity cap (owner exactness): bound a term to <= 12 digits so every parsed value
+        # is < 10^12 < 2^53. The TS mirror parses with parseInt (a JS double); without this cap a huge
+        # term would round in TS but stay exact in Python, diverging the parsed value and the verdict.
+        if len(m.group(1).lstrip("-")) > 12:
+            return None, "unsupported-term"
         v = int(m.group(1))
         if v <= 0:
             return None, "zero-or-negative-part"

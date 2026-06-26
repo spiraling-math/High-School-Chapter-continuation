@@ -89,6 +89,22 @@ class TestCheckers(unittest.TestCase):
             self.assertIsNotNone(parts, f"{good} should parse")
             self.assertIsNone(code)
 
+    def test_ascii_anchored_no_unicode_or_oversized(self):
+        # Regression for the adversarial-review CRITICAL parity break: the ASCII-anchored parser must
+        # reject EVERY non-ASCII digit (Arabic-Indic/Persian/Devanagari/Thai/fullwidth/math-bold), any
+        # mixed-script term, and any oversized (>12-digit) term as unsupported-term — identically to the
+        # TS mirror (domains/proportion/ratio.test.ts pins the SAME corpus + expected codes). Pinning the
+        # exact codes here + there asserts Py<->TS agreement on the learner-input GRADING path, which the
+        # serialize-only golden/parity fixtures structurally cannot exercise.
+        UNSUPPORTED = ["٢:٣", "３:４", "२:३", "𝟚:𝟛", "۲:۳", "๒:๓", "5:３", "２:40", "١٢:٣",
+                       "1000000000000000000000:3", "9007199254740993:9007199254740993",
+                       "2:33333333333333333333333333", "2∶3", "2 to 3", "2,3", "2.5:3"]
+        for s in UNSUPPORTED:
+            self.assertEqual(RC.check_ratio([2, 3], s)["code"], "unsupported-term", f"{s!r}")
+        # ASCII still grades exactly as before
+        self.assertEqual(RC.check_ratio([2, 3], "2:3")["code"], "correct")
+        self.assertEqual(RC.check_ratio([2, 3], "4:6")["code"], "equivalent-not-simplified")
+
 
 class TestGeneratorContract(unittest.TestCase):
     def test_all_tasks_conform_and_validate(self):

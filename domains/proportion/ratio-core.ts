@@ -140,8 +140,15 @@ export function parseRatio(text: string | null | undefined): [number[] | null, s
     return [null, "malformed-response"];
   }
   const s = String(text).trim();
-  // unsupported unicode ratio colon (U+2236) or word form -> unsupported-term
-  if (s.indexOf("∶") !== -1 || /\bto\b/i.test(s)) {
+  // ASCII-anchored parser (owner G): ANY non-ASCII char -> unsupported-term. Mirrors ratio_core.py's
+  // `not s.isascii()` guard; rejects the unicode ratio colon U+2236 AND every non-ASCII digit so this
+  // engine agrees byte-for-byte with the Python checker on the learner-input grading path.
+  // eslint-disable-next-line no-control-regex
+  if (!/^[\x00-\x7F]*$/.test(s)) {
+    return [null, "unsupported-term"];
+  }
+  // unsupported word form -> unsupported-term
+  if (/\bto\b/i.test(s)) {
     return [null, "unsupported-term"];
   }
   if (s.indexOf(",") !== -1) {
@@ -173,6 +180,11 @@ export function parseRatio(text: string | null | undefined): [number[] | null, s
         return [null, "unparsed-trailing-text"];
       }
       return [null, "malformed-response"];
+    }
+    // Exactness/parity cap (mirror ratio_core.py): bound a term to <= 12 digits so parseInt stays
+    // exact (< 10^12 < 2^53) and never diverges from Python's arbitrary-precision int().
+    if ((m[1] as string).replace("-", "").length > 12) {
+      return [null, "unsupported-term"];
     }
     const v = parseInt(m[1] as string, 10);
     if (v <= 0) {
