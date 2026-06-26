@@ -763,7 +763,10 @@ def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     nc = 0.3 + (0.25 if frac else 0.0) + (0.1 if high else 0.0)
     axes = {
         "numericalComplexity": round3(clamp01(nc)),
-        "exactVsApproximate": 0.0,
+        # ratio is ALWAYS exact (no approximation), so this axis is always 0; route it through
+        # round3 like every other axis so json.dumps emits int 0 (not 0.0) and the TS mirror's
+        # canonical serializer reproduces it byte-for-byte with no special-casing.
+        "exactVsApproximate": round3(clamp01(0.0)),
         "reasoningSteps": round3(clamp01(rs)),
         "abstraction": round3(clamp01(ab)),
     }
