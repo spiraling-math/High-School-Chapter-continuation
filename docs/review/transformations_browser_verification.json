@@ -1,9 +1,9 @@
 {
   "generatorId": "gen.geometry.transformations",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
-  "gitCommit": "818617e74e1531eeebdc3af5e17aed71a6b25f54",
+  "gitCommit": "6af70ce06e21117260998f62747ee2682b63cbe7",
   "viewBox": "0 0 1000 700",
   "exportPx": [
     6000,
@@ -92,7 +92,7 @@
     "capturedVia": "Claude Code preview tool (review-static :8772) -> window.__trans.computed() in real Chromium",
     "figuresCaptured": 72,
     "mismatchesVsBakedTheme": 0,
-    "note": "theme colours are commit-independent; the same capture applies to the pinned audit (identical SVG figures).",
+    "note": "theme colours are commit-independent and unchanged in v1.0.2 (only answer-key label positions changed); the capture applies to the pinned audit.",
     "representative": {
       "premium": {
         "axis": "#1e293b",
@@ -227,7 +227,7 @@
     {
       "name": "real-browser-computed-styles-match-baked",
       "ok": true,
-      "detail": "window.__trans.computed() in real Chromium across 72 figures (4 modes x 9 tasks x 2 channels) == the baked theme; 0 mismatches; image-edge dash 8,5 + mirror dash 2,6 in every mode"
+      "detail": "window.__trans.computed() in real Chromium across 72 figures == baked theme; 0 mismatches; dash 8,5 + 2,6 in every mode"
     }
   ],
   "allPassed": true

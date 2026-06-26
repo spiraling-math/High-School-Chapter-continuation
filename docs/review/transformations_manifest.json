@@ -1,10 +1,10 @@
 {
   "generatorId": "gen.geometry.transformations",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "818617e74e1531eeebdc3af5e17aed71a6b25f54",
+  "gitCommit": "6af70ce06e21117260998f62747ee2682b63cbe7",
   "versionTags": {
     "previousVersionTag": "transformations-v1.0.0",
     "currentImplementationTag": "transformations-v1.0.1",
@@ -60,7 +60,7 @@
     },
     "oracleGenerator": {
       "path": "oracle/spi_oracle/transformations.py",
-      "sha256": "f058c86ae0cdfd2c3a73483659538cf4511b82bb3d47c599505ac33dd7915aa5",
+      "sha256": "1734cb0d6f93cdd7d69f29e84659c53e2d684c3f18b3326f7e6fcb0c4f6fb275",
       "present": true
     },
     "oracleMisconceptions": {
@@ -85,7 +85,7 @@
     },
     "tsGenerator": {
       "path": "domains/geometry/transformations.ts",
-      "sha256": "d5742525a3c291d9673fcdbc77b8c1dcd579067ac32818031ccc671a8f05a0d0",
+      "sha256": "ec625fa6b0a3c40d26b63bf05257c953af674b61ac12805dd9d3b6030d13bd59",
       "present": true
     },
     "tsMisconceptions": {
@@ -100,12 +100,12 @@
     },
     "golden": {
       "path": "oracle/golden/transformations.golden.json",
-      "sha256": "28f36b5b85dc093bf9b82031a29c1488e52e7ba48b8ec2b50eaa2982f7dd775f",
+      "sha256": "008ef175443d7aae5b9a82091e83ac61764ece773d2fe53a4205a2dabb015871",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/transformations.parity.json",
-      "sha256": "3ffc0a218f95504e4ac4f50c2cac0bcfe40a47500083722079e92e16d58f5805",
+      "sha256": "19580a2400bfaa356f03b1d67c108d8c7d33979014e1cf5fb40b04d59f470f92",
       "present": true
     },
     "objectives": {
@@ -140,27 +140,27 @@
     },
     "distribution": {
       "path": "docs/review/transformations_distribution.json",
-      "sha256": "ec39effcdfa534987c0f11803f7d3c28ab5e2c45d1932d5956bc6bb708b4d865",
+      "sha256": "e71f1ec3d3d9247a515858975573010de33f25751e227f370bf84c76dfbd865e",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/transformations_review_pack.json",
-      "sha256": "943b58d8896e856666bc7cc2ebf1b792b2ec54091805c61fe7b8d978444b0355",
+      "sha256": "8ad11ac9aa393e5dc64f6fede8def1958a2910cf1cd4e9259ddfbf54d284408e",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/transformations_review_pack.md",
-      "sha256": "37765fbe740a044811727feea95ba39b9444170d42abcb7058a0e3d77bafca6b",
+      "sha256": "3caa8d1062ffe54fc83503369d860c70322cdbde01584e8fffd3ec6169e4a4fc",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/transformations_visual_audit.html",
-      "sha256": "e5a86e52cb4aa77d8bbff154431e243d66399a16f273486d273aa1570b8eaa4c",
+      "sha256": "8bcafddc36a622d786499a5a742d5c86e406404a1d47ff9ee2e96fce9918cfa7",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/transformations_browser_verification.json",
-      "sha256": "3d68705e917fef57c8b7a60368d4274a7ff05548b37fb778ef3a77a3fe4ab32c",
+      "sha256": "c19d95edc05ebb10955f0ac3f48e25c3293c66eb75f8d726f5d22f00c0971df5",
       "present": true
     }
   }
