@@ -1,0 +1,165 @@
+{
+  "generatorId": "gen.proportion.ratio",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "gitCommit": "11ffb9d00a7392f287e71607ae5d152b9f363091",
+  "exportPx": [
+    6000,
+    4200
+  ],
+  "exportStageViewBox": "0 0 1000 700",
+  "canonicalViewBoxes": {
+    "bar": "0 0 1000 300",
+    "numberline": "0 0 1000 260",
+    "table": "0 0 1000 300"
+  },
+  "modes": [
+    "premium",
+    "premium-dark",
+    "accessible",
+    "print"
+  ],
+  "themeId": "spi-math-ratio-theme/1",
+  "auditElements": [
+    "barGivenFill",
+    "barUnknownFill",
+    "barStroke",
+    "axis",
+    "givenPoint",
+    "unknownPointFill",
+    "unknownPointStroke",
+    "labels",
+    "tickLabels",
+    "background"
+  ],
+  "bakedComputedStyles": {
+    "premium": {
+      "barGivenFill": "#dbeafe",
+      "barUnknownFill": "#ffffff",
+      "barStroke": "#1e293b",
+      "axis": "#1e293b",
+      "givenPoint": "#2563eb",
+      "unknownPointFill": "#ffffff",
+      "unknownPointStroke": "#7c3aed",
+      "labels": "#111827",
+      "tickLabels": "#475569",
+      "background": "#ffffff"
+    },
+    "premium-dark": {
+      "barGivenFill": "#1e3a5f",
+      "barUnknownFill": "#0b1220",
+      "barStroke": "#e5e7eb",
+      "axis": "#e5e7eb",
+      "givenPoint": "#60a5fa",
+      "unknownPointFill": "#0b1220",
+      "unknownPointStroke": "#c4b5fd",
+      "labels": "#e5e7eb",
+      "tickLabels": "#cbd5e1",
+      "background": "#0b1220"
+    },
+    "accessible": {
+      "barGivenFill": "#cfe8ff",
+      "barUnknownFill": "#ffffff",
+      "barStroke": "#000000",
+      "axis": "#000000",
+      "givenPoint": "#0072b2",
+      "unknownPointFill": "#ffffff",
+      "unknownPointStroke": "#d55e00",
+      "labels": "#000000",
+      "tickLabels": "#333333",
+      "background": "#ffffff"
+    },
+    "print": {
+      "barGivenFill": "#dddddd",
+      "barUnknownFill": "#ffffff",
+      "barStroke": "#111111",
+      "axis": "#111111",
+      "givenPoint": "#111111",
+      "unknownPointFill": "#ffffff",
+      "unknownPointStroke": "#111111",
+      "labels": "#111111",
+      "tickLabels": "#333333",
+      "background": "#ffffff"
+    }
+  },
+  "realBrowserComputedStyles": null,
+  "checks": [
+    {
+      "name": "every-element-resolves-each-mode",
+      "ok": true,
+      "detail": "all rt-* element classes resolve to a concrete colour under all four modes"
+    },
+    {
+      "name": "four-modes-genuinely-different",
+      "ok": true,
+      "detail": "axis/bar/given-point/background colours differ across modes"
+    },
+    {
+      "name": "premium-computed-styles-match",
+      "ok": true,
+      "detail": "baked COMMON_CSS carries the mode's rt-* element colours"
+    },
+    {
+      "name": "premium-dark-computed-styles-match",
+      "ok": true,
+      "detail": "baked COMMON_CSS carries the mode's rt-* element colours"
+    },
+    {
+      "name": "accessible-computed-styles-match",
+      "ok": true,
+      "detail": "baked COMMON_CSS carries the mode's rt-* element colours"
+    },
+    {
+      "name": "print-computed-styles-match",
+      "ok": true,
+      "detail": "baked COMMON_CSS carries the mode's rt-* element colours"
+    },
+    {
+      "name": "given-unknown-distinction-not-colour-only",
+      "ok": true,
+      "detail": "given = solid-fill + solid edge / filled point; unknown = dashed edge + open/hatched fill + '?' in every mode"
+    },
+    {
+      "name": "unknown-question-mark-marker-present",
+      "ok": true,
+      "detail": "the student figure marks the unknown with a '?' text marker (a non-colour cue)"
+    },
+    {
+      "name": "dark-mode-grid-and-labels-readable",
+      "ok": true,
+      "detail": "premium-dark text/bg contrast 15.1:1"
+    },
+    {
+      "name": "print-mode-authoritative",
+      "ok": true,
+      "detail": "print colours equal the canonical monochrome STYLE palette"
+    },
+    {
+      "name": "mode-order-does-not-change-styles",
+      "ok": true,
+      "detail": "resolved CSS is a pure deterministic function of mode"
+    },
+    {
+      "name": "mixed-mode-multi-svg-isolation",
+      "ok": true,
+      "detail": "every rule is scoped under .rt-figure; custom properties cascade only into their own root"
+    },
+    {
+      "name": "self-contained-6000x4200-export",
+      "ok": true,
+      "detail": "export stage scales integer-6x to 6000x4200; no external resource references in the canonical SVG"
+    },
+    {
+      "name": "no-duplicate-svg-ids-in-audit",
+      "ok": true,
+      "detail": "every inline SVG id in the audit DOM is unique (0 ids)"
+    },
+    {
+      "name": "no-duplicate-svg-ids-in-worksheet",
+      "ok": true,
+      "detail": "presentation/export ids are namespaced per card (cardSuffix); structurally collision-free"
+    }
+  ],
+  "allPassed": true
+}

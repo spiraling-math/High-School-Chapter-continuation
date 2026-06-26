@@ -1,0 +1,173 @@
+{
+  "generatorId": "gen.proportion.ratio",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "objectiveReviewStatus": "approved-for-implementation",
+  "gitCommit": "11ffb9d00a7392f287e71607ae5d152b9f363091",
+  "hiddenFromNormalStudioAndProduction": true,
+  "versionTags": {
+    "previousVersionTag": null,
+    "currentImplementationTag": "ratio-v1.0.0",
+    "approvedTag": null
+  },
+  "schemaExtension": {
+    "note": "answer.type 'ratio' (canonical-first) \u2014 APPROVED",
+    "detail": "The simplest-form ordered integer tuple {parts} IS answer.canonical; answer.display ('2:3') is derived. The tuple is never stored twice and a formatted string is never the canonical value."
+  },
+  "objectiveIds": [
+    "SPI.MIDDLE.RATIO.SIMPLIFY.01",
+    "SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01",
+    "SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01",
+    "SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01",
+    "SPI.MIDDLE.RATIO.SHARE_TWO_PART.01",
+    "SPI.MIDDLE.RATIO.SHARE_THREE_PART.01",
+    "SPI.MIDDLE.RATIO.MISSING_PART.01",
+    "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
+    "SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01",
+    "SPI.MIDDLE.RATIO.UNIT_RATE.01",
+    "SPI.MIDDLE.RATIO.BEST_BUY.01",
+    "SPI.MIDDLE.RATIO.SIMPLE_SCALE.01"
+  ],
+  "tasks": [
+    "simplify",
+    "write_from_quantities",
+    "ratio_to_fraction",
+    "fraction_to_ratio",
+    "share_two_part",
+    "share_three_part",
+    "missing_part",
+    "direct_proportion",
+    "inverse_proportion",
+    "unit_rate",
+    "best_buy",
+    "simple_scale"
+  ],
+  "interactionTypes": [
+    "free-response",
+    "multiple-choice"
+  ],
+  "answerTypes": [
+    "ratio",
+    "exact-rational",
+    "integer",
+    "table-completion",
+    "multiple-choice"
+  ],
+  "mcPolicy": {
+    "mcOnlyTasks": [
+      "best_buy"
+    ],
+    "mcEligibleTasks": [
+      "simplify",
+      "ratio_to_fraction",
+      "fraction_to_ratio",
+      "direct_proportion",
+      "inverse_proportion",
+      "best_buy"
+    ],
+    "note": "best_buy is multiple-choice only; the other MC-eligible tasks add MC to free-response; every other task is free-response only and an explicit MC request raises."
+  },
+  "artifacts": {
+    "oracleCore": {
+      "path": "oracle/spi_oracle/ratio_core.py",
+      "sha256": "b1292da60851a6f087cab755be1281d3dba2588a298b0faad402b8c0ad3a0bcf",
+      "present": true
+    },
+    "oracleMisconceptions": {
+      "path": "oracle/spi_oracle/ratio_misconceptions.py",
+      "sha256": "c221a287bb420499488aabcb99009ca4f594db0459dedc97301819771f1fa303",
+      "present": true
+    },
+    "oracleGenerator": {
+      "path": "oracle/spi_oracle/ratio.py",
+      "sha256": "ede1092b1bb7a21601716bc46d93cc7c30dcdec4ba3a1c86b03a30f0c88da47e",
+      "present": true
+    },
+    "golden": {
+      "path": "oracle/golden/ratio.golden.json",
+      "sha256": "fed80d71609c0ea824ba9886a5e6ab4052701c073cd59d09d527954d242919f3",
+      "present": true
+    },
+    "parity": {
+      "path": "oracle/golden/ratio.parity.json",
+      "sha256": "a0305e72f4d22d2a1c1b18207607022630f55c9c23a0ff8ce605c9129e9b4d23",
+      "present": true
+    },
+    "tsCore": {
+      "path": "domains/proportion/ratio-core.ts",
+      "sha256": "7caaf503cf503f4db7e970ca1e29c923bb3553807df140ff72256694da5d068e",
+      "present": true
+    },
+    "tsMisconceptions": {
+      "path": "domains/proportion/ratio-misconceptions.ts",
+      "sha256": "5e65c4f321e6fefa403feafb8293a74b6f389243e55d8ad62a10b92a042371e1",
+      "present": true
+    },
+    "tsGenerator": {
+      "path": "domains/proportion/ratio.ts",
+      "sha256": "b40f3dc979703893fffa451e6c373a30eadf940f1d6825a1c1aa3e8d322ba915",
+      "present": true
+    },
+    "tsParityTest": {
+      "path": "domains/proportion/ratio.parity.test.ts",
+      "sha256": "893f3df2a41a2df0f61688947816aaf2ab6aff58e4ce214ad9a3b6781606db60",
+      "present": true
+    },
+    "tsTheme": {
+      "path": "core/visual-style/ratio-theme.ts",
+      "sha256": "cbf1c5fc56d3876a2cf29202d4fe7ac8e1e6887d2e89a6f7947dee2051c44bad",
+      "present": true
+    },
+    "objectives": {
+      "path": "curriculum/objectives/SPI.MIDDLE.RATIO.json",
+      "sha256": "d91fd4aa4310945954eda4adfc4f39befb3977214fe8a415bd50c39f2cc49554",
+      "present": true
+    },
+    "objectiveIds": {
+      "path": "core/curriculum/ratio-objective-ids.ts",
+      "sha256": "aa16ef91085c6fb6b0ddb54b696ac33402f9c6227060079040d244998196062e",
+      "present": true
+    },
+    "schema": {
+      "path": "schemas/question-item.schema.json",
+      "sha256": "988ffca9f10ddb2417bb9960cc52c7c438a82dea7bf3d66f62173bdd64e02f34",
+      "present": true
+    },
+    "compiledValidator": {
+      "path": "core/schema/compiled/question-item.validator.mjs",
+      "sha256": "6eb43b7a3222ea5ad3fe3f3af395e0cd1055ba840c0eedc9b91b5cffee29cc8e",
+      "present": true
+    },
+    "themeJson": {
+      "path": "core/visual-style/ratio-theme.json",
+      "sha256": "697235b34689e579512cb7c85c493eb1ce23c2590df57bc1287a5e6f243bd362",
+      "present": true
+    },
+    "distribution": {
+      "path": "docs/review/ratio_distribution.json",
+      "sha256": "86e3fb570ae959e3015ba84bacbf11321d0968d65209446c5b9cdf74d9c5a6a5",
+      "present": true
+    },
+    "reviewPackJson": {
+      "path": "docs/review/proportion_ratio_review_pack.json",
+      "sha256": "f754a8232b1a4a5e1b919c6381893621704d2c79680d23f1fe0dbbb215b05177",
+      "present": true
+    },
+    "reviewPackMd": {
+      "path": "docs/review/proportion_ratio_review_pack.md",
+      "sha256": "7de61bdcd2c7f06ffb993731eb6c5e4e183327b5885cf4ce8fab6c25f8dff090",
+      "present": true
+    },
+    "visualAudit": {
+      "path": "docs/review/proportion_ratio_visual_audit.html",
+      "sha256": "c22179c75262e83d9bc02bc891ccf572d5de351367fc60b9105e1f4cbba0ee9d",
+      "present": true
+    },
+    "browserVerification": {
+      "path": "docs/review/proportion_ratio_browser_verification.json",
+      "sha256": "951ef89824d6751f4930ad7c14e3812caea7951860da9f2582f838739516a307",
+      "present": true
+    }
+  }
+}
