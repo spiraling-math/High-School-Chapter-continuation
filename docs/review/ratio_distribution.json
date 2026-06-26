@@ -22,12 +22,14 @@
         3
       ],
       "bandCounts": {
-        "1": 517,
-        "3": 292
+        "1": 37,
+        "2": 163,
+        "3": 609
       },
       "bandPct": {
-        "1": 63.9,
-        "3": 36.1
+        "1": 4.6,
+        "2": 20.1,
+        "3": 75.3
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
@@ -49,12 +51,14 @@
         3
       ],
       "bandCounts": {
-        "1": 513,
-        "3": 342
+        "1": 145,
+        "2": 194,
+        "3": 516
       },
       "bandPct": {
-        "1": 60.0,
-        "3": 40.0
+        "1": 17.0,
+        "2": 22.7,
+        "3": 60.4
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
@@ -211,12 +215,14 @@
         4
       ],
       "bandCounts": {
-        "2": 547,
-        "4": 273
+        "2": 83,
+        "3": 450,
+        "4": 287
       },
       "bandPct": {
-        "2": 66.7,
-        "4": 33.3
+        "2": 10.1,
+        "3": 54.9,
+        "4": 35.0
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
@@ -294,12 +300,12 @@
         4
       ],
       "bandCounts": {
-        "3": 427,
-        "4": 420
+        "3": 451,
+        "4": 396
       },
       "bandPct": {
-        "3": 50.4,
-        "4": 49.6
+        "3": 53.2,
+        "4": 46.8
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
@@ -308,8 +314,8 @@
       "interactions": {
         "multiple-choice": 847
       },
-      "highComplexity": 420,
-      "lowComplexity": 427,
+      "highComplexity": 396,
+      "lowComplexity": 451,
       "fractionResultItems": 0,
       "edgeItems": 0
     },
@@ -321,12 +327,14 @@
         4
       ],
       "bandCounts": {
-        "2": 323,
-        "4": 511
+        "2": 59,
+        "3": 199,
+        "4": 576
       },
       "bandPct": {
-        "2": 38.7,
-        "4": 61.3
+        "2": 7.1,
+        "3": 23.9,
+        "4": 69.1
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {

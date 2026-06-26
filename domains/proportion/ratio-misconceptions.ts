@@ -49,7 +49,7 @@ export const MISCONCEPTIONS: Json[] = [
     "Divides the parts by a common factor but not by the full greatest common divisor.",
     "Divide every part by their GREATEST common divisor so no common factor remains.",
     "Find the gcd of all parts before dividing.",
-    [..._SIMP, ..._WRITE],
+    [..._SIMP, ..._WRITE, ..._F2R],
   ),
   _m(
     "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED",
@@ -161,7 +161,7 @@ export const MISCONCEPTIONS: Json[] = [
     "Adds a constant difference instead of multiplying by the scale factor.",
     "Proportion is MULTIPLICATIVE: multiply by the scale factor, do not add a difference.",
     "Use multiplication by the scale factor, not addition.",
-    [..._DIR, ..._SCALE],
+    [..._DIR, ..._SCALE, ..._INV],
   ),
   _m(
     "MISC.RATIO.FRACTION_PART_OVER_PART",

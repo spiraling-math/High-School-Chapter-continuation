@@ -363,6 +363,20 @@ function _drawBestBuy(rng: Mulberry32): Json | null {
   }
   // require a UNIQUE strict-minimum exact unit rate (redraw on a tie)
   const rates = options.map((o) => new Rational(o.totalAmount as number, o.packSize as number));
+  // require ALL option unit rates PAIRWISE DISTINCT — two equal non-winning rates would render two
+  // byte-identical MC option displays. Redraw on any tie. (Mirror of Python `len(set(rates)) != len`.)
+  let anyTie = false;
+  for (let i = 0; i < rates.length && !anyTie; i++) {
+    for (let j = i + 1; j < rates.length; j++) {
+      if ((rates[i] as Rational).equals(rates[j] as Rational)) {
+        anyTie = true;
+        break;
+      }
+    }
+  }
+  if (anyTie) {
+    return null;
+  }
   const mn = _minRational(rates);
   const winners: number[] = [];
   rates.forEach((r, i) => {
@@ -947,10 +961,69 @@ function _isHighComplexity(task: string, params: Json): boolean {
   return false;
 }
 
+function _complexityTier(task: string, params: Json): number {
+  // Deterministic complexity classifier returning a tier in {0,1,2} from MEANINGFUL structural
+  // features. The four 3-span tasks accumulate up to three independent signals so the MIDDLE band
+  // (tier 1) genuinely occurs; the eight 2-span tasks keep the binary high/low lever. Mirror ratio.py.
+  if (task === "simplify" || task === "write_from_quantities") {
+    const parts = (params.parts as number[]) || (params.quantities as number[]);
+    let s = 0;
+    if (parts.length === 3) {
+      s += 1;
+    }
+    if (RC.gcdList(parts) >= 4) {
+      s += 1;
+    }
+    if (Math.max(...parts) >= 12) {
+      s += 1;
+    }
+    return Math.min(s, 2);
+  }
+  if (task === "direct_proportion") {
+    const sol = _solve(task, params) as Rational;
+    let s = 0;
+    if (sol.den > 1) {
+      s += 1;
+    }
+    if ((params.target as number) >= 7) {
+      s += 1;
+    }
+    if ((params.total as number) >= 12) {
+      s += 1;
+    }
+    return Math.min(s, 2);
+  }
+  if (task === "simple_scale") {
+    const sol = _solve(task, params) as Rational;
+    let s = 0;
+    if (sol.den > 1) {
+      s += 1;
+    }
+    if ((params.value as number) >= 11) {
+      s += 1;
+    }
+    if (Math.max(params.factorNum as number, params.factorDen as number) >= 6) {
+      s += 1;
+    }
+    return Math.min(s, 2);
+  }
+  // 2-value-band tasks: keep the binary high/low lever (tier 0 -> lo, tier 2 -> hi).
+  return _isHighComplexity(task, params) ? 2 : 0;
+}
+
 function _difficulty(task: string, params: Json): Json {
   const [lo, hi] = TASK_BANDS[task] as [number, number];
   const high = _isHighComplexity(task, params);
-  const band = high ? hi : lo;
+  // Map the structural complexity tier onto the full declared inclusive range [lo,hi] so every band
+  // (including a 3-span task's interior band) is reachable. A 2-span task's tier is 0 or 2.
+  const span = hi - lo + 1;
+  const tier = _complexityTier(task, params);
+  let band: number;
+  if (span <= 2) {
+    band = tier === 0 ? lo : hi;
+  } else {
+    band = Math.min(lo + tier, hi);
+  }
 
   const sol = _solve(task, params);
   const frac = sol instanceof Rational && sol.den > 1;
@@ -1390,8 +1463,19 @@ export function generate(seed: number, config?: Json): Json {
   const rng = new Mulberry32(seed);
   let task: string;
   if (explicit === undefined || explicit === null) {
+    // No task supplied: narrow the draw pool to tasks the requested interaction can serve, so a
+    // no-task request NEVER raises InteractionNotSupported. MC -> MC-eligible only; FR -> exclude
+    // MC-ONLY tasks (best_buy); default (none) -> the full RATIO_TASKS pool unchanged (byte-parity
+    // with the committed default-interaction golden vectors). Mirror of ratio.py.
     const requested = config.interactionType;
-    const pool = requested === "multiple-choice" ? [...MC_ELIGIBLE_TASKS] : [...RATIO_TASKS];
+    let pool: string[];
+    if (requested === "multiple-choice") {
+      pool = [...MC_ELIGIBLE_TASKS];
+    } else if (requested === "free-response") {
+      pool = RATIO_TASKS.filter((t) => !MC_ONLY_TASKS.includes(t));
+    } else {
+      pool = [...RATIO_TASKS];
+    }
     task = pool[_n(rng, pool.length)] as string;
   } else {
     task = explicit as string;
@@ -1704,6 +1788,9 @@ export function validate(item: Json): Json {
     const opts = (item.options || []) as Json[];
     const vals = opts.map((o) => canonicalStringify(o.value));
     add("mc-options-distinct", new Set(vals).size === vals.length);
+    // the learner reads the DISPLAY strings, so assert those are pairwise distinct too (owner C / D).
+    const disps = opts.map((o) => o.display);
+    add("mc-option-displays-distinct", new Set(disps).size === disps.length, `displays=${pyList(disps as string[])}`);
     add("mc-one-correct", opts.filter((o) => o.correct).length === 1);
     if (task === "best_buy") {
       add(

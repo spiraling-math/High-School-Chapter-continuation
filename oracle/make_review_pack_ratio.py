@@ -89,7 +89,10 @@ def _required_tokens(dist) -> set:
     req = set()
     for task, info in dist["tasks"].items():
         req.add(f"task:{task}")
-        for b in info["bandCounts"]:
+        # Required band cells are the DECLARED inclusive range [lo,hi], NOT the observed bandCounts —
+        # deriving from observed bands would mask an unreachable interior band (defect-6/7 guard).
+        lo, hi = info["declaredBand"]
+        for b in range(lo, hi + 1):
             req.add(f"band:{task}:{b}")
         for at in info["answerTypes"]:
             req.add(f"answerType:{at}")

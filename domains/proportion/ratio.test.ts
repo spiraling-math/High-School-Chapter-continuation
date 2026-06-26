@@ -339,6 +339,81 @@ test("every task surfaces at least one diagnostic for a representative item", ()
 });
 
 // --------------------------------------------------------------------------- //
+// Regression guards for the five confirmed v1.0.0 defects (mirror of oracle/tests/test_ratio.py)
+// --------------------------------------------------------------------------- //
+test("DEFECT 4: best_buy MC option displays are pairwise distinct across many seeds", () => {
+  for (let seed = 1; seed <= 3000; seed++) {
+    const item = generate(seed, { task: "best_buy" });
+    const disps = (item.options as { display: string }[]).map((o) => o.display);
+    assert.equal(new Set(disps).size, disps.length, `seed ${seed} duplicate displays ${JSON.stringify(disps)}`);
+    const names: Record<string, boolean> = {};
+    for (const c of validate(item).checks as { name: string; ok: boolean }[]) {
+      names[c.name] = c.ok;
+    }
+    assert.equal(names["mc-option-displays-distinct"], true, `seed ${seed} displays-distinct check`);
+  }
+  for (const seed of [95, 271, 314, 549, 748, 992]) {
+    const item = generate(seed, { task: "best_buy" });
+    const disps = (item.options as { display: string }[]).map((o) => o.display);
+    assert.equal(new Set(disps).size, disps.length, `formerly-dup seed ${seed}: ${JSON.stringify(disps)}`);
+  }
+});
+
+test("DEFECT 5: a no-task free-response request never raises and never picks an MC-only task", () => {
+  for (let seed = 1; seed <= 2500; seed++) {
+    const item = generate(seed, { interactionType: "free-response" });
+    assert.equal(item.interactionType, "free-response", `seed ${seed}`);
+    assert.ok(!MC_ONLY_TASKS.includes(item.params.task as string), `seed ${seed} picked MC-only task`);
+  }
+});
+
+test("DEFECT 6/7: every declared band in [lo,hi] is reachable for every task", () => {
+  const TASK_BANDS: Record<string, [number, number]> = {
+    simplify: [1, 3],
+    write_from_quantities: [1, 3],
+    ratio_to_fraction: [2, 3],
+    fraction_to_ratio: [2, 3],
+    share_two_part: [2, 3],
+    share_three_part: [3, 4],
+    missing_part: [2, 3],
+    direct_proportion: [2, 4],
+    inverse_proportion: [3, 4],
+    unit_rate: [2, 3],
+    best_buy: [3, 4],
+    simple_scale: [2, 4],
+  };
+  const per: Record<string, Record<number, number>> = {};
+  for (const t of RATIO_TASKS) per[t] = {};
+  for (let seed = 1; seed <= 6000; seed++) {
+    const item = generate(seed);
+    const t = item.params.task as string;
+    const b = item.difficulty.overallBand as number;
+    per[t]![b] = (per[t]![b] || 0) + 1;
+  }
+  for (const task of RATIO_TASKS) {
+    const [lo, hi] = TASK_BANDS[task] as [number, number];
+    for (let band = lo; band <= hi; band++) {
+      assert.ok((per[task]![band] || 0) > 0, `${task} band ${band} in [${lo},${hi}] is unreachable`);
+    }
+  }
+});
+
+test("DEFECT 8: the two omitted reverse objectiveRelationships are present", () => {
+  const byId: Record<string, { objectiveRelationships: string[] }> = {};
+  for (const m of RM.MISCONCEPTIONS) byId[m.misconceptionId as string] = m;
+  assert.ok(
+    byId["MISC.RATIO.NOT_SIMPLIFIED"]!.objectiveRelationships.includes(
+      "SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01",
+    ),
+  );
+  assert.ok(
+    byId["MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE"]!.objectiveRelationships.includes(
+      "SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01",
+    ),
+  );
+});
+
+// --------------------------------------------------------------------------- //
 // describe() + constants
 // --------------------------------------------------------------------------- //
 test("describe() reports the generator metadata", () => {

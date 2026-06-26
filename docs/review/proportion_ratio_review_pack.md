@@ -4,7 +4,7 @@
 
 ## Summary
 
-- Representative exemplars: **24** · full coverage: **True** · all machine-valid: **True** · all exemplars complete: **True**.
+- Representative exemplars: **28** · full coverage: **True** · all machine-valid: **True** · all exemplars complete: **True**.
 - Ratio-checker matrix: all-ok **True**; all 9 result codes reached **True**.
 - Diagnostics **16/16** exercised (inapplicable 0, recomputation mismatches 0).
 - MC policy ok **True** (best_buy MC-only; 6 FR-only tasks reject MC).
@@ -65,7 +65,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SHARE_THREE_PART.01 |
 | interaction / answer | free-response / table-completion |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.6, "abstraction": 0.5}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.6, "abstraction": 0.5}) |
 | prompt | Share 30 sweets between Dana, Eli, Faye in the ratio 3:2:1. Give each share. |
 | params | `{"task": "share_three_part", "title": "Sharing sweets", "labels": ["Dana", "Eli", "Faye"], "unit": "sweets", "parts": [3, 2, 1], "total": 30}` |
 | canonical answer | `{"cells": [{"location": "Dana", "value": 15}, {"location": "Eli", "value": 10}, {"location": "Faye", "value": 5}]}` |
@@ -139,7 +139,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01 |
 | interaction / answer | free-response / ratio |
-| difficulty band | 1 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.35, "abstraction": 0.3}) |
+| difficulty band | 1 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.35, "abstraction": 0.3}) |
 | prompt | In a paint mixture there are 6 red paint, 4 white paint. Write the ratio of red paint to white paint in its simplest form. |
 | params | `{"task": "write_from_quantities", "title": "Paint mixture", "labels": ["red paint", "white paint"], "unit": "litres", "quantities": [6, 4]}` |
 | canonical answer | `{"parts": [3, 2]}` |
@@ -160,7 +160,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01 |
 | interaction / answer | free-response / exact-rational |
-| difficulty band | 4 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0.0, "reasoningSteps": 0.65, "abstraction": 0.6}) |
+| difficulty band | 4 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0, "reasoningSteps": 0.65, "abstraction": 0.6}) |
 | prompt | 5 shelves hold 12 books. How many books are in 4 shelves? Give an exact value. |
 | params | `{"task": "direct_proportion", "givenLabel": "books", "perLabel": "shelves", "quantity": 5, "total": 12, "target": 4}` |
 | canonical answer | `{"num": 48, "den": 5}` |
@@ -242,7 +242,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.BEST_BUY.01 |
 | interaction / answer | multiple-choice / multiple-choice |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.7, "abstraction": 0.6}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.7, "abstraction": 0.6}) |
 | prompt | You can buy seeds: option A has 6 seeds in a packet of 3; option B has 55 seeds in a packet of 5. Which option is the best value (the lowest amount per item)? Choose the best option. |
 | params | `{"task": "best_buy", "product": "seeds", "unit": "seeds", "pack": "packet", "options": [{"label": "A", "packSize": 3, "totalAmount": 6, "unitRate": {"num": 6, "den": 3}}, {"label": "B", "packSize": 5, "totalAmount": 55, "unitRate": {"num": 55, "den": 5}}], "correctLabel": "A"}` |
 | canonical answer | `"A"` |
@@ -255,7 +255,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | answer-key data table | `{"columns": ["Option", "Total seeds", "Pack size", "Unit rate"], "rows": [["A", "6", "3", "2 (best)"], ["B", "55", "5", "11"]]}` |
 | MC options | A=6 seeds per packet of 3 ✓; B=55 seeds per packet of 5 |
 | diagnostics exercised | MISC.RATIO.NO_UNIT_RATE_COMPARE |
-| validation checks | 23/23 pass |
+| validation checks | 24/24 pass |
 | covers cells | 5 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(30, {'task': 'best_buy'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -339,7 +339,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01 |
 | interaction / answer | free-response / integer |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.7, "abstraction": 0.65}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.7, "abstraction": 0.65}) |
 | prompt | 3 taps take 7 hours to fill the tank. How many hours would 21 taps take to fill the tank? |
 | params | `{"task": "inverse_proportion", "agent": "taps", "unit": "hours", "tail": "to fill the tank", "q1": 3, "v1": 7, "q2": 21}` |
 | canonical answer | `{"num": 1, "den": 1}` |
@@ -360,7 +360,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SHARE_TWO_PART.01 |
 | interaction / answer | free-response / table-completion |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.5, "abstraction": 0.4}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.5, "abstraction": 0.4}) |
 | prompt | Share 36 marbles between Gus, Hana in the ratio 3:1. Give each share. |
 | params | `{"task": "share_two_part", "title": "Sharing marbles", "labels": ["Gus", "Hana"], "unit": "marbles", "parts": [3, 1], "total": 36}` |
 | canonical answer | `{"cells": [{"location": "Gus", "value": 27}, {"location": "Hana", "value": 9}]}` |
@@ -428,7 +428,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SIMPLE_SCALE.01 |
 | interaction / answer | free-response / integer |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.5, "abstraction": 0.5}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.5, "abstraction": 0.5}) |
 | prompt | On a map, 1 centimetres on the map represent 2 kilometres on the ground. What do 6 centimetres on the map represent? Give an exact value. |
 | params | `{"task": "simple_scale", "scaleKind": "map", "srcUnit": "centimetres on the map", "dstUnit": "kilometres on the ground", "value": 6, "factorNum": 2, "factorDen": 1, "direction": "multiply"}` |
 | canonical answer | `{"num": 12, "den": 1}` |
@@ -510,7 +510,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.MISSING_PART.01 |
 | interaction / answer | free-response / integer |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.5, "abstraction": 0.45}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.5, "abstraction": 0.45}) |
 | prompt | Jo and Kim share an amount in the ratio 3:1. Jo gets 18 stickers. How many stickers does Kim get? |
 | params | `{"task": "missing_part", "title": "Sharing stickers", "labels": ["Jo", "Kim"], "unit": "stickers", "parts": [3, 1], "knownIndex": 0, "missingIndex": 1, "knownValue": 18}` |
 | canonical answer | `{"num": 6, "den": 1}` |
@@ -576,7 +576,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SIMPLIFY.01 |
 | interaction / answer | free-response / ratio |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.4, "abstraction": 0.35}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.4, "abstraction": 0.35}) |
 | prompt | Write the ratio 40:32:24 in its simplest form. |
 | params | `{"task": "simplify", "parts": [40, 32, 24]}` |
 | canonical answer | `{"parts": [5, 4, 3]}` |
@@ -597,7 +597,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01 |
 | interaction / answer | free-response / exact-rational |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.55, "exactVsApproximate": 0.0, "reasoningSteps": 0.45, "abstraction": 0.5}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.55, "exactVsApproximate": 0, "reasoningSteps": 0.45, "abstraction": 0.5}) |
 | prompt | The garden mixes roses and tulips in the ratio 1:6. What fraction of the whole is tulips? Give your answer as a fraction in its simplest form. |
 | params | `{"task": "ratio_to_fraction", "title": "Garden", "labels": ["roses", "tulips"], "unit": "plants", "parts": [1, 6], "partIndex": 1}` |
 | canonical answer | `{"num": 6, "den": 7}` |
@@ -663,7 +663,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01 |
 | interaction / answer | free-response / ratio |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.45, "abstraction": 0.5}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.45, "abstraction": 0.5}) |
 | prompt | In a group, 2/3 are one type and the rest are another. Write the ratio of the first type to the rest in its simplest form. |
 | params | `{"task": "fraction_to_ratio", "num": 2, "den": 3}` |
 | canonical answer | `{"parts": [2, 1]}` |
@@ -729,7 +729,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.UNIT_RATE.01 |
 | interaction / answer | free-response / integer |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.45, "abstraction": 0.4}) |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.45, "abstraction": 0.4}) |
 | prompt | 6 minutes hold 36 pages. How many pages per minute? Give an exact value. |
 | params | `{"task": "unit_rate", "amountLabel": "pages", "perLabel": "minutes", "total": 36, "quantity": 6}` |
 | canonical answer | `{"num": 6, "den": 1}` |
@@ -805,26 +805,26 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 
 </details>
 
-## simplify — seed 2 — band 1 (ratio, multiple-choice)
+## simplify — seed 4 — band 2 (ratio, multiple-choice)
 
 | field | value |
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SIMPLIFY.01 |
 | interaction / answer | multiple-choice / ratio |
-| difficulty band | 1 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.3, "abstraction": 0.25}) |
-| prompt | Write the ratio 12:20 in its simplest form. |
-| params | `{"task": "simplify", "parts": [12, 20]}` |
-| canonical answer | `{"parts": [3, 5]}` |
-| answer display | 3:5 |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.3, "abstraction": 0.25}) |
+| prompt | Write the ratio 8:4 in its simplest form. |
+| params | `{"task": "simplify", "parts": [8, 4]}` |
+| canonical answer | `{"parts": [2, 1]}` |
+| answer display | 2:1 |
 | accepted form / checker | Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (simplest form required). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes. |
-| worked solution | 1. Find the greatest common divisor of the parts -> gcd = 4; 2. Divide every part by the gcd, keeping the order -> 3:5 |
-| student alt text | No figure; the data is given in the prompt. Write the ratio 12:20 in its simplest form. |
+| worked solution | 1. Find the greatest common divisor of the parts -> gcd = 4; 2. Divide every part by the gcd, keeping the order -> 2:1 |
+| student alt text | No figure; the data is given in the prompt. Write the ratio 8:4 in its simplest form. |
 | student data table | `{"columns": ["Quantity", "Value"], "rows": [], "note": "no figure for this task; data is given in the prompt"}` |
-| MC options | A=12:20; B=3:5 ✓; C=6:10; D=8 |
+| MC options | A=8:4; B=3; C=4:2; D=2:1 ✓ |
 | diagnostics exercised | MISC.RATIO.NOT_SIMPLIFIED, MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED, MISC.RATIO.ADDS_PARTS_WRONG |
-| validation checks | 13/13 pass |
+| validation checks | 14/14 pass |
 | covers cells | 2 |
-| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(2, {'task': 'simplify'})))"` |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(4, {'task': 'simplify'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
 
 ## ratio_to_fraction — seed 10 — band 3 (exact-rational, multiple-choice)
@@ -833,7 +833,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01 |
 | interaction / answer | multiple-choice / exact-rational |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0.0, "reasoningSteps": 0.55, "abstraction": 0.6}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0, "reasoningSteps": 0.55, "abstraction": 0.6}) |
 | prompt | The class survey mixes boys and girls in the ratio 7:5. What fraction of the whole is girls? Give your answer as a fraction in its simplest form. |
 | params | `{"task": "ratio_to_fraction", "title": "Class survey", "labels": ["boys", "girls"], "unit": "people", "parts": [7, 5], "partIndex": 1}` |
 | canonical answer | `{"num": 5, "den": 12}` |
@@ -846,7 +846,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | answer-key data table | `{"columns": ["Part", "Size"], "rows": [["boys (7)", "7"], ["girls (5)", "5"]]}` |
 | MC options | A=7/12; B=5/12 ✓; C=1; D=5/7 |
 | diagnostics exercised | MISC.RATIO.FRACTION_PART_OVER_PART, MISC.RATIO.REVERSED_ORDER, MISC.RATIO.PART_AS_WHOLE |
-| validation checks | 22/22 pass |
+| validation checks | 23/23 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(10, {'task': 'ratio_to_fraction'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -900,7 +900,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01 |
 | interaction / answer | multiple-choice / ratio |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.55, "abstraction": 0.6}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.55, "abstraction": 0.6}) |
 | prompt | In a group, 6/8 are one type and the rest are another. Write the ratio of the first type to the rest in its simplest form. |
 | params | `{"task": "fraction_to_ratio", "num": 6, "den": 8}` |
 | canonical answer | `{"parts": [3, 1]}` |
@@ -913,7 +913,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | answer-key data table | `{"columns": ["Part", "Size"], "rows": [["named part (6)", "6"], ["rest (2)", "2"]]}` |
 | MC options | A=3:4; B=4:3; C=1:3; D=3:1 ✓ |
 | diagnostics exercised | MISC.RATIO.REVERSED_ORDER, MISC.RATIO.PART_AS_WHOLE, MISC.RATIO.ADDS_PARTS_WRONG, MISC.RATIO.NOT_SIMPLIFIED |
-| validation checks | 23/23 pass |
+| validation checks | 24/24 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(5, {'task': 'fraction_to_ratio'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -961,13 +961,13 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 
 </details>
 
-## direct_proportion — seed 1 — band 2 (integer, multiple-choice)
+## direct_proportion — seed 1 — band 3 (integer, multiple-choice)
 
 | field | value |
 |---|---|
 | objective | SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01 |
 | interaction / answer | multiple-choice / integer |
-| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0.0, "reasoningSteps": 0.55, "abstraction": 0.5}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.55, "abstraction": 0.5}) |
 | prompt | 2 tanks hold 7 litres. How many litres are in 10 tanks? Give an exact value. |
 | params | `{"task": "direct_proportion", "givenLabel": "litres", "perLabel": "tanks", "quantity": 2, "total": 7, "target": 10}` |
 | canonical answer | `{"num": 35, "den": 1}` |
@@ -980,7 +980,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | answer-key data table | `{"columns": ["tanks", "litres"], "rows": [["2", "7"], ["10", "35"]]}` |
 | MC options | A=35 ✓; B=7/5; C=7/20; D=15 |
 | diagnostics exercised | MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE, MISC.RATIO.INVERSE_FOR_DIRECT, MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY |
-| validation checks | 21/21 pass |
+| validation checks | 22/22 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(1, {'task': 'direct_proportion'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1050,7 +1050,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01 |
 | interaction / answer | multiple-choice / integer |
-| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.8, "abstraction": 0.75}) |
+| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.8, "abstraction": 0.75}) |
 | prompt | 8 machines take 9 minutes to complete the batch. How many minutes would 36 machines take to complete the batch? |
 | params | `{"task": "inverse_proportion", "agent": "machines", "unit": "minutes", "tail": "to complete the batch", "q1": 8, "v1": 9, "q2": 36}` |
 | canonical answer | `{"num": 2, "den": 1}` |
@@ -1061,7 +1061,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | student data table | `{"columns": ["Quantity", "Value"], "rows": [], "note": "no figure for this task; data is given in the prompt"}` |
 | MC options | A=72; B=2 ✓; C=37; D=81/2 |
 | diagnostics exercised | MISC.RATIO.DIRECT_FOR_INVERSE, MISC.RATIO.MULTIPLIES_NOT_DIVIDES_UNITARY, MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE |
-| validation checks | 11/11 pass |
+| validation checks | 12/12 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(10, {'task': 'inverse_proportion'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1072,7 +1072,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01 |
 | interaction / answer | free-response / ratio |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.45, "abstraction": 0.4}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.45, "abstraction": 0.4}) |
 | prompt | In a recipe there are 25 flour, 20 sugar, 30 butter. Write the ratio of flour to sugar to butter in its simplest form. |
 | params | `{"task": "write_from_quantities", "title": "Recipe", "labels": ["flour", "sugar", "butter"], "unit": "grams", "quantities": [25, 20, 30]}` |
 | canonical answer | `{"parts": [5, 4, 6]}` |
@@ -1093,7 +1093,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.MISSING_PART.01 |
 | interaction / answer | free-response / integer |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.6, "abstraction": 0.55}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.6, "abstraction": 0.55}) |
 | prompt | Gus and Hana share an amount in the ratio 5:2. Gus gets 35 marbles. How many marbles does Hana get? |
 | params | `{"task": "missing_part", "title": "Sharing marbles", "labels": ["Gus", "Hana"], "unit": "marbles", "parts": [5, 2], "knownIndex": 0, "missingIndex": 1, "knownValue": 35}` |
 | canonical answer | `{"num": 14, "den": 1}` |
@@ -1159,7 +1159,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SHARE_THREE_PART.01 |
 | interaction / answer | free-response / table-completion |
-| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.7, "abstraction": 0.6}) |
+| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.7, "abstraction": 0.6}) |
 | prompt | Share 70 sweets between Dana, Eli, Faye in the ratio 2:2:3. Give each share. |
 | params | `{"task": "share_three_part", "title": "Sharing sweets", "labels": ["Dana", "Eli", "Faye"], "unit": "sweets", "parts": [2, 2, 3], "total": 70}` |
 | canonical answer | `{"cells": [{"location": "Dana", "value": 20}, {"location": "Eli", "value": 20}, {"location": "Faye", "value": 30}]}` |
@@ -1233,7 +1233,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SHARE_TWO_PART.01 |
 | interaction / answer | free-response / table-completion |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.6, "abstraction": 0.5}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.6, "abstraction": 0.5}) |
 | prompt | Share 49 stickers between Jo, Kim in the ratio 2:5. Give each share. |
 | params | `{"task": "share_two_part", "title": "Sharing stickers", "labels": ["Jo", "Kim"], "unit": "stickers", "parts": [2, 5], "total": 49}` |
 | canonical answer | `{"cells": [{"location": "Jo", "value": 14}, {"location": "Kim", "value": 35}]}` |
@@ -1301,7 +1301,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.SIMPLE_SCALE.01 |
 | interaction / answer | free-response / exact-rational |
-| difficulty band | 4 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0.0, "reasoningSteps": 0.6, "abstraction": 0.6}) |
+| difficulty band | 4 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0, "reasoningSteps": 0.6, "abstraction": 0.6}) |
 | prompt | On a plan, 2 centimetres on the plan represent 3 metres in the building. What do 17 centimetres on the plan represent? Give an exact value. |
 | params | `{"task": "simple_scale", "scaleKind": "plan", "srcUnit": "centimetres on the plan", "dstUnit": "metres in the building", "value": 17, "factorNum": 3, "factorDen": 2, "direction": "multiply"}` |
 | canonical answer | `{"num": 51, "den": 2}` |
@@ -1383,20 +1383,20 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.BEST_BUY.01 |
 | interaction / answer | multiple-choice / multiple-choice |
-| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0.0, "reasoningSteps": 0.8, "abstraction": 0.7}) |
-| prompt | You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option. |
-| params | `{"task": "best_buy", "product": "nails", "unit": "nails", "pack": "box", "options": [{"label": "A", "packSize": 6, "totalAmount": 66, "unitRate": {"num": 66, "den": 6}}, {"label": "B", "packSize": 6, "totalAmount": 66, "unitRate": {"num": 66, "den": 6}}, {"label": "C", "packSize": 5, "totalAmount": 5, "unitRate": {"num": 5, "den": 5}}], "correctLabel": "C"}` |
+| difficulty band | 4 (axes: {"numericalComplexity": 0.4, "exactVsApproximate": 0, "reasoningSteps": 0.8, "abstraction": 0.7}) |
+| prompt | You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option. |
+| params | `{"task": "best_buy", "product": "paper", "unit": "sheets", "pack": "ream", "options": [{"label": "A", "packSize": 4, "totalAmount": 16, "unitRate": {"num": 16, "den": 4}}, {"label": "B", "packSize": 6, "totalAmount": 18, "unitRate": {"num": 18, "den": 6}}, {"label": "C", "packSize": 5, "totalAmount": 10, "unitRate": {"num": 10, "den": 5}}], "correctLabel": "C"}` |
 | canonical answer | `"C"` |
 | answer display | C |
 | accepted form / checker | Best-buy choice checker: the selected labelled option id is the answer; the correct option is the UNIQUE strict-minimum exact unit rate. A single letter A/B/C is parsed; anything else is malformed-response and a wrong letter is wrong-choice. |
-| worked solution | 1. Unit rate of option A -> 66 ÷ 6 = 11 nails per item; 2. Unit rate of option B -> 66 ÷ 6 = 11 nails per item; 3. Unit rate of option C -> 5 ÷ 5 = 1 nails per item; 4. Compare the unit rates and choose the strict minimum -> lowest is 1 -> option C |
-| student alt text | A comparison table of the options' total amount and pack size. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option. |
+| worked solution | 1. Unit rate of option A -> 16 ÷ 4 = 4 sheets per item; 2. Unit rate of option B -> 18 ÷ 6 = 3 sheets per item; 3. Unit rate of option C -> 10 ÷ 5 = 2 sheets per item; 4. Compare the unit rates and choose the strict minimum -> lowest is 2 -> option C |
+| student alt text | A comparison table of the options' total amount and pack size. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option. |
 | answer-key alt text | Answer key. A comparison table of the options' total amount and pack size. The solved quantities are shown. |
-| student data table | `{"columns": ["Option", "Total nails", "Pack size"], "rows": [["A", "66", "6"], ["B", "66", "6"], ["C", "5", "5"]]}` |
-| answer-key data table | `{"columns": ["Option", "Total nails", "Pack size", "Unit rate"], "rows": [["A", "66", "6", "11"], ["B", "66", "6", "11"], ["C", "5", "5", "1 (best)"]]}` |
-| MC options | A=66 nails per box of 6; B=66 nails per box of 6; C=5 nails per box of 5 ✓ |
+| student data table | `{"columns": ["Option", "Total sheets", "Pack size"], "rows": [["A", "16", "4"], ["B", "18", "6"], ["C", "10", "5"]]}` |
+| answer-key data table | `{"columns": ["Option", "Total sheets", "Pack size", "Unit rate"], "rows": [["A", "16", "4", "4"], ["B", "18", "6", "3"], ["C", "10", "5", "2 (best)"]]}` |
+| MC options | A=16 sheets per ream of 4; B=18 sheets per ream of 6; C=10 sheets per ream of 5 ✓ |
 | diagnostics exercised | MISC.RATIO.NO_UNIT_RATE_COMPARE |
-| validation checks | 23/23 pass |
+| validation checks | 24/24 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(41, {'task': 'best_buy'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1404,8 +1404,8 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 <details><summary>student figure (SVG)</summary>
 
 ```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-label="A comparison table of the options&#39; total amount and pack size. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.">
-<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. Unknown quantities are marked with a question mark. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-label="A comparison table of the options&#39; total amount and pack size. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.">
+<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. Unknown quantities are marked with a question mark. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>
 <style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
 <g class="rt-base">
 <text class="rt-lbl" x="500" y="48" text-anchor="middle">Compare the options by unit rate</text>
@@ -1420,17 +1420,17 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 <line class="rt-table-line" x1="710" y1="80" x2="710" y2="304"/>
 <line class="rt-table-line" x1="920" y1="80" x2="920" y2="304"/>
 <text class="rt-ticklbl" x="92" y="116" text-anchor="start">Option</text>
-<text class="rt-ticklbl" x="92" y="172" text-anchor="start">Total nails</text>
-<text class="rt-ticklbl" x="92" y="228" text-anchor="start">Box size</text>
-<text class="rt-ticklbl" x="92" y="284" text-anchor="start">Unit rate (nails per item)</text>
+<text class="rt-ticklbl" x="92" y="172" text-anchor="start">Total sheets</text>
+<text class="rt-ticklbl" x="92" y="228" text-anchor="start">Ream size</text>
+<text class="rt-ticklbl" x="92" y="284" text-anchor="start">Unit rate (sheets per item)</text>
 <text class="rt-lbl" x="395" y="116" text-anchor="middle">A</text>
-<text class="rt-lbl" x="395" y="172" text-anchor="middle">66</text>
-<text class="rt-lbl" x="395" y="228" text-anchor="middle">6</text>
+<text class="rt-lbl" x="395" y="172" text-anchor="middle">16</text>
+<text class="rt-lbl" x="395" y="228" text-anchor="middle">4</text>
 <text class="rt-lbl" x="605" y="116" text-anchor="middle">B</text>
-<text class="rt-lbl" x="605" y="172" text-anchor="middle">66</text>
+<text class="rt-lbl" x="605" y="172" text-anchor="middle">18</text>
 <text class="rt-lbl" x="605" y="228" text-anchor="middle">6</text>
 <text class="rt-lbl" x="815" y="116" text-anchor="middle">C</text>
-<text class="rt-lbl" x="815" y="172" text-anchor="middle">5</text>
+<text class="rt-lbl" x="815" y="172" text-anchor="middle">10</text>
 <text class="rt-lbl" x="815" y="228" text-anchor="middle">5</text>
 </g>
 <g class="rt-student">
@@ -1446,7 +1446,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-label="Answer key. A comparison table of the options&#39; total amount and pack size. The solved quantities are shown.">
-<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. The solution overlay reveals the answer to: You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>
+<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. The solution overlay reveals the answer to: You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>
 <style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
 <g class="rt-base">
 <text class="rt-lbl" x="500" y="48" text-anchor="middle">Compare the options by unit rate</text>
@@ -1461,23 +1461,23 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 <line class="rt-table-line" x1="710" y1="80" x2="710" y2="304"/>
 <line class="rt-table-line" x1="920" y1="80" x2="920" y2="304"/>
 <text class="rt-ticklbl" x="92" y="116" text-anchor="start">Option</text>
-<text class="rt-ticklbl" x="92" y="172" text-anchor="start">Total nails</text>
-<text class="rt-ticklbl" x="92" y="228" text-anchor="start">Box size</text>
-<text class="rt-ticklbl" x="92" y="284" text-anchor="start">Unit rate (nails per item)</text>
+<text class="rt-ticklbl" x="92" y="172" text-anchor="start">Total sheets</text>
+<text class="rt-ticklbl" x="92" y="228" text-anchor="start">Ream size</text>
+<text class="rt-ticklbl" x="92" y="284" text-anchor="start">Unit rate (sheets per item)</text>
 <text class="rt-lbl" x="395" y="116" text-anchor="middle">A</text>
-<text class="rt-lbl" x="395" y="172" text-anchor="middle">66</text>
-<text class="rt-lbl" x="395" y="228" text-anchor="middle">6</text>
+<text class="rt-lbl" x="395" y="172" text-anchor="middle">16</text>
+<text class="rt-lbl" x="395" y="228" text-anchor="middle">4</text>
 <text class="rt-lbl" x="605" y="116" text-anchor="middle">B</text>
-<text class="rt-lbl" x="605" y="172" text-anchor="middle">66</text>
+<text class="rt-lbl" x="605" y="172" text-anchor="middle">18</text>
 <text class="rt-lbl" x="605" y="228" text-anchor="middle">6</text>
 <text class="rt-lbl" x="815" y="116" text-anchor="middle">C</text>
-<text class="rt-lbl" x="815" y="172" text-anchor="middle">5</text>
+<text class="rt-lbl" x="815" y="172" text-anchor="middle">10</text>
 <text class="rt-lbl" x="815" y="228" text-anchor="middle">5</text>
 </g>
 <g class="rt-overlay">
-<text class="rt-unknown-lbl" x="395" y="284" text-anchor="middle">11</text>
-<text class="rt-unknown-lbl" x="605" y="284" text-anchor="middle">11</text>
-<text class="rt-unknown-lbl" x="815" y="284" text-anchor="middle">1 ✓</text>
+<text class="rt-unknown-lbl" x="395" y="284" text-anchor="middle">4</text>
+<text class="rt-unknown-lbl" x="605" y="284" text-anchor="middle">3</text>
+<text class="rt-unknown-lbl" x="815" y="284" text-anchor="middle">2 ✓</text>
 </g>
 </svg>
 ```
@@ -1490,7 +1490,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 |---|---|
 | objective | SPI.MIDDLE.RATIO.UNIT_RATE.01 |
 | interaction / answer | free-response / exact-rational |
-| difficulty band | 3 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0.0, "reasoningSteps": 0.55, "abstraction": 0.5}) |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.65, "exactVsApproximate": 0, "reasoningSteps": 0.55, "abstraction": 0.5}) |
 | prompt | 7 bags hold 36 apples. How many apples per bag? Give an exact value. |
 | params | `{"task": "unit_rate", "amountLabel": "apples", "perLabel": "bags", "total": 36, "quantity": 7}` |
 | canonical answer | `{"num": 36, "den": 7}` |
@@ -1565,4 +1565,210 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 ```
 
 </details>
+
+## simple_scale — seed 109 — band 3 (integer, free-response)
+
+| field | value |
+|---|---|
+| objective | SPI.MIDDLE.RATIO.SIMPLE_SCALE.01 |
+| interaction / answer | free-response / integer |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.5, "abstraction": 0.5}) |
+| prompt | On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value. |
+| params | `{"task": "simple_scale", "scaleKind": "plan", "srcUnit": "centimetres on the plan", "dstUnit": "metres in the building", "value": 8, "factorNum": 6, "factorDen": 2, "direction": "multiply"}` |
+| canonical answer | `{"num": 24, "den": 1}` |
+| answer display | 24 |
+| accepted form / checker | Exact-rational checker: the answer is the exact reduced Fraction (num/den); no float, no tolerance; integer-when-whole carries den 1. |
+| worked solution | 1. Find the scale factor -> 6/2; 2. Multiply the value by the scale factor -> 8 × 6/2 = 24 |
+| student alt text | A double number line aligning the two proportional quantities. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value. |
+| answer-key alt text | Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown. |
+| student data table | `{"columns": ["centimetres on the plan", "metres in the building"], "rows": [["2", "6"], ["8", "?"]]}` |
+| answer-key data table | `{"columns": ["centimetres on the plan", "metres in the building"], "rows": [["2", "6"], ["8", "24"]]}` |
+| diagnostics exercised | MISC.RATIO.SCALE_WRONG_DIRECTION, MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE |
+| validation checks | 18/18 pass |
+| covers cells | 1 |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(109, {'task': 'simple_scale'})))"` |
+| curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
+
+<details><summary>student figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="A double number line aligning the two proportional quantities. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.">
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.</desc>
+<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
+<g class="rt-base">
+<text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
+<line class="rt-axis" x1="120" y1="110" x2="880" y2="110"/>
+<line class="rt-axis" x1="120" y1="200" x2="880" y2="200"/>
+<text class="rt-lbl" x="104" y="118" text-anchor="end">centimetres on the plan</text>
+<text class="rt-lbl" x="104" y="208" text-anchor="end">metres in the building</text>
+<line class="rt-rung" x1="373" y1="110" x2="373" y2="200"/>
+<circle class="rt-given-pt" cx="373" cy="110" r="6"/>
+<text class="rt-ticklbl" x="373" y="96" text-anchor="middle">2</text>
+<circle class="rt-given-pt" cx="373" cy="200" r="6"/>
+<text class="rt-ticklbl" x="373" y="236" text-anchor="middle">6</text>
+<line class="rt-rung" x1="626" y1="110" x2="626" y2="200"/>
+<circle class="rt-given-pt" cx="626" cy="110" r="6"/>
+<text class="rt-ticklbl" x="626" y="96" text-anchor="middle">8</text>
+<circle class="rt-unknown-pt" cx="626" cy="200" r="7"/>
+</g>
+<g class="rt-student">
+<text class="rt-unknown-lbl" x="626" y="236" text-anchor="middle">?</text>
+</g>
+</svg>
+```
+
+</details>
+<details><summary>answer-key figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.">
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.</desc>
+<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
+<g class="rt-base">
+<text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
+<line class="rt-axis" x1="120" y1="110" x2="880" y2="110"/>
+<line class="rt-axis" x1="120" y1="200" x2="880" y2="200"/>
+<text class="rt-lbl" x="104" y="118" text-anchor="end">centimetres on the plan</text>
+<text class="rt-lbl" x="104" y="208" text-anchor="end">metres in the building</text>
+<line class="rt-rung" x1="373" y1="110" x2="373" y2="200"/>
+<circle class="rt-given-pt" cx="373" cy="110" r="6"/>
+<text class="rt-ticklbl" x="373" y="96" text-anchor="middle">2</text>
+<circle class="rt-given-pt" cx="373" cy="200" r="6"/>
+<text class="rt-ticklbl" x="373" y="236" text-anchor="middle">6</text>
+<line class="rt-rung" x1="626" y1="110" x2="626" y2="200"/>
+<circle class="rt-given-pt" cx="626" cy="110" r="6"/>
+<text class="rt-ticklbl" x="626" y="96" text-anchor="middle">8</text>
+<circle class="rt-unknown-pt" cx="626" cy="200" r="7"/>
+</g>
+<g class="rt-overlay">
+<text class="rt-unknown-lbl" x="626" y="236" text-anchor="middle">24</text>
+</g>
+</svg>
+```
+
+</details>
+
+## write_from_quantities — seed 135 — band 2 (ratio, free-response)
+
+| field | value |
+|---|---|
+| objective | SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01 |
+| interaction / answer | free-response / ratio |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.35, "abstraction": 0.3}) |
+| prompt | In a recipe there are 3 flour, 21 sugar. Write the ratio of flour to sugar in its simplest form. |
+| params | `{"task": "write_from_quantities", "title": "Recipe", "labels": ["flour", "sugar"], "unit": "grams", "quantities": [3, 21]}` |
+| canonical answer | `{"parts": [1, 7]}` |
+| answer display | 1:7 |
+| accepted form / checker | Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (any equivalent ordered ratio accepted). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes. |
+| worked solution | 1. Find the greatest common divisor of the parts -> gcd = 3; 2. Divide every part by the gcd, keeping the order -> 1:7 |
+| student alt text | No figure; the data is given in the prompt. In a recipe there are 3 flour, 21 sugar. Write the ratio of flour to sugar in its simplest form. |
+| student data table | `{"columns": ["Quantity", "Value"], "rows": [], "note": "no figure for this task; data is given in the prompt"}` |
+| diagnostics exercised | MISC.RATIO.REVERSED_ORDER, MISC.RATIO.NOT_SIMPLIFIED |
+| validation checks | 10/10 pass |
+| covers cells | 1 |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(135, {'task': 'write_from_quantities'})))"` |
+| curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
+
+## direct_proportion — seed 142 — band 2 (integer, free-response)
+
+| field | value |
+|---|---|
+| objective | SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01 |
+| interaction / answer | free-response / integer |
+| difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.55, "abstraction": 0.5}) |
+| prompt | 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value. |
+| params | `{"task": "direct_proportion", "givenLabel": "litres", "perLabel": "tanks", "quantity": 5, "total": 10, "target": 4}` |
+| canonical answer | `{"num": 8, "den": 1}` |
+| answer display | 8 |
+| accepted form / checker | Exact-rational checker: the answer is the exact reduced Fraction (num/den); no float, no tolerance; integer-when-whole carries den 1. |
+| worked solution | 1. Find the value of one unit -> 10 ÷ 5 = 2; 2. Multiply by the required quantity -> 2 × 4 = 8 |
+| student alt text | A double number line aligning the two proportional quantities. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value. |
+| answer-key alt text | Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown. |
+| student data table | `{"columns": ["tanks", "litres"], "rows": [["5", "10"], ["4", "?"]]}` |
+| answer-key data table | `{"columns": ["tanks", "litres"], "rows": [["5", "10"], ["4", "8"]]}` |
+| diagnostics exercised | MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE, MISC.RATIO.INVERSE_FOR_DIRECT, MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY |
+| validation checks | 17/17 pass |
+| covers cells | 1 |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(142, {'task': 'direct_proportion'})))"` |
+| curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
+
+<details><summary>student figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="A double number line aligning the two proportional quantities. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.">
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.</desc>
+<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
+<g class="rt-base">
+<text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
+<line class="rt-axis" x1="120" y1="110" x2="880" y2="110"/>
+<line class="rt-axis" x1="120" y1="200" x2="880" y2="200"/>
+<text class="rt-lbl" x="104" y="118" text-anchor="end">tanks</text>
+<text class="rt-lbl" x="104" y="208" text-anchor="end">litres</text>
+<line class="rt-rung" x1="373" y1="110" x2="373" y2="200"/>
+<circle class="rt-given-pt" cx="373" cy="110" r="6"/>
+<text class="rt-ticklbl" x="373" y="96" text-anchor="middle">5</text>
+<circle class="rt-given-pt" cx="373" cy="200" r="6"/>
+<text class="rt-ticklbl" x="373" y="236" text-anchor="middle">10</text>
+<line class="rt-rung" x1="626" y1="110" x2="626" y2="200"/>
+<circle class="rt-given-pt" cx="626" cy="110" r="6"/>
+<text class="rt-ticklbl" x="626" y="96" text-anchor="middle">4</text>
+<circle class="rt-unknown-pt" cx="626" cy="200" r="7"/>
+</g>
+<g class="rt-student">
+<text class="rt-unknown-lbl" x="626" y="236" text-anchor="middle">?</text>
+</g>
+</svg>
+```
+
+</details>
+<details><summary>answer-key figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.">
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.</desc>
+<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
+<g class="rt-base">
+<text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
+<line class="rt-axis" x1="120" y1="110" x2="880" y2="110"/>
+<line class="rt-axis" x1="120" y1="200" x2="880" y2="200"/>
+<text class="rt-lbl" x="104" y="118" text-anchor="end">tanks</text>
+<text class="rt-lbl" x="104" y="208" text-anchor="end">litres</text>
+<line class="rt-rung" x1="373" y1="110" x2="373" y2="200"/>
+<circle class="rt-given-pt" cx="373" cy="110" r="6"/>
+<text class="rt-ticklbl" x="373" y="96" text-anchor="middle">5</text>
+<circle class="rt-given-pt" cx="373" cy="200" r="6"/>
+<text class="rt-ticklbl" x="373" y="236" text-anchor="middle">10</text>
+<line class="rt-rung" x1="626" y1="110" x2="626" y2="200"/>
+<circle class="rt-given-pt" cx="626" cy="110" r="6"/>
+<text class="rt-ticklbl" x="626" y="96" text-anchor="middle">4</text>
+<circle class="rt-unknown-pt" cx="626" cy="200" r="7"/>
+</g>
+<g class="rt-overlay">
+<text class="rt-unknown-lbl" x="626" y="236" text-anchor="middle">8</text>
+</g>
+</svg>
+```
+
+</details>
+
+## simplify — seed 453 — band 1 (ratio, free-response)
+
+| field | value |
+|---|---|
+| objective | SPI.MIDDLE.RATIO.SIMPLIFY.01 |
+| interaction / answer | free-response / ratio |
+| difficulty band | 1 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.3, "abstraction": 0.25}) |
+| prompt | Write the ratio 3:3 in its simplest form. |
+| params | `{"task": "simplify", "parts": [3, 3]}` |
+| canonical answer | `{"parts": [1, 1]}` |
+| answer display | 1:1 |
+| accepted form / checker | Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (simplest form required). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes. |
+| worked solution | 1. Find the greatest common divisor of the parts -> gcd = 3; 2. Divide every part by the gcd, keeping the order -> 1:1 |
+| student alt text | No figure; the data is given in the prompt. Write the ratio 3:3 in its simplest form. |
+| student data table | `{"columns": ["Quantity", "Value"], "rows": [], "note": "no figure for this task; data is given in the prompt"}` |
+| diagnostics exercised | MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED, MISC.RATIO.ADDS_PARTS_WRONG |
+| validation checks | 9/9 pass |
+| covers cells | 1 |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(453, {'task': 'simplify'})))"` |
+| curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
 

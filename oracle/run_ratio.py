@@ -98,8 +98,12 @@ def main() -> int:
         golden.append({"seed": 7, "task": task, "interaction": item["interactionType"],
                        "serialized": R.serialize(item), "valid": R.validate(item)["valid"]})
     for s in (1, 42, 123456789, 2147483647):
+        # No task AND no interactionType: the DEFAULT-interaction path (full 12-task draw pool). Record
+        # interaction as null so the replay harness reconstructs the identical default call (passing an
+        # explicit interactionType would take the narrowed FR/MC pool and shift the RNG draw index).
         item = R.generate(s)
-        golden.append({"seed": s, "task": None, "interaction": item["interactionType"],
+        golden.append({"seed": s, "task": None, "interaction": None,
+                       "resolvedInteraction": item["interactionType"],
                        "serialized": R.serialize(item), "valid": R.validate(item)["valid"]})
     with open(os.path.join(GOLDEN_DIR, "ratio.golden.json"), "w", encoding="utf-8") as fh:
         json.dump(golden, fh, indent=2)
@@ -195,7 +199,9 @@ def main() -> int:
         total = info["items"] or 1
         lo, hi = R.TASK_BANDS[task]
         bands = {b: info["bands"].get(b, 0) for b in range(1, 6) if info["bands"].get(b, 0)}
-        unreachable = [b for b in (lo, hi) if info["bands"].get(b, 0) == 0]
+        # Reachability is over the DECLARED inclusive range [lo,hi], NOT just the observed endpoints —
+        # an interior band that is never produced must be reported as unreachable (defect-6 guard).
+        unreachable = [b for b in range(lo, hi + 1) if info["bands"].get(b, 0) == 0]
         report["tasks"][task] = {
             "objectiveId": R.OBJECTIVE_BY_TASK[task], "items": info["items"],
             "declaredBand": [lo, hi], "bandCounts": bands,

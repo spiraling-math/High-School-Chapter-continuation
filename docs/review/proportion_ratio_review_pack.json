@@ -13,6 +13,7 @@
     "band:best_buy:3",
     "band:best_buy:4",
     "band:direct_proportion:2",
+    "band:direct_proportion:3",
     "band:direct_proportion:4",
     "band:fraction_to_ratio:2",
     "band:fraction_to_ratio:3",
@@ -27,12 +28,15 @@
     "band:share_two_part:2",
     "band:share_two_part:3",
     "band:simple_scale:2",
+    "band:simple_scale:3",
     "band:simple_scale:4",
     "band:simplify:1",
+    "band:simplify:2",
     "band:simplify:3",
     "band:unit_rate:2",
     "band:unit_rate:3",
     "band:write_from_quantities:1",
+    "band:write_from_quantities:2",
     "band:write_from_quantities:3",
     "channel:answer-key",
     "channel:student",
@@ -84,6 +88,7 @@
     "band:best_buy:3",
     "band:best_buy:4",
     "band:direct_proportion:2",
+    "band:direct_proportion:3",
     "band:direct_proportion:4",
     "band:fraction_to_ratio:2",
     "band:fraction_to_ratio:3",
@@ -98,12 +103,15 @@
     "band:share_two_part:2",
     "band:share_two_part:3",
     "band:simple_scale:2",
+    "band:simple_scale:3",
     "band:simple_scale:4",
     "band:simplify:1",
+    "band:simplify:2",
     "band:simplify:3",
     "band:unit_rate:2",
     "band:unit_rate:3",
     "band:write_from_quantities:1",
+    "band:write_from_quantities:2",
     "band:write_from_quantities:3",
     "channel:answer-key",
     "channel:student",
@@ -149,7 +157,7 @@
   "missingCells": [],
   "allCovered": true,
   "allValid": true,
-  "itemCount": 24,
+  "itemCount": 28,
   "exemplarFieldSchema": {
     "required": [
       "objectiveId",
@@ -525,7 +533,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.6,
         "abstraction": 0.5
       },
@@ -745,7 +753,7 @@
       "band": 1,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.35,
         "abstraction": 0.3
       },
@@ -867,7 +875,7 @@
       "band": 4,
       "axes": {
         "numericalComplexity": 0.65,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.65,
         "abstraction": 0.6
       },
@@ -1042,7 +1050,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.7,
         "abstraction": 0.6
       },
@@ -1185,6 +1193,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -1276,7 +1288,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.7,
         "abstraction": 0.65
       },
@@ -1383,7 +1395,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.5,
         "abstraction": 0.4
       },
@@ -1588,7 +1600,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.5,
         "abstraction": 0.5
       },
@@ -1762,7 +1774,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.5,
         "abstraction": 0.45
       },
@@ -1946,7 +1958,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.4,
         "abstraction": 0.35
       },
@@ -2062,7 +2074,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.55,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.45,
         "abstraction": 0.5
       },
@@ -2245,7 +2257,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.45,
         "abstraction": 0.5
       },
@@ -2425,7 +2437,7 @@
       "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.45,
         "abstraction": 0.4
       },
@@ -2582,24 +2594,24 @@
     {
       "objectiveId": "SPI.MIDDLE.RATIO.SIMPLIFY.01",
       "task": "simplify",
-      "seed": 2,
-      "band": 1,
+      "seed": 4,
+      "band": 2,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.3,
         "abstraction": 0.25
       },
       "interactionType": "multiple-choice",
       "answerType": "ratio",
-      "prompt": "Write the ratio 12:20 in its simplest form.",
+      "prompt": "Write the ratio 8:4 in its simplest form.",
       "canonicalAnswer": {
         "parts": [
-          3,
-          5
+          2,
+          1
         ]
       },
-      "answerDisplay": "3:5",
+      "answerDisplay": "2:1",
       "acceptedFormOrCheckerBehaviour": "Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (simplest form required). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes.",
       "workedSolution": [
         {
@@ -2610,30 +2622,30 @@
         {
           "number": 2,
           "transformation": "Divide every part by the gcd, keeping the order",
-          "intermediateResult": "3:5"
+          "intermediateResult": "2:1"
         }
       ],
       "params": {
         "task": "simplify",
         "parts": [
-          12,
-          20
+          8,
+          4
         ]
       },
       "diagnosticsExercised": [
         {
           "misconceptionId": "MISC.RATIO.NOT_SIMPLIFIED",
-          "predictedResponse": "6:10",
+          "predictedResponse": "4:2",
           "expectedResultCode": "equivalent-not-simplified"
         },
         {
           "misconceptionId": "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED",
-          "predictedResponse": "12:20",
+          "predictedResponse": "8:4",
           "expectedResultCode": "equivalent-not-simplified"
         },
         {
           "misconceptionId": "MISC.RATIO.ADDS_PARTS_WRONG",
-          "predictedResponse": "8",
+          "predictedResponse": "3",
           "expectedResultCode": "malformed-response"
         }
       ],
@@ -2679,6 +2691,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -2692,9 +2708,9 @@
         }
       ],
       "valid": true,
-      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(2, {'task': 'simplify'})))\"",
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(4, {'task': 'simplify'})))\"",
       "curriculumReviewDecision": null,
-      "studentAltText": "No figure; the data is given in the prompt. Write the ratio 12:20 in its simplest form.",
+      "studentAltText": "No figure; the data is given in the prompt. Write the ratio 8:4 in its simplest form.",
       "studentDataTable": {
         "columns": [
           "Quantity",
@@ -2708,11 +2724,11 @@
           "label": "A",
           "value": {
             "parts": [
-              12,
-              20
+              8,
+              4
             ]
           },
-          "display": "12:20",
+          "display": "8:4",
           "correct": false,
           "misconceptionId": "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED"
         },
@@ -2720,22 +2736,22 @@
           "label": "B",
           "value": {
             "parts": [
-              3,
-              5
+              3
             ]
           },
-          "display": "3:5",
-          "correct": true
+          "display": "3",
+          "correct": false,
+          "misconceptionId": "MISC.RATIO.ADDS_PARTS_WRONG"
         },
         {
           "label": "C",
           "value": {
             "parts": [
-              6,
-              10
+              4,
+              2
             ]
           },
-          "display": "6:10",
+          "display": "4:2",
           "correct": false,
           "misconceptionId": "MISC.RATIO.NOT_SIMPLIFIED"
         },
@@ -2743,16 +2759,16 @@
           "label": "D",
           "value": {
             "parts": [
-              8
+              2,
+              1
             ]
           },
-          "display": "8",
-          "correct": false,
-          "misconceptionId": "MISC.RATIO.ADDS_PARTS_WRONG"
+          "display": "2:1",
+          "correct": true
         }
       ],
       "coversCells": [
-        "band:simplify:1",
+        "band:simplify:2",
         "interaction:simplify:multiple-choice"
       ]
     },
@@ -2763,7 +2779,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.65,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.55,
         "abstraction": 0.6
       },
@@ -2897,6 +2913,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -2999,7 +3019,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.55,
         "abstraction": 0.6
       },
@@ -3135,6 +3155,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -3245,10 +3269,10 @@
       "objectiveId": "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
       "task": "direct_proportion",
       "seed": 1,
-      "band": 2,
+      "band": 3,
       "axes": {
         "numericalComplexity": 0.3,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.55,
         "abstraction": 0.5
       },
@@ -3372,6 +3396,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -3460,7 +3488,7 @@
         }
       ],
       "coversCells": [
-        "band:direct_proportion:2",
+        "band:direct_proportion:3",
         "interaction:direct_proportion:multiple-choice"
       ]
     },
@@ -3471,7 +3499,7 @@
       "band": 4,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.8,
         "abstraction": 0.75
       },
@@ -3556,6 +3584,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -3624,7 +3656,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.45,
         "abstraction": 0.4
       },
@@ -3744,7 +3776,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.6,
         "abstraction": 0.55
       },
@@ -3926,7 +3958,7 @@
       "band": 4,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.7,
         "abstraction": 0.6
       },
@@ -4132,7 +4164,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.6,
         "abstraction": 0.5
       },
@@ -4324,7 +4356,7 @@
       "band": 4,
       "axes": {
         "numericalComplexity": 0.65,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.6,
         "abstraction": 0.6
       },
@@ -4496,13 +4528,13 @@
       "band": 4,
       "axes": {
         "numericalComplexity": 0.4,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.8,
         "abstraction": 0.7
       },
       "interactionType": "multiple-choice",
       "answerType": "multiple-choice",
-      "prompt": "You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.",
+      "prompt": "You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.",
       "canonicalAnswer": "C",
       "answerDisplay": "C",
       "acceptedFormOrCheckerBehaviour": "Best-buy choice checker: the selected labelled option id is the answer; the correct option is the UNIQUE strict-minimum exact unit rate. A single letter A/B/C is parsed; anything else is malformed-response and a wrong letter is wrong-choice.",
@@ -4510,54 +4542,54 @@
         {
           "number": 1,
           "transformation": "Unit rate of option A",
-          "intermediateResult": "66 \u00f7 6 = 11 nails per item"
+          "intermediateResult": "16 \u00f7 4 = 4 sheets per item"
         },
         {
           "number": 2,
           "transformation": "Unit rate of option B",
-          "intermediateResult": "66 \u00f7 6 = 11 nails per item"
+          "intermediateResult": "18 \u00f7 6 = 3 sheets per item"
         },
         {
           "number": 3,
           "transformation": "Unit rate of option C",
-          "intermediateResult": "5 \u00f7 5 = 1 nails per item"
+          "intermediateResult": "10 \u00f7 5 = 2 sheets per item"
         },
         {
           "number": 4,
           "transformation": "Compare the unit rates and choose the strict minimum",
-          "intermediateResult": "lowest is 1 -> option C"
+          "intermediateResult": "lowest is 2 -> option C"
         }
       ],
       "params": {
         "task": "best_buy",
-        "product": "nails",
-        "unit": "nails",
-        "pack": "box",
+        "product": "paper",
+        "unit": "sheets",
+        "pack": "ream",
         "options": [
           {
             "label": "A",
-            "packSize": 6,
-            "totalAmount": 66,
+            "packSize": 4,
+            "totalAmount": 16,
             "unitRate": {
-              "num": 66,
-              "den": 6
+              "num": 16,
+              "den": 4
             }
           },
           {
             "label": "B",
             "packSize": 6,
-            "totalAmount": 66,
+            "totalAmount": 18,
             "unitRate": {
-              "num": 66,
+              "num": 18,
               "den": 6
             }
           },
           {
             "label": "C",
             "packSize": 5,
-            "totalAmount": 5,
+            "totalAmount": 10,
             "unitRate": {
-              "num": 5,
+              "num": 10,
               "den": 5
             }
           }
@@ -4653,6 +4685,10 @@
           "ok": true
         },
         {
+          "name": "mc-option-displays-distinct",
+          "ok": true
+        },
+        {
           "name": "mc-one-correct",
           "ok": true
         },
@@ -4668,29 +4704,29 @@
       "valid": true,
       "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(41, {'task': 'best_buy'})))\"",
       "curriculumReviewDecision": null,
-      "studentAltText": "A comparison table of the options' total amount and pack size. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.",
-      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 300\" role=\"img\" aria-label=\"A comparison table of the options&#39; total amount and pack size. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.\">\n<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. Unknown quantities are marked with a question mark. You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"48\" text-anchor=\"middle\">Compare the options by unit rate</text>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"920\" y2=\"80\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"136\" x2=\"920\" y2=\"136\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"192\" x2=\"920\" y2=\"192\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"248\" x2=\"920\" y2=\"248\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"304\" x2=\"920\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"80\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"290\" y1=\"80\" x2=\"290\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"500\" y1=\"80\" x2=\"500\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"710\" y1=\"80\" x2=\"710\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"920\" y1=\"80\" x2=\"920\" y2=\"304\"/>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"116\" text-anchor=\"start\">Option</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"172\" text-anchor=\"start\">Total nails</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"228\" text-anchor=\"start\">Box size</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"284\" text-anchor=\"start\">Unit rate (nails per item)</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"116\" text-anchor=\"middle\">A</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"172\" text-anchor=\"middle\">66</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"116\" text-anchor=\"middle\">B</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"172\" text-anchor=\"middle\">66</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"116\" text-anchor=\"middle\">C</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"172\" text-anchor=\"middle\">5</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"228\" text-anchor=\"middle\">5</text>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"395\" y=\"284\" text-anchor=\"middle\">?</text>\n<text class=\"rt-unknown-lbl\" x=\"605\" y=\"284\" text-anchor=\"middle\">?</text>\n<text class=\"rt-unknown-lbl\" x=\"815\" y=\"284\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
-      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 300\" role=\"img\" aria-label=\"Answer key. A comparison table of the options&#39; total amount and pack size. The solved quantities are shown.\">\n<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. The solution overlay reveals the answer to: You can buy nails: option A has 66 nails in a box of 6; option B has 66 nails in a box of 6; option C has 5 nails in a box of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"48\" text-anchor=\"middle\">Compare the options by unit rate</text>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"920\" y2=\"80\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"136\" x2=\"920\" y2=\"136\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"192\" x2=\"920\" y2=\"192\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"248\" x2=\"920\" y2=\"248\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"304\" x2=\"920\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"80\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"290\" y1=\"80\" x2=\"290\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"500\" y1=\"80\" x2=\"500\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"710\" y1=\"80\" x2=\"710\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"920\" y1=\"80\" x2=\"920\" y2=\"304\"/>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"116\" text-anchor=\"start\">Option</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"172\" text-anchor=\"start\">Total nails</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"228\" text-anchor=\"start\">Box size</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"284\" text-anchor=\"start\">Unit rate (nails per item)</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"116\" text-anchor=\"middle\">A</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"172\" text-anchor=\"middle\">66</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"116\" text-anchor=\"middle\">B</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"172\" text-anchor=\"middle\">66</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"116\" text-anchor=\"middle\">C</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"172\" text-anchor=\"middle\">5</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"228\" text-anchor=\"middle\">5</text>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"395\" y=\"284\" text-anchor=\"middle\">11</text>\n<text class=\"rt-unknown-lbl\" x=\"605\" y=\"284\" text-anchor=\"middle\">11</text>\n<text class=\"rt-unknown-lbl\" x=\"815\" y=\"284\" text-anchor=\"middle\">1 \u2713</text>\n</g>\n</svg>",
+      "studentAltText": "A comparison table of the options' total amount and pack size. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.",
+      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 300\" role=\"img\" aria-label=\"A comparison table of the options&#39; total amount and pack size. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.\">\n<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. Unknown quantities are marked with a question mark. You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"48\" text-anchor=\"middle\">Compare the options by unit rate</text>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"920\" y2=\"80\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"136\" x2=\"920\" y2=\"136\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"192\" x2=\"920\" y2=\"192\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"248\" x2=\"920\" y2=\"248\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"304\" x2=\"920\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"80\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"290\" y1=\"80\" x2=\"290\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"500\" y1=\"80\" x2=\"500\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"710\" y1=\"80\" x2=\"710\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"920\" y1=\"80\" x2=\"920\" y2=\"304\"/>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"116\" text-anchor=\"start\">Option</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"172\" text-anchor=\"start\">Total sheets</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"228\" text-anchor=\"start\">Ream size</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"284\" text-anchor=\"start\">Unit rate (sheets per item)</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"116\" text-anchor=\"middle\">A</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"172\" text-anchor=\"middle\">16</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"228\" text-anchor=\"middle\">4</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"116\" text-anchor=\"middle\">B</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"172\" text-anchor=\"middle\">18</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"116\" text-anchor=\"middle\">C</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"172\" text-anchor=\"middle\">10</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"228\" text-anchor=\"middle\">5</text>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"395\" y=\"284\" text-anchor=\"middle\">?</text>\n<text class=\"rt-unknown-lbl\" x=\"605\" y=\"284\" text-anchor=\"middle\">?</text>\n<text class=\"rt-unknown-lbl\" x=\"815\" y=\"284\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 300\" role=\"img\" aria-label=\"Answer key. A comparison table of the options&#39; total amount and pack size. The solved quantities are shown.\">\n<title>Best-buy comparison table</title><desc>A comparison table of the options&#39; total amount and pack size. The solution overlay reveals the answer to: You can buy paper: option A has 16 sheets in a ream of 4; option B has 18 sheets in a ream of 6; option C has 10 sheets in a ream of 5. Which option is the best value (the lowest amount per item)? Choose the best option.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"48\" text-anchor=\"middle\">Compare the options by unit rate</text>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"920\" y2=\"80\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"136\" x2=\"920\" y2=\"136\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"192\" x2=\"920\" y2=\"192\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"248\" x2=\"920\" y2=\"248\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"304\" x2=\"920\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"80\" y1=\"80\" x2=\"80\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"290\" y1=\"80\" x2=\"290\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"500\" y1=\"80\" x2=\"500\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"710\" y1=\"80\" x2=\"710\" y2=\"304\"/>\n<line class=\"rt-table-line\" x1=\"920\" y1=\"80\" x2=\"920\" y2=\"304\"/>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"116\" text-anchor=\"start\">Option</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"172\" text-anchor=\"start\">Total sheets</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"228\" text-anchor=\"start\">Ream size</text>\n<text class=\"rt-ticklbl\" x=\"92\" y=\"284\" text-anchor=\"start\">Unit rate (sheets per item)</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"116\" text-anchor=\"middle\">A</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"172\" text-anchor=\"middle\">16</text>\n<text class=\"rt-lbl\" x=\"395\" y=\"228\" text-anchor=\"middle\">4</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"116\" text-anchor=\"middle\">B</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"172\" text-anchor=\"middle\">18</text>\n<text class=\"rt-lbl\" x=\"605\" y=\"228\" text-anchor=\"middle\">6</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"116\" text-anchor=\"middle\">C</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"172\" text-anchor=\"middle\">10</text>\n<text class=\"rt-lbl\" x=\"815\" y=\"228\" text-anchor=\"middle\">5</text>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"395\" y=\"284\" text-anchor=\"middle\">4</text>\n<text class=\"rt-unknown-lbl\" x=\"605\" y=\"284\" text-anchor=\"middle\">3</text>\n<text class=\"rt-unknown-lbl\" x=\"815\" y=\"284\" text-anchor=\"middle\">2 \u2713</text>\n</g>\n</svg>",
       "studentDataTable": {
         "columns": [
           "Option",
-          "Total nails",
+          "Total sheets",
           "Pack size"
         ],
         "rows": [
           [
             "A",
-            "66",
-            "6"
+            "16",
+            "4"
           ],
           [
             "B",
-            "66",
+            "18",
             "6"
           ],
           [
             "C",
-            "5",
+            "10",
             "5"
           ]
         ]
@@ -4699,28 +4735,28 @@
       "answerKeyDataTable": {
         "columns": [
           "Option",
-          "Total nails",
+          "Total sheets",
           "Pack size",
           "Unit rate"
         ],
         "rows": [
           [
             "A",
-            "66",
-            "6",
-            "11"
+            "16",
+            "4",
+            "4"
           ],
           [
             "B",
-            "66",
+            "18",
             "6",
-            "11"
+            "3"
           ],
           [
             "C",
+            "10",
             "5",
-            "5",
-            "1 (best)"
+            "2 (best)"
           ]
         ]
       },
@@ -4729,20 +4765,20 @@
         {
           "label": "A",
           "value": "A",
-          "display": "66 nails per box of 6",
+          "display": "16 sheets per ream of 4",
           "correct": false
         },
         {
           "label": "B",
           "value": "B",
-          "display": "66 nails per box of 6",
+          "display": "18 sheets per ream of 6",
           "correct": false,
           "misconceptionId": "MISC.RATIO.NO_UNIT_RATE_COMPARE"
         },
         {
           "label": "C",
           "value": "C",
-          "display": "5 nails per box of 5",
+          "display": "10 sheets per ream of 5",
           "correct": true
         }
       ],
@@ -4757,7 +4793,7 @@
       "band": 3,
       "axes": {
         "numericalComplexity": 0.65,
-        "exactVsApproximate": 0.0,
+        "exactVsApproximate": 0,
         "reasoningSteps": 0.55,
         "abstraction": 0.5
       },
@@ -4907,6 +4943,573 @@
       "figureKind": "numberline",
       "coversCells": [
         "band:unit_rate:3"
+      ]
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.RATIO.SIMPLE_SCALE.01",
+      "task": "simple_scale",
+      "seed": 109,
+      "band": 3,
+      "axes": {
+        "numericalComplexity": 0.3,
+        "exactVsApproximate": 0,
+        "reasoningSteps": 0.5,
+        "abstraction": 0.5
+      },
+      "interactionType": "free-response",
+      "answerType": "integer",
+      "prompt": "On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.",
+      "canonicalAnswer": {
+        "num": 24,
+        "den": 1
+      },
+      "answerDisplay": "24",
+      "acceptedFormOrCheckerBehaviour": "Exact-rational checker: the answer is the exact reduced Fraction (num/den); no float, no tolerance; integer-when-whole carries den 1.",
+      "workedSolution": [
+        {
+          "number": 1,
+          "transformation": "Find the scale factor",
+          "intermediateResult": "6/2"
+        },
+        {
+          "number": 2,
+          "transformation": "Multiply the value by the scale factor",
+          "intermediateResult": "8 \u00d7 6/2 = 24"
+        }
+      ],
+      "params": {
+        "task": "simple_scale",
+        "scaleKind": "plan",
+        "srcUnit": "centimetres on the plan",
+        "dstUnit": "metres in the building",
+        "value": 8,
+        "factorNum": 6,
+        "factorDen": 2,
+        "direction": "multiply"
+      },
+      "diagnosticsExercised": [
+        {
+          "misconceptionId": "MISC.RATIO.SCALE_WRONG_DIRECTION",
+          "predictedResponse": "8/3",
+          "expectedResultCode": "incorrect"
+        },
+        {
+          "misconceptionId": "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE",
+          "predictedResponse": "12",
+          "expectedResultCode": "incorrect"
+        }
+      ],
+      "validationChecks": [
+        {
+          "name": "objective-mapping",
+          "ok": true
+        },
+        {
+          "name": "interaction-supported",
+          "ok": true
+        },
+        {
+          "name": "fr-only-task-not-mc",
+          "ok": true
+        },
+        {
+          "name": "answer-recomputes",
+          "ok": true
+        },
+        {
+          "name": "rational-exact-and-reduced",
+          "ok": true
+        },
+        {
+          "name": "scale-recomputes",
+          "ok": true
+        },
+        {
+          "name": "media-present",
+          "ok": true
+        },
+        {
+          "name": "media-kind-svg",
+          "ok": true
+        },
+        {
+          "name": "student-svg-realises-params",
+          "ok": true
+        },
+        {
+          "name": "answer-key-svg-realises-params",
+          "ok": true
+        },
+        {
+          "name": "student-figure-has-no-overlay",
+          "ok": true
+        },
+        {
+          "name": "answer-key-overlay-additive",
+          "ok": true
+        },
+        {
+          "name": "student-and-key-share-base",
+          "ok": true
+        },
+        {
+          "name": "student-unknown-marked-not-valued",
+          "ok": true
+        },
+        {
+          "name": "answer-key-reveals-unknown",
+          "ok": true
+        },
+        {
+          "name": "student-a11y-no-result",
+          "ok": true
+        },
+        {
+          "name": "dataTableFallback-present",
+          "ok": true
+        },
+        {
+          "name": "difficulty-in-band",
+          "ok": true
+        }
+      ],
+      "valid": true,
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(109, {'task': 'simple_scale'})))\"",
+      "curriculumReviewDecision": null,
+      "studentAltText": "A double number line aligning the two proportional quantities. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.",
+      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"A double number line aligning the two proportional quantities. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">centimetres on the plan</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">metres in the building</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">2</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">6</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">8</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 2 centimetres on the plan represent 6 metres in the building. What do 8 centimetres on the plan represent? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">centimetres on the plan</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">metres in the building</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">2</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">6</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">8</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">24</text>\n</g>\n</svg>",
+      "studentDataTable": {
+        "columns": [
+          "centimetres on the plan",
+          "metres in the building"
+        ],
+        "rows": [
+          [
+            "2",
+            "6"
+          ],
+          [
+            "8",
+            "?"
+          ]
+        ]
+      },
+      "answerKeyAltText": "Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.",
+      "answerKeyDataTable": {
+        "columns": [
+          "centimetres on the plan",
+          "metres in the building"
+        ],
+        "rows": [
+          [
+            "2",
+            "6"
+          ],
+          [
+            "8",
+            "24"
+          ]
+        ]
+      },
+      "figureKind": "numberline",
+      "coversCells": [
+        "band:simple_scale:3"
+      ]
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01",
+      "task": "write_from_quantities",
+      "seed": 135,
+      "band": 2,
+      "axes": {
+        "numericalComplexity": 0.3,
+        "exactVsApproximate": 0,
+        "reasoningSteps": 0.35,
+        "abstraction": 0.3
+      },
+      "interactionType": "free-response",
+      "answerType": "ratio",
+      "prompt": "In a recipe there are 3 flour, 21 sugar. Write the ratio of flour to sugar in its simplest form.",
+      "canonicalAnswer": {
+        "parts": [
+          1,
+          7
+        ]
+      },
+      "answerDisplay": "1:7",
+      "acceptedFormOrCheckerBehaviour": "Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (any equivalent ordered ratio accepted). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes.",
+      "workedSolution": [
+        {
+          "number": 1,
+          "transformation": "Find the greatest common divisor of the parts",
+          "intermediateResult": "gcd = 3"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide every part by the gcd, keeping the order",
+          "intermediateResult": "1:7"
+        }
+      ],
+      "params": {
+        "task": "write_from_quantities",
+        "title": "Recipe",
+        "labels": [
+          "flour",
+          "sugar"
+        ],
+        "unit": "grams",
+        "quantities": [
+          3,
+          21
+        ]
+      },
+      "diagnosticsExercised": [
+        {
+          "misconceptionId": "MISC.RATIO.REVERSED_ORDER",
+          "predictedResponse": "7:1",
+          "expectedResultCode": "wrong-order"
+        },
+        {
+          "misconceptionId": "MISC.RATIO.NOT_SIMPLIFIED",
+          "predictedResponse": "3:21",
+          "expectedResultCode": "equivalent-not-simplified"
+        }
+      ],
+      "validationChecks": [
+        {
+          "name": "objective-mapping",
+          "ok": true
+        },
+        {
+          "name": "interaction-supported",
+          "ok": true
+        },
+        {
+          "name": "fr-only-task-not-mc",
+          "ok": true
+        },
+        {
+          "name": "answer-recomputes",
+          "ok": true
+        },
+        {
+          "name": "ratio-in-simplest-form",
+          "ok": true
+        },
+        {
+          "name": "ratio-order-preserved",
+          "ok": true
+        },
+        {
+          "name": "checker-accepts-self",
+          "ok": true
+        },
+        {
+          "name": "checker-flags-unsimplified",
+          "ok": true
+        },
+        {
+          "name": "no-figure-for-narrow-task",
+          "ok": true
+        },
+        {
+          "name": "difficulty-in-band",
+          "ok": true
+        }
+      ],
+      "valid": true,
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(135, {'task': 'write_from_quantities'})))\"",
+      "curriculumReviewDecision": null,
+      "studentAltText": "No figure; the data is given in the prompt. In a recipe there are 3 flour, 21 sugar. Write the ratio of flour to sugar in its simplest form.",
+      "studentDataTable": {
+        "columns": [
+          "Quantity",
+          "Value"
+        ],
+        "rows": [],
+        "note": "no figure for this task; data is given in the prompt"
+      },
+      "coversCells": [
+        "band:write_from_quantities:2"
+      ]
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
+      "task": "direct_proportion",
+      "seed": 142,
+      "band": 2,
+      "axes": {
+        "numericalComplexity": 0.3,
+        "exactVsApproximate": 0,
+        "reasoningSteps": 0.55,
+        "abstraction": 0.5
+      },
+      "interactionType": "free-response",
+      "answerType": "integer",
+      "prompt": "5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.",
+      "canonicalAnswer": {
+        "num": 8,
+        "den": 1
+      },
+      "answerDisplay": "8",
+      "acceptedFormOrCheckerBehaviour": "Exact-rational checker: the answer is the exact reduced Fraction (num/den); no float, no tolerance; integer-when-whole carries den 1.",
+      "workedSolution": [
+        {
+          "number": 1,
+          "transformation": "Find the value of one unit",
+          "intermediateResult": "10 \u00f7 5 = 2"
+        },
+        {
+          "number": 2,
+          "transformation": "Multiply by the required quantity",
+          "intermediateResult": "2 \u00d7 4 = 8"
+        }
+      ],
+      "params": {
+        "task": "direct_proportion",
+        "givenLabel": "litres",
+        "perLabel": "tanks",
+        "quantity": 5,
+        "total": 10,
+        "target": 4
+      },
+      "diagnosticsExercised": [
+        {
+          "misconceptionId": "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE",
+          "predictedResponse": "9",
+          "expectedResultCode": "incorrect"
+        },
+        {
+          "misconceptionId": "MISC.RATIO.INVERSE_FOR_DIRECT",
+          "predictedResponse": "25/2",
+          "expectedResultCode": "incorrect"
+        },
+        {
+          "misconceptionId": "MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY",
+          "predictedResponse": "1/2",
+          "expectedResultCode": "incorrect"
+        }
+      ],
+      "validationChecks": [
+        {
+          "name": "objective-mapping",
+          "ok": true
+        },
+        {
+          "name": "interaction-supported",
+          "ok": true
+        },
+        {
+          "name": "answer-recomputes",
+          "ok": true
+        },
+        {
+          "name": "rational-exact-and-reduced",
+          "ok": true
+        },
+        {
+          "name": "direct-cross-multiplies",
+          "ok": true
+        },
+        {
+          "name": "media-present",
+          "ok": true
+        },
+        {
+          "name": "media-kind-svg",
+          "ok": true
+        },
+        {
+          "name": "student-svg-realises-params",
+          "ok": true
+        },
+        {
+          "name": "answer-key-svg-realises-params",
+          "ok": true
+        },
+        {
+          "name": "student-figure-has-no-overlay",
+          "ok": true
+        },
+        {
+          "name": "answer-key-overlay-additive",
+          "ok": true
+        },
+        {
+          "name": "student-and-key-share-base",
+          "ok": true
+        },
+        {
+          "name": "student-unknown-marked-not-valued",
+          "ok": true
+        },
+        {
+          "name": "answer-key-reveals-unknown",
+          "ok": true
+        },
+        {
+          "name": "student-a11y-no-result",
+          "ok": true
+        },
+        {
+          "name": "dataTableFallback-present",
+          "ok": true
+        },
+        {
+          "name": "difficulty-in-band",
+          "ok": true
+        }
+      ],
+      "valid": true,
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(142, {'task': 'direct_proportion'})))\"",
+      "curriculumReviewDecision": null,
+      "studentAltText": "A double number line aligning the two proportional quantities. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.",
+      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"A double number line aligning the two proportional quantities. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">tanks</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">litres</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">5</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">10</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">4</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: 5 tanks hold 10 litres. How many litres are in 4 tanks? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">tanks</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">litres</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">5</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">10</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">4</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">8</text>\n</g>\n</svg>",
+      "studentDataTable": {
+        "columns": [
+          "tanks",
+          "litres"
+        ],
+        "rows": [
+          [
+            "5",
+            "10"
+          ],
+          [
+            "4",
+            "?"
+          ]
+        ]
+      },
+      "answerKeyAltText": "Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.",
+      "answerKeyDataTable": {
+        "columns": [
+          "tanks",
+          "litres"
+        ],
+        "rows": [
+          [
+            "5",
+            "10"
+          ],
+          [
+            "4",
+            "8"
+          ]
+        ]
+      },
+      "figureKind": "numberline",
+      "coversCells": [
+        "band:direct_proportion:2"
+      ]
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.RATIO.SIMPLIFY.01",
+      "task": "simplify",
+      "seed": 453,
+      "band": 1,
+      "axes": {
+        "numericalComplexity": 0.3,
+        "exactVsApproximate": 0,
+        "reasoningSteps": 0.3,
+        "abstraction": 0.25
+      },
+      "interactionType": "free-response",
+      "answerType": "ratio",
+      "prompt": "Write the ratio 3:3 in its simplest form.",
+      "canonicalAnswer": {
+        "parts": [
+          1,
+          1
+        ]
+      },
+      "answerDisplay": "1:1",
+      "acceptedFormOrCheckerBehaviour": "Ratio checker (order-sensitive): the canonical simplest-form ordered tuple is the answer; an equivalent form is judged by require_simplest (simplest form required). Reversed order is rejected (wrong-order); a different ratio is wrong-ratio; the wrong number of parts is wrong-number-of-parts; zero/negative/malformed/extra-text/comma/unicode-colon/'to' all map to their named result codes.",
+      "workedSolution": [
+        {
+          "number": 1,
+          "transformation": "Find the greatest common divisor of the parts",
+          "intermediateResult": "gcd = 3"
+        },
+        {
+          "number": 2,
+          "transformation": "Divide every part by the gcd, keeping the order",
+          "intermediateResult": "1:1"
+        }
+      ],
+      "params": {
+        "task": "simplify",
+        "parts": [
+          3,
+          3
+        ]
+      },
+      "diagnosticsExercised": [
+        {
+          "misconceptionId": "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED",
+          "predictedResponse": "3:3",
+          "expectedResultCode": "equivalent-not-simplified"
+        },
+        {
+          "misconceptionId": "MISC.RATIO.ADDS_PARTS_WRONG",
+          "predictedResponse": "2",
+          "expectedResultCode": "malformed-response"
+        }
+      ],
+      "validationChecks": [
+        {
+          "name": "objective-mapping",
+          "ok": true
+        },
+        {
+          "name": "interaction-supported",
+          "ok": true
+        },
+        {
+          "name": "answer-recomputes",
+          "ok": true
+        },
+        {
+          "name": "ratio-in-simplest-form",
+          "ok": true
+        },
+        {
+          "name": "ratio-order-preserved",
+          "ok": true
+        },
+        {
+          "name": "checker-accepts-self",
+          "ok": true
+        },
+        {
+          "name": "checker-flags-unsimplified",
+          "ok": true
+        },
+        {
+          "name": "no-figure-for-narrow-task",
+          "ok": true
+        },
+        {
+          "name": "difficulty-in-band",
+          "ok": true
+        }
+      ],
+      "valid": true,
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(453, {'task': 'simplify'})))\"",
+      "curriculumReviewDecision": null,
+      "studentAltText": "No figure; the data is given in the prompt. Write the ratio 3:3 in its simplest form.",
+      "studentDataTable": {
+        "columns": [
+          "Quantity",
+          "Value"
+        ],
+        "rows": [],
+        "note": "no figure for this task; data is given in the prompt"
+      },
+      "coversCells": [
+        "band:simplify:1"
       ]
     }
   ]

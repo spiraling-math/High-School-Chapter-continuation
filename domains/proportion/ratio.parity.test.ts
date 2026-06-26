@@ -22,8 +22,14 @@ function firstDiff(got: string, want: string): string {
   return `@${i}: TS …${got.slice(Math.max(0, i - 50), i + 40)}…  vs  PY …${want.slice(Math.max(0, i - 50), i + 40)}…`;
 }
 
-function configFor(e: { task: string | null; interaction: string }): Record<string, string> {
-  const cfg: Record<string, string> = { interactionType: e.interaction };
+function configFor(e: { task: string | null; interaction: string | null }): Record<string, string> {
+  // Reconstruct the EXACT generation config. A null interaction marks the default-interaction path
+  // (no interactionType supplied -> full 12-task draw pool); passing an explicit interactionType there
+  // would take a narrowed pool and shift the RNG draw index. So only set interactionType when present.
+  const cfg: Record<string, string> = {};
+  if (e.interaction !== null && e.interaction !== undefined) {
+    cfg.interactionType = e.interaction;
+  }
   if (e.task !== null && e.task !== undefined) {
     cfg.task = e.task;
   }

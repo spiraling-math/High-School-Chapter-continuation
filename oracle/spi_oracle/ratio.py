@@ -309,6 +309,10 @@ def _draw_best_buy(rng: Mulberry32) -> Optional[Dict[str, Any]]:
                         "unitRate": {"num": total_amount, "den": pack_size}})
     # require a UNIQUE strict-minimum exact unit rate (redraw on a tie)
     rates = [Fraction(o["totalAmount"], o["packSize"]) for o in options]
+    # require ALL option unit rates PAIRWISE DISTINCT — two equal non-winning rates would render two
+    # byte-identical MC option displays (e.g. "48 sheets per ream of 4"). Redraw on any tie.
+    if len(set(rates)) != len(rates):
+        return None
     mn = min(rates)
     winners = [i for i, r in enumerate(rates) if r == mn]
     if len(winners) != 1:
@@ -737,11 +741,58 @@ def _is_high_complexity(task: str, params: Dict[str, Any]) -> bool:
     return False
 
 
+def _complexity_tier(task: str, params: Dict[str, Any]) -> int:
+    """Deterministic complexity classifier returning a tier in {0, 1, 2} from MEANINGFUL structural
+    features of the item. tier 0 = simplest, tier 2 = hardest. The four tasks that declare a 3-value
+    band ([lo,lo+1,lo+2]) accumulate up to three independent structural signals so the MIDDLE band
+    (tier 1) genuinely occurs; the other eight tasks (2-value bands) keep the binary high/low lever
+    (tier 0 or tier 2) so both endpoints stay covered. Identical in ratio.ts."""
+    if task in ("simplify", "write_from_quantities"):
+        parts = params.get("parts") or params.get("quantities")
+        s = 0
+        if len(parts) == 3:                                 # three-part is harder than two-part
+            s += 1
+        if RC.gcd_list(parts) >= 4:                         # larger gcd -> more reduction work
+            s += 1
+        if max(parts) >= 12:                                # larger operands
+            s += 1
+        return min(s, 2)
+    if task == "direct_proportion":
+        sol = _solve(task, params)
+        s = 0
+        if sol.denominator > 1:                             # fractional result harder
+            s += 1
+        if params["target"] >= 7:                           # larger multiplier
+            s += 1
+        if params["total"] >= 12:                           # larger operands
+            s += 1
+        return min(s, 2)
+    if task == "simple_scale":
+        sol = _solve(task, params)
+        s = 0
+        if sol.denominator > 1:                             # fractional result harder
+            s += 1
+        if params["value"] >= 11:                           # larger value to scale
+            s += 1
+        if max(params["factorNum"], params["factorDen"]) >= 6:   # larger scale factor parts
+            s += 1
+        return min(s, 2)
+    # 2-value-band tasks: keep the binary high/low lever (tier 0 -> lo, tier 2 -> hi).
+    return 2 if _is_high_complexity(task, params) else 0
+
+
 def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
     lo, hi = TASK_BANDS[task]
     high = _is_high_complexity(task, params)
-    # span the FULL declared range: low complexity -> lo; high complexity -> hi.
-    band = hi if high else lo
+    # Map the structural complexity tier onto the FULL declared inclusive range [lo,hi] so every band
+    # (including the interior band of a 3-span task) is reachable. For a 2-span task the tier is 0 or 2,
+    # so tier==0 -> lo and any higher tier -> hi keeps both endpoints covered.
+    span = hi - lo + 1
+    tier = _complexity_tier(task, params)
+    if span <= 2:
+        band = lo if tier == 0 else hi
+    else:
+        band = min(lo + tier, hi)
 
     sol = _solve(task, params)
     frac = isinstance(sol, Fraction) and sol.denominator > 1
@@ -1033,9 +1084,20 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
 
     rng = Mulberry32(seed)
     if explicit is None:
-        # if MC is explicitly requested with no task, draw only from MC-eligible tasks.
+        # No task supplied: narrow the draw pool to tasks the requested interaction can actually serve,
+        # so a no-task request NEVER raises InteractionNotSupported.
+        #   * MC requested  -> only MC-eligible tasks (existing behaviour).
+        #   * FR requested   -> exclude MC-ONLY tasks (best_buy), which cannot be free-response.
+        #   * default (None) -> the full RATIO_TASKS pool unchanged (best_buy then resolves to its
+        #     default MC interaction), so the committed default-interaction golden vectors are
+        #     byte-for-byte unaffected.
         requested = config.get("interactionType")
-        pool = list(MC_ELIGIBLE_TASKS) if requested == "multiple-choice" else list(RATIO_TASKS)
+        if requested == "multiple-choice":
+            pool = list(MC_ELIGIBLE_TASKS)
+        elif requested == "free-response":
+            pool = [t for t in RATIO_TASKS if t not in MC_ONLY_TASKS]
+        else:
+            pool = list(RATIO_TASKS)
         task = pool[_n(rng, len(pool))]
     else:
         task = explicit
@@ -1274,6 +1336,10 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         opts = item.get("options") or []
         vals = [json.dumps(o["value"], sort_keys=True) for o in opts]
         add("mc-options-distinct", len(set(vals)) == len(vals))
+        # the option VALUE keys are always distinct (A/B/C labels / canonical encodings); the learner
+        # actually reads the DISPLAY strings, so assert those are pairwise distinct too (owner C / D).
+        disps = [o.get("display") for o in opts]
+        add("mc-option-displays-distinct", len(set(disps)) == len(disps), f"displays={disps}")
         add("mc-one-correct", sum(1 for o in opts if o.get("correct")) == 1)
         if task == "best_buy":
             # the MC option set IS the labelled buy options (2 or 3); the correct one is the strict min.

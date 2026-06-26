@@ -171,6 +171,56 @@ class TestDiagnostics(unittest.TestCase):
         self.assertEqual(len(RM.ALL_IDS), 16)
 
 
+class TestRegressionDefects(unittest.TestCase):
+    """Regression guards for the five confirmed v1.0.0 defects (oracle-first; mirrored in TS)."""
+
+    def test_best_buy_mc_option_displays_pairwise_distinct(self):
+        # DEFECT 4: two non-winning options could share a unit rate -> byte-identical displays.
+        # Over a wide seed sweep every best_buy MC item must have pairwise-distinct option DISPLAYS,
+        # the new mc-option-displays-distinct validator must pass, and the formerly-bad seeds repro clean.
+        for seed in range(1, 3001):
+            it = R.generate(seed, {"task": "best_buy"})
+            disps = [o["display"] for o in it["options"]]
+            self.assertEqual(len(set(disps)), len(disps), f"seed {seed} duplicate displays {disps}")
+            names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+            self.assertTrue(names.get("mc-option-displays-distinct"), f"seed {seed} displays-distinct check")
+        for seed in (95, 271, 314, 549, 748, 992):
+            it = R.generate(seed, {"task": "best_buy"})
+            disps = [o["display"] for o in it["options"]]
+            self.assertEqual(len(set(disps)), len(disps), f"formerly-dup seed {seed}: {disps}")
+
+    def test_no_task_free_response_never_raises(self):
+        # DEFECT 5: a no-task free-response request must NEVER raise InteractionNotSupported, and must
+        # never select an MC-only task (best_buy).
+        for seed in range(1, 2501):
+            it = R.generate(seed, {"interactionType": "free-response"})
+            self.assertEqual(it["interactionType"], "free-response", seed)
+            self.assertNotIn(it["params"]["task"], R.MC_ONLY_TASKS, f"seed {seed} picked MC-only task")
+
+    def test_every_declared_band_reachable_per_task(self):
+        # DEFECT 6/7: every band in the DECLARED inclusive range [lo,hi] is produced across a seed
+        # sweep (the previously-unreachable interior band of the four 3-span tasks now occurs).
+        from collections import Counter
+        per = {t: Counter() for t in R.RATIO_TASKS}
+        for seed in range(1, 6001):
+            it = R.generate(seed)
+            p = it["params"]
+            per[p["task"]][it["difficulty"]["overallBand"]] += 1
+        for task in R.RATIO_TASKS:
+            lo, hi = R.TASK_BANDS[task]
+            for band in range(lo, hi + 1):
+                self.assertGreater(per[task][band], 0,
+                                   f"{task} band {band} in declared range [{lo},{hi}] is unreachable")
+
+    def test_misconception_reverse_relationships(self):
+        # DEFECT 8: the two omitted reverse objectiveRelationships are present.
+        by_id = {m["misconceptionId"]: m for m in RM.MISCONCEPTIONS}
+        self.assertIn("SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01",
+                      by_id["MISC.RATIO.NOT_SIMPLIFIED"]["objectiveRelationships"])
+        self.assertIn("SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01",
+                      by_id["MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE"]["objectiveRelationships"])
+
+
 class TestParityFixture(unittest.TestCase):
     def test_parity_fixture_reproducible(self):
         path = os.path.join(ROOT, "oracle", "golden", "ratio.parity.json")

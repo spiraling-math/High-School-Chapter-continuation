@@ -4,7 +4,7 @@
   "validatorVersion": "1.0.0",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "11ffb9d00a7392f287e71607ae5d152b9f363091",
+  "gitCommit": "90d88a381232f7894ae5360a47fb8fd698c5615c",
   "hiddenFromNormalStudioAndProduction": true,
   "versionTags": {
     "previousVersionTag": null,
@@ -71,42 +71,42 @@
   "artifacts": {
     "oracleCore": {
       "path": "oracle/spi_oracle/ratio_core.py",
-      "sha256": "b1292da60851a6f087cab755be1281d3dba2588a298b0faad402b8c0ad3a0bcf",
+      "sha256": "7da04480d8f507ddeda85e9bd598a0a8de961ce6a4a594a9539315913ebb8f99",
       "present": true
     },
     "oracleMisconceptions": {
       "path": "oracle/spi_oracle/ratio_misconceptions.py",
-      "sha256": "c221a287bb420499488aabcb99009ca4f594db0459dedc97301819771f1fa303",
+      "sha256": "bb9d40098b8afc496fb3d47e0de55816c8e6e027ec8b9a51528903c47bb061df",
       "present": true
     },
     "oracleGenerator": {
       "path": "oracle/spi_oracle/ratio.py",
-      "sha256": "ede1092b1bb7a21601716bc46d93cc7c30dcdec4ba3a1c86b03a30f0c88da47e",
+      "sha256": "b5e54026346afff4e3c48b66e851e1e4a175505cec3df9b1b5da90b9bc2f36bc",
       "present": true
     },
     "golden": {
       "path": "oracle/golden/ratio.golden.json",
-      "sha256": "fed80d71609c0ea824ba9886a5e6ab4052701c073cd59d09d527954d242919f3",
+      "sha256": "e6370254b15ac391d8904804c709b6da19bd062acb44cc7ff407771796632a23",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/ratio.parity.json",
-      "sha256": "a0305e72f4d22d2a1c1b18207607022630f55c9c23a0ff8ce605c9129e9b4d23",
+      "sha256": "2598b7bc4a0dc70e0a7a836674bdd71d8bcee9fe1bdb4a74eb771b45e98fa0fe",
       "present": true
     },
     "tsCore": {
       "path": "domains/proportion/ratio-core.ts",
-      "sha256": "7caaf503cf503f4db7e970ca1e29c923bb3553807df140ff72256694da5d068e",
+      "sha256": "e1c3f1578896fdcd7a2b6a387bdd390ad3e00f45f8465a6d5f8a01bae4451201",
       "present": true
     },
     "tsMisconceptions": {
       "path": "domains/proportion/ratio-misconceptions.ts",
-      "sha256": "5e65c4f321e6fefa403feafb8293a74b6f389243e55d8ad62a10b92a042371e1",
+      "sha256": "b321bcd9bc2a543ef5d07f8316ab803b0804530e18601c6a195aee659447a955",
       "present": true
     },
     "tsGenerator": {
       "path": "domains/proportion/ratio.ts",
-      "sha256": "b40f3dc979703893fffa451e6c373a30eadf940f1d6825a1c1aa3e8d322ba915",
+      "sha256": "5156fbff9f51e36b31e5a55781056c33016deda27e9ae9bb388a539d0936863f",
       "present": true
     },
     "tsParityTest": {
@@ -146,27 +146,27 @@
     },
     "distribution": {
       "path": "docs/review/ratio_distribution.json",
-      "sha256": "86e3fb570ae959e3015ba84bacbf11321d0968d65209446c5b9cdf74d9c5a6a5",
+      "sha256": "3164fa46b00707dcf2be21f2ef9e4bf9a0ae92db0ac34b4a990b9e6f9516f321",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/proportion_ratio_review_pack.json",
-      "sha256": "f754a8232b1a4a5e1b919c6381893621704d2c79680d23f1fe0dbbb215b05177",
+      "sha256": "e793660974918f09b71971194187443b47fc7a0ce4a40f7463c0447cad282e80",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/proportion_ratio_review_pack.md",
-      "sha256": "7de61bdcd2c7f06ffb993731eb6c5e4e183327b5885cf4ce8fab6c25f8dff090",
+      "sha256": "25f0f23a116d6a1fd9f1e6041ccb0610994c4c9b51aecea6953b2e00d4c8c1b4",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/proportion_ratio_visual_audit.html",
-      "sha256": "c22179c75262e83d9bc02bc891ccf572d5de351367fc60b9105e1f4cbba0ee9d",
+      "sha256": "4acc31fc70765d4dbba001a6a4e379e92f3ccface418a6c4a4e8823744fd426e",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/proportion_ratio_browser_verification.json",
-      "sha256": "951ef89824d6751f4930ad7c14e3812caea7951860da9f2582f838739516a307",
+      "sha256": "e10688bbeeeaff1a49b03b87db25f5c7bc1e117cc45e8bfc392c06d93843bc13",
       "present": true
     }
   }
