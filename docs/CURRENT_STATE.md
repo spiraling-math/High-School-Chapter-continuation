@@ -1,6 +1,39 @@
 # Current State
 
-Last updated: 2026-06-25.
+Last updated: 2026-06-26.
+
+## `gen.proportion.ratio` v1.0.0 — IMPLEMENTED, PENDING-REVIEW (2026-06-26)
+
+**Owner REVISE-with-authorization (DECISION_LOG #58, decisions A–M): implemented oracle-first and registered
+`pending-review`; awaiting the owner's APPROVE / REVISE / REJECT.** The platform's **ninth** generator family
+and **fourth** structured canonical-first answer type. Twelve tasks under `SPI.MIDDLE.RATIO.*` (simplify;
+write-from-quantities; ratio↔fraction-of-whole; share two-/three-part; missing-part; direct + inverse
+proportion by the unitary method; unit-rate; best-buy; simple-scale). The additive `answer.type "ratio"`
+schema extension (ordered positive-integer simplest-form `{parts}` IS `answer.canonical`; order-sensitive
+`2:3≠3:2`; equivalence `2:3=4:6`; `if/then/const` + reverse guard in Ajv + Python conformance) is APPROVED;
+multi-part `table-completion` sharing; a new **non-Cartesian** bar-model / double-number-line / proportional-
+table renderer (additive `core/visual-style/ratio-theme`, four modes, 6000×4200, byte parity); exact
+proportional reasoning (gcd, cross-multiplication, total-parts, unitary method, inverse product invariant,
+scale — no floats); `MISC.RATIO.*` (16 misconceptions); the ASCII-anchored ratio parser + the 9-code +
+3-code result vocabulary. The generator is registered `approvalStatus: pending-review` — visible only in the
+Studio's review mode, **excluded from normal Studio + production exports/samples** — until the owner decides.
+
+**Adversarially hardened (ultracode).** A 10-dimension adversarial review + independent verification found
+**8 defects, all fixed in v1.0.0 before submission**, the headline being a **CRITICAL grading-path parity
+break**: the Python parser accepted non-ASCII unicode digits (`٢:٣`, `３`, `२`, `𝟚`, `۲`, `๒`) and graded them
+correct while the production TS mirror rejected them — invisible to the byte-parity fixtures because it lived
+on the learner-input path, not generator output. Both engines are now ASCII-anchored, pinned by a cross-engine
+corpus regression test. The other fixes: TS `parseInt` exactness cap; best_buy distinct-display redraw; no-task
+free-response pool; a 3-state difficulty lever reaching the full declared band range; honest range-based
+coverage gates; two misconception back-references; a re-frozen manifest + integrity test. A focused re-audit
+confirmed **0 regressions**. **Verification:** TS suite 313/313; 13 Python oracle suites; conformance ALL PASS;
+golden 16 + 360-entry task-pinned parity byte-for-byte; 10,000-seed sweep 0 invalid / 0 non-reproducible / all
+declared bands reachable / MC policy correct / all 9 codes / 16/16 diagnostics; review pack 24 exemplars / 69
+reachability-derived cells; visual audit (4 modes) + browser verification 15/15; manifest 20/20 SHA-256 (0
+drift); typecheck exit 0; **all eight approved families byte-for-byte UNCHANGED** (only the shared schema/
+validator hashes in the mensuration + transformations manifests were re-frozen for the additive extension).
+The twelve `SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation`. **Next owner decision: APPROVE,
+REVISE, or REJECT of the implemented `gen.proportion.ratio` v1.0.0 family.**
 
 ## `gen.geometry.transformations` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
 

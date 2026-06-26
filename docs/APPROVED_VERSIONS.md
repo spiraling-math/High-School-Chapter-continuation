@@ -31,6 +31,22 @@ Git tags identify the approved reference implementations:
 `approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`),
 `approved-coordinate-lines-v1.0.2` (= `coordinate-lines-v1.0.2`).
 
+### Pending-review (implemented; NOT yet approved — not in this registry's approved scope)
+
+| Generator | Version | Status | Spec | Decision | Submitted |
+| --- | --- | --- | --- | --- | --- |
+| `gen.proportion.ratio` | 1.0.0 | **pending-review** (implemented oracle-first; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #58 | 2026-06-26 |
+
+`gen.proportion.ratio` v1.0.0 is implemented and registered `approvalStatus: pending-review` (review-mode
+only; excluded from production exports/samples), awaiting the owner's APPROVE / REVISE / REJECT. Its twelve
+`SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation` (not yet curriculum-approved). The additive
+`answer.type "ratio"` schema extension is approved. The family was hardened by a 10-dimension adversarial
+review (8 defects found + fixed in v1.0.0, headlined by a critical unicode-digit grading-path parity break)
++ a re-audit (0 regressions). It is **not** recorded among the approved generators/objectives/exemplars above
+and creates no frozen approval artifacts until the owner approves it. Review package:
+`docs/review/proportion_ratio_review_pack.{md,json}`, `proportion_ratio_visual_audit.html`,
+`proportion_ratio_browser_verification.json`, `proportion_ratio_manifest.json`.
+
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).
 Approved scope: curriculum placement (SPI-Math Middle School → Algebra), objective
