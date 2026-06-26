@@ -19,6 +19,7 @@ import * as coordinateLines from "../../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../../domains/statistics/data-handling.ts";
 import * as mensuration from "../../domains/measurement/mensuration.ts";
 import * as transformations from "../../domains/geometry/transformations.ts";
+import * as ratio from "../../domains/proportion/ratio.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -191,6 +192,39 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => transformations.generate(s, c as Parameters<typeof transformations.generate>[1]),
     validate: transformations.validate,
     serialize: transformations.serialize,
+  },
+  {
+    id: ratio.GENERATOR_ID,
+    version: ratio.GENERATOR_VERSION,
+    label: "Ratio & proportion — simplify, share, direct/inverse, best buy",
+    // PENDING REVIEW (implemented v1.0.0, awaiting the owner's APPROVE/REVISE/REJECT). Registered as
+    // pending-review ONLY: generatorsForMode("review") sees it; normal Studio (generatorsForMode("normal"))
+    // and production exports/samples (approvedGenerators()) do NOT. The TS mirror is byte-parity with the
+    // Python oracle (gated by oracle/golden/ratio.*). The twelve SPI.MIDDLE.RATIO.* objectives are
+    // approved-for-implementation (not yet curriculum-approved); the canonical-first answer.type "ratio"
+    // schema extension is approved. Per the owner interaction matrix: best_buy is MULTIPLE-CHOICE only;
+    // simplify / ratio_to_fraction / fraction_to_ratio / direct_proportion / inverse_proportion support
+    // both FR and MC; the remaining six tasks are FREE-RESPONSE only (an explicit MC request is rejected
+    // with interaction-not-supported). Scope excludes percentages, currency, geometric similarity,
+    // gradient-as-ratio, probability/odds, and any irrational/decimal ratio.
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "simplify", label: "Simplify a ratio", mc: true },
+      { value: "write_from_quantities", label: "Write a ratio from quantities", mc: false },
+      { value: "ratio_to_fraction", label: "Ratio to fraction of the whole", mc: true },
+      { value: "fraction_to_ratio", label: "Fraction to ratio", mc: true },
+      { value: "share_two_part", label: "Share in a two-part ratio", mc: false },
+      { value: "share_three_part", label: "Share in a three-part ratio", mc: false },
+      { value: "missing_part", label: "Find a missing part", mc: false },
+      { value: "direct_proportion", label: "Direct proportion (unitary)", mc: true },
+      { value: "inverse_proportion", label: "Inverse proportion", mc: true },
+      { value: "unit_rate", label: "Unit rate", mc: false },
+      { value: "best_buy", label: "Best buy (multiple choice)", mc: true },
+      { value: "simple_scale", label: "Simple scale", mc: false },
+    ],
+    generate: (s, c) => ratio.generate(s, c as Parameters<typeof ratio.generate>[1]),
+    validate: ratio.validate,
+    serialize: ratio.serialize,
   },
 ];
 

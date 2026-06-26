@@ -38,24 +38,29 @@ test("the registered generators are the expected set", () => {
     "gen.stats.data-handling@1.0.2",
     "gen.measurement.mensuration@1.0.1",
     "gen.geometry.transformations@1.0.2",
+    "gen.proportion.ratio@1.0.0",
   ]);
 });
 
-test("approval lifecycle: all eight families curriculum-approved (transformations approved at v1.0.2)", () => {
-  // gen.geometry.transformations was curriculum-approved at v1.0.2 (DECISION_LOG.md #57; tag
-  // approved-transformations-v1.0.2), joining the seven earlier families. With no pending-review
-  // generators registered, normal and review modes coincide; the gate still hides any future
-  // pending-review/rejected generator.
+test("approval lifecycle: eight families approved; ratio v1.0.0 registered PENDING-REVIEW (gated)", () => {
+  // The eight earlier families are curriculum-approved. gen.proportion.ratio v1.0.0 is implemented and
+  // registered as pending-review ONLY: review mode sees it, but normal Studio and production exports do
+  // NOT — it stays hidden until the owner's APPROVE/REVISE/REJECT. This proves the gate genuinely hides a
+  // pending-review generator (not just the degenerate "nothing pending" case).
   for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations",
     "gen.geometry.angles-figures", "gen.geometry.coordinate-lines", "gen.stats.data-handling",
     "gen.measurement.mensuration", "gen.geometry.transformations"]) {
     assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === id)!), "approved");
   }
+  assert.equal(approvalStatusOf(GENERATORS.find((g) => g.id === "gen.proportion.ratio")!), "pending-review");
   const normal = generatorsForMode("normal").map((g) => g.id);
   const review = generatorsForMode("review").map((g) => g.id);
-  assert.ok(normal.includes("gen.geometry.transformations"), "transformations now visible in normal mode + production");
+  assert.ok(normal.includes("gen.geometry.transformations"), "transformations visible in normal mode + production");
+  assert.ok(!normal.includes("gen.proportion.ratio"), "ratio is HIDDEN from normal Studio");
+  assert.ok(review.includes("gen.proportion.ratio"), "ratio is visible in review mode");
   assert.deepEqual(approvedGenerators().map((g) => g.id), normal, "approved set == normal-mode set");
+  assert.ok(!approvedGenerators().some((g) => g.id === "gen.proportion.ratio"), "ratio EXCLUDED from production exports/samples");
   assert.equal(normal.length, 8);
-  assert.equal(review.length, 8);
+  assert.equal(review.length, 9);
   assert.ok(normal.every((id) => approvalStatusOf(GENERATORS.find((g) => g.id === id)!) === "approved"));
 });
