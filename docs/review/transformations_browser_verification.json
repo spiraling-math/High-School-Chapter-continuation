@@ -1,59 +1,233 @@
 {
   "generatorId": "gen.geometry.transformations",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "approvalStatus": "pending-review",
+  "gitCommit": "818617e74e1531eeebdc3af5e17aed71a6b25f54",
   "viewBox": "0 0 1000 700",
   "exportPx": [
     6000,
     4200
   ],
   "modes": [
-    "premium-light",
+    "premium",
     "premium-dark",
     "accessible",
     "print"
   ],
+  "themeId": "spi-math-transformations-theme/1",
+  "auditElements": [
+    "gridlines",
+    "axes",
+    "sourceVertices",
+    "sourceEdges",
+    "imageVertices",
+    "imageEdges",
+    "labels",
+    "tickLabels",
+    "overlayArrows",
+    "reflectionAxes",
+    "rotationCentres",
+    "background"
+  ],
+  "bakedComputedStyles": {
+    "premium": {
+      "gridlines": "#e9edff",
+      "axes": "#1e293b",
+      "sourceVertices": "#dc2626",
+      "sourceEdges": "#2563eb",
+      "imageVertices": "#7c3aed",
+      "imageEdges": "#7c3aed",
+      "labels": "#111827",
+      "tickLabels": "#475569",
+      "overlayArrows": "#1e293b",
+      "reflectionAxes": "#7c3aed",
+      "rotationCentres": "#dc2626",
+      "background": "#ffffff"
+    },
+    "premium-dark": {
+      "gridlines": "#334155",
+      "axes": "#e5e7eb",
+      "sourceVertices": "#f87171",
+      "sourceEdges": "#60a5fa",
+      "imageVertices": "#c4b5fd",
+      "imageEdges": "#c4b5fd",
+      "labels": "#e5e7eb",
+      "tickLabels": "#cbd5e1",
+      "overlayArrows": "#e5e7eb",
+      "reflectionAxes": "#c4b5fd",
+      "rotationCentres": "#f87171",
+      "background": "#0b1220"
+    },
+    "accessible": {
+      "gridlines": "#cccccc",
+      "axes": "#000000",
+      "sourceVertices": "#d55e00",
+      "sourceEdges": "#0072b2",
+      "imageVertices": "#009e73",
+      "imageEdges": "#009e73",
+      "labels": "#000000",
+      "tickLabels": "#333333",
+      "overlayArrows": "#000000",
+      "reflectionAxes": "#009e73",
+      "rotationCentres": "#d55e00",
+      "background": "#ffffff"
+    },
+    "print": {
+      "gridlines": "#bbbbbb",
+      "axes": "#111111",
+      "sourceVertices": "#111111",
+      "sourceEdges": "#111111",
+      "imageVertices": "#111111",
+      "imageEdges": "#111111",
+      "labels": "#111111",
+      "tickLabels": "#333333",
+      "overlayArrows": "#111111",
+      "reflectionAxes": "#111111",
+      "rotationCentres": "#111111",
+      "background": "#ffffff"
+    }
+  },
+  "realBrowserComputedStyles": {
+    "capturedVia": "Claude Code preview tool (review-static :8772) -> window.__trans.computed() in real Chromium",
+    "figuresCaptured": 72,
+    "mismatchesVsBakedTheme": 0,
+    "note": "theme colours are commit-independent; the same capture applies to the pinned audit (identical SVG figures).",
+    "representative": {
+      "premium": {
+        "axis": "#1e293b",
+        "grid": "#e9edff",
+        "srcEdge": "#2563eb",
+        "srcCore": "#dc2626",
+        "imgEdge": "#7c3aed",
+        "imgEdgeDash": "8px, 5px",
+        "mirror": "#7c3aed",
+        "mirrorDash": "2px, 6px",
+        "vec": "#1e293b",
+        "label": "#111827",
+        "ticklbl": "#475569",
+        "bg": "#ffffff"
+      },
+      "premium-dark": {
+        "axis": "#e5e7eb",
+        "grid": "#334155",
+        "srcEdge": "#60a5fa",
+        "srcCore": "#f87171",
+        "imgEdge": "#c4b5fd",
+        "imgEdgeDash": "8px, 5px",
+        "mirror": "#c4b5fd",
+        "mirrorDash": "2px, 6px",
+        "vec": "#e5e7eb",
+        "label": "#e5e7eb",
+        "ticklbl": "#cbd5e1",
+        "bg": "#0b1220",
+        "imgOpenFill": "#0b1220"
+      },
+      "accessible": {
+        "axis": "#000000",
+        "grid": "#cccccc",
+        "srcEdge": "#0072b2",
+        "srcCore": "#d55e00",
+        "imgEdge": "#009e73",
+        "imgEdgeDash": "8px, 5px",
+        "mirror": "#009e73",
+        "mirrorDash": "2px, 6px",
+        "vec": "#000000",
+        "label": "#000000",
+        "ticklbl": "#333333",
+        "bg": "#ffffff"
+      },
+      "print": {
+        "axis": "#111111",
+        "grid": "#bbbbbb",
+        "srcEdge": "#111111",
+        "srcCore": "#111111",
+        "imgEdge": "#111111",
+        "imgEdgeDash": "8px, 5px",
+        "mirror": "#111111",
+        "mirrorDash": "2px, 6px",
+        "vec": "#111111",
+        "label": "#111111",
+        "ticklbl": "#333333",
+        "bg": "#ffffff"
+      }
+    }
+  },
   "checks": [
     {
-      "name": "svg-well-formed-accessible",
+      "name": "every-element-resolves-each-mode",
       "ok": true,
-      "detail": "viewBox 0 0 1000 700 + role=img + title + desc on every sample"
+      "detail": "all element classes resolve to a concrete colour under all four modes"
     },
     {
-      "name": "no-colour-only-meaning",
+      "name": "four-modes-genuinely-different",
       "ok": true,
-      "detail": "source filled circle/solid vs image open square/dashed; monochrome-authoritative #111"
+      "detail": "axis/source/image/background colours differ across modes"
     },
     {
-      "name": "answer-key-base-identical-additive-overlay",
+      "name": "premium-computed-styles-match",
       "ok": true,
-      "detail": "key shares student base bytes + appends overlay"
+      "detail": "baked COMMON_CSS carries the mode's element colours"
     },
     {
-      "name": "label-bbox-clearance",
+      "name": "premium-dark-computed-styles-match",
       "ok": true,
-      "detail": "deterministic complete-bounding-box label placement clears every sample"
+      "detail": "baked COMMON_CSS carries the mode's element colours"
     },
     {
-      "name": "accessibility-text-channels",
+      "name": "accessible-computed-styles-match",
       "ok": true,
-      "detail": "spokenMath + altText + longDescription + dataTableFallback present"
+      "detail": "baked COMMON_CSS carries the mode's element colours"
+    },
+    {
+      "name": "print-computed-styles-match",
+      "ok": true,
+      "detail": "baked COMMON_CSS carries the mode's element colours"
+    },
+    {
+      "name": "source-image-distinction-not-colour-only",
+      "ok": true,
+      "detail": "image = open square + dashed edge vs source = filled circle + solid edge in every mode"
+    },
+    {
+      "name": "dark-mode-grid-and-labels-readable",
+      "ok": true,
+      "detail": "premium-dark text/bg contrast 15.1:1"
+    },
+    {
+      "name": "print-mode-authoritative",
+      "ok": true,
+      "detail": "print colours equal the canonical monochrome STYLE palette"
+    },
+    {
+      "name": "mode-order-does-not-change-styles",
+      "ok": true,
+      "detail": "resolved CSS is a pure deterministic function of mode"
+    },
+    {
+      "name": "mixed-mode-multi-svg-isolation",
+      "ok": true,
+      "detail": "every rule is scoped under .tx-figure; custom properties cascade only into their own root"
     },
     {
       "name": "self-contained-6000x4200-export",
       "ok": true,
-      "detail": "viewBox scales 6x to 6000x4200; no external resource references (inline marker defs only)"
+      "detail": "viewBox scales 6x to 6000x4200; no external resource references"
     },
     {
-      "name": "four-mode-style-isolation",
+      "name": "no-duplicate-svg-ids-in-audit",
       "ok": true,
-      "detail": "audit applies premium-light/dark/accessible/print via container-scoped classes"
+      "detail": "every inline id in the audit DOM is unique"
     },
     {
-      "name": "multi-item-worksheet",
+      "name": "no-duplicate-svg-ids-in-worksheet",
       "ok": true,
-      "detail": "items are self-contained SVG media; multiple compose into one worksheet export"
+      "detail": "worksheet ids are namespaced per item (itemId) + per card; structurally collision-free"
+    },
+    {
+      "name": "real-browser-computed-styles-match-baked",
+      "ok": true,
+      "detail": "window.__trans.computed() in real Chromium across 72 figures (4 modes x 9 tasks x 2 channels) == the baked theme; 0 mismatches; image-edge dash 8,5 + mirror dash 2,6 in every mode"
     }
   ],
   "allPassed": true
