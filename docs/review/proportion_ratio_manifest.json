@@ -4,7 +4,7 @@
   "validatorVersion": "1.0.0",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "90d88a381232f7894ae5360a47fb8fd698c5615c",
+  "gitCommit": "b8e46b87b8f86c06a2f66fe99b9e79a2773f7c8b",
   "hiddenFromNormalStudioAndProduction": true,
   "versionTags": {
     "previousVersionTag": null,
@@ -86,7 +86,7 @@
     },
     "golden": {
       "path": "oracle/golden/ratio.golden.json",
-      "sha256": "e6370254b15ac391d8904804c709b6da19bd062acb44cc7ff407771796632a23",
+      "sha256": "30f3ea068877fd769e67f6e2638031770c7af8c48833e69187279ab4efc65bb3",
       "present": true
     },
     "parity": {
@@ -111,7 +111,7 @@
     },
     "tsParityTest": {
       "path": "domains/proportion/ratio.parity.test.ts",
-      "sha256": "893f3df2a41a2df0f61688947816aaf2ab6aff58e4ce214ad9a3b6781606db60",
+      "sha256": "31c4ba07f2d221a3281ae8421606400485b59fd728497842aeda834fa6eebbf1",
       "present": true
     },
     "tsTheme": {

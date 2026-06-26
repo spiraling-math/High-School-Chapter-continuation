@@ -232,5 +232,32 @@ class TestParityFixture(unittest.TestCase):
             self.assertEqual(R.serialize(R.generate(e["seed"], {"task": e["task"]})), e["serialized"])
 
 
+class TestManifestIntegrity(unittest.TestCase):
+    def test_manifest_hashes_match_disk(self):
+        # The review-pack manifest records sha256 of every frozen artifact; an integrity check must be
+        # able to re-hash disk and find NO drift. (Caught the re-audit case where the manifest was committed
+        # with hashes from an intermediate pre-regeneration state.) make_ratio_manifest.py must be the LAST
+        # build step so its recorded hashes + gitCommit match the artifacts the same commit produced.
+        import hashlib
+        path = os.path.join(ROOT, "docs", "review", "proportion_ratio_manifest.json")
+        if not os.path.exists(path):
+            self.skipTest("manifest not generated")
+        man = json.load(open(path, encoding="utf-8"))
+        arts = man.get("artifacts", {})
+        self.assertTrue(arts, "manifest has no artifacts")
+        for name, meta in arts.items():
+            p, want = meta.get("path"), meta.get("sha256")
+            if not p or not want:
+                continue
+            fp = os.path.join(ROOT, p)
+            if not os.path.exists(fp):
+                self.assertFalse(meta.get("present", True), f"{name}: recorded present but missing on disk")
+                continue
+            got = hashlib.sha256(open(fp, "rb").read()).hexdigest()
+            self.assertEqual(got, want, f"{name} hash drift: {p}")
+        self.assertEqual(man.get("approvalStatus"), "pending-review")
+        self.assertIs(man.get("hiddenFromNormalStudioAndProduction"), True)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
