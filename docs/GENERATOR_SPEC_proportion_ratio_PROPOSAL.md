@@ -1,15 +1,15 @@
-# Generator Specification Proposal — gen.proportion.ratio v1.0.0 (Ratio and Proportion: ratio, unitary method, direct + inverse proportion, simple scale)
+# Generator Specification — gen.proportion.ratio v1.0.0 (Ratio and Proportion: ratio, unitary method, direct + inverse proportion, simple scale)
 
-> **STATUS: PROPOSAL ONLY — no implementation (code, fixtures, objectives, schema, SVG assets, registry entries, review packs, or tests) until owner approval.** This family proves the **fourth** structured, canonical-first answer contract on the platform — `answer.type = "ratio"`: an ordered tuple of positive integers in simplest form whose machine-checkable value *is* `answer.canonical`, with `display` derived from it and never stored twice (extending the precedents set by `"quantity"` and `"transformation"`). It establishes ratio **equivalence** checking with **ordered parts** (`2:3 = 4:6` but `2:3 ≠ 3:2`), **multi-part table-completion** answers for sharing where correspondence is by label, a clean **non-Cartesian bar-model / double-number-line** visual system, and **exact proportional reasoning** over integers and exact rationals only (no floats, no tolerance). Placement is **SPI-Math Middle School → Proportion/Ratio** (ratio, unitary method, direct proportion, inverse proportion, simple scale).
+> **STATUS: APPROVED WITH AUTHORIZATION TO IMPLEMENT (owner, 2026-06-26) — reconciled to the final decisions A–M; implementation proceeds oracle-first; objectives approved-for-implementation; generator registers pending-review (gated) until the implemented review-pack decision; the additive answer.type 'ratio' schema extension is APPROVED.** This family proves the **fourth** structured, canonical-first answer contract on the platform — `answer.type = "ratio"`: an ordered tuple of positive integers in simplest form whose machine-checkable value *is* `answer.canonical`, with `display` derived from it and never stored twice (extending the precedents set by `"quantity"` and `"transformation"`). It establishes ratio **equivalence** checking with **ordered parts** (`2:3 = 4:6` but `2:3 ≠ 3:2`), **multi-part table-completion** answers for sharing where correspondence is by label, a clean **non-Cartesian bar-model / double-number-line** visual system, and **exact proportional reasoning** over integers and exact rationals only (no floats, no tolerance). Placement is **SPI-Math Middle School → Proportion/Ratio** (ratio, unitary method, direct proportion, inverse proportion, simple scale).
 
 | Field | Value |
 |---|---|
 | Generator id | `gen.proportion.ratio` |
-| Proposed version | `1.0.0` |
-| Domain / strand / segment | `MIDDLE` (domain) → `Proportion/Ratio` (strand) → `RATIO` (objective segment) |
+| Version | `1.0.0` |
+| Domain / strand / stage segment / objective segment | `proportion` (domain) → `ratio-and-proportion` (strand) → `MIDDLE` (stage segment) → `RATIO` (objective segment) |
 | Objective ID pattern | `SPI.MIDDLE.RATIO.<MICRO>.01` |
 | Interaction | Free-response-first; multiple-choice only where 3 distinct misconception-backed distractors exist |
-| New answer type | `answer.type = "ratio"` (additive, backward-compatible, owner-gated) |
+| New answer type | `answer.type = "ratio"` (additive, backward-compatible, **APPROVED**) |
 | Canonical answer model | Canonical-first: `answer.canonical` is the structured value; `answer.display` derived |
 | Exact math | Integers + exact `Rational` only (no floats, no tolerance, no irrationals) |
 | Visual system | Non-Cartesian `ratio-theme` (bar models, double number lines, proportional tables) |
@@ -102,13 +102,13 @@ In parallel, the SDK generator registers `approvalStatus: pending-review` (gated
 
 Each objective below gives the verbatim learner-can-do `objectiveWording`, the `prerequisites[]` (citing **only objective IDs verified present and `approved` in `curriculum/objectives/`** — see the verification note), the MATHEMATICAL-only `answerTypes[]`, the `allowedRepresentations`, and a provisional `difficultyRange` (PROVISIONAL until the §11 10k distribution proves every band reachable; where §11's `ratio-difficulty.json` is the machine-readable source of truth, the band shown here is the projection of that single source and must match it exactly — the §11 source wins on any conflict).
 
-`allowedRepresentations` is `["diagram", "numeric"]` for the visual sharing/proportion tasks (the §8 bar-model / double-number-line figure drives a `diagram`; the value answer is `numeric`), with `symbolic` added where a ratio or fraction form is the answer object (T1–T4, T12). **`verbal-context` is included only on the tasks the generator actually frames in words** (T8–T11 carry a light real-world rate/sharing context); it is omitted from the pure-symbolic conversion tasks (T1–T4), so the objective's allowed-representation set and the generator's emitted representations match exactly. **The `verbal-context`-bearing tasks (T8–T11) are exactly the tasks that lift §11's `readingDemand` off zero** — `readingDemand > 0` iff the drawn item carries a worded context, so the "allowed-representations == emitted-representations" claim is testable against the §11 difficulty source.
+`allowedRepresentations` is `["diagram", "numeric"]` for the visual sharing/proportion tasks (the §8 bar-model / double-number-line figure drives a `diagram`; the value answer is `numeric`), with `symbolic` added where a ratio or fraction form is the answer object (T1–T4; `simple_scale` T12 is a scaled **numerical value**, not a ratio, so it carries no `symbolic` — decision D/I). **`verbal-context` is included only on the tasks the generator actually frames in words** (T8–T11 carry a light real-world rate/sharing context); it is omitted from the pure-symbolic conversion tasks (T1–T4), so the objective's allowed-representation set and the generator's emitted representations match exactly. **The `verbal-context`-bearing tasks (T8–T11) are exactly the tasks that lift §11's `readingDemand` off zero** — `readingDemand > 0` iff the drawn item carries a worded context, so the "allowed-representations == emitted-representations" claim is testable against the §11 difficulty source.
 
 ### 2.0 Answer-type vocabulary used in this family
 
 The family uses exactly **four** `answer.type` tokens, all of which are (or, for `ratio`, will become) live members of the `answerType` enum at `schemas/question-item.schema.json` (the curriculum-objective schema `$ref`s that same enum for `answerTypes`, so every token here must be a live enum member):
 
-- **`ratio`** — the THIRD structured canonical answer (the family's headline contract; ordered positive-integer tuple in simplest form; §4). This is an **additive, owner-gated, backward-compatible** enum extension exactly like `quantity` (mensuration) and `transformation` (transformations); it does not exist in the live schema yet and is the §15 schema delta presented for approval. The objective records sit at `approved-for-implementation` precisely because this enum addition is pending owner sign-off. **`ratio` is the ONLY new enum member this family adds** (the at-most-one-new-answer-type constraint is met).
+- **`ratio`** — the THIRD structured canonical answer (the family's headline contract; ordered positive-integer tuple in simplest form; §4). This is an **additive, backward-compatible** enum extension exactly like `quantity` (mensuration) and `transformation` (transformations); it is **APPROVED** (owner, 2026-06-26) and is the §15 schema delta now cleared to implement. The objective records sit at `approved-for-implementation`, and the generator registers `pending-review` (gated) until the implemented review-pack decision. **`ratio` is the ONLY new enum member this family adds** (the at-most-one-new-answer-type constraint is met).
 - **`integer`** — already a live, approved enum member (used by `SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01`); exact whole-number shares, missing parts, and integer unit rates.
 - **`exact-rational`** — already a live, approved enum member; exact reduced `Rational{num,den}` unit rates, scale factors, missing parts where the share is non-integer, and fraction-of-whole values. **No approximate decimal answers in v1.0.0.**
 - **`table-completion`** — **verified live** in the `answerType` enum (`schemas/question-item.schema.json` line 203); a multi-cell labelled answer for three-part (and labelled two-part) sharing, with correspondence by **label**, not row order. Reused unchanged; the enum member carries no `if/then` constraint, so the sharing answers need **no schema delta**. (Cluster B/§4 owns the canonical cell shape `{cells:[{location,value}]}`; §2/§3 reference it by name only.)
@@ -158,7 +158,7 @@ No coordinate-lines or geometry objective is cited as a prerequisite: gradient-a
 ### 2.5 T5 — `SPI.MIDDLE.RATIO.SHARE_TWO_PART.01`
 - **Wording:** "Share a given total quantity between two shares in a stated two-part ratio by finding the value of one ratio unit and multiplying, and state each labelled share as an exact integer that sums to the total."
 - **prerequisites:** `["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01", "SPI.MIDDLE.RATIO.SIMPLIFY.01"]`
-- **answerTypes:** `["integer", "table-completion"]` (single missing share = `integer`; both labelled shares requested = `table-completion`)
+- **answerTypes:** `["table-completion"]` (decision D: two labelled cells; correspondence by label)
 - **allowedRepresentations:** `["diagram", "numeric"]`
 - **difficultyRange:** `{ "min": 2, "max": 4 }`
 
@@ -170,13 +170,13 @@ No coordinate-lines or geometry objective is cited as a prerequisite: gradient-a
 - **difficultyRange:** `{ "min": 3, "max": 5 }`
 
 ### 2.7 T7 — `SPI.MIDDLE.RATIO.MISSING_PART.01`
-- **Wording:** "Given one known part of a quantity shared in a stated ratio, find another labelled part by scaling the ratio to the known part, and state the missing part as an exact integer or exact rational."
+- **Wording:** "Given one known part of a quantity shared in a stated ratio, find another labelled part by scaling the ratio to the known part, and state the missing part as an exact integer."
 - **prerequisites:** `["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01", "SPI.MIDDLE.RATIO.SHARE_TWO_PART.01"]`
-- **answerTypes:** `["integer", "exact-rational"]`
+- **answerTypes:** `["integer"]`
 - **allowedRepresentations:** `["diagram", "numeric"]`
 - **difficultyRange:** `{ "min": 2, "max": 4 }`
 
-> Note (resolves the cross-cluster `missing_part` type conflict, ratio-math B1/B2 and completeness I2): the missing part is computed as `missing = parts[missingIndex] · (knownValue / parts[knownIndex])` over the simplest stored ratio. This is an **exact integer when `parts[knownIndex] ∣ knownValue`** and otherwise an **exact reduced rational** (e.g. simplest ratio `[2,3]`, known part `9` on the `2`-term gives `27/2`). The objective therefore admits **both** `integer` and `exact-rational`; the §3.3 matrix row agrees. §12's `missing-part-exact` policy is the **hard, non-optional** divisibility constraint that decides which: for the integer-only difficulty cells the generator MUST enforce `parts[knownIndex] ∣ knownValue` (which makes `missing` integral by construction, since `parts[missingIndex]·(knownValue/parts[knownIndex])` is then an integer); the rational cells deliberately relax that constraint and store an `exact-rational`. There is no parenthetical escape hatch: every drawn item lands in exactly one of the two answer types by the §12 constraint, never in an undefined third state.
+> Note (decision E — `missing_part` is INTEGER-ONLY in v1.0.0): the missing part is computed as `missingValue = parts[missingIndex] · (knownValue / parts[knownIndex])` over the simplest stored ratio. The generator enforces the **hard, non-optional** divisibility constraint `parts[knownIndex] ∣ knownValue`, so `onePart = knownValue / parts[knownIndex]` is an exact integer and `missingValue = onePart × parts[missingIndex]` is automatically an exact integer too; a candidate that is not divisible is **deterministically redrawn** (no escape hatch). The objective therefore admits **only** `integer` in v1.0.0; the §3.3 matrix row agrees; the §9.4-E `missing-part-exact` check re-asserts the divisibility post-condition. **There is no exact-rational `missing_part` answer in v1.0.0** — a rational recovered value is a future extension only.
 
 ### 2.8 T8 — `SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01`
 - **Wording:** "Solve a direct-proportion problem by the unitary method — find the value for one unit, then multiply for the required number of units — and state the result as an exact integer or exact rational."
@@ -193,9 +193,9 @@ No coordinate-lines or geometry objective is cited as a prerequisite: gradient-a
 - **difficultyRange:** `{ "min": 3, "max": 5 }`
 
 ### 2.10 T10 — `SPI.MIDDLE.RATIO.UNIT_RATE.01`
-- **Wording:** "Find a unit rate by dividing a quantity by the number of units it corresponds to, and state the rate as an exact integer or exact rational per single unit."
+- **Wording:** "Find a unit rate by dividing a quantity by the number of units it corresponds to, and state the rate as an exact rational (an exact integer where the rate is whole) per single unit."
 - **prerequisites:** `["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01"]`
-- **answerTypes:** `["integer", "exact-rational"]`
+- **answerTypes:** `["exact-rational"]` (decision D: the unit-rate answer is `exact-rational`; it collapses to `integer` when the rate is whole only if the platform's normal answer-type policy requires the integer-when-whole collapse)
 - **allowedRepresentations:** `["numeric", "verbal-context"]`
 - **difficultyRange:** `{ "min": 1, "max": 3 }`
 
@@ -206,13 +206,13 @@ No coordinate-lines or geometry objective is cited as a prerequisite: gradient-a
 - **allowedRepresentations:** `["numeric", "verbal-context"]`
 - **difficultyRange:** `{ "min": 3, "max": 5 }`
 
-> Note (resolves the `comparison` phantom-type blocker, platform-fit B1 / completeness B3, and the best-buy band conflict, completeness I3): best-buy is realised on the **live `multiple-choice` answer type** — the option key IS the answer; the exact per-option unit rates are recomputed by the independent validator and surfaced in the worked solution and feedback (never as a separate canonical). **`comparison` is not used anywhere in the family.** Best-buy is therefore both `multiple-choice`-as-answer-type and, in interaction terms, an MC-eligible task (§3.1) — the labelled choice is the construct. Ties (equal exact unit rates) are an edge case handled in §12 (regenerate or, where the objective intends it, present an explicit "equal value / no better buy" option as one of the labelled choices) — never a floating-point near-tie. The `difficultyRange` shown here `{min:3,max:5}` is the projection of §11's `ratio-difficulty.json` `best_buy` band (the single source of truth); the earlier draft's `{min:2,max:4}` is superseded.
+> Note (best-buy realisation — decisions C/H): best-buy is **MC-only** and realised on the **live `multiple-choice` answer type** — the selected labelled option id IS `answer.canonical`; the exact per-option unit rates are recomputed by the independent validator and surfaced as witnesses in the worked solution and feedback (never as a separate canonical). The worked solution shows **each option's exact unit rate, the comparison of those exact rates, and the selected best-value option**, and validation verifies the selected option has the **strict minimum** unit rate. **`comparison` is not used anywhere in the family.** Ties (equal exact unit rates) are handled by **deterministic redraw** (decision H / §12) so the best value is always a strict minimum — never a floating-point near-tie, never an "equal value" option, never a currency conversion / exchange-rate. The `difficultyRange` shown here `{min:3,max:5}` is the projection of §11's `ratio-difficulty.json` `best_buy` band (the single source of truth); the earlier draft's `{min:2,max:4}` is superseded.
 
 ### 2.12 T12 — `SPI.MIDDLE.RATIO.SIMPLE_SCALE.01`
-- **Wording:** "Use a simple scale factor or a map/model scale to convert between a scale length and a real length (or vice versa) in the correct direction, and state the result as an exact integer or exact rational (no similar-figure proof)."
+- **Wording:** "Use a simple scale factor or a map/model scale to convert between a scale length and a real length (or vice versa) in the correct direction, and state the scaled numerical value as an exact integer (or exact rational where not whole) — no similar-figure proof, no approximation (decision I)."
 - **prerequisites:** `["SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01", "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01", "SPI.MIDDLE.RATIO.SIMPLIFY.01"]`
-- **answerTypes:** `["integer", "exact-rational", "ratio"]` (the scale itself may be requested as a simplest-form `ratio`, e.g. `1:50`; a converted length is `integer`/`exact-rational`)
-- **allowedRepresentations:** `["diagram", "numeric", "symbolic"]`
+- **answerTypes:** `["integer", "exact-rational"]` (decision D/I: `simple_scale` asks for a **scaled numerical value** — `integer` when whole, else `exact-rational`; it is **not** answered as a `ratio` in v1.0.0)
+- **allowedRepresentations:** `["diagram", "numeric"]`
 - **difficultyRange:** `{ "min": 2, "max": 4 }`
 
 ### 2.13 Prerequisite DAG (intra-family + external edges)
@@ -255,7 +255,7 @@ Edges in words: T2←T1; T3←T1; T4←T1; T12←T1; T6←T5; T7←T5; T8←T10;
 
 ### 3.1 Interaction and answer-shape decisions (FR-first; MC only where three strong distractors exist)
 
-**Free-response is the default for every one of the twelve tasks** (`supportedInteractionTypes` always contains `free-response`; FR is what the generator emits unless an MC interaction is explicitly requested for an MC-eligible task). Multiple-choice is offered **only** on the six tasks for which **three distinct, misconception-backed distractors** are pedagogically strong (`MC_ELIGIBLE_TASKS`, §1.3); the remaining six are **free-response only**. No distractor is a manufactured "nearby wrong number": every MC distractor is the **exact predicted student response** of a registered `MISC.RATIO.*` diagnostic (§10), computed by formula, not chosen arbitrarily.
+**Free-response is the default for every task except `best_buy`** (decision C): `supportedInteractionTypes` contains `free-response` for all eleven non-best-buy tasks, and FR is what the generator emits unless an MC interaction is explicitly requested for an MC-eligible task. **`best_buy` is MC-only** — the labelled choice IS the construct — so it carries `multiple-choice` and no `free-response`. Multiple-choice is offered **only** on the six tasks for which **three distinct, misconception-backed distractors** are pedagogically strong (`MC_ELIGIBLE_TASKS` = `simplify`, `ratio_to_fraction`, `fraction_to_ratio`, `direct_proportion`, `inverse_proportion`, `best_buy`, §1.3); the remaining six (`write_from_quantities`, `share_two_part`, `share_three_part`, `missing_part`, `unit_rate`, `simple_scale`) are **free-response only**. No distractor is a manufactured "nearby wrong number": every MC distractor is the **exact predicted student response** of a registered `MISC.RATIO.*` diagnostic (§10), computed by formula, not chosen arbitrarily.
 
 Note on best-buy: T11's `answer.type` is `multiple-choice` (§2.0/§2.11) — the labelled choice IS the canonical answer — and it is simultaneously MC-eligible as an *interaction*. The three "distractor" choices are the wrong options a student selects under the three named best-buy misconceptions; the correct option is the genuine best value. (For the other five MC-eligible tasks the answer type is `ratio`/`exact-rational` and MC is layered on top as an alternative interaction whose distractors are the misconception-predicted values.)
 
@@ -310,14 +310,14 @@ A named test asserts, for **each FR-only task**, that an MC request returns `int
 | T2 | `SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01` | free-response only | `ratio` | yes (stated order) | 2- or 3-part positive-int tuple, simplest form |
 | T3 | `SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01` | free-response (default), multiple-choice | `exact-rational` (`part/total`, reduced) | n/a | reduced proper fraction |
 | T4 | `SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01` | free-response (default), multiple-choice | `ratio` | yes | positive-int tuple, simplest form |
-| T5 | `SPI.MIDDLE.RATIO.SHARE_TWO_PART.01` | free-response only | `integer` (single share) or `table-completion` (both labelled) | label correspondence | exact integers summing to total |
+| T5 | `SPI.MIDDLE.RATIO.SHARE_TWO_PART.01` | free-response only | `table-completion` (2 labelled cells) | label correspondence | exact integers summing to total |
 | T6 | `SPI.MIDDLE.RATIO.SHARE_THREE_PART.01` | free-response only | `table-completion` (three labelled) | label correspondence | exact integers summing to total |
-| T7 | `SPI.MIDDLE.RATIO.MISSING_PART.01` | free-response only | `integer` or `exact-rational` | n/a | exact integer when `parts[knownIndex] ∣ knownValue`, else reduced rational (§12 decides which) |
+| T7 | `SPI.MIDDLE.RATIO.MISSING_PART.01` | free-response only | `integer` (v1.0.0) | n/a | exact integer; generation enforces `parts[knownIndex] ∣ knownValue` so `missingValue` is integral by construction (§12, decision E) |
 | T8 | `SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01` | free-response (default), multiple-choice | `integer` or `exact-rational` | n/a | exact integer / reduced rational |
 | T9 | `SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01` | free-response (default), multiple-choice | `integer` | n/a | exact integer (non-exact cases excluded, §12) |
-| T10 | `SPI.MIDDLE.RATIO.UNIT_RATE.01` | free-response only | `integer` or `exact-rational` | n/a | exact integer / reduced rational per unit |
+| T10 | `SPI.MIDDLE.RATIO.UNIT_RATE.01` | free-response only | `exact-rational` (collapse to `integer` when whole if platform policy requires) | n/a | reduced rational per unit (exact integer when whole) |
 | T11 | `SPI.MIDDLE.RATIO.BEST_BUY.01` | multiple-choice | `multiple-choice` (labelled option; exact unit rates underpin it in the solution) | n/a | option key + exact unit-rate evidence in solution |
-| T12 | `SPI.MIDDLE.RATIO.SIMPLE_SCALE.01` | free-response only | `integer`, `exact-rational`, or `ratio` (e.g. `1:50`) | yes (for the `ratio` form) | exact integer / reduced rational / simplest-form ratio |
+| T12 | `SPI.MIDDLE.RATIO.SIMPLE_SCALE.01` | free-response only | `integer` when whole, else `exact-rational` (decision D/I; scaled numerical value, not a ratio) | n/a | exact integer / reduced rational |
 
 **Interaction summary:** all twelve tasks are **free-response-first** except T11 `best_buy`, whose answer type *is* `multiple-choice` (the labelled choice is the construct). **Six** tasks (T1, T3, T4, T8, T9, T11 = `MC_ELIGIBLE_TASKS`) support **multiple-choice** with three exact, misconception-backed distractors/options; the other **six** (T2, T5, T6, T7, T10, T12) are **free-response only**. An MC request on an FR-only task, or on an MC-eligible task whose drawn case cannot realise three distinct distractors after the bounded deterministic redraw, returns `interaction-not-supported` — never a silent FR downgrade (§3.2).
 
@@ -333,7 +333,7 @@ Sections 1-3 are complete, revised, and self-consistent. Summary of what changed
 
 - **B1/B2/B3 slug-and-ID drift (all four critics):** Pinned the ONE canonical `RATIO_TASKS` set (§1.3 set wins) with an explicit superseded-spelling ban list (`simplify_ratio`, `write_ratio`, `write_ratio_from_quantities`, `direct_proportion_unitary`, `inverse_proportion_unitary`, etc.) and the ONE objective-ID set (§1.2, no `_UNITARY` suffix). Added graph-test clauses (d) string-scan over slugs + MISC ids, (e) `_UNITARY`-suffix guard. Downstream clusters §9/§10/§11 must conform to these.
 - **`comparison` phantom answer.type (platform-fit B1, completeness B3):** Removed entirely. Best-buy (T11) now uses the **live `multiple-choice` answer type** (verified at schema line 202); `ratio` remains the only new enum member. Updated §2.0, §2.11, §3.1, §3.3, §3.4, and the coverage vocabulary; explicit "no `comparison` anywhere" statements added.
-- **`missing_part` answer-type contradiction (ratio-math B1/B2, completeness I2):** §2.7 and the §3.3 matrix now declare `["integer", "exact-rational"]`, reconciled with §7/§9/§11; the §12 `missing-part-exact` divisibility constraint is referenced as **hard, non-optional** (no escape hatch) and decides which type each drawn item lands in.
+- **`missing_part` answer type (decision E):** §2.7, the §3.3 matrix, §7, §9, §11, and §12 all declare `missing_part` **integer-only** in v1.0.0; the `missing-part-exact` divisibility constraint (`parts[knownIndex] ∣ knownValue`) is **hard, non-optional** (no escape hatch) and guarantees the recovered value is an exact integer. There is no exact-rational `missing_part` path in v1.0.0 (future extension only).
 - **MC distractor applicability (ratio-math B4):** Added the applicability-reconciliation note instructing §10 to make `WRONG_TOTAL_PARTS` applicable to T3/T4, `ADDS_PARTS_INCORRECTLY` to T4, and `SCALE_FACTOR_WRONG_DIRECTION` to T11; corrected the T1 distractor id to `EQUIVALENT_BUT_UNSIMPLIFIED_WHEN_SIMPLEST_REQUIRED` to match the §10 registry spelling. Added the `ratio_to_fraction` `Σparts ≥ 4` MC-eligibility constraint (ratio-math I1/I5).
 - **Best-buy band conflict (completeness I3):** §2.11 band set to `{min:3,max:5}` as the projection of §11's source of truth; `{min:2,max:4}` superseded.
 - **`verbal-context` ↔ `readingDemand` (completeness I4):** §2 now states T8–T11's `verbal-context` items are exactly those that lift §11 `readingDemand` off zero, making the representation claim testable.
@@ -562,7 +562,7 @@ The "rational canonical under ratio type" and "transformation canonical under ra
 - **Import (round-trip).** On import, an item with `type:"ratio"` is validated by the same precompiled Ajv validator before acceptance; the importer recomputes the canonicalizer over `canonical.parts` and **rejects** any imported item whose stored canonical is not in simplest form, whose `parts` violate the schema, or whose `display` does not match the formatter's output for that canonical (display is re-derived, never trusted). This makes import idempotent: `import(export(item))` yields a byte-identical item, and a hand-edited unsimplified or units-bearing ratio is rejected at the boundary rather than silently re-canonicalized.
 - **No cross-format ambiguity.** Because `display` is never parsed on import (only re-derived and compared) and the canonical is the sole source of truth, there is no path by which an exported `"2:3"` string and a `{parts:[2,3]}` object could disagree; the validator + canonicalizer reconcile to the single canonical or reject.
 
-This delta is **proposal-only**; no schema file, validator, conformance-checker branch, or fixture is written until the owner approves the `answer.type = "ratio"` extension on the same owner-gated basis as `quantity` and `transformation`. The one shared-dependency change it requires — the additive `maxItems` branch in `oracle/check_conformance.py` (§4.4a) — is called out explicitly in §15.1 and §16 as a named, owner-visible delta with an all-eight-families no-drift regression assertion, and is **not** claimed as a zero-code change.
+This `answer.type = "ratio"` delta is **APPROVED** (owner, 2026-06-26) on the same additive, backward-compatible basis as `quantity` and `transformation`; implementation proceeds oracle-first. The one shared-dependency change it requires — the additive `maxItems` branch in `oracle/check_conformance.py` (§4.4a) — is called out explicitly in §15.1 and §16 as a named, owner-visible delta with an all-eight-families no-drift regression assertion, and is **not** claimed as a zero-code change.
 
 ---
 
@@ -584,7 +584,7 @@ Below is a summary of the revision for the orchestrator.
 
 This section specifies the `"ratio"` answer-contract machinery for `gen.proportion.ratio v1.0.0`. It is the proportion-family analogue of the dimensional-quantity contract approved in **gen.measurement.mensuration v1.0.1** (`oracle/spi_oracle/mensuration_units.py` ↔ `domains/measurement/mensuration-units.ts`) and the descriptor contract approved in **gen.geometry.transformations** (`transformations_descriptor.py` ↔ `transformations-descriptor.ts`): a finite, fully-anchored parser → normalized structured canonical → formatter → STRUCTURAL equivalence checker, with a closed `RESULT_CODES` tuple and targeted feedback drawn ONLY from displayed/parsed values. Following that precedent the machinery is **family-local** — there is no shared `core/answer-checking/ratio.*`. Every routine is authored **oracle-first in Python** at `oracle/spi_oracle/ratio_answer.py` and mirrored **BYTE-IDENTICALLY** in TypeScript at `domains/proportion/ratio-answer.ts`; the call ORDER of the seeded PRNG is never touched here (these are pure string/integer routines, no RNG). Parity is gated by the task-pinned ≥300-entry parity fixture, the golden vectors, and the dedicated **RATIO-CHECKER matrix** (§5.8, evidence in §14). Comparison is ALWAYS over the canonical integer tuple, NEVER over raw student text.
 
-**Normative result-code casing (single vocabulary).** Section 5 is the SINGLE source of truth for the family's result-code vocabulary. The codes are the lowercase-hyphenated string literals listed in the `RESULT_CODES` tuple (§5.7). Every other section that names a result code — §7.4 (table-completion result mapping), §9 (independent validator's `expectedResultCode`), and §10 (`MISC.RATIO.*` `expectedResultCode`) — uses these exact strings verbatim. There is NO UPPER_SNAKE alias and NO second spelling (`EQUIVALENT_NOT_SIMPLEST`, `WRONG_ORDER`, `MALFORMED_RATIO`, `order-reversed`, etc. are NOT used anywhere); the `MISC.RATIO.*` registry IDs in §10 are a separate namespace (diagnostic identifiers) and are never confused with these result codes. A string-scan test (`ratio-result-code-spelling.test.ts`, cross-referenced from §9) asserts no alternative casing/spelling of any result code appears in any oracle, mirror, fixture, or spec artifact.
+**Normative result-code casing (ONE canonical lower-kebab vocabulary — decision F).** Section 5 is the SINGLE source of truth for the family's result-code vocabulary. The codes are the lower-kebab string literals listed in the `RESULT_CODES` tuple (§5.7): `correct`, `equivalent-not-simplified`, `wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, `unsupported-term`, `unparsed-trailing-text`, `malformed-response`. Every other section that names a result code — §7.4 (table-completion result mapping), §9 (independent validator's `expectedResultCode`), §10 (`MISC.RATIO.*` `expectedResultCode`), §12, and §14 — uses these exact strings verbatim. There is **NO UPPER_SNAKE alias, NO slash-style code, and NO generic `wrong`/`partial` result code**: every one of `EQUIVALENT_NOT_SIMPLEST`, `WRONG_ORDER`, `WRONG_VALUE`, `WRONG_FORM`, `WRONG_CHOICE`, `MALFORMED_RATIO`, `INCOMPLETE`, `RATIO_OK`, `not-a-ratio/malformed`, `order-reversed`, `reversed-order`, `zero-part`, `negative-part`, `malformed-ratio`, `unsupported-symbol`, a bare `wrong`, and a bare `partial` is **superseded and must not appear** in canonical output. The single legacy split `not-a-ratio/malformed` is renamed to `malformed-response`; partial credit for an equivalent-but-unsimplified answer is carried by the **separate boolean field `partial: true`** on `CheckResult`, never by a competing result code. The best-buy/choice checker uses exactly `correct`, `wrong-choice`, `malformed-response`; table-completion tasks reuse the platform's existing table-completion checker codes. The `MISC.RATIO.*` registry IDs in §10 are a separate namespace (diagnostic identifiers) and are never confused with these result codes. A string-scan test (`ratio-result-code-spelling.test.ts`, cross-referenced from §9) asserts no alternative casing/spelling of any result code appears in any oracle, mirror, fixture, or spec artifact.
 
 The four public routines and their signatures (Python names; the TypeScript mirror uses the byte-identical camelCase names already shown):
 
@@ -627,8 +627,8 @@ Canonical invariants (a tuple violating any of these is **not a legal canonical 
 |---|---|
 | trim | strip leading/trailing ASCII whitespace (`[ \t]`); a single internal run of spaces *around each colon* is permitted and collapsed (see grammar) |
 | Unicode minus | `−` (U+2212) → `-` **only to produce a clean reject**: a leading `-` then triggers `zero-or-negative-part`, never silently dropped |
-| ratio-colon decision | **U+2236 RATIO ( `∶` ) is NOT supported in v1.0.0** (decision below). It is mapped to the ASCII reject path and yields `not-a-ratio/malformed`, with feedback naming the supported separator. |
-| other non-ASCII | any other non-ASCII glyph (smart quotes, `×`, fullwidth digits/colon `：` U+FF1A, `／`) → hard reject `not-a-ratio/malformed` |
+| ratio-colon decision | **U+2236 RATIO ( `∶` ) is NOT supported in v1.0.0** (decision below). It is mapped to the ASCII reject path and yields `malformed-response`, with feedback naming the supported separator. |
+| other non-ASCII | any other non-ASCII glyph (smart quotes, `×`, fullwidth digits/colon `：` U+FF1A, `／`) → hard reject `malformed-response` |
 | case | not applicable — ratio terms are digits only; no keyword lowercasing |
 
 **Anchored grammar (single regex, conceptually):**
@@ -646,21 +646,21 @@ Canonical invariants (a tuple violating any of these is **not a legal canonical 
 | `" 2:3 "` | leading/trailing trim | `{ parts:[2,3], code:"ok" }` |
 | `"4:6"` | parsed raw, NOT yet simplified | `{ parts:[4,6], code:"ok" }` |
 | `"02:03"` | leading zeros in a positive integer accepted, value `[2,3]` | `{ parts:[2,3], code:"ok" }` |
-| `"2/3"` | no colon → not a ratio surface form | `{ parts:null, code:"not-a-ratio/malformed" }` |
+| `"2/3"` | no colon → not a ratio surface form | `{ parts:null, code:"malformed-response" }` |
 | `"2:3:5:7"` | four colon-terms, grammar caps at 3 | `{ parts:null, code:"wrong-number-of-parts" }` |
-| `"2:"` / `":3"` / `"2::3"` | missing/empty term | `{ parts:null, code:"not-a-ratio/malformed" }` |
-| `"2 to 3"` | unsupported separator word | `{ parts:null, code:"unsupported-term" }` |
+| `"2:"` / `":3"` / `"2::3"` | missing/empty term | `{ parts:null, code:"malformed-response" }` |
+| `"2 to 3"` | unsupported separator word (word-form alias NOT supported in v1.0.0 — decision G) | `{ parts:null, code:"unsupported-term" }` |
 | `"0:3"` | zero part | `{ parts:null, code:"zero-or-negative-part" }` |
 | `"-2:3"` / `"2:-3"` | negative part | `{ parts:null, code:"zero-or-negative-part" }` |
 | `"2:3x"` / `"2:3 apples"` | valid prefix + extra text | `{ parts:null, code:"unparsed-trailing-text" }` |
 | `"2.5:3"` | non-integer term | `{ parts:null, code:"unsupported-term" }` |
-| `"2∶3"` (U+2236) | unsupported ratio-colon glyph | `{ parts:null, code:"not-a-ratio/malformed" }` |
-| `""` / `"   "` | empty | `{ parts:null, code:"not-a-ratio/malformed" }` |
+| `"2∶3"` (U+2236) | unsupported ratio-colon glyph | `{ parts:null, code:"malformed-response" }` |
+| `""` / `"   "` | empty | `{ parts:null, code:"malformed-response" }` |
 
-**Decision — Unicode ratio colon (U+2236) and ratio-word "to":** v1.0.0 accepts **only the ASCII colon `:` (U+003A)** as the separator, with optional surrounding spaces. **U+2236 RATIO, fullwidth colon U+FF1A, the word `to`, slash `/`, and any other separator are NOT accepted.** Rationale: the brief instructs "Unicode colon-like symbols handled **only if explicitly supported**"; supporting them would require a second normalization path and a parity row per glyph for marginal pedagogical value, so v1.0.0 **explicitly excludes** them and routes them to a precise, well-localised reject (`unsupported-term` for the readable word `to`; `not-a-ratio/malformed` for non-ASCII glyphs) rather than a generic failure. This decision is recorded in the §15 schema/lifecycle plan and asserted by two negative rows in the §5.8 matrix.
+**Decision — Unicode ratio colon (U+2236) and ratio-word "to":** v1.0.0 accepts **only the ASCII colon `:` (U+003A)** as the separator, with optional surrounding spaces. **U+2236 RATIO, fullwidth colon U+FF1A, the word `to` (the word-form alias is NOT included in v1.0.0 — decision G), slash `/`, and any other separator are NOT accepted.** Rationale: the brief instructs "Unicode colon-like symbols handled **only if explicitly supported**"; supporting them would require a second normalization path and a parity row per glyph for marginal pedagogical value, so v1.0.0 **explicitly excludes** them and routes them to a precise, well-localised reject (`unsupported-term` for the readable word `to`; `malformed-response` for non-ASCII glyphs) rather than a generic failure. This decision is recorded in the §15 schema/lifecycle plan and asserted by two negative rows in the §5.8 matrix.
 
 **Reject ordering (deterministic, total).** When several faults could apply, the parser emits codes in this fixed precedence so Python and TS agree byte-for-byte:
-1. empty / no colon / unbalanced separators → `not-a-ratio/malformed`
+1. empty / no colon / unbalanced separators → `malformed-response`
 2. a recognised-but-unsupported separator/term shape (`to`, `2.5`, `2,3`) → `unsupported-term`
 3. correct colon structure but wrong arity (≥4 terms, or 1 term) → `wrong-number-of-parts`
 4. all terms parse as integers but one is `≤ 0` → `zero-or-negative-part`
@@ -739,9 +739,13 @@ RESULT_CODES = (
   "zero-or-negative-part",
   "unsupported-term",
   "unparsed-trailing-text",
-  "not-a-ratio/malformed",
+  "malformed-response",
 )
 ```
+
+`equivalent-not-simplified` is **not** itself a partial/competing code: it is a distinct result code whose `CheckResult` additionally carries the boolean field **`partial: true`** when the task requires simplest form. `partial` is a separate boolean field, never a result code in its own right; there is no generic `wrong` or generic `partial` code in this vocabulary.
+
+The **best-buy / choice** checker (§9 F, T11 `best_buy`) uses a separate, smaller closed vocabulary — **`correct`, `wrong-choice`, `malformed-response`** — keyed on the selected labelled option id; it never emits any ratio-parser code. **Table-completion** tasks (`share_two_part`, `share_three_part`) reuse the platform's existing table-completion checker codes (§7.4) and never force ratio-parser codes onto table answers. These three vocabularies (ratio-answer codes above; best-buy/choice codes; the platform table-completion codes) are the **only** result-code vocabularies in the family — there is no UPPER_SNAKE alias, no slash-style code, and no generic `wrong`/`partial` code anywhere.
 
 | Code | Trigger | `partial` | Feedback (template; only parsed/derived values interpolated) |
 |---|---|:--:|---|
@@ -753,9 +757,9 @@ RESULT_CODES = (
 | `zero-or-negative-part` | a parsed term is `0` or negative | no | `Ratio parts in this question are positive whole numbers. Check the part that is zero or negative.` |
 | `unsupported-term` | recognised-but-unsupported separator/term shape (`to`, `2.5`, `2,3`) | no | `Write the ratio using whole numbers separated by a colon, for example 2:3.` |
 | `unparsed-trailing-text` | a valid ratio prefix followed by extra characters | no | `I read {format_ratio(prefixParts)} but there is extra text after it. Give just the ratio, for example 2:3.` |
-| `not-a-ratio/malformed` | empty / no colon / empty term / unbalanced colons / unsupported non-ASCII glyph (incl. U+2236) | no | `I could not read a ratio. Use whole numbers and a colon, for example 2:3 or 2:3:5.` |
+| `malformed-response` | empty / no colon / empty term / unbalanced colons / unsupported non-ASCII glyph (incl. U+2236) | no | `I could not read a ratio. Use whole numbers and a colon, for example 2:3 or 2:3:5.` |
 
-`wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, and `unsupported-term` are deliberately distinct from the catch-all `not-a-ratio/malformed` (mirroring mensuration's `missing-unit` / `wrong-base-unit` / `malformed-response` split): the response is well-formed enough to localise the fault, so the feedback names it. The `wrong-*` and `equivalent-not-simplified` codes also back the §10 `MISC.RATIO.*` group: a diagnostic whose predicted student answer parses to a specific tuple yields exactly the matching result code (the §10 `expectedResultCode`, drawn from this exact vocabulary), which the independent validator (§9) recomputes. Diagnostic-predicted ratios feed ONLY the checker, worked-solution pitfall notes, and the validator's diagnostic-recompute — never any student-channel SVG or accessibility field.
+`wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, and `unsupported-term` are deliberately distinct from the catch-all `malformed-response` (mirroring mensuration's `missing-unit` / `wrong-base-unit` / `malformed-response` split): the response is well-formed enough to localise the fault, so the feedback names it. The `wrong-*` and `equivalent-not-simplified` codes also back the §10 `MISC.RATIO.*` group: a diagnostic whose predicted student answer parses to a specific tuple yields exactly the matching result code (the §10 `expectedResultCode`, drawn from this exact vocabulary), which the independent validator (§9) recomputes. Diagnostic-predicted ratios feed ONLY the checker, worked-solution pitfall notes, and the validator's diagnostic-recompute — never any student-channel SVG or accessibility field.
 
 ### 5.8 RATIO-CHECKER matrix (the brief's required cases)
 
@@ -770,10 +774,10 @@ Every row is a parity-fixture entry: the Python oracle and the TS mirror MUST re
 | 5 | `[2,3]`, `requireSimplest=false` | `"2:3"` | `correct` (equivalent accepted, here already simplest) |
 | 6 | `[2,3]`, any | `"0:3"` | `zero-or-negative-part` (ratio with zero part rejected) |
 | 7 | `[2,3]`, any | `"-2:3"` | `zero-or-negative-part` (negative part rejected) |
-| 8 | `[2,3]`, any | `"two:three"` / `"2;3"` | `not-a-ratio/malformed` (malformed ratio text rejected) |
+| 8 | `[2,3]`, any | `"two:three"` / `"2;3"` | `malformed-response` (malformed ratio text rejected) |
 | 9 | `[2,3]`, any | `"2:3 apples"` | `unparsed-trailing-text` (extra text rejected) |
 | 10 | `[2,3]`, any | `"2 : 3"` | `correct` (spaces around colon accepted) |
-| 11 | `[2,3]`, any | `"2∶3"` (U+2236) | `not-a-ratio/malformed` (Unicode colon-like handled only if explicitly supported — it is NOT in v1.0.0) |
+| 11 | `[2,3]`, any | `"2∶3"` (U+2236) | `malformed-response` (Unicode colon-like handled only if explicitly supported — it is NOT in v1.0.0) |
 | 12 | `[2,3]`, any | `"2 to 3"` | `unsupported-term` (the word "to" is not a supported separator in v1.0.0) |
 | 13 | `[2,3,5]`, `ordered=true` | `"3:2:5"` | `wrong-order` |
 | 14 | `[2,3]`, any | `"2:3:5"` | `wrong-number-of-parts` |
@@ -828,10 +832,10 @@ type Int = number;                        // Number.isInteger, |x| ≤ §11 cap
 // Each value maps to exactly ONE live schema answer.type (no phantom "comparison" type).
 type RatioAnswerShape =
   | "ratio"             // → answer.type "ratio"            (ordered simplest tuple; tasks 1,2,4)
-  | "number"            // → answer.type "integer" | "exact-rational" (tasks 7,8,9,10)
-  | "fraction"          // → answer.type "fraction"         (part-of-whole; task 3)
+  | "number"            // → answer.type "integer" | "exact-rational" (task 7 integer-only; 8,12 integer-or-rational; 9 integer-only; 10 exact-rational)
+  | "fraction"          // → answer.type "exact-rational"   (part-of-whole, reduced; task 3)
   | "table-completion"  // → answer.type "table-completion" (labelled multi-part; tasks 5,6)
-  | "choice";           // → answer.type "multiple-choice"  (best-buy / scale-direction; tasks 11,12)
+  | "choice";           // → answer.type "multiple-choice"  (best-buy ONLY; task 11)
 
 interface RatioModel {
   task: RatioTask;                 // §3 slug; single-source OBJECTIVE_BY_TASK key
@@ -850,7 +854,7 @@ interface RatioModel {
   labels?: string[];               // category labels, index-aligned (table-completion correspondence, §7)
   knownIndex?: Int;                // task 7: which part is given
   knownValue?: Int;                // task 7: the given part's value
-  missingValue?: Int | Q;          // task 7: recovered missing part (NEVER shown in the figure, §8)
+  missingValue?: Int;              // task 7: recovered missing part — INTEGER-ONLY in v1.0.0 (decision E / §6.5 D4); NEVER shown in the figure (§8)
 
   // --- unitary / direct / inverse / unit-rate / scale (tasks 8,9,10,12) ---
   quantity?: Int;                  // unitary basis count (e.g. "7 books")  (task 8,9,10)
@@ -860,8 +864,8 @@ interface RatioModel {
   scaleFactor?: Q;                 // map/model scale as exact rational (task 12); direction-tagged
   scaleDir?: "up" | "down";        // task 12: model→real (up) vs real→model (down)
 
-  // --- discrete-choice tasks (11,12) carry exact witnesses, not a "comparison" canonical ---
-  choiceOptions?: string[];        // ordered MC option labels (best-buy A/B…, scale direction)
+  // --- discrete-choice task (11 best-buy ONLY) carries exact witnesses, never a "comparison" canonical ---
+  choiceOptions?: string[];        // ordered MC option labels (best-buy A/B…)
   choiceIndex?: Int;               // index of the correct option in `choiceOptions`
   rateWitness?: Q[];               // exact per-unit Rational rates carried for solution/feedback (task 11)
 }
@@ -874,13 +878,13 @@ Exactness of each form:
 | `parts`, `simplest` | `Int[]` | as posed / reduced | all entries ≥ 1; `gcd(simplest)=1`; ORDER preserved |
 | `scale` | `Int` | `gcd(parts)` | `scale ≥ 1`; `simplest[i]·scale = parts[i]` for all i |
 | `shares` | `Int[]` | total-parts method (§6.4) | every entry an **exact integer**; `Σ shares = whole` (§6.6) |
-| `missingValue` | `Int` or `Q` | cross-multiplication (§6.3) | exact `Int` or reduced `Rational` per §6.5 D4 (never a float) |
+| `missingValue` | `Int` | `onePart · parts[missingIndex]` (§6.3) | exact **integer** by §6.5 D4 (`parts[knownIndex] ∣ knownValue`); integer-only in v1.0.0 (decision E) — never a `Rational`, never a float |
 | `unitRate` | `Q` | `measure / quantity` (§6.4) | reduced `Rational`; integer iff `quantity ∣ measure` |
 | `invariant` | `Int` | `q1·v1` (§6.4) | exact integer; both inverse pairs reproduce it (§6.5) |
 | `scaleFactor` | `Q` | reduced `Rational` (§6.4) | reduced; never a decimal |
 | `rateWitness` | `Q[]` | `price / qty` reduced (§6.4) | reduced `Rational`; exact, used only for feedback |
 
-`parts`/`simplest`/`shares`/`quantity`/`invariant`/`choiceIndex` are **integers**; `missingValue`/`unitRate`/`scaleFactor`/`rateWitness` are **`Int`-or-`Rational`**; nothing is ever a float. The discrete-choice tasks (11, 12) emit `answer.type "multiple-choice"` (a live enum member) with `choiceIndex`; there is **no `comparison` answer.type** — the exact per-unit rates / scale checks live as `rateWitness`/`scaleFactor` witnesses consumed by the worked solution and §10 diagnostics, never as a stored canonical (§4 owns the schema mapping; `ratio` remains the only NEW enum member the family adds).
+`parts`/`simplest`/`shares`/`quantity`/`invariant`/`choiceIndex` are **integers**; `missingValue` is an **`Int`** (decision E, integer-only); `unitRate`/`scaleFactor`/`rateWitness` are **`Int`-or-`Rational`**; nothing is ever a float. The single discrete-choice task — **best-buy (11) only** — emits `answer.type "multiple-choice"` (a live enum member) with `choiceIndex`; there is **no `comparison` answer.type** anywhere — the exact per-unit rates live as `rateWitness` witnesses consumed by the worked solution and §10 diagnostics, never as a stored canonical (§4 owns the schema mapping; `ratio` remains the only NEW enum member the family adds). `simple_scale` (12) is a free-response **number** answer (decision C/D), not a choice.
 
 ### 6.3 gcd simplification and proportional equivalence
 
@@ -912,7 +916,7 @@ function ratioEquivalent(p: Int[], q: Int[]): boolean {
 
 `ratioEquivalent([2,3],[4,6]) = true`, `([2,3,5],[4,6,10]) = true`, `([2,3],[3,2]) = false` (order), `([20,30],[2,3]) = true`. Because the simplest form of a positive tuple is unique, `ratioEquivalent` is `true` iff the tuples are proportional in the SAME order; a mere reordering (e.g. `3:2` vs `2:3`) is correctly NOT equivalent and falls through to the `reverses_order` diagnostic branch (§10). Both the elementwise implementation and its cross-product justification are pure integer arithmetic.
 
-Whether an **unsimplified** equivalent (e.g. `4:6` for a `2:3` answer) is *accepted* is a per-task policy decision, not a math decision: `ratioEquivalent` returns `true`, but tasks that test simplification (task `simplify`, and any task whose objective requires simplest form, §5) downgrade an equivalent-but-unsimplified response to a partial result code (`EQUIVALENT_NOT_SIMPLEST`, §5), while tasks that merely require *a correct ratio* accept it (`RATIO_OK`). The math layer reports equivalence; §5/§9 apply policy with the single result-code vocabulary fixed in §5.
+Whether an **unsimplified** equivalent (e.g. `4:6` for a `2:3` answer) is *accepted* is a per-task policy decision, not a math decision: `ratioEquivalent` returns `true`, but tasks that test simplification (task `simplify`, and any task whose objective requires simplest form, §5) downgrade an equivalent-but-unsimplified response to the result code `equivalent-not-simplified` with the separate boolean `partial: true` (§5), while tasks that merely require *a correct ratio* accept it (`correct`). The math layer reports equivalence; §5/§9 apply policy with the single lower-kebab result-code vocabulary fixed in §5.
 
 ### 6.4 Total-parts, unitary, inverse, unit-rate, scale — the five exact procedures
 
@@ -969,7 +973,7 @@ function applyScale(value: Int | Rational, factor: Rational, dir: "up" | "down")
 }
 ```
 
-`scaleDir` removes the "scale-factor-wrong-direction" ambiguity at the model level (the misconception `MISC.RATIO.SCALE_FACTOR_WRONG_DIRECTION` predicts the opposite-direction value, §10). Generation constrains parameters so `applyScale` yields the declared exact `Int`/`Rational` answer. When `simple_scale` is posed as a *direction* multiple-choice item, the correct `choiceIndex` is the option matching the declared `scaleDir`; when posed as a numeric scaled value, `answerShape:"number"` applies and the answer is the exact `Int`/`Rational` above.
+`scaleDir` removes the "scale-factor-wrong-direction" ambiguity at the model level (the misconception `MISC.RATIO.SCALE_FACTOR_WRONG_DIRECTION` predicts the opposite-direction value, §10). Generation constrains parameters so `applyScale` yields the declared exact `Int`/`Rational` answer. `simple_scale` is **free-response-only** (decision C) and always asks for the **scaled numerical value** (decision D/I): `answerShape:"number"` applies and the answer is the exact `Int`/`Rational` above (`integer` when whole, else `exact-rational`). It is never posed as a direction multiple-choice item and never answered as a ratio in v1.0.0.
 
 **(e) Best-buy / rate comparison** (`best_buy`, T11; NO currency conversion). Two rates are compared by exact `Rational` cross-multiplication, never by computing decimals:
 
@@ -981,7 +985,7 @@ function cheaperPerUnit(a: { price: Int; qty: Int }, b: { price: Int; qty: Int }
 }
 ```
 
-This reuses the exact cross-product idiom (cf. `Rational.cmpAbs`). The answer is the discrete `multiple-choice` option indexed by `choiceIndex` (the cheaper-per-unit option), with the exact per-unit `Rational` rates stored in `rateWitness` for the worked solution and feedback. A `TIE` (`L === R`) is a declared edge case (§12 best-buy ties): generation excludes ties unless an intentional low-band tie item is posed, in which case the MC option set includes an explicit "same value" choice and `choiceIndex` selects it. Quantities/prices are unitless rate operands — `best_buy` never converts currency.
+This reuses the exact cross-product idiom (cf. `Rational.cmpAbs`). The answer is the discrete `multiple-choice` option indexed by `choiceIndex` (the option with the **strict minimum** unit rate), with the exact per-unit `Rational` rates stored in `rateWitness` for the worked solution and feedback. A `TIE` (`L === R`) triggers a **deterministic redraw** (decision H / §12 best-buy ties): generation **excludes all ties** so the best value is always a strict minimum — there is no "same value" option in v1.0.0. Quantities/prices are unitless rate operands in a single currency — `best_buy` never converts currency or applies an exchange rate.
 
 ### 6.5 Divisibility constraints parameter generation MUST satisfy
 
@@ -996,7 +1000,7 @@ Exactness is guaranteed at **generation time**, not patched at answer time. The 
 | D5 | `direct_proportion`, `unit_rate` | answer-shape honoured: store `integer` when the reduced value has `den=1`, else `exact-rational`; never coerce | unit rate / scaled value is the declared exact form | (none — both branches exact) |
 | D6 | `inverse_proportion` | `q2 ∣ (q1·v1)` **and** the pair are genuinely inverse (product constant) | `v2` is an exact integer ("simple integer cases only") | redraw |
 | D7 | `simple_scale` | `scaleFactor` reduced; chosen so `applyScale` gives an exact `Int`/`Rational`; `scaleDir` set | no decimal scale, direction unambiguous | redraw |
-| D8 | `best_buy` | distinct rates unless a tie is *intended* low-band; operands positive integers | exact cross-product decides; ties only when declared | redraw (§12 ties) |
+| D8 | `best_buy` | **all rates distinct (strict minimum), no ties** (decision H); operands positive integers, single currency | exact cross-product decides; the best value is a unique strict minimum | redraw on any tie (§12 ties) |
 | D9 | `ratio_to_fraction`, `fraction_to_ratio` | part-of-whole uses `Σ simplest` as denominator; for `fraction_to_ratio` the proper-fraction guard `0 < a < b` holds so the complement `[a, b−a]` has both parts ≥ 1 | fraction is `part/total`, not `part/otherPart`; complement is a valid positive ratio | enforced by construction (§7) |
 
 **D4 is now a hard, non-optional integer guarantee** (resolving the earlier escape-hatch ambiguity): because `missing_part` declares `answer.type "integer"` only (§2.7/§3.3), generation MUST enforce `parts[knownIndex] ∣ knownValue`. With that single constraint, `unit = knownValue / parts[knownIndex]` is an exact integer and `missingValue = unit · parts[missingIndex]` is automatically an exact integer — so `missingValue` is **never a `Rational`** for `missing_part` in v1.0.0. (The `Int | Q` type on `missingValue` in §6.2 is the general field type; the §6.5 D4 contract pins it to `Int` for this task. Any future task that legitimately needs a rational recovered value would declare `exact-rational` in its own §3 row; none does in v1.0.0.)
@@ -1015,9 +1019,9 @@ Independently of generation, the §9 validator recomputes and asserts the follow
 6. **Unit-rate / direct** (`direct_proportion`, `unit_rate`): `unitRate.mul(Rational.from(quantity)).equals(Rational.from(measure))`; the scaled answer equals `unitRate · target` exactly; the stored `answer.type` is `integer` iff the reduced value has `den===1`, else `exact-rational`.
 7. **Inverse invariant** (`inverse_proportion`): `q1·v1 === q2·v2 === invariant`, all integers.
 8. **Scale consistency** (`simple_scale`): applying `scaleFactor` in `scaleDir` to the given value yields the stored exact answer; applying it to a second corresponding pair reproduces the same factor (`Rational.equals`); for a direction MC item, `choiceOptions[choiceIndex]` matches `scaleDir`.
-9. **Best-buy** (`best_buy`): `choiceIndex` equals the cheaper option per `cheaperPerUnit(...)`; the carried `rateWitness` per-unit `Rational` rates are reduced and reproduce the comparison; a declared tie selects the explicit "same value" option.
+9. **Best-buy** (`best_buy`): `choiceIndex` equals the option with the **strict minimum** unit rate per `cheaperPerUnit(...)`; the carried `rateWitness` per-unit `Rational` rates are reduced and reproduce the comparison; ties are unreachable (deterministic redraw, decision H), so the keyed option is always the unique strict minimum.
 
-Any failure is a hard error (build-breaking), surfaced by the §9 closure-agreement check, never tolerated and never rounded away. This is the exact-arithmetic backbone on which §5 (checker result codes), §7 (sharing/table model), and §9 (independent validation) all rest; it introduces nothing outside v1.0.0 scope and touches no deferred topic (no percentages, currency conversion, compound proportion, recipe-with-units, similar-triangle scale, gradient, irrational, or decimal-ratio terms). It also adds **no new schema answer.type**: discrete-choice tasks 11/12 reuse the live `multiple-choice` enum member, so `ratio` remains the family's single additive enum member (§4/§15).
+Any failure is a hard error (build-breaking), surfaced by the §9 closure-agreement check, never tolerated and never rounded away. This is the exact-arithmetic backbone on which §5 (checker result codes), §7 (sharing/table model), and §9 (independent validation) all rest; it introduces nothing outside v1.0.0 scope and touches no deferred topic (no percentages, currency conversion, compound proportion, recipe-with-units, similar-triangle scale, gradient, irrational, or decimal-ratio terms). It also adds **no new schema answer.type**: the one discrete-choice task — best-buy (11) — reuses the live `multiple-choice` enum member, so `ratio` remains the family's single additive enum member (§4/§15).
 
 ---
 
@@ -1085,9 +1089,9 @@ Rules, identical across Python oracle (`oracle/spi_oracle/proportion_ratio.py`) 
 |---|---|---|
 | task ∈ {`share_two_part`, `share_three_part`} | `table-completion` | `table-completion` |
 | task == `missing_part` | `number` | `integer` |
-| (other ratio tasks, Sections 4–6) | `ratio` / `fraction` / `comparison` | per that section |
+| (other ratio tasks, Sections 4–6) | `ratio` / `fraction` / `choice` | per that section |
 
-The tag is **answer-shape metadata only** (it selects the cell-vs-scalar answer builder and the checker dispatch); it is *not* a difficulty input and *not* duplicated inside `answer`. A validator check `answer-shape-tag-consistent` (Section 9) asserts `(answerShapeTag, answer.type)` is one of the rows above for every emitted item. (The `comparison` row belongs to best-buy and is owned by §6.2; its final `answer.type` realisation is fixed in §4/§15. This section neither emits nor depends on `comparison`; the row is shown only to make the table total over all tasks.)
+The tag is **answer-shape metadata only** (it selects the cell-vs-scalar answer builder and the checker dispatch); it is *not* a difficulty input and *not* duplicated inside `answer`. A validator check `answer-shape-tag-consistent` (Section 9) asserts `(answerShapeTag, answer.type)` is one of the rows above for every emitted item. (The `choice` row belongs to best-buy and is owned by §6.2; its final `answer.type` realisation is the live `multiple-choice` enum member, fixed in §4/§15. **There is NO `comparison` answer type anywhere in this family.** This section neither emits nor depends on best-buy; the row is shown only to make the table total over all tasks.)
 
 ### 7.4 Sharing: exact computation and the table-completion answer
 
@@ -1126,14 +1130,7 @@ Contract details (all mirror data-handling's table-completion / transformations'
 - **Cell count == number of parts** (2 or 3) — variable-length `cells[]`, no padding, no empty cells. There is no "total" cell: the total is **given** in the prompt for share tasks, so it is never a blank.
 - **Per-cell partial diagnosis.** A wrong single cell yields per-label feedback (which person got the wrong amount) and feeds the misconception adapters' predicted per-label responses (Section 10) — e.g. `MISC.RATIO.REVERSES_ORDER` predicts the exact swapped assignment `{Ali:18, Ben:12}` for a two-part share, not an arbitrary nearby number.
 - **No schema delta.** The checker, not the schema, validates the `cells` shape (verified the same way data-handling verified it; an integer-valued cell needs no `if/then` block).
-- **Result codes (the shared result-code vocabulary is owned by Section 5; this section uses Section 5's exact tokens, no new spelling).** For the `table-completion` (sharing) dispatch the checker returns one of:
-  - `correct` — all cells match by label.
-  - `partial` — at least one but not all cells correct (drives per-label feedback).
-  - `wrong-order` — the multiset of values is right but assigned to the wrong labels (the canonical `MISC.RATIO.REVERSES_ORDER` signature; this is the **same** `wrong-order` token Section 5 defines for the ratio checker, reused here so there is exactly one spelling per concept).
-  - `wrong` — otherwise.
-  - `not-a-ratio/malformed` — a non-integer / negative / unparseable cell, or a `location` not in the item's label set (Section 5's single malformed token; `share_*` never emits a separate `malformed` spelling).
-
-  These are exactly Section 5's hyphenated-lowercase tokens; this section does **not** introduce `order-reversed`, `MALFORMED_RATIO`, or any UPPER_SNAKE variant. (Misconception **IDs** remain `MISC.RATIO.*` UPPER_SNAKE per Section 10; result **codes** remain Section 5 hyphenated-lowercase — these are two distinct, non-overlapping vocabularies.)
+- **Result codes — table-completion tasks reuse the platform's EXISTING table-completion checker codes (decision F); the ratio-parser codes of Section 5 are NOT forced onto table answers.** The share tasks dispatch to the platform's approved `table-completion` checker (the data-handling precedent) and surface its codes unchanged — per-cell correct / incorrect against the canonical label→value map, with per-label partial feedback carried by the platform checker's own partial mechanism (a boolean partial flag, not a competing result code). A reversed-label assignment (the `MISC.RATIO.REVERSES_ORDER` signature — the right multiset of values bound to the wrong labels) is reported by that checker's existing wrong-assignment path. The single shared **`malformed-response`** token (Section 5) is the one ratio-family code the table dispatch reuses for a structurally unreadable cell (a non-integer / negative / unparseable cell, or a `location` not in the item's label set). This section introduces **no** `order-reversed`, `MALFORMED_RATIO`, generic `wrong`, generic `partial`, or any UPPER_SNAKE / slash-style variant. (Misconception **IDs** remain `MISC.RATIO.*` UPPER_SNAKE per Section 10; result **codes** remain lower-kebab — two distinct, non-overlapping vocabularies.)
 
 ### 7.5 Missing-part-from-known-part
 
@@ -1191,12 +1188,12 @@ The **sum check (step 4 / consistency check)** is a *required, asserted* step, n
 Revised Section 7 above is the implementation-ready replacement for `docs/GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` Section 7 (cluster E-sharing-table).
 
 Blockers/improvements fixed within my scope:
-- **Result-code vocabulary drift (completeness I5)** — §7.4 no longer introduces the fourth spelling `order-reversed`/`partial`/`wrong`/`malformed`. It now uses Section 5's single hyphenated-lowercase token set verbatim: `correct`, `partial`, `wrong-order`, `wrong`, `not-a-ratio/malformed`, and explicitly states result-codes (Section 5) and misconception IDs (Section 10) are two distinct non-overlapping vocabularies.
+- **Result-code vocabulary (decision F)** — §7.4 no longer introduces `order-reversed`/generic `partial`/generic `wrong`/`malformed`/`not-a-ratio/malformed`. Table-completion (sharing) tasks reuse the **platform's existing table-completion checker codes** unchanged; the only ratio-family code reused is the single lower-kebab `malformed-response` for a structurally unreadable cell. Result-codes (Section 5) and misconception IDs (Section 10) are two distinct non-overlapping vocabularies.
 - **Missing-part type contradiction + soft divisibility (ratio-math B1/B2)** — §7.1 and §7.5 pin `missing_part` to `integer` only and make the `parts[i] | v` divisibility precondition a HARD, non-optional generation invariant (loop construction guarantees it, validator re-asserts it), removing the escape hatch so a non-integer result is unreachable; this aligns §2.7/§3.3/§7/§9/§11 on `integer`.
 - **Slug / objective-ID drift (completeness B1/B2, ratio-math B3, platform-fit B2)** — §7.1 reaffirms the canonical §1.3 slug set (`share_two_part`, `share_three_part`, `missing_part`) and §1.2 objective IDs (no `_UNITARY`/`_ratio`/abbreviated variants); no banned spelling appears.
 - **Value-based vs role-based leakage (renderer B5)** — §7.5's figure cross-reference is now role-keyed (defers to Section 8's `only-given-values-shown` role/class guard), dropping any implication of a numeric value test.
 
-Cross-section dependencies my draft assumes (unchanged, consistent with the brief and prior families): canonical `RatioModel` fields `parts/labels/total/totalParts/onePart/shares/known/missing/answerShapeTag` (Section 6); `answer.type:"ratio"` reserved for true-ratio answers only, NOT shares (Section 4); the shared Section 5 result-code vocabulary (`correct/partial/wrong-order/wrong/not-a-ratio/malformed`); Section 9 check names `shares-recompute-agrees/share-label-correspondence/answer-shape-tag-consistent/answer-type-consistency/share-sum-reconciles/share-ratio-reconciles/answer-solution-agrees`; and `MISC.RATIO.*` IDs `REVERSES_ORDER`, `DIVIDES_BY_ONE_PART_INSTEAD_OF_TOTAL`, `WRONG_TOTAL_PARTS`, `MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY` (Section 10). Verified against the live repo: `table-completion` and `multiple-choice` are enum members and `comparison` is not (schema lines 196–205); `table-completion` has no `if/then` `cells` constraint (zero schema delta); the `transformation` canonical-first `if/then/const` precedent with `units/measure/tolerance:false` exists at lines 286–313; `core/exact-math/rational.ts` is reduced with `den >= 1`.
+Cross-section dependencies my draft assumes (unchanged, consistent with the brief and prior families): canonical `RatioModel` fields `parts/labels/total/totalParts/onePart/shares/known/missing/answerShapeTag` (Section 6); `answer.type:"ratio"` reserved for true-ratio answers only, NOT shares (Section 4); the shared Section 5 lower-kebab result-code vocabulary (`correct`, `equivalent-not-simplified` + boolean `partial`, `wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, `unsupported-term`, `unparsed-trailing-text`, `malformed-response`) for ratio answers, and the platform's existing table-completion checker codes for the share tasks (decision F); Section 9 check names `shares-recompute-agrees/share-label-correspondence/answer-shape-tag-consistent/answer-type-consistency/share-sum-reconciles/share-ratio-reconciles/answer-solution-agrees`; and `MISC.RATIO.*` IDs `REVERSES_ORDER`, `DIVIDES_BY_ONE_PART_INSTEAD_OF_TOTAL`, `WRONG_TOTAL_PARTS`, `MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY` (Section 10). Verified against the live repo: `table-completion` and `multiple-choice` are enum members and `comparison` is not (schema lines 196–205); `table-completion` has no `if/then` `cells` constraint (zero schema delta); the `transformation` canonical-first `if/then/const` precedent with `units/measure/tolerance:false` exists at lines 286–313; `core/exact-math/rational.ts` is reduced with `den >= 1`.
 
 ## 8. Bar-model / double-number-line renderer contract
 
@@ -1451,20 +1448,20 @@ Free-response-first. The **answer-shape** (schema `answer.type`) and **MC-eligib
 
 | Task slug | `answer.type` (§4, live enum) | `interactionType` policy |
 |---|---|---|
-| `simplify` | `ratio` | FR-first; **MC-eligible** (3 misconception-backed distractors: unsimplified-equivalent, partial-simplify, reversed) |
-| `write_from_quantities` | `ratio` | FR-first; **MC-eligible** (reversed, unsimplified, adds-parts/part-as-whole) |
-| `ratio_to_fraction` | `exact-rational` | FR-first; **MC-eligible** (part-over-other-part, one-part-as-whole, wrong-total-of-parts) |
-| `fraction_to_ratio` | `ratio` | FR-first; **MC-eligible** (reversed, does-not-simplify-fully, unsimplified) |
-| `share_two_part` | `table-completion` (2 labelled cells) | FR-first; MC only if 3 strong distractors exist for the redrawn case |
-| `share_three_part` | `table-completion` (3 labelled cells) | FR-first; MC-ineligible (multi-cell answer) |
-| `missing_part` | `integer` **or** `exact-rational` (see §9.3) | FR-first; **MC-eligible** |
-| `direct_proportion` | `integer` **or** `exact-rational` (see §9.3) | FR-first; **MC-eligible** |
-| `inverse_proportion` | `integer` (simple integer cases only) | FR-first; **MC-eligible** (direct-for-inverse distractor) |
-| `unit_rate` | `exact-rational` (rate value) | FR-first; **MC-eligible** |
-| `best_buy` | `multiple-choice` (chosen option id; unit-rate witnesses in `solution`/feedback) | FR-first; **MC-eligible** (it is intrinsically a choice) |
-| `simple_scale` | `integer` **or** `exact-rational` (see §9.3) | FR-first; **MC-eligible** (wrong-direction distractor) |
+| `simplify` | `ratio` | FR + **MC-eligible** (3 misconception-backed distractors: unsimplified-equivalent, partial-simplify, reversed) |
+| `write_from_quantities` | `ratio` | **FR-only** (decision C) |
+| `ratio_to_fraction` | `exact-rational` | FR + **MC-eligible** (part-over-other-part, one-part-as-whole, wrong-total-of-parts) |
+| `fraction_to_ratio` | `ratio` | FR + **MC-eligible** (reversed, does-not-simplify-fully, unsimplified) |
+| `share_two_part` | `table-completion` (2 labelled cells) | **FR-only** (decision C; multi-cell answer) |
+| `share_three_part` | `table-completion` (3 labelled cells) | **FR-only** (multi-cell answer) |
+| `missing_part` | `integer` (v1.0.0; integer-only, decision E) | **FR-only** (decision C) |
+| `direct_proportion` | `integer` **or** `exact-rational` (see §9.3) | FR + **MC-eligible** |
+| `inverse_proportion` | `integer` (simple integer cases only) | FR + **MC-eligible** (direct-for-inverse distractor) |
+| `unit_rate` | `exact-rational` (rate value) | **FR-only** (decision C) |
+| `best_buy` | `multiple-choice` (chosen option id; unit-rate witnesses in `solution`/feedback) | **MC-only** (decision C; the labelled choice IS the construct) |
+| `simple_scale` | `integer` **or** `exact-rational` (see §9.3) | **FR-only** (decision C) |
 
-For tasks tagged `integer **or** `exact-rational`` (`missing_part`, `direct_proportion`, `simple_scale`), `ANSWER_SHAPE_BY_TASK` declares a **primary-shape pair** `{"integer","exact-rational"}`: the stored `answer.type` is `integer` when the exact result has `den == 1` and `exact-rational` otherwise (it is **never** an `exact-rational` with `den==1` masquerading as an integer — the `display-derived` / `answer-type-consistency` checks of §9.4 enforce the integer-when-whole collapse so Py and TS agree byte-for-byte). `inverse_proportion` is integer-only by construction (§9.3).
+For tasks tagged `integer **or** `exact-rational`` (`direct_proportion`, `simple_scale`), `ANSWER_SHAPE_BY_TASK` declares a **primary-shape pair** `{"integer","exact-rational"}`: the stored `answer.type` is `integer` when the exact result has `den == 1` and `exact-rational` otherwise (it is **never** an `exact-rational` with `den==1` masquerading as an integer — the `display-derived` / `answer-type-consistency` checks of §9.4 enforce the integer-when-whole collapse so Py and TS agree byte-for-byte). `missing_part` is **integer-only** in v1.0.0 (decision E: the `parts[knownIndex] ∣ knownValue` divisibility gate guarantees an integer recovered value) and `inverse_proportion` is integer-only by construction (non-integer cases excluded; §9.3).
 
 An explicit multiple-choice request on an **MC-ineligible** task (`share_three_part`, or an MC-eligible task that redrew into a case lacking 3 distinct misconception-backed distractors) is handled by the platform rule: the generator **deterministically redraws** (call-order-preserving) to an MC-eligible case, or returns a clear **`interaction-not-supported`** error — it is **never** silently converted to free-response. The `interaction-type` check (§9.4) enforces this.
 
@@ -1480,7 +1477,7 @@ An explicit multiple-choice request on an **MC-ineligible** task (`share_three_p
 | `fraction_to_ratio` | proper reduced `f = a/b` (`0 < a < b`, guaranteed by construction — §12) ⇒ `[a, b−a]`; simplify by `gcd` | `ratio` `{parts}` (named-part : rest) |
 | `share_two_part` | `unit = total / (p₁+p₂)` (`Σparts ∣ total`, §9.4-D); `share_k = unit·p_k` | `table-completion`: `{label_k → integer share_k}` |
 | `share_three_part` | `unit = total / (p₁+p₂+p₃)` (`Σparts ∣ total`); `share_k = unit·p_k` | `table-completion`: `{label_k → integer share_k}` |
-| `missing_part` | known part `a_known` on the `m`-term of ratio `m:n`: `missing = a_known·n/m`, **exact by the §9.4-E hard divisibility rule** | `integer` when `m ∣ a_known·n`, else `exact-rational` |
+| `missing_part` | known part `a_known` on the `m`-term of ratio `m:n`: `onePart = a_known/m` (generation enforces `m ∣ a_known`), `missing = onePart·n`, **integer by the §9.4-E hard divisibility rule** | `integer` (v1.0.0; integer-only, decision E) |
 | `direct_proportion` | `unit = y₁/x₁`; `answer = unit·x₂` (scales **with** the other quantity) | `integer` when result whole, else `exact-rational` |
 | `inverse_proportion` | product invariant `k = x₁·y₁`; `answer = k/x₂` (**simple integer cases only**: construction guarantees `x₂ ∣ k`) | `integer` |
 | `unit_rate` | `rate = quantity / count`, reduced (price per 1 item, distance per 1 unit) | `exact-rational` `{num,den}` |
@@ -1489,7 +1486,7 @@ An explicit multiple-choice request on an **MC-ineligible** task (`share_three_p
 
 The solver emits `solution.steps[]` (`{number, transformation, intermediateResult}`); the final step's `intermediateResult` equals the canonical `display`, satisfying the SDK `answerSolutionAgrees` predicate. For `best_buy`, intermediate steps additionally record each `unitRate_j` so the witness is visible without a structured `comparison` canonical. The solver also emits the misconception `ctx` (§10.1) so each diagnostic value is recomputed from the **same** exact intermediates.
 
-**Hard exactness rule (no optional escape hatch).** For every task whose answer is a quotient (`ratio_to_fraction`, `missing_part`, `direct_proportion`, `inverse_proportion`, `unit_rate`, `simple_scale`), the solver computes the **exact reduced `Rational`** and then sets `answer.type = integer` iff `den == 1`, else `exact-rational`. For the **integer-only** tasks (`inverse_proportion`; and any `missing_part` / `direct_proportion` / `simple_scale` draw whose objective record requests an integer answer for a low band), the generator **must** enforce the divisibility precondition at construction time — for `missing_part`, `parts[knownIndex] ∣ knownValue` (which makes `parts[missingIndex]·(knownValue/parts[knownIndex])` automatically integer); for `inverse_proportion`, `x₂ ∣ x₁·y₁`. If the precondition fails, the candidate is **rejected and the seed deterministically redraws** (§12); a non-exact result is **never** silently stored, rounded, or downgraded to a float. The `integer`-vs-`exact-rational` tag is therefore fully determined by the exact arithmetic, removing the §2/§9/§11 type ambiguity at its root.
+**Hard exactness rule (no optional escape hatch).** For the quotient tasks that may legitimately yield a rational (`ratio_to_fraction`, `direct_proportion`, `unit_rate`, `simple_scale`), the solver computes the **exact reduced `Rational`** and then sets `answer.type = integer` iff `den == 1`, else `exact-rational`. For the **integer-only** tasks (`missing_part` and `inverse_proportion`), the generator **must** enforce the divisibility precondition at construction time so the answer is integral by construction — for `missing_part`, `parts[knownIndex] ∣ knownValue` (decision E: which makes `onePart = knownValue/parts[knownIndex]` integral and therefore `missingValue = onePart·parts[missingIndex]` an exact integer); for `inverse_proportion`, `x₂ ∣ x₁·y₁` (non-integer cases excluded). If the precondition fails, the candidate is **rejected and the seed deterministically redraws** (§12); a non-exact result is **never** silently stored, rounded, or downgraded to a float. There is **no exact-rational path for `missing_part` in v1.0.0**. The `integer`-vs-`exact-rational` tag is therefore fully determined by the exact arithmetic, removing the §2/§9/§11 type ambiguity at its root.
 
 ### 9.4 Independent validator (`validate(item) -> {status, validatorVersion, checks[]}`)
 
@@ -1544,7 +1541,7 @@ Authored oracle-first (`oracle/spi_oracle/ratio_validate.py`), mirrored byte-ide
 
 | Check name | Assertion |
 |---|---|
-| `missing-part-exact` | for `missing_part`, the validator recomputes `missing = knownValue·n/m` as an exact reduced `Rational`; if the objective record requires an **integer** answer (low band) it asserts the **hard, non-optional** divisibility precondition `m ∣ knownValue` (so `den==1`) — there is **no escape-hatch**; otherwise it asserts `answer.type == exact-rational` with the reduced `{num,den}`. A non-exact integer-tagged answer **fails**. |
+| `missing-part-exact` | for `missing_part`, the validator asserts the **hard, non-optional** divisibility precondition `parts[knownIndex] ∣ knownValue` (decision E), recomputes `onePart = knownValue / parts[knownIndex]` and `missingValue = onePart · parts[missingIndex]`, and asserts `answer.type == integer` with `den==1`. `missing_part` is **integer-only** in v1.0.0 — there is **no escape-hatch and no exact-rational path**; any non-divisible draw was redrawn at construction, and a non-integer or `exact-rational`-tagged answer **fails**. |
 | `cross-multiplication-holds` | for `missing_part` / `direct_proportion`, `a:b == c:d ⇔ a·d == b·c` checked in exact integer arithmetic over the (known, answer) pair; the answer is the **unique** solution of that single linear relation. |
 | `unitary-recomputation` | the unit value (`y₁/x₁` direct; `total/Σparts` sharing; `quantity/count` unit-rate) is recomputed independently and the scaled answer re-derived from it; the second route must match `answer.canonical`. |
 | `inverse-product-invariant` | for `inverse_proportion`, `x₁·y₁ == x₂·y₂` (the product is conserved); the validator recomputes `k = x₁·y₁`, asserts `k mod x₂ == 0` (simple integer case), and that `answer == k/x₂` with `den==1`. A non-exact result would have been redrawn (§12); the validator confirms exactness here too. |
@@ -1613,7 +1610,7 @@ ctx = { task, answerShape, correct,                 // the typed canonical answe
         options?: {id,price,size,unitRate}[] }       // best-buy (multiple-choice)
 ```
 
-Result codes are the family's **single result-code vocabulary** (§5), in UPPER_SNAKE casing used identically here and in §5/§7: `CORRECT`, `EQUIVALENT_NOT_SIMPLEST` (partial), `WRONG_ORDER`, `WRONG_VALUE`, `WRONG_FORM`, `WRONG_CHOICE`, `MALFORMED_RATIO`, `INCOMPLETE`. (§5 declares these as the canonical `RESULT_CODES`; no hyphenated-lowercase or alternate spelling appears anywhere.)
+Result codes are the family's **single lower-kebab result-code vocabulary** (§5, decision F), used identically here and in §5/§7 — **never UPPER_SNAKE**. The `expectedResultCode` of every diagnostic is one of the §5 ratio codes (`correct`, `equivalent-not-simplified` with the separate boolean `partial: true`, `wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, `unsupported-term`, `unparsed-trailing-text`, `malformed-response`), or — for best-buy/choice diagnostics — one of the choice codes `correct` / `wrong-choice` / `malformed-response`, or — for share table-completion diagnostics — the platform's existing table-completion checker code. There is **no** `CORRECT`, `EQUIVALENT_NOT_SIMPLEST`, `WRONG_VALUE`, `WRONG_FORM`, `WRONG_CHOICE`, `MALFORMED_RATIO`, `INCOMPLETE`, or any other UPPER_SNAKE/slash-style/generic spelling anywhere. (The wrong-value form errors — an unsimplified equivalent under a simplest-form-required task — map to `equivalent-not-simplified` + `partial: true`; an incomplete/malformed predicted response maps to `malformed-response`.)
 
 ### 10.1 The sixteen `MISC.RATIO.*` diagnostics
 
@@ -1621,32 +1618,32 @@ All sixteen named diagnostics from the brief, one-to-one (no extras, none deferr
 
 | Id | Title · exact formula | kind / diagnosticOnly | applicability | observableError → feedback | adapter result | expected result code |
 |---|---|---|---|---|---|---|
-| `MISC.RATIO.DOES_NOT_SIMPLIFY_FULLY` | Does not simplify fully · divides by a **proper divisor** `d` of `g` (`1<d<g`, smallest such `d`): `[p/d]` | `form` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `g` is composite (∃ such `d`) | Leaves the ratio in a smaller-but-not-simplest form. → "This ratio still has a common factor — keep dividing until the only common factor is 1." | `ratio {parts:[p/d]}` (still reducible) | `EQUIVALENT_NOT_SIMPLEST` |
-| `MISC.RATIO.EQUIVALENT_BUT_UNSIMPLIFIED_WHEN_SIMPLEST_REQUIRED` | Equivalent but unsimplified when simplest required · returns `originalParts` unchanged | `form` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `g>1` and the task **requires** simplest form | Gives an equivalent ratio that has not been simplified at all. → "That ratio is equal in value, but the question asks for the simplest form." | `ratio {parts: originalParts}` (gcd>1) | `EQUIVALENT_NOT_SIMPLEST` |
-| `MISC.RATIO.REVERSES_ORDER` | Reverses order · `reverse(parts)` (two-part) / a fixed transposition (three-part) | `order` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `parts` not palindromic | Writes the parts in the wrong order (e.g. swaps the two categories). → "Order matters: match each number to the right category in the order asked." | `ratio {parts: reverse(parts)}` | `WRONG_ORDER` |
-| `MISC.RATIO.ADDS_PARTS_INCORRECTLY` | Adds parts incorrectly · uses `sum(parts)` as a single quantity instead of keeping the ratio | `value` / `false` | `write_from_quantities`, `fraction_to_ratio`, `share_two_part`, `share_three_part` | Adds the parts together instead of keeping them as a comparison. → "Don't add the parts — a ratio compares the quantities side by side." | share: `integer {Σparts·unit}`; `fraction_to_ratio`: `ratio {parts:[a+(b−a)]}` collapsed ⇒ `studentResponseText:"a+b"`; write: `studentResponseText:"a+b"` | `WRONG_VALUE` / `INCOMPLETE` |
-| `MISC.RATIO.TREATS_ONE_PART_AS_WHOLE` | Treats one part as the whole · `share_k = total` (assigns the whole total to one share) / `ratio_to_fraction`: `partᵢ/partᵢ = 1` | `value` / `false` | `share_two_part`, `share_three_part`, `ratio_to_fraction` | Gives one category the entire amount instead of its share. → "Split the total across **all** the parts, not just one." | share: `table-completion` `share_k=total` (others 0); `ratio_to_fraction`: `exact-rational {1/1}` | `WRONG_VALUE` |
-| `MISC.RATIO.WRONG_TOTAL_PARTS` | Wrong total parts · **undercounts by one**: `unit = total/(Σparts − 1)` (single fixed direction — `−1` only, never `±1`) | `value` / `false` | `share_two_part`, `share_three_part`, `ratio_to_fraction` (uses `partᵢ/(Σparts−1)`) | Divides by the wrong number of parts. → "Add **all** the ratio numbers to get the total number of parts first." | share: `table-completion` from `unit'=total/(Σparts−1)` (`null` if `unit'` non-integer); `ratio_to_fraction`: `exact-rational {partᵢ/(Σparts−1)}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.DIVIDES_BY_ONE_PART_INSTEAD_OF_TOTAL` | Divides by one part instead of the total · `unit = total/part₁` then `·part_k` | `value` / `false` | `share_two_part`, `share_three_part`, `missing_part` | Divides by a single ratio number instead of the sum of all parts. → "Divide the total by the **sum** of the parts, not by one part." | `table-completion`/`exact-rational` from `unit'=total/part₁` (`null` if non-integer / collides) | `WRONG_VALUE` |
-| `MISC.RATIO.MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY` | Multiplies instead of dividing in unitary · `unit = y₁·x₁` (should be `y₁/x₁`) | `value` / `false` | `direct_proportion`, `unit_rate`, `inverse_proportion` | Multiplies to find one unit instead of dividing. → "To find the value of **one**, divide, don't multiply." | `exact-rational {y₁·x₁·…}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.DIVIDES_INSTEAD_OF_MULTIPLYING_IN_UNITARY` | Divides instead of multiplying in unitary · `answer = unit/x₂` (should be `unit·x₂`) | `value` / `false` | `direct_proportion` | Divides by the new amount instead of multiplying by it. → "After finding one unit, **multiply** by how many you need." | `exact-rational {unit/x₂}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.DIRECT_FOR_INVERSE` | Direct method for an inverse problem · `answer = (y₁/x₁)·x₂` on an inverse task | `value` / `false` | `inverse_proportion` | Scales **up** when more workers/taps means **less** time. → "This is inverse: as one goes up, the other goes down — use the constant product." | `integer/exact-rational {(y₁·x₂)/x₁}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.INVERSE_FOR_DIRECT` | Inverse method for a direct problem · `answer = (x₁·y₁)/x₂` on a direct task | `value` / `false` | `direct_proportion` | Scales **down** when both quantities should grow together. → "This is direct: both grow together — find one unit, then multiply." | `exact-rational {(x₁·y₁)/x₂}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.COMPARES_PRICES_WITHOUT_UNIT_RATE` | Compares prices without a unit rate · chooses by **raw price** ignoring size | `choice` / `false` | `best_buy` | Compares total prices without working out the price per unit. → "Work out the cost of **one** (the unit rate) before comparing." | `multiple-choice {chosen = argmin(price_j)}` (`null` if that equals the best-value option) | `WRONG_CHOICE` |
-| `MISC.RATIO.CHOOSES_LOWEST_PRICE_NOT_BEST_VALUE` | Chooses lowest price, not best value · `chosen = argmin(price_j)` when it differs from `argmin(unitRate_j)` | `choice` / `false` | `best_buy` | Picks the cheapest pack rather than the best value for money. → "Cheapest overall isn't always best value — compare price per unit." | `multiple-choice {chosen = argmin(price_j)}` | `WRONG_CHOICE` |
-| `MISC.RATIO.SCALE_FACTOR_WRONG_DIRECTION` | Scale factor wrong direction · `given/s` where it should be `given·s` (or the reverse): the inverted operation | `value` / `false` | `simple_scale` | Multiplies by the scale where it should divide (or the reverse). → "Decide first whether the real thing is **bigger** or **smaller** than the model." | `exact-rational` with inverted operation (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.ADDITIVE_DIFFERENCE_INSTEAD_OF_MULTIPLICATIVE_SCALE` | Additive difference instead of multiplicative scale · `answer = given + (s−1)` (adds a constant instead of scaling) | `value` / `false` | `simple_scale`, `direct_proportion` | Adds a fixed amount instead of multiplying by the scale factor. → "Proportion **multiplies** — find the scale factor and multiply, don't add a constant." | `exact-rational {given + (s−1)}` (`null` if collides) | `WRONG_VALUE` |
-| `MISC.RATIO.RATIO_TO_FRACTION_ONE_PART_OVER_OTHER_NOT_OVER_WHOLE` | Ratio→fraction part over other part, not over whole · `partᵢ / partⱼ` instead of `partᵢ / Σparts` | `value` / `false` | `ratio_to_fraction` | Writes one part over the **other** part instead of over the whole. → "A fraction of the whole is the part over the **total** of all parts." | `exact-rational {partᵢ/partⱼ}` (`null` if collides) | `WRONG_VALUE` |
+| `MISC.RATIO.DOES_NOT_SIMPLIFY_FULLY` | Does not simplify fully · divides by a **proper divisor** `d` of `g` (`1<d<g`, smallest such `d`): `[p/d]` | `form` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `g` is composite (∃ such `d`) | Leaves the ratio in a smaller-but-not-simplest form. → "This ratio still has a common factor — keep dividing until the only common factor is 1." | `ratio {parts:[p/d]}` (still reducible) | `equivalent-not-simplified` (`partial: true`) |
+| `MISC.RATIO.EQUIVALENT_BUT_UNSIMPLIFIED_WHEN_SIMPLEST_REQUIRED` | Equivalent but unsimplified when simplest required · returns `originalParts` unchanged | `form` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `g>1` and the task **requires** simplest form | Gives an equivalent ratio that has not been simplified at all. → "That ratio is equal in value, but the question asks for the simplest form." | `ratio {parts: originalParts}` (gcd>1) | `equivalent-not-simplified` (`partial: true`) |
+| `MISC.RATIO.REVERSES_ORDER` | Reverses order · `reverse(parts)` (two-part) / a fixed transposition (three-part) | `order` / `false` | `simplify`, `write_from_quantities`, `fraction_to_ratio` where `parts` not palindromic | Writes the parts in the wrong order (e.g. swaps the two categories). → "Order matters: match each number to the right category in the order asked." | `ratio {parts: reverse(parts)}` | `wrong-order` |
+| `MISC.RATIO.ADDS_PARTS_INCORRECTLY` | Adds parts incorrectly · uses `sum(parts)` as a single quantity instead of keeping the ratio | `value` / `false` | `write_from_quantities`, `fraction_to_ratio`, `share_two_part`, `share_three_part` | Adds the parts together instead of keeping them as a comparison. → "Don't add the parts — a ratio compares the quantities side by side." | share: `integer {Σparts·unit}`; `fraction_to_ratio`: `ratio {parts:[a+(b−a)]}` collapsed ⇒ `studentResponseText:"a+b"`; write: `studentResponseText:"a+b"` | share: platform table-completion wrong-cell code; ratio tasks: `malformed-response` (collapsed/incomplete ratio) |
+| `MISC.RATIO.TREATS_ONE_PART_AS_WHOLE` | Treats one part as the whole · `share_k = total` (assigns the whole total to one share) / `ratio_to_fraction`: `partᵢ/partᵢ = 1` | `value` / `false` | `share_two_part`, `share_three_part`, `ratio_to_fraction` | Gives one category the entire amount instead of its share. → "Split the total across **all** the parts, not just one." | share: `table-completion` `share_k=total` (others 0); `ratio_to_fraction`: `exact-rational {1/1}` | share: platform table-completion wrong-cell code; `ratio_to_fraction`: platform exact-rational wrong-value code |
+| `MISC.RATIO.WRONG_TOTAL_PARTS` | Wrong total parts · **undercounts by one**: `unit = total/(Σparts − 1)` (single fixed direction — `−1` only, never `±1`) | `value` / `false` | `share_two_part`, `share_three_part`, `ratio_to_fraction` (uses `partᵢ/(Σparts−1)`) | Divides by the wrong number of parts. → "Add **all** the ratio numbers to get the total number of parts first." | share: `table-completion` from `unit'=total/(Σparts−1)` (`null` if `unit'` non-integer); `ratio_to_fraction`: `exact-rational {partᵢ/(Σparts−1)}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.DIVIDES_BY_ONE_PART_INSTEAD_OF_TOTAL` | Divides by one part instead of the total · `unit = total/part₁` then `·part_k` | `value` / `false` | `share_two_part`, `share_three_part`, `missing_part` | Divides by a single ratio number instead of the sum of all parts. → "Divide the total by the **sum** of the parts, not by one part." | `table-completion`/`exact-rational` from `unit'=total/part₁` (`null` if non-integer / collides) | platform wrong-value code for the predicted shape (`table-completion`/`exact-rational`) |
+| `MISC.RATIO.MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY` | Multiplies instead of dividing in unitary · `unit = y₁·x₁` (should be `y₁/x₁`) | `value` / `false` | `direct_proportion`, `unit_rate`, `inverse_proportion` | Multiplies to find one unit instead of dividing. → "To find the value of **one**, divide, don't multiply." | `exact-rational {y₁·x₁·…}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.DIVIDES_INSTEAD_OF_MULTIPLYING_IN_UNITARY` | Divides instead of multiplying in unitary · `answer = unit/x₂` (should be `unit·x₂`) | `value` / `false` | `direct_proportion` | Divides by the new amount instead of multiplying by it. → "After finding one unit, **multiply** by how many you need." | `exact-rational {unit/x₂}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.DIRECT_FOR_INVERSE` | Direct method for an inverse problem · `answer = (y₁/x₁)·x₂` on an inverse task | `value` / `false` | `inverse_proportion` | Scales **up** when more workers/taps means **less** time. → "This is inverse: as one goes up, the other goes down — use the constant product." | `integer/exact-rational {(y₁·x₂)/x₁}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.INVERSE_FOR_DIRECT` | Inverse method for a direct problem · `answer = (x₁·y₁)/x₂` on a direct task | `value` / `false` | `direct_proportion` | Scales **down** when both quantities should grow together. → "This is direct: both grow together — find one unit, then multiply." | `exact-rational {(x₁·y₁)/x₂}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.COMPARES_PRICES_WITHOUT_UNIT_RATE` | Compares prices without a unit rate · chooses by **raw price** ignoring size | `choice` / `false` | `best_buy` | Compares total prices without working out the price per unit. → "Work out the cost of **one** (the unit rate) before comparing." | `multiple-choice {chosen = argmin(price_j)}` (`null` if that equals the best-value option) | `wrong-choice` |
+| `MISC.RATIO.CHOOSES_LOWEST_PRICE_NOT_BEST_VALUE` | Chooses lowest price, not best value · `chosen = argmin(price_j)` when it differs from `argmin(unitRate_j)` | `choice` / `false` | `best_buy` | Picks the cheapest pack rather than the best value for money. → "Cheapest overall isn't always best value — compare price per unit." | `multiple-choice {chosen = argmin(price_j)}` | `wrong-choice` |
+| `MISC.RATIO.SCALE_FACTOR_WRONG_DIRECTION` | Scale factor wrong direction · `given/s` where it should be `given·s` (or the reverse): the inverted operation; for `best_buy`, inverts the price-per-unit / units-per-price direction and so selects the worse-value option | `value` / `choice` / `false` | `simple_scale`, `best_buy` (per §3.1 reconciliation) | Multiplies by the scale where it should divide (or the reverse); for best-buy, compares in the inverted rate direction. → "Decide first whether the real thing is **bigger** or **smaller** than the model / which rate direction makes one unit cheaper." | `simple_scale`: `exact-rational` with inverted operation; `best_buy`: `multiple-choice {chosen = the worse-value option under the inverted rate}` (`null` if collides) | `simple_scale`: platform wrong-value code (`exact-rational`/`integer`); `best_buy`: `wrong-choice` |
+| `MISC.RATIO.ADDITIVE_DIFFERENCE_INSTEAD_OF_MULTIPLICATIVE_SCALE` | Additive difference instead of multiplicative scale · `answer = given + (s−1)` (adds a constant instead of scaling) | `value` / `false` | `simple_scale`, `direct_proportion` | Adds a fixed amount instead of multiplying by the scale factor. → "Proportion **multiplies** — find the scale factor and multiply, don't add a constant." | `exact-rational {given + (s−1)}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
+| `MISC.RATIO.RATIO_TO_FRACTION_ONE_PART_OVER_OTHER_NOT_OVER_WHOLE` | Ratio→fraction part over other part, not over whole · `partᵢ / partⱼ` instead of `partᵢ / Σparts` | `value` / `false` | `ratio_to_fraction` | Writes one part over the **other** part instead of over the whole. → "A fraction of the whole is the part over the **total** of all parts." | `exact-rational {partᵢ/partⱼ}` (`null` if collides) | platform wrong-value code for the predicted shape (`exact-rational`/`integer`/`table-completion`) |
 
 All sixteen are present, each with an **exact formula** (never a manufactured nearby number). The applicability lists above are **widened** exactly enough that each MC-eligible §9.2 task has ≥3 qualifying rules: `ratio_to_fraction` draws from `RATIO_TO_FRACTION_ONE_PART_OVER_OTHER_NOT_OVER_WHOLE`, `TREATS_ONE_PART_AS_WHOLE`, `WRONG_TOTAL_PARTS` (each with a stated `ratio_to_fraction` formula); `fraction_to_ratio` from `REVERSES_ORDER`, `DOES_NOT_SIMPLIFY_FULLY`, `EQUIVALENT_BUT_UNSIMPLIFIED_WHEN_SIMPLEST_REQUIRED`, `ADDS_PARTS_INCORRECTLY`. The four `kind:value`/`order`/`form` rules that could in principle reproduce the correct answer (a palindromic ratio under `REVERSES_ORDER`, an already-simplest ratio under the unsimplified rules, a `WRONG_TOTAL_PARTS` that yields the same shares) return **`null`** under their collision/inapplicability clause and are then **omitted** — never counted as exercised coverage (§14).
 
 ### 10.2 Incomplete / malformed predicted responses (no manufactured canonical)
 
-Where a misconception produces a structurally **invalid** answer rather than a wrong value — e.g. a student who leaves `4:6` when simplest form is required, or writes `a+b` for a "write a ratio" task — the adapter returns `{studentResponseText, expectedResultCode}` (e.g. `{"4:6","EQUIVALENT_NOT_SIMPLEST"}`), **never** a fabricated invalid `answer.canonical`. The `MALFORMED_RATIO` / `INCOMPLETE` codes drive the parser/checker's partial-feedback path (§5), so the schema never has to admit an invalid canonical to represent a misconception.
+Where a misconception produces a structurally **invalid** answer rather than a wrong value — e.g. a student who leaves `4:6` when simplest form is required, or writes `a+b` for a "write a ratio" task — the adapter returns `{studentResponseText, expectedResultCode}` (e.g. `{"4:6","equivalent-not-simplified"}` carrying `partial: true`; `{"a+b","malformed-response"}`), **never** a fabricated invalid `answer.canonical`. The `equivalent-not-simplified` and `malformed-response` codes drive the parser/checker's partial-feedback path (§5), so the schema never has to admit an invalid canonical to represent a misconception.
 
 ### 10.3 MC distractor sourcing (MC-eligible tasks only)
 
-For the MC-eligible tasks (§9.2), the selectable distractors are drawn **only** from this registry, in `RULES_BY_TASK` preference order, taking the first three whose `adapter` returns a non-`null`, mutually-distinct, key-distinct value. Because applicability (§10.1) guarantees ≥3 qualifying rules per MC-eligible task on its in-band draws, a well-formed MC build normally succeeds; if a particular seed nonetheless yields fewer than three distinct distractors (e.g. a small-number `ratio_to_fraction` where `1/3`, `PART_OVER_OTHER`, and `WRONG_TOTAL_PARTS` collide — the generator therefore constrains MC-eligible `ratio_to_fraction` draws to `Σparts ≥ 4` with distinct part values, and excludes all-parts-equal cases like `1:1`, per §12), the generator **deterministically redraws** to an MC-eligible case (or returns `interaction-not-supported`) — an MC item is never padded with an arbitrary distractor. FR-only tasks (`share_three_part`, and any seed that failed the 3-distractor test) use the registry purely as **targeted feedback**.
+For the MC-eligible tasks (§9.2), the selectable distractors are drawn **only** from this registry, in `RULES_BY_TASK` preference order, taking the first three whose `adapter` returns a non-`null`, mutually-distinct, key-distinct value. Because applicability (§10.1) guarantees ≥3 qualifying rules per MC-eligible task on its in-band draws, a well-formed MC build normally succeeds; if a particular seed nonetheless yields fewer than three distinct distractors (e.g. a small-number `ratio_to_fraction` where `1/3`, `PART_OVER_OTHER`, and `WRONG_TOTAL_PARTS` collide — the generator therefore constrains MC-eligible `ratio_to_fraction` draws to `Σparts ≥ 4` with distinct part values, and excludes all-parts-equal cases like `1:1`, per §12), the generator **deterministically redraws** to an MC-eligible case (or returns `interaction-not-supported`) — an MC item is never padded with an arbitrary distractor. The six FR-only tasks of decision C (`write_from_quantities`, `share_two_part`, `share_three_part`, `missing_part`, `unit_rate`, `simple_scale`) use the registry purely as **targeted free-response feedback**, and an explicit MC request on any of them returns `interaction-not-supported`.
 
 ### 10.4 Task → applicable-diagnostic map (`RULES_BY_TASK`)
 
@@ -1673,12 +1670,13 @@ direct_proportion       : INVERSE_FOR_DIRECT, DIVIDES_INSTEAD_OF_MULTIPLYING_IN_
 inverse_proportion      : DIRECT_FOR_INVERSE, MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY
 unit_rate               : MULTIPLIES_INSTEAD_OF_DIVIDING_IN_UNITARY
 best_buy                : CHOOSES_LOWEST_PRICE_NOT_BEST_VALUE,
-                          COMPARES_PRICES_WITHOUT_UNIT_RATE
+                          COMPARES_PRICES_WITHOUT_UNIT_RATE,
+                          SCALE_FACTOR_WRONG_DIRECTION
 simple_scale            : SCALE_FACTOR_WRONG_DIRECTION,
                           ADDITIVE_DIFFERENCE_INSTEAD_OF_MULTIPLICATIVE_SCALE
 ```
 
-`ratio-graph.test.ts` asserts `keys(RULES_BY_TASK) == RATIO_TASKS`, that every referenced id exists in the registry **and is `applicable` to the keying task** (no dangling, no §3.1-vs-§10 applicability contradiction, no alternative spelling), and that every one of the sixteen ids appears in at least one list (no orphan diagnostic). `best_buy` and `simple_scale` are MC-eligible with exactly two registry rules each; their MC builds therefore additionally draw the third option from the **deterministic non-misconception "near-rate" foil** defined in §3 (an explicitly-flagged non-`MISC` distractor) — OR redraw — but never an arbitrary number; the two registry rules remain the primary, misconception-backed distractors. (Tasks listing ≥3 applicable rules need no foil.)
+`ratio-graph.test.ts` asserts `keys(RULES_BY_TASK) == RATIO_TASKS`, that every referenced id exists in the registry **and is `applicable` to the keying task** (no dangling, no §3.1-vs-§10 applicability contradiction, no alternative spelling), and that every one of the sixteen ids appears in at least one list (no orphan diagnostic). The **MC-eligible tasks (decision C)** are exactly `simplify`, `ratio_to_fraction`, `fraction_to_ratio`, `direct_proportion`, `inverse_proportion`, and `best_buy` (MC-only); each lists **≥3** misconception-backed rules whose adapters yield three distinct, key-distinct distractors/options on its in-band draws — `best_buy` draws its three from `CHOOSES_LOWEST_PRICE_NOT_BEST_VALUE`, `COMPARES_PRICES_WITHOUT_UNIT_RATE`, and `SCALE_FACTOR_WRONG_DIRECTION` (applicability widened to best-buy per §3.1), so no non-misconception foil is needed. The remaining six tasks — `write_from_quantities`, `share_two_part`, `share_three_part`, `missing_part`, `unit_rate`, `simple_scale` — are **FR-only (decision C)**: their `RULES_BY_TASK` entries are used purely as **targeted free-response feedback**, never as selectable MC options.
 
 ### 10.5 Diagnostic invariants enforced by the independent validator
 
@@ -1688,7 +1686,7 @@ For every item the validator independently re-runs each applicable rule's `adapt
 2. **Reproduced, not copied** — the validator's recomputed diagnostic set equals the stored set, via the same independent route as `closure-agreement`.
 3. **Exact-formula, not arbitrary** — every stored diagnostic value is exactly the `adapter` output; no value lies "nearby" without a generating formula.
 4. **Feedback truthful** — each `feedback` states the wrong rule in displayed terms and is true for the dataset.
-5. **MC-distractor integrity** (MC-eligible items) — the three options are registry-sourced (or, for `best_buy`/`simple_scale`, two registry rules plus the §3-declared flagged foil), mutually distinct, key-distinct; an MC request that cannot meet this redrew or errored (never silently FR), per §9.2/§10.3.
+5. **MC-distractor integrity** (the six MC-eligible items of decision C) — the three options are **all registry-sourced** (`best_buy` draws its three from `CHOOSES_LOWEST_PRICE_NOT_BEST_VALUE`, `COMPARES_PRICES_WITHOUT_UNIT_RATE`, `SCALE_FACTOR_WRONG_DIRECTION`; no non-misconception foil is used), mutually distinct, key-distinct; an MC request that cannot meet this redrew or returned `interaction-not-supported` (never silently FR), per §9.2/§10.3. An explicit MC request on any of the six FR-only tasks (decision C) returns `interaction-not-supported`.
 
 This keeps `MISC.RATIO.*` the single source of truth for diagnosed wrong answers across the solver, the checker, and the validator, with full Python↔TypeScript byte parity on the underlying exact values.
 
@@ -1725,7 +1723,7 @@ The owner's listed factors are mapped onto existing schema axes (no new axis nam
 
 ### 11.3 ONE machine-readable source of truth
 
-The objective difficulty ranges, per-task structural floors, supported interactions, answer shapes, and difficulty-axis weights all derive from **one versioned descriptor**, `core/difficulty/ratio-difficulty.json` (mirrored verbatim by `oracle/spi_oracle/ratio_difficulty.py`), from which both the spec tables here and the §14 review-pack expectations are generated — so the two can never drift. `answerShape` is the schema `answer.type`; for the three integer-OR-rational tasks it is the **pair** `["integer","exact-rational"]` (the validator's `answer-type-consistency` accepts either, choosing `integer` iff `den==1`, §9.2/§9.3), so the descriptor never forces a single shape the solver cannot honour. Its shape (excerpt):
+The objective difficulty ranges, per-task structural floors, supported interactions, answer shapes, and difficulty-axis weights all derive from **one versioned descriptor**, `core/difficulty/ratio-difficulty.json` (mirrored verbatim by `oracle/spi_oracle/ratio_difficulty.py`), from which both the spec tables here and the §14 review-pack expectations are generated — so the two can never drift. `answerShape` is the schema `answer.type`; for the **two** integer-OR-rational tasks (`direct_proportion`, `simple_scale`) it is the **pair** `["integer","exact-rational"]` (the validator's `answer-type-consistency` accepts either, choosing `integer` iff `den==1`, §9.2/§9.3), so the descriptor never forces a single shape the solver cannot honour. `missing_part` and `inverse_proportion` are **integer-only** (decision E / §9.3), and `unit_rate` is `exact-rational`. Its shape (excerpt):
 
 ```json
 {
@@ -1744,7 +1742,7 @@ The objective difficulty ranges, per-task structural floors, supported interacti
                                     "answerShape": "ratio" },
     "write_from_quantities":      { "objectiveId": "SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01",
                                     "difficultyRange": {"min":1,"max":3}, "taskFloorBand": 1,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
+                                    "supportedInteractions": ["free-response"],
                                     "answerShape": "ratio" },
     "ratio_to_fraction":          { "objectiveId": "SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01",
                                     "difficultyRange": {"min":2,"max":3}, "taskFloorBand": 2,
@@ -1756,7 +1754,7 @@ The objective difficulty ranges, per-task structural floors, supported interacti
                                     "answerShape": "ratio" },
     "share_two_part":             { "objectiveId": "SPI.MIDDLE.RATIO.SHARE_TWO_PART.01",
                                     "difficultyRange": {"min":2,"max":3}, "taskFloorBand": 2,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
+                                    "supportedInteractions": ["free-response"],
                                     "answerShape": "table-completion" },
     "share_three_part":           { "objectiveId": "SPI.MIDDLE.RATIO.SHARE_THREE_PART.01",
                                     "difficultyRange": {"min":3,"max":4}, "taskFloorBand": 3,
@@ -1764,8 +1762,8 @@ The objective difficulty ranges, per-task structural floors, supported interacti
                                     "answerShape": "table-completion" },
     "missing_part":               { "objectiveId": "SPI.MIDDLE.RATIO.MISSING_PART.01",
                                     "difficultyRange": {"min":2,"max":4}, "taskFloorBand": 2,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
-                                    "answerShape": ["integer","exact-rational"] },
+                                    "supportedInteractions": ["free-response"],
+                                    "answerShape": "integer" },
     "direct_proportion":          { "objectiveId": "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
                                     "difficultyRange": {"min":2,"max":4}, "taskFloorBand": 2,
                                     "supportedInteractions": ["free-response","multiple-choice"],
@@ -1776,15 +1774,15 @@ The objective difficulty ranges, per-task structural floors, supported interacti
                                     "answerShape": "integer" },
     "unit_rate":                  { "objectiveId": "SPI.MIDDLE.RATIO.UNIT_RATE.01",
                                     "difficultyRange": {"min":2,"max":3}, "taskFloorBand": 2,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
+                                    "supportedInteractions": ["free-response"],
                                     "answerShape": "exact-rational" },
     "best_buy":                   { "objectiveId": "SPI.MIDDLE.RATIO.BEST_BUY.01",
                                     "difficultyRange": {"min":3,"max":5}, "taskFloorBand": 3,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
+                                    "supportedInteractions": ["multiple-choice"],
                                     "answerShape": "multiple-choice" },
     "simple_scale":               { "objectiveId": "SPI.MIDDLE.RATIO.SIMPLE_SCALE.01",
                                     "difficultyRange": {"min":2,"max":4}, "taskFloorBand": 2,
-                                    "supportedInteractions": ["free-response","multiple-choice"],
+                                    "supportedInteractions": ["free-response"],
                                     "answerShape": ["integer","exact-rational"] }
   }
 }
@@ -1824,9 +1822,9 @@ The three sections above are complete and consistent with the established conven
 
 - **B3/B1 (slug + objective-ID drift — all four critics):** §9/§10/§11 now use the single §1.3 short slug set (`simplify`, `write_from_quantities`, `direct_proportion`, `inverse_proportion`, …) and the §1.2 objective IDs (`DIRECT_PROPORTION.01`, `INVERSE_PROPORTION.01`, no `_UNITARY` suffix). The banned superseded spellings are explicitly listed for the string-scan test.
 - **B1/B3 `comparison` answer type (platform-fit + completeness + ratio-math):** `best_buy` re-modelled onto the live `multiple-choice` enum member (verified absent in `schemas/question-item.schema.json` lines 196–205; `multiple-choice` present at line 202); unit-rate witnesses live in `solution`/feedback, not a phantom `comparison` canonical. All `comparison` references in §9/§10/§11 retargeted to `multiple-choice` (`mc:best-buy` coverage token in §11.4).
-- **B1/B2 (ratio-math) `missing_part` type + divisibility:** §9.3 now declares `integer **or** exact-rational` consistently with §10/§11, fully determined by exactness (`den==1`), with a **hard, non-optional** divisibility precondition (`parts[knownIndex] ∣ knownValue`) and a new `missing-part-exact` validator check (§9.4-E) — no escape hatch.
+- **`missing_part` type + divisibility (decision E):** §9.2/§9.3 declare `missing_part` **integer-only** in v1.0.0, consistent with §2.7/§3.3/§7/§10/§11/§12; the **hard, non-optional** divisibility precondition (`parts[knownIndex] ∣ knownValue`) makes the recovered value an exact integer by construction, re-asserted by the `missing-part-exact` validator check (§9.4-E) — no escape hatch, no exact-rational path.
 - **B4 (ratio-math) MC applicability:** §10.1 applicability widened (with stated per-task exact formulas) so `ratio_to_fraction` and `fraction_to_ratio` actually source 3 distinct distractors; `best_buy`/`simple_scale` (2 registry rules) get a §3-declared flagged foil or redraw. §10.4 `RULES_BY_TASK` now matches §10.1 applicability with no contradiction.
-- **I2/I3/I5/I6 + renderer cross-refs:** `direct_proportion` answerShape is the integer-OR-rational pair; `WRONG_TOTAL_PARTS` pinned to a single `−1` formula (no `±1`); result codes fixed to one UPPER_SNAKE vocabulary; §9.4-G renderer/leakage checks corrected to `cx-figure` root + `--cx-ratio-*` namespacing + class-driven hatch + role-keyed `only-given-values-shown` + shared-cumulative-array tick alignment + TS-only export parity scope; check-name vocabulary normalized.
+- **I2/I3/I5/I6 + renderer cross-refs:** `direct_proportion` answerShape is the integer-OR-rational pair; `WRONG_TOTAL_PARTS` pinned to a single `−1` formula (no `±1`); result codes fixed to the **one canonical lower-kebab vocabulary** (decision F — no UPPER_SNAKE, no slash-style, no generic `wrong`/`partial`); §9.4-G renderer/leakage checks corrected to `cx-figure` root + `--cx-ratio-*` namespacing + class-driven hatch + role-keyed `only-given-values-shown` + shared-cumulative-array tick alignment + TS-only export parity scope; check-name vocabulary normalized.
 - **completeness I1:** the model-tag ↔ `answer.type` ↔ coverage-token mapping is declared once in §11.4 and shared with §14.
 
 Relevant file paths (all absolute): the target proposal `C:\Users\Mohamad Solaiman\OneDrive\Desktop\Claude Question generator\docs\GENERATOR_SPEC_proportion_ratio_PROPOSAL.md`; verified ground-truth files `C:\Users\Mohamad Solaiman\OneDrive\Desktop\Claude Question generator\schemas\question-item.schema.json` (enum lines 196–205; `multiple-choice` present, `comparison` absent), `C:\Users\Mohamad Solaiman\OneDrive\Desktop\Claude Question generator\oracle\check_conformance.py` (supports `minItems` only — `maxItems` is a new owner-visible branch), `C:\Users\Mohamad Solaiman\OneDrive\Desktop\Claude Question generator\core\difficulty\band.ts`, `C:\Users\Mohamad Solaiman\OneDrive\Desktop\Claude Question generator\core\curriculum\mensuration-objective-ids.ts`.
@@ -1865,7 +1863,7 @@ The two policies (T1 input must have a common factor; T1 band-1 may intentionall
 
 ### 12.3 Equivalent-ratio acceptance policy (per-task, simplest-form vs not)
 
-Whether an *equivalent-but-unsimplified* answer (e.g. `4:6` for a `2:3` ground truth) is accepted, rejected, or partially credited is a **per-task policy flag** `answerPolicy ∈ {accept-equivalent, require-simplest}` carried on the Ratio model (§6) and on every emitted item's `params`. It is the single source the §5 checker reads; §4/§5/§10/§14 all key off it. The result codes below are the single hyphenated-lowercase `RATIO_RESULT_CODES` vocabulary of §5 (`correct`, `equivalent-not-simplified`, `reversed-order`, `wrong-order`, `zero-part`, `negative-part`, `malformed-ratio`, `unparsed-trailing-text`, `unsupported-symbol`, `incorrect`) — no `UPPER_SNAKE` or alternative spelling appears here.
+Whether an *equivalent-but-unsimplified* answer (e.g. `4:6` for a `2:3` ground truth) is accepted, rejected, or partially credited is a **per-task policy flag** `answerPolicy ∈ {accept-equivalent, require-simplest}` carried on the Ratio model (§6) and on every emitted item's `params`. It is the single source the §5 checker reads; §4/§5/§10/§14 all key off it. The result codes below are the single lower-kebab `RESULT_CODES` vocabulary of §5 (decision F) — `correct`, `equivalent-not-simplified` (carrying the separate boolean `partial: true`), `wrong-order`, `wrong-ratio`, `wrong-number-of-parts`, `zero-or-negative-part`, `unsupported-term`, `unparsed-trailing-text`, `malformed-response` — with **no** `UPPER_SNAKE`, slash-style, or alternative spelling (`reversed-order`, `zero-part`, `negative-part`, `malformed-ratio`, `unsupported-symbol`, generic `incorrect`/`wrong`/`partial` are all superseded and appear nowhere).
 
 | Task class | `answerPolicy` | Behaviour of the §5 checker |
 | --- | --- | --- |
@@ -1873,7 +1871,7 @@ Whether an *equivalent-but-unsimplified* answer (e.g. `4:6` for a `2:3` ground t
 | `write_from_quantities` (T2) from quantities where the question does **not** demand simplest form | `accept-equivalent` | `2:3` **and** `4:6` **and** `20:30` all return `correct` (cross-multiplication equivalence, §5); order still matters |
 | All other tasks whose answer is a ratio and whose wording does not demand simplest form | `accept-equivalent` (default) | equivalence accepted; reversed order still rejected (§12.5) |
 
-The checker NEVER silently "auto-simplifies" a `require-simplest` submission into a pass; an unsimplified equivalent under `require-simplest` is a **distinct partial-credit result code** `equivalent-not-simplified`, not `correct` and not a bare `incorrect`. Under `accept-equivalent`, an unsimplified equivalent is `correct`. The review-pack ratio-checker matrix (§14) proves **both** policies with pinned rows.
+The checker NEVER silently "auto-simplifies" a `require-simplest` submission into a pass; an unsimplified equivalent under `require-simplest` returns the distinct result code `equivalent-not-simplified` carrying `partial: true` — not `correct` and not `wrong-ratio`. Under `accept-equivalent`, an unsimplified equivalent is `correct`. The review-pack ratio-checker matrix (§14) proves **both** policies with pinned rows.
 
 ### 12.4 All-parts-equal and trivial-ratio degeneracy
 
@@ -1896,7 +1894,7 @@ ORDER MATTERS for every ratio answer unless a task explicitly declares an unorde
 | Two labels that could read in either direction with no stated order | Unreachable: the constructor always emits an ordered `contextLabels[]` and the prompt template always names them in tuple order | `labels-match-tuple-order` |
 | Table-completion correspondence by row position alone | Forbidden: correspondence is by **label** (`location` key), never by row order alone (§7) | `table-correspondence-by-label` |
 
-A reversed-order submission (`3:2` for `2:3`) is therefore never an *ambiguity* — it is a genuine error, returned as `reversed-order` (§5/§10 `MISC.RATIO.REVERSES_ORDER`), never silently accepted.
+A reversed-order submission (`3:2` for `2:3`) is therefore never an *ambiguity* — it is a genuine error, returned as `wrong-order` (§5/§10 `MISC.RATIO.REVERSES_ORDER`), never silently accepted.
 
 ### 12.6 Non-integer shares, non-divisible totals, and missing-part exactness (rejected → redraw, integer-answer tasks)
 
@@ -2006,7 +2004,7 @@ Values are exact integers (or exact `{num,den}` where a rational unit rate is in
 
 The **student** `spokenMath` and `media[].dataTableFallback` **never state the computed ratio answer, the shares, the missing part, the unit rate, the best-value verdict, or the scaled value**; they convey **only given data and what is asked** — asserted by `fallback-no-answer-leak` and a dedicated `spokenmath-given-only` check. The **answer-key / solution** `spokenMath` variants (used only in the answer-key and solutions exports, never in the student item) may speak the result.
 
-**Encoding stability.** The canonical stored ratio `display` uses the ASCII colon form `a:b` / `a:b:c` (e.g. `"2:3:5"`), never a Unicode ratio glyph (U+2236 RATIO `∶`), and `spokenMath` spells "to" in words. A named check **`display-ascii-colon`** asserts the **stored** `answer.display`, the `dataTableFallback`, and figure segment labels contain no Unicode colon-like glyph, so golden/parity fixtures are byte-stable across locales and encodings. (The §5 parser may *accept* a Unicode colon-like symbol on **input** only if explicitly supported there, returning `unsupported-symbol` otherwise; the canonical stored byte is always ASCII `:`.)
+**Encoding stability.** The canonical stored ratio `display` uses the ASCII colon form `a:b` / `a:b:c` (e.g. `"2:3:5"`), never a Unicode ratio glyph (U+2236 RATIO `∶`), and `spokenMath` spells "to" in words. A named check **`display-ascii-colon`** asserts the **stored** `answer.display`, the `dataTableFallback`, and figure segment labels contain no Unicode colon-like glyph, so golden/parity fixtures are byte-stable across locales and encodings. (The §5 parser does **not** accept a Unicode colon-like symbol on input in v1.0.0 — decision G — and rejects it with `malformed-response`; the canonical stored byte is always ASCII `:`.)
 
 ### 13.4 Bar-model / number-line accessibility specifics
 
@@ -2061,7 +2059,7 @@ So `cell:share_three_part:shape:table-completion:three-part` and `cell:simplify:
 
 ### 14.2 Interaction cells and the unsupported-MC discipline
 
-Interaction is **free-response-first**. Multiple-choice cells appear **only** for the tasks the distribution marks MC-eligible (those where §3 declares three distinct misconception-backed distractors are pedagogically strong — chiefly `best_buy` (T11) and selected `simplify`/`ratio_to_fraction` cases). MC-eligible `ratio_to_fraction` draws are additionally constrained (`Σparts ≥ 4` and distinct part values) so the three distractors stay distinct (avoiding the `1/3` vs `PART_OVER_OTHER=1/2` vs `WRONG_TOTAL=1/2` collision for tiny ratios); the distribution records this reduced MC reachability so the matrix does not over-claim band-1 MC cells. For every task the builder requires `cell:<task>:inter:free-response`; for MC-eligible tasks it additionally requires `cell:<task>:inter:multiple-choice`. The pack proves, per task, that the **free-response diagnostics and feedback** of §10 are realised through the same adapter the validator recomputes, and that an **explicit MC request on a non-MC-eligible task** is **never silently converted** — it either deterministically redraws to an MC-eligible case or returns a clear `interaction-not-supported` error (asserted by `unsupported-mc-request-rejected-or-redrawn` per task).
+Interaction follows the **decision-C matrix exactly**. The six **MC-eligible** tasks are `simplify`, `ratio_to_fraction`, `fraction_to_ratio`, `direct_proportion`, `inverse_proportion`, and `best_buy`. `best_buy` is **MC-only** (the labelled choice IS the construct — no free-response cell); the other five are **FR + MC**; the remaining six (`write_from_quantities`, `share_two_part`, `share_three_part`, `missing_part`, `unit_rate`, `simple_scale`) are **FR-only**. MC-eligible `ratio_to_fraction` draws are additionally constrained (`Σparts ≥ 4` and distinct part values) so the three distractors stay distinct (avoiding the `1/3` vs `PART_OVER_OTHER=1/2` vs `WRONG_TOTAL=1/2` collision for tiny ratios); the distribution records this reduced MC reachability so the matrix does not over-claim band-1 MC cells. The builder requires `cell:<task>:inter:free-response` for every task **except `best_buy`** (which has no FR cell), and `cell:<task>:inter:multiple-choice` for each of the six MC-eligible tasks; **no** `multiple-choice` cell exists for any of the six FR-only tasks. The pack proves, per task, that the **free-response diagnostics and feedback** of §10 are realised through the same adapter the validator recomputes, and that an **explicit MC request on a non-MC-eligible task** is **never silently converted** — it either deterministically redraws to an MC-eligible case or returns a clear `interaction-not-supported` error (asserted by `unsupported-mc-request-rejected-or-redrawn` per task).
 
 ### 14.3 Greedy set-cover, task-pinned gathering, builder FAILS on any missing reachable cell
 
@@ -2074,7 +2072,7 @@ The pack emits the same two coverage structures as data-handling/mensuration: a 
 | Coverage test | Asserts |
 | --- | --- |
 | `every-reachable-task-band-covered` | every `cell:<task>:band:<b>` the distribution marks reachable has an exemplar seed |
-| `every-supported-interaction-covered` | free-response is covered for every task; multiple-choice is covered for every MC-eligible task; **no** MC cell exists for a non-MC-eligible task; the unsupported-MC-request rejection/redraw test passes per task |
+| `every-supported-interaction-covered` | free-response is covered for every task **except `best_buy`** (which is MC-only, decision C); multiple-choice is covered for every MC-eligible task (`simplify`, `ratio_to_fraction`, `fraction_to_ratio`, `direct_proportion`, `inverse_proportion`, `best_buy`); **no** MC cell exists for any of the six FR-only tasks and **no** FR cell exists for `best_buy`; the unsupported-MC-request rejection/redraw test passes per task |
 | `every-task-answer-shape-covered` | every realised answer-shape token (all five live answer types: `ratio`/`integer`/`exact-rational`/`table-completion`/`multiple-choice`, with two/three-part and simplified/unsimplified details) has an exemplar |
 | `coverage-summary-matches-records` | `summary.coveredCells`/`coverageCells` agree with `records[]` (no double-count, no phantom cell) |
 | `no-false-full-coverage-claim` | `summary.allCovered == (missingCoverage == [])` — the honest flag can never be `true` while a required cell is missing |
@@ -2093,7 +2091,7 @@ On top of the systematic cells, `_required_tokens()` adds the owner's full revie
 | two-part AND three-part | `arity:two-part`, `arity:three-part` |
 | simplified AND unsimplified input | `input:already-simplest`, `input:has-common-factor` |
 | equivalent-ratio answers | `equiv:accepted` (under `accept-equivalent`), `equiv:rejected-partial` (under `require-simplest`) |
-| reversed-ratio traps | `trap:reversed-order` (a diagnostic exemplar where `reversed-order` is the predicted error) |
+| reversed-ratio traps | `trap:reversed-order` (a diagnostic exemplar where `wrong-order` is the predicted result code for the reversed-ratio submission) |
 | part-whole conversion | `convert:ratio-to-fraction`, `convert:fraction-to-ratio` |
 | total-parts sharing | `share:total-parts` (two- and three-part) |
 | missing part | `share:missing-part` |
@@ -2140,26 +2138,29 @@ A `proportion_ratio_browser_verification.json` records the live-Chromium re-conf
 
 ### 14.8 RATIO-CHECKER review matrix
 
-Beyond the coverage cells, the pack emits a dedicated **ratio-checker matrix** (the analogue of the mensuration quantity-checker matrix) that proves the §5 parser / canonicalizer / equivalence checker for the new `ratio` answer type accepts and rejects **exactly** as the contract requires. For representative ground truths in each arity and under each `answerPolicy`, the matrix records a required outcome (a member of the single `RATIO_RESULT_CODES` vocabulary, §5) for each submission, and the builder **FAILS if any required row is absent** (so every `RATIO_RESULT_CODES` member has verified evidence):
+Beyond the coverage cells, the pack emits a dedicated **ratio-checker matrix** (the analogue of the mensuration quantity-checker matrix) that proves the §5 parser / canonicalizer / equivalence checker for the new `ratio` answer type accepts and rejects **exactly** as the contract requires. For representative ground truths in each arity and under each `answerPolicy`, the matrix records a required outcome (a member of the single lower-kebab `RESULT_CODES` vocabulary of §5, decision F) for each submission, and the builder **FAILS if any required row is absent** (so every `RESULT_CODES` member has verified evidence):
 
-| Ground truth (policy) | Submission | Required outcome (`RATIO_RESULT_CODES`) |
+| Ground truth (policy) | Submission | Required outcome (`RESULT_CODES`, §5) |
 | --- | --- | --- |
 | `2:3` (`accept-equivalent`) | `4:6` | `correct` (equivalent accepted; `2*6 == 3*4`) |
 | `2:3` (`accept-equivalent`) | `20:30` | `correct` (equivalent accepted) |
-| `2:3` (any policy) | `3:2` | `reversed-order` — **rejected**, never accepted (order matters) |
+| `2:3` (any policy) | `3:2` | `wrong-order` — **rejected**, never accepted (order matters) |
 | `2:3:5` (`accept-equivalent`) | `4:6:10` | `correct` (multi-part equivalence `[ka,kb,kc]`) |
 | `2:3:5` (any policy) | `2:5:3` | `wrong-order` — **rejected** (ordered three-part) |
+| `2:3` (any policy) | `5:7` (legal, not equivalent, not a reordering) | `wrong-ratio` |
+| `2:3` (any policy) | `2:3:5` (wrong arity) | `wrong-number-of-parts` |
 | `2:3` (`require-simplest`) | `2:3` | `correct` |
-| `2:3` (`require-simplest`) | `4:6` (equivalent but unsimplified) | `equivalent-not-simplified` — **partial**, NOT full `correct` (per §12.3) |
+| `2:3` (`require-simplest`) | `4:6` (equivalent but unsimplified) | `equivalent-not-simplified` carrying `partial: true` — NOT full `correct` (per §12.3) |
 | `2:3` (`accept-equivalent`) | `4:6` (equivalent unsimplified) | `correct` (per §12.3) |
-| any | ratio with a **zero** part `0:3` | **rejected** (`zero-part`) |
-| any | ratio with a **negative** part `-2:3` | **rejected** (`negative-part`) |
-| any | malformed ratio text (`2:`, `:3`, `2::3`, `abc`) | **rejected** (`malformed-ratio`) |
+| any | ratio with a **zero** part `0:3` | **rejected** (`zero-or-negative-part`) |
+| any | ratio with a **negative** part `-2:3` | **rejected** (`zero-or-negative-part`) |
+| any | the word-form alias `2 to 3` (NOT supported in v1.0.0 — decision G) | **rejected** (`unsupported-term`) |
+| any | malformed ratio text (`2:`, `:3`, `2::3`, `abc`) | **rejected** (`malformed-response`) |
 | any | extra trailing text (`2:3 apples`) | **rejected** (`unparsed-trailing-text`) |
 | any | spaces around the colon (`2 : 3`) | **accepted** (normalized) → `correct`/`equivalent-not-simplified` per policy |
-| any | Unicode colon-like symbol (`2∶3`, U+2236) | **accepted only if explicitly supported** at the parser (decision-pinned); otherwise **rejected** (`unsupported-symbol`) — the matrix pins whichever the §5 contract declares, and FAILS if behaviour disagrees |
+| any | Unicode colon-like symbol (`2∶3`, U+2236) — NOT supported in v1.0.0 (decision G) | **rejected** (`malformed-response`) |
 
-These rows reuse the **same** canonicalizer + equivalence checker the §9 validator runs (a behavioural proof, not a re-implementation), so the "2:3 accepts 4:6 / rejects 3:2; 2:3:5 accepts 4:6:10; unsimplified equivalent accepted-or-partial per task policy; zero/negative/malformed/extra-text rejected; spaces accepted; Unicode colon handled only if supported" guarantees of the brief are gated by construction.
+These rows reuse the **same** canonicalizer + equivalence checker the §9 validator runs (a behavioural proof, not a re-implementation), so the "2:3 accepts 4:6 / rejects 3:2; 2:3:5 accepts 4:6:10; unsimplified equivalent accepted-or-partial per task policy; zero/negative/malformed/extra-text/word-form/Unicode-colon rejected; spaces accepted" guarantees of the brief are gated by construction.
 
 ### 14.9 Per-item record contents
 
@@ -2237,7 +2238,7 @@ The schema document `version` field stays `"1.0.0"` across this delta — matchi
 | a11y | axe gate: **0 critical / 0 serious, WCAG AA**; interior primitives presentation-only under the single `role="img"` `cx-figure` root; `media[].dataTableFallback` present; non-colour (unknown-marker hatch/dash + `?`) distinction present and greyscale-authoritative; `fallback-no-answer-leak`, `spokenmath-given-only`, `display-ascii-colon`, `no-color-only`, `no-inline-var-in-attrs` pass |
 | Exports | worksheet / answer-key / solutions + offline KaTeX render; **bank-json round-trip lossless** — including the new `ratio` value (which IS `answer.canonical`) and its derived `answer.display`, the table-completion label→value map, and the `multiple-choice` best-buy selection; **6000×4200** colour + print exports self-contained |
 | Integrity + graph | the blocking artifact-integrity + artifact-IDENTITY tests (manifest + **SHA-256** over every artefact, plus visible version/commit identity, Py + TS) and the bespoke graph test (twelve-member slug set, no alternative spelling) pass |
-| Coverage | the §14 builder returns `0` (all reachable cells covered, `allCovered:true`, `requiredCells == derivedRequiredCells`), the five named coverage tests pass, and the **ratio-checker matrix** has verified evidence for every `RATIO_RESULT_CODES` member |
+| Coverage | the §14 builder returns `0` (all reachable cells covered, `allCovered:true`, `requiredCells == derivedRequiredCells`), the five named coverage tests pass, and the **ratio-checker matrix** has verified evidence for every `RESULT_CODES` member (§5, lower-kebab) |
 | Approved-generator regression | arithmetic / geometric / linear / angle-geometry / coordinate-lines / data-handling / mensuration / transformations output **byte-for-byte UNCHANGED**; the eight families' **conformance** output is also unchanged under the new `maxItems` branch |
 
 ### 15.5 Registration, approval, immutability
@@ -2283,7 +2284,7 @@ The family is built to **maximise reuse** of the approved infrastructure (cited 
 | New asset | What it is |
 | --- | --- |
 | **The canonical Ratio model** (§6) | the ONE exact ratio model used by parameter generation, prompt, answer, worked solution, diagnostics, validation, parser/checker, and review-pack coverage: ordered parts; simplified canonical parts; original unsimplified parts where relevant; total parts; scale factor where relevant; known + missing part where relevant; context labels; `answerPolicy`; answer-shape tag |
-| **The `ratio` answer contract + parser / formatter / canonicalizer / equivalence checker** (§4/§5) | the new `answer.type` whose ordered-integer-tuple value **IS `answer.canonical`** (canonical-first; no sibling field), the colon parser (spaces accepted; Unicode colon only if explicitly supported, else `unsupported-symbol`), the gcd canonicalizer, the ASCII colon formatter, and the cross-multiplication equivalence checker with the single hyphenated-lowercase `RATIO_RESULT_CODES` vocabulary (the headline new contract — §16.3) |
+| **The `ratio` answer contract + parser / formatter / canonicalizer / equivalence checker** (§4/§5) | the new `answer.type` whose ordered-integer-tuple value **IS `answer.canonical`** (canonical-first; no sibling field), the anchored colon parser (spaces accepted; word-form `to` and Unicode colon NOT supported in v1.0.0 — decision G — both rejected as `unsupported-term` / `malformed-response`), the gcd canonicalizer, the ASCII colon formatter, and the cross-multiplication equivalence checker with the single lower-kebab `RESULT_CODES` vocabulary plus the boolean `partial` field (the headline new contract — §16.3) |
 | **The sharing / table-completion model** (§7) | total-parts sharing (two- and three-part), missing-part backward construction (with the hard `parts[k] ∣ v` integer gate, §12.6), and the **label-keyed** table-completion answer (correspondence by `location`, not row order), with the point-of-truth sum-agreement checks (`shares-sum-to-total`, `table-correspondence-by-label`) |
 | **The bar-model / double-number-line renderer** (§8) | the non-Cartesian educational figure system — bar models, double number lines, proportional tables — stamped with the shared `cx-figure` root class, showing GIVEN quantities only, never revealing missing values, distinguishing known/unknown by hatch/dash/`?` (class-driven, never inline `var()`), the `cx-base`/`cx-annot`/`cx-overlay` composing `figure()`, the single shared tick x-position array for double-number-line lane alignment, the label-collision-avoiding placement (deterministic complete bounding-box clearance), and the not-to-scale guard for hidden values; `inverse_proportion` ships no proportional figure |
 | **The `ratio-theme` extension** (id `spi-math-ratio-theme/1`) | a versioned extension that `extends "spi-math-cartesian-theme/1"` and follows the `data-chart-theme` additive PATTERN (without depending on it), adding bar-segment-fill, segment-divider, segment-label, bracket/total, number-line-axis, tick, tick-label, unknown-marker, and answer-overlay primitives as **new `--cx-ratio-*` variables** (namespaced to collide with no other family) + one additive ruleset, every variable resolving to a greyscale value in print, all meaning-bearing styling **class-driven (no inline `var()`)**; **all prior approved families' output stays byte-for-byte unchanged** |
