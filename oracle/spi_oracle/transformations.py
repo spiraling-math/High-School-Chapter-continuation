@@ -31,8 +31,8 @@ from . import transformations_misconceptions as TM
 from .transformations_checker import check_description
 
 GENERATOR_ID = "gen.geometry.transformations"
-GENERATOR_VERSION = "1.0.1"
-VALIDATOR_VERSION = "1.0.1"
+GENERATOR_VERSION = "1.0.2"
+VALIDATOR_VERSION = "1.0.2"
 
 OBJECTIVE_BY_TASK = {
     "translate_point": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -127,11 +127,16 @@ def _overlap(a: Tuple[int, int, int, int], b: Tuple[int, int, int, int]) -> bool
     return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
 
 
-def _place_labels(items: List[Tuple[str, int, int]]) -> List[Dict[str, Any]]:
-    """items: (text, px, py) screen anchors. Returns placements with a clear bounding box, choosing
-    the first candidate offset that avoids every other label box, every marker, and the canvas edge."""
+def _place_labels(items: List[Tuple[str, int, int]],
+                  occupied: Tuple[Tuple[int, int, int, int], ...] = ()) -> List[Dict[str, Any]]:
+    """items: (text, px, py) screen anchors. Returns placements with a clear bounding box, choosing the
+    first candidate offset that avoids every other label box, every marker, the canvas edge, and every
+    pre-OCCUPIED box. `occupied` lets the answer-key image-label pass avoid the already-placed base
+    source-label boxes + source markers, so a fixed vertex's source label and image label never coincide
+    (owner v1.0.2 fixed-point policy: separated deterministic offsets)."""
     placed: List[Dict[str, Any]] = []
     marker_boxes = [_bbox(px, py + 9, 22, 22) for _, px, py in items]
+    blocked = list(occupied)
     for text, px, py in items:
         w = LABEL_W_PER_CHAR * len(text) + 6
         chosen = None
@@ -144,6 +149,8 @@ def _place_labels(items: List[Tuple[str, int, int]]) -> List[Dict[str, Any]]:
             if any(_overlap(box, pb["box"]) for pb in placed):
                 continue
             if any(_overlap(box, mb) for mb in marker_boxes):
+                continue
+            if any(_overlap(box, ob) for ob in blocked):
                 continue
             chosen = {"text": text, "x": lx, "y": ly, "anchor": anchor, "box": box}
             break
@@ -296,11 +303,18 @@ def render(task: str, params: Dict[str, Any], answer_key: bool, uid: str) -> str
 
     if answer_key:
         if perform:
-            # the key reveals the image first, then the overlay (owner N)
+            # the key reveals the image first, then the overlay (owner N). The image labels are placed
+            # CLEAR of the already-placed base source-label boxes + source markers, so at a fixed vertex
+            # (image coincides with source) the image label never lands on top of the source label
+            # (owner v1.0.2 fixed-point policy).
             out += _object_els(img, lay, image=True)
-            img_labels = _place_labels([(lab, proj_x(lay, v[0]), proj_y(lay, v[1]))
-                                        for lab, v in zip(TS.image_labels(obj), img)])
-            out += _label_els(img_labels)
+            occupied = tuple(pl["box"] for pl in placed) + tuple(
+                _bbox(proj_x(lay, v[0]), proj_y(lay, v[1]) + 9, 22, 22) for v in src)
+            img_label_placements = _place_labels(
+                [(lab, proj_x(lay, v[0]), proj_y(lay, v[1])) for lab, v in zip(TS.image_labels(obj), img)],
+                occupied=occupied)
+            params["_keyLabelPlacements"] = img_label_placements
+            out += _label_els(img_label_placements)
         out += _overlay_els(task, desc, src, img, lay, uid)
 
     out.append("</svg>")
@@ -807,10 +821,50 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         refs = re.findall(r'url\(#([^)]+)\)', svg)
         add(f"marker-reference-resolves-within-own-svg-{chan}", all(r in set(ids) for r in refs))
 
-    # label clearance (owner M)
+    # label clearance (owner M) — internal anchors (student-base placements).
     placements = media["spec"].get("labelPlacements", [])
     add("label-inside-canvas", all(not pl.get("clearanceFailed") for pl in placements))
     add("label-bbox-clearance", _labels_pairwise_clear(placements))
+
+    # serialized-SVG label clearance, INCLUDING the answer-key image labels + overlay (owner v1.0.2 #2):
+    # parse the actual <text class="tx-lbl"> elements from each emitted SVG and check pairwise clearance,
+    # so an exact source/image label overlap at a fixed vertex can never slip past internal anchors.
+    student_lbls = _svg_label_boxes(student)
+    key_lbls = _svg_label_boxes(key)
+    add("answer-key-label-bbox-clearance", _boxes_pairwise_clear([b for b, _ in key_lbls]))
+    add("student-label-bbox-clearance", _boxes_pairwise_clear([b for b, _ in student_lbls]))
+    add("label-bbox-clearance-includes-answer-key-overlay",
+        len(key_lbls) >= len(student_lbls) and _boxes_pairwise_clear([b for b, _ in key_lbls]))
+    # specifically: no source label box overlaps any image label box in the answer key.
+    src_lab_set = set(TS.SOURCE_LABELS[obj])
+    src_boxes = [b for b, t in key_lbls if t in src_lab_set]
+    img_boxes = [b for b, t in key_lbls if t.endswith(TS.PRIME)]
+    add("source-image-label-bbox-clearance",
+        all(not _overlap(sb, ib) for sb in src_boxes for ib in img_boxes))
+
+    # fixed-point label policy (owner v1.0.2): for every fixed vertex the source label and its image
+    # label must be at DISTINCT positions, with non-overlapping boxes, and both present near the vertex.
+    fixed = [i for i in range(len(src)) if src[i] == img[i]]
+    key_text_box = {t: b for b, t in key_lbls}
+    fp_ok = True
+    fp_readable = True
+    for i in fixed:
+        s_lab = TS.SOURCE_LABELS[obj][i]
+        i_lab = TS.image_labels(obj)[i]
+        sb, ib = key_text_box.get(s_lab), key_text_box.get(i_lab)
+        if sb is None or ib is None:
+            fp_readable = False
+            continue
+        if _overlap(sb, ib) or sb == ib:
+            fp_ok = False
+    add("fixed-point-labels-not-overlapped", fp_ok)
+    add("fixed-point-correspondence-readable", fp_readable and (not fixed or all(
+        TS.SOURCE_LABELS[obj][i] in key_text_box and TS.image_labels(obj)[i] in key_text_box for i in fixed)))
+    # the marker for a fixed vertex is present: every image vertex carries an open-square marker and
+    # every source vertex a filled circle, so a fixed (coincident) vertex shows BOTH at the same point.
+    add("fixed-point-marker-readable",
+        not fixed or (key.count('<rect class="tx-img-open"') == len(img)
+                      and key.count('<circle class="tx-src-core"') == len(src)))
 
     valid = all(c["ok"] for c in checks)
     return {"valid": valid, "validatorVersion": VALIDATOR_VERSION, "checks": checks}
@@ -818,11 +872,28 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
 
 def _labels_pairwise_clear(placements: List[Dict[str, Any]]) -> bool:
     boxes = [tuple(pl["box"]) for pl in placements if "box" in pl]
+    return _boxes_pairwise_clear(boxes)
+
+
+def _boxes_pairwise_clear(boxes: List[Tuple[int, int, int, int]]) -> bool:
     for i in range(len(boxes)):
         for j in range(i + 1, len(boxes)):
             if _overlap(boxes[i], boxes[j]):
                 return False
     return True
+
+
+def _svg_label_boxes(svg: str) -> List[Tuple[Tuple[int, int, int, int], str]]:
+    """Recompute the bounding box of every <text class="tx-lbl"> element actually emitted in the SVG
+    (source labels + answer-key image labels), from its serialized x / y / text-anchor — the same
+    geometry _place_labels uses. Inspects the SERIALIZED SVG, not internal anchors (owner v1.0.2)."""
+    out: List[Tuple[Tuple[int, int, int, int], str]] = []
+    for m in re.finditer(r'<text class="tx-lbl" x="(-?\d+)" y="(-?\d+)" text-anchor="(start|end|middle)">([^<]*)</text>', svg):
+        lx, ly, anchor, text = int(m.group(1)), int(m.group(2)), m.group(3), m.group(4)
+        w = LABEL_W_PER_CHAR * len(text) + 6
+        cx = lx + (w // 2 if anchor == "start" else -w // 2 if anchor == "end" else 0)
+        out.append((_bbox(cx, ly + LABEL_H, w, LABEL_H), text))
+    return out
 
 
 def _tx_base(svg: str) -> str:

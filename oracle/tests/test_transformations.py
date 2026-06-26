@@ -154,6 +154,56 @@ class TestGeometryRegression(unittest.TestCase):
         self.assertEqual(set(it["answer"]) - {"type", "canonical", "display"}, set())
 
 
+class TestFixedPointLabels(unittest.TestCase):
+    """Owner v1.0.2 REVISE: answer-key fixed-point labels must not overlap, verified on the serialized
+    SVG. The three cited regression seeds + a describe (source-plus-image) fixed-point case."""
+
+    SEEDS = [("rotate_shape", 3189), ("reflect_shape", 18), ("reflect_shape", 896),
+             ("describe_reflection", 8)]
+
+    def _label_coords(self, svg):
+        import re
+        return {t: (int(x), int(y)) for x, y, t in
+                re.findall(r'<text class="tx-lbl" x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)</text>', svg)}
+
+    def test_cited_seeds_have_separated_fixed_point_labels(self):
+        for task, seed in self.SEEDS:
+            it = T.generate(seed, {"task": task})
+            p = it["params"]; obj = p["objectType"]
+            src = [(c["x"], c["y"]) for c in p["source"]]
+            img = [(c["x"], c["y"]) for c in p["image"]]
+            fixed = [i for i in range(len(src)) if src[i] == img[i]]
+            self.assertTrue(fixed, f"{task} seed {seed} should have a fixed vertex")
+            key = it["media"][0]["spec"]["answerKeySvg"]
+            coords = self._label_coords(key)
+            for i in fixed:
+                s_lab, i_lab = TS.SOURCE_LABELS[obj][i], TS.image_labels(obj)[i]
+                self.assertIn(s_lab, coords, f"{task} {seed} source label {s_lab}")
+                self.assertIn(i_lab, coords, f"{task} {seed} image label {i_lab}")
+                self.assertNotEqual(coords[s_lab], coords[i_lab],
+                                    f"{task} seed {seed}: {s_lab} and {i_lab} overlap at {coords[s_lab]}")
+
+    def test_fixed_point_validator_checks(self):
+        for task, seed in self.SEEDS:
+            v = T.validate(T.generate(seed, {"task": task}))
+            self.assertTrue(v["valid"], f"{task} {seed} valid")
+            names = {c["name"]: c["ok"] for c in v["checks"]}
+            for chk in ("fixed-point-labels-not-overlapped", "source-image-label-bbox-clearance",
+                        "answer-key-label-bbox-clearance", "label-bbox-clearance-includes-answer-key-overlay",
+                        "fixed-point-marker-readable", "fixed-point-correspondence-readable"):
+                self.assertIn(chk, names, f"{task} {seed} missing {chk}")
+                self.assertTrue(names[chk], f"{task} {seed} {chk} failed")
+
+    def test_serialized_svg_clearance_catches_overlap(self):
+        # a deliberately-overlapping pair of labels must FAIL the serialized-SVG clearance helper.
+        good = T.generate(3189, {"task": "rotate_shape"})["media"][0]["spec"]["answerKeySvg"]
+        boxes = [b for b, _ in T._svg_label_boxes(good)]
+        self.assertTrue(T._boxes_pairwise_clear(boxes))
+        clash = ('<text class="tx-lbl" x="100" y="100" text-anchor="start">B</text>'
+                 '<text class="tx-lbl" x="100" y="100" text-anchor="start">B′</text>')
+        self.assertFalse(T._boxes_pairwise_clear([b for b, _ in T._svg_label_boxes(clash)]))
+
+
 class TestGeneratorContract(unittest.TestCase):
     def test_all_tasks_generate_conform_validate(self):
         for task in T.TASKS:

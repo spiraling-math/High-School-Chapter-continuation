@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.geometry.transformations",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "sweepSeeds": 10000,
   "mode": "free-response",
   "invalid": 0,
