@@ -1,6 +1,6 @@
 # gen.geometry.transformations v1.0.2 — Curriculum Review Pack
 
-> **PENDING-REVIEW.** Free-response only. Generator **gen.geometry.transformations v1.0.2**, validator v1.0.2. Required coverage cells are derived from the distribution report; every exemplar below carries the full per-item record (owner REVISE #2) and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
+> **CURRICULUM-APPROVED (DECISION_LOG #57).** Free-response only. Generator **gen.geometry.transformations v1.0.2**, validator v1.0.2. Required coverage cells are derived from the distribution report; every exemplar below carries the full per-item record (owner REVISE #2) and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
 
 ## Summary
 

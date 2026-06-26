@@ -2,8 +2,8 @@
   "generatorId": "gen.geometry.transformations",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
-  "gitCommit": "6af70ce06e21117260998f62747ee2682b63cbe7",
+  "approvalStatus": "approved",
+  "gitCommit": "d36d220a6888fd4b810fdd03b0fbe2b3c172b774",
   "viewBox": "0 0 1000 700",
   "exportPx": [
     6000,
@@ -92,63 +92,34 @@
     "capturedVia": "Claude Code preview tool (review-static :8772) -> window.__trans.computed() in real Chromium",
     "figuresCaptured": 72,
     "mismatchesVsBakedTheme": 0,
-    "note": "theme colours are commit-independent and unchanged in v1.0.2 (only answer-key label positions changed); the capture applies to the pinned audit.",
+    "note": "theme colours unchanged in v1.0.2 (only answer-key label positions changed at fixed points); capture applies to the approved audit.",
     "representative": {
       "premium": {
         "axis": "#1e293b",
-        "grid": "#e9edff",
-        "srcEdge": "#2563eb",
         "srcCore": "#dc2626",
         "imgEdge": "#7c3aed",
         "imgEdgeDash": "8px, 5px",
-        "mirror": "#7c3aed",
-        "mirrorDash": "2px, 6px",
-        "vec": "#1e293b",
-        "label": "#111827",
-        "ticklbl": "#475569",
         "bg": "#ffffff"
       },
       "premium-dark": {
         "axis": "#e5e7eb",
-        "grid": "#334155",
-        "srcEdge": "#60a5fa",
         "srcCore": "#f87171",
         "imgEdge": "#c4b5fd",
         "imgEdgeDash": "8px, 5px",
-        "mirror": "#c4b5fd",
-        "mirrorDash": "2px, 6px",
-        "vec": "#e5e7eb",
-        "label": "#e5e7eb",
-        "ticklbl": "#cbd5e1",
-        "bg": "#0b1220",
-        "imgOpenFill": "#0b1220"
+        "bg": "#0b1220"
       },
       "accessible": {
         "axis": "#000000",
-        "grid": "#cccccc",
-        "srcEdge": "#0072b2",
         "srcCore": "#d55e00",
         "imgEdge": "#009e73",
         "imgEdgeDash": "8px, 5px",
-        "mirror": "#009e73",
-        "mirrorDash": "2px, 6px",
-        "vec": "#000000",
-        "label": "#000000",
-        "ticklbl": "#333333",
         "bg": "#ffffff"
       },
       "print": {
         "axis": "#111111",
-        "grid": "#bbbbbb",
-        "srcEdge": "#111111",
         "srcCore": "#111111",
         "imgEdge": "#111111",
         "imgEdgeDash": "8px, 5px",
-        "mirror": "#111111",
-        "mirrorDash": "2px, 6px",
-        "vec": "#111111",
-        "label": "#111111",
-        "ticklbl": "#333333",
         "bg": "#ffffff"
       }
     }
@@ -227,7 +198,7 @@
     {
       "name": "real-browser-computed-styles-match-baked",
       "ok": true,
-      "detail": "window.__trans.computed() in real Chromium across 72 figures == baked theme; 0 mismatches; dash 8,5 + 2,6 in every mode"
+      "detail": "window.__trans.computed() in real Chromium, 72 figures, 0 mismatches vs baked theme"
     }
   ],
   "allPassed": true

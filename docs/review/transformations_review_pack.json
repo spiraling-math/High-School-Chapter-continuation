@@ -2,7 +2,7 @@
   "generatorId": "gen.geometry.transformations",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
+  "approvalStatus": "approved",
   "mode": "free-response",
   "requiredCells": [
     "answerType:coordinate",

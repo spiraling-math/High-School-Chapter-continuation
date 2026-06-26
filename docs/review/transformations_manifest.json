@@ -2,15 +2,22 @@
   "generatorId": "gen.geometry.transformations",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
-  "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "6af70ce06e21117260998f62747ee2682b63cbe7",
+  "approvalStatus": "approved",
+  "objectiveReviewStatus": "approved",
+  "gitCommit": "d36d220a6888fd4b810fdd03b0fbe2b3c172b774",
   "versionTags": {
-    "previousVersionTag": "transformations-v1.0.0",
-    "currentImplementationTag": "transformations-v1.0.1",
-    "approvedTag": null
+    "previousVersionTag": "transformations-v1.0.1",
+    "currentImplementationTag": "transformations-v1.0.2",
+    "approvedTag": "approved-transformations-v1.0.2"
   },
-  "schemaExtension": "answer.type 'transformation' (canonical-first: descriptor IS answer.canonical) \u2014 APPROVED",
+  "approval": {
+    "decision": "curriculum-approved",
+    "approvedTag": "approved-transformations-v1.0.2",
+    "approvedAt": "2026-06-26",
+    "approvalCommit": "d36d220a6888fd4b810fdd03b0fbe2b3c172b774",
+    "decisionLog": "DECISION_LOG.md #57",
+    "sharedInfrastructure": "answer.type 'transformation' (canonical-first descriptor in answer.canonical) + translation/reflection/rotation descriptor union + parser/canonicalizer/formatter/equivalence checker + the 14 result codes \u2014 APPROVED. Does NOT authorize enlargements, compositions, arbitrary-angle rotations, arbitrary reflection lines, fractional vectors/centres, matrices, transformations of functions, tessellations, or 3D."
+  },
   "objectiveIds": [
     "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
     "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -41,7 +48,6 @@
     "table-completion",
     "transformation"
   ],
-  "hiddenFromNormalStudioAndProduction": true,
   "artifacts": {
     "oracleCore": {
       "path": "oracle/spi_oracle/transformations_core.py",
@@ -60,7 +66,7 @@
     },
     "oracleGenerator": {
       "path": "oracle/spi_oracle/transformations.py",
-      "sha256": "1734cb0d6f93cdd7d69f29e84659c53e2d684c3f18b3326f7e6fcb0c4f6fb275",
+      "sha256": "997722db81d36bea411850cf13d267ca7469679722c42b60a6da3bbb3988c0b6",
       "present": true
     },
     "oracleMisconceptions": {
@@ -85,7 +91,7 @@
     },
     "tsGenerator": {
       "path": "domains/geometry/transformations.ts",
-      "sha256": "ec625fa6b0a3c40d26b63bf05257c953af674b61ac12805dd9d3b6030d13bd59",
+      "sha256": "2da0386cfffeb4798b1165950cc33c8cedd6d875d381057d922bba4ef83f1dac",
       "present": true
     },
     "tsMisconceptions": {
@@ -110,7 +116,7 @@
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.GEO.TRANS.json",
-      "sha256": "7686a822007e4eb294d4a0a09a75c0184c7eec2afd912dc5385a031c0361714e",
+      "sha256": "aa8a0fef9daac33f8f21c36b23ee868a29bbe8c738f7fba3ffd947be10bfcf86",
       "present": true
     },
     "objectiveIds": {
@@ -145,22 +151,22 @@
     },
     "reviewPackJson": {
       "path": "docs/review/transformations_review_pack.json",
-      "sha256": "8ad11ac9aa393e5dc64f6fede8def1958a2910cf1cd4e9259ddfbf54d284408e",
+      "sha256": "267696cf141349be2c1e209375025b374d4336261b166a00ff95215467b04b4d",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/transformations_review_pack.md",
-      "sha256": "3caa8d1062ffe54fc83503369d860c70322cdbde01584e8fffd3ec6169e4a4fc",
+      "sha256": "569afd27c6dd909f381df218be3f7de76dfd33299c9f973c2e381a05081203bb",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/transformations_visual_audit.html",
-      "sha256": "8bcafddc36a622d786499a5a742d5c86e406404a1d47ff9ee2e96fce9918cfa7",
+      "sha256": "0db5bff21a2d72dd8dddd335a43f4f402c9b6f1e30012eb58004b8bdeb541fc2",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/transformations_browser_verification.json",
-      "sha256": "c19d95edc05ebb10955f0ac3f48e25c3293c66eb75f8d726f5d22f00c0971df5",
+      "sha256": "c1e24d2c7b50129fb4dbad5af35cc8286b31f1f0a99fba78ce0d7c71c935bdf8",
       "present": true
     }
   }
