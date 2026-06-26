@@ -108,6 +108,15 @@ def check(instance, schema, registry, root, path, errors):
         if not re.search(schema["pattern"], instance):
             errors.append(f"{path}: {instance!r} does not match pattern {schema['pattern']}")
 
+    # numeric bounds (used by the ratio answer: parts are integers >= 1).
+    if isinstance(instance, (int, float)) and not isinstance(instance, bool):
+        if "minimum" in schema and instance < schema["minimum"]:
+            errors.append(f"{path}: {instance} < minimum {schema['minimum']}")
+        if "maximum" in schema and instance > schema["maximum"]:
+            errors.append(f"{path}: {instance} > maximum {schema['maximum']}")
+        if "exclusiveMinimum" in schema and instance <= schema["exclusiveMinimum"]:
+            errors.append(f"{path}: {instance} <= exclusiveMinimum {schema['exclusiveMinimum']}")
+
     if isinstance(instance, dict):
         for req in schema.get("required", []):
             if req not in instance:
@@ -124,6 +133,8 @@ def check(instance, schema, registry, root, path, errors):
     if isinstance(instance, list):
         if "minItems" in schema and len(instance) < schema["minItems"]:
             errors.append(f"{path}: needs >= {schema['minItems']} items")
+        if "maxItems" in schema and len(instance) > schema["maxItems"]:
+            errors.append(f"{path}: needs <= {schema['maxItems']} items")
         if "items" in schema:
             for i, el in enumerate(instance):
                 check(el, schema["items"], registry, root, f"{path}[{i}]", errors)

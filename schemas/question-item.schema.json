@@ -195,7 +195,7 @@
       "description": "Platform-wide answer type vocabulary. Shared by curriculum objectives, items, and answer checkers.",
       "enum": [
         "integer", "decimal", "fraction", "exact-rational", "mixed-number", "exact-surd", "exact-trig",
-        "quantity", "transformation",
+        "quantity", "transformation", "ratio",
         "algebraic-expression", "equation", "inequality", "interval", "set",
         "ordered-pair", "coordinate", "sequence", "permutation", "combination",
         "vector", "matrix", "complex-number",
@@ -344,6 +344,31 @@
           "$comment": "rotation descriptor: requires centre + quarterTurnsCCW(1|2|3); forbids vector/axis.",
           "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "rotation" } } } } },
           "then": { "properties": { "canonical": { "required": ["kind", "centre", "quarterTurnsCCW"], "properties": { "vector": false, "axis": false } } } }
+        },
+        {
+          "$comment": "A 'ratio' answer's canonical IS the ordered simplest-form positive-integer tuple {parts}: canonical-first; no sibling field; answer.display (e.g. '2:3') is derived from it. Ratio answers never carry units/measure/tolerance. parts are positive integers, 2 or 3 of them in v1.0.0; simplest form (gcd of the parts = 1) and order-sensitivity are enforced by the ratio checker + independent validator, not by the schema.",
+          "if": { "properties": { "type": { "const": "ratio" } }, "required": ["type"] },
+          "then": {
+            "required": ["canonical"],
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["parts"],
+                "properties": {
+                  "parts": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "minItems": 2, "maxItems": 3 }
+                }
+              },
+              "units": false,
+              "measure": false,
+              "tolerance": false
+            }
+          }
+        },
+        {
+          "$comment": "Guard: a canonical carrying 'parts' IS a ratio answer — reject a ratio-shaped canonical used with any other answer type.",
+          "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["parts"] } } },
+          "then": { "properties": { "type": { "const": "ratio" } } }
         }
       ]
     },
