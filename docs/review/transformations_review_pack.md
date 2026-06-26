@@ -1,12 +1,23 @@
-# gen.geometry.transformations v1.0.1 — Curriculum Review Pack
+# gen.geometry.transformations v1.0.2 — Curriculum Review Pack
 
-> **PENDING-REVIEW.** Free-response only. Generator **gen.geometry.transformations v1.0.1**, validator v1.0.1. Required coverage cells are derived from the distribution report; every exemplar below carries the full per-item record (owner REVISE #2) and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
+> **PENDING-REVIEW.** Free-response only. Generator **gen.geometry.transformations v1.0.2**, validator v1.0.2. Required coverage cells are derived from the distribution report; every exemplar below carries the full per-item record (owner REVISE #2) and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
 
 ## Summary
 
-- Representative exemplars: **22** · full coverage: **True** · all machine-valid: **True** · all exemplars complete: **True**.
+- Representative exemplars: **23** · full coverage: **True** · all machine-valid: **True** · all exemplars complete: **True**.
 - Descriptor rejected-wording evidence consistent: **True**.
 - Result codes: all 14 reachable **True** (mismatches 0); diagnostics **24/24** exercised; MC rejected **9/9**; owner-O invariants **all pass**.
+
+## Fixed-point answer-key label regression (owner v1.0.2)
+
+All cited seeds' corrected answer-key figures show the source and image labels at SEPARATED coordinates: **True**.
+
+| task | seed | fixed vertex | source label @ | image label @ | separated | valid |
+|---|---|---|---|---|---|---|
+| rotate_shape | 3189 | 1 | B @ [444, 336] | B′ @ [416, 336] | True | True |
+| reflect_shape | 18 | 1 | B @ [514, 207] | B′ @ [486, 207] | True | True |
+| reflect_shape | 896 | 0 | A @ [346, 168] | A′ @ [318, 168] | True | True |
+| describe_reflection | 8 | 2 | C @ [514, 136] | C′ @ [486, 136] | True | True |
 
 ## rotate_shape — seed 3189 — band 4 (table-completion)
 
@@ -29,7 +40,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(2, 0)"], ["B", "(-1, -1)"], ["C", "(-2, -4)"], ["D", "(2, -4)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(2, 0)", "(-2, 2)"], ["B", "(-1, -1)", "(-1, -1)"], ["C", "(-2, -4)", "(2, -2)"], ["D", "(2, -4)", "(2, 2)"]]}` |
 | diagnostics exercised | MISC.TRANS.ROTATES_WRONG_DIRECTION, MISC.TRANS.USES_180_RULE_FOR_90, MISC.TRANS.ROTATES_ABOUT_ORIGIN, MISC.TRANS.SWAPS_WITHOUT_SIGN, MISC.TRANS.ROTATES_THE_CENTRE, MISC.TRANS.APPLIES_TO_ONE_VERTEX |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 12 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(3189, {'task': 'rotate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -140,7 +151,7 @@
 <rect class="tx-img-open" x="633" y="413" width="14" height="14"/>
 <rect class="tx-img-open" x="633" y="133" width="14" height="14"/>
 <text class="tx-lbl" x="374" y="126" text-anchor="start">A′</text>
-<text class="tx-lbl" x="444" y="336" text-anchor="start">B′</text>
+<text class="tx-lbl" x="416" y="336" text-anchor="end">B′</text>
 <text class="tx-lbl" x="654" y="406" text-anchor="start">C′</text>
 <text class="tx-lbl" x="654" y="126" text-anchor="start">D′</text>
 <g class="tx-overlay">
@@ -171,7 +182,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(0, 6)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(0, 6)", "(0, -6)"]]}` |
 | diagnostics exercised | MISC.TRANS.SWAPS_WITHOUT_SIGN |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 6 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(212, {'task': 'rotate_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -304,7 +315,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(1, 2)", "(-2, 1)"], ["B", "(-3, 1)", "(-6, 0)"], ["C", "(-3, -4)", "(-6, -5)"], ["D", "(0, -4)", "(-3, -5)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_TYPE_WRONG_VECTOR |
 | checker result-code evidence | correct, malformed-response, missing-translation-vector, wrong-transformation-type, wrong-translation-vector |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 5 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(2, {'task': 'describe_translation'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -476,7 +487,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(0, 0)", "(-3, 1)"], ["B", "(-3, 0)", "(-3, 4)"], ["C", "(-4, -3)", "(-6, 5)"], ["D", "(2, -4)", "(-7, -1)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_ANGLE_MISSING_CENTRE, MISC.TRANS.RIGHT_CENTRE_WRONG_DIRECTION, MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION |
 | checker result-code evidence | ambiguous-description, correct, unsupported-angle, wrong-rotation-centre, wrong-transformation-type |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(4, {'task': 'describe_rotation'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -659,7 +670,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(-6, -6)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(-6, -6)", "(-1, -4)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_X, MISC.TRANS.CHANGES_ONLY_Y, MISC.TRANS.WRONG_SIGN_ONE_COMPONENT, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(7, {'task': 'translate_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -790,7 +801,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(1, -2)"], ["B", "(2, 1)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(1, -2)", "(0, 2)"], ["B", "(2, 1)", "(1, 5)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_X, MISC.TRANS.CHANGES_ONLY_Y, MISC.TRANS.WRONG_SIGN_ONE_COMPONENT, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 19/19 pass |
+| validation checks | 26/26 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(8, {'task': 'translate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -917,7 +928,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(-3, -6)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(-3, -6)", "(-6, -3)"]]}` |
 | diagnostics exercised | MISC.TRANS.YX_CHANGES_BOTH_SIGNS |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(12, {'task': 'reflect_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1047,7 +1058,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(1, 0)"], ["B", "(-3, 3)"], ["C", "(0, 2)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(1, 0)", "(-7, 0)"], ["B", "(-3, 3)", "(-3, 3)"], ["C", "(0, 2)", "(-6, 2)"]]}` |
 | diagnostics exercised | MISC.TRANS.REFLECTS_X_FOR_Y_AXIS, MISC.TRANS.NEGATES_WRONG_COORDINATE, MISC.TRANS.REFLECTS_X0_FOR_XA |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(18, {'task': 'reflect_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1157,7 +1168,7 @@
 <rect class="tx-img-open" x="493" y="214" width="14" height="14"/>
 <rect class="tx-img-open" x="235" y="300" width="14" height="14"/>
 <text class="tx-lbl" x="170" y="465" text-anchor="start">A′</text>
-<text class="tx-lbl" x="514" y="207" text-anchor="start">B′</text>
+<text class="tx-lbl" x="486" y="207" text-anchor="end">B′</text>
 <text class="tx-lbl" x="256" y="293" text-anchor="start">C′</text>
 <g class="tx-overlay">
 <line class="tx-mirror" x1="500" y1="565" x2="500" y2="135"/>
@@ -1191,7 +1202,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(3, 3)", "(3, -5)"], ["B", "(-1, 2)", "(-1, -4)"], ["C", "(0, -2)", "(0, 0)"], ["D", "(2, -2)", "(2, 0)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS |
 | checker result-code evidence | correct, malformed-response, unsupported-reflection-line, wrong-reflection-axis, wrong-transformation-type |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 4 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(30, {'task': 'describe_reflection'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1354,7 +1365,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(0, -3)", "(0, -6)"], ["B", "(4, -4)", "(4, -7)"], ["C", "(1, 2)", "(1, -1)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_TYPE_WRONG_VECTOR |
 | checker result-code evidence | correct, malformed-response, missing-translation-vector, wrong-transformation-type, wrong-translation-vector |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 3 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(150, {'task': 'describe_translation'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1511,7 +1522,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(0, 0)"], ["B", "(0, -3)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(0, 0)", "(0, 0)"], ["B", "(0, -3)", "(3, 0)"]]}` |
 | diagnostics exercised | MISC.TRANS.YNEGX_ONLY_SWAPS |
-| validation checks | 19/19 pass |
+| validation checks | 26/26 pass |
 | covers cells | 3 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(896, {'task': 'reflect_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1595,7 +1606,7 @@
 <path class="tx-img-edge" d="M 332 182 L 668 182"/>
 <rect class="tx-img-open" x="325" y="175" width="14" height="14"/>
 <rect class="tx-img-open" x="661" y="175" width="14" height="14"/>
-<text class="tx-lbl" x="346" y="168" text-anchor="start">A′</text>
+<text class="tx-lbl" x="318" y="168" text-anchor="end">A′</text>
 <text class="tx-lbl" x="682" y="168" text-anchor="start">B′</text>
 <g class="tx-overlay">
 <line class="tx-mirror" x1="220" y1="70" x2="780" y2="630"/>
@@ -1626,7 +1637,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(3, 3)"], ["B", "(-3, 4)"], ["C", "(-1, 1)"], ["D", "(2, 1)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(3, 3)", "(5, 3)"], ["B", "(-3, 4)", "(-1, 4)"], ["C", "(-1, 1)", "(1, 1)"], ["D", "(2, 1)", "(4, 1)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_Y, MISC.TRANS.WRONG_SIGN_ONE_COMPONENT, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 3 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(1878, {'task': 'translate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1778,7 +1789,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(-1, 1)"], ["B", "(3, 1)"], ["C", "(2, -2)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(-1, 1)", "(-3, -1)"], ["B", "(3, 1)", "(-7, -1)"], ["C", "(2, -2)", "(-6, 2)"]]}` |
 | diagnostics exercised | MISC.TRANS.ROTATES_ABOUT_ORIGIN, MISC.TRANS.SWAPS_WITHOUT_SIGN, MISC.TRANS.ROTATES_THE_CENTRE, MISC.TRANS.APPLIES_TO_ONE_VERTEX |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(13, {'task': 'rotate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1930,7 +1941,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(-5, -6)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(-5, -6)", "(-4, -8)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_X, MISC.TRANS.CHANGES_ONLY_Y, MISC.TRANS.WRONG_SIGN_ONE_COMPONENT, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(23, {'task': 'translate_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2068,7 +2079,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(0, -3)", "(-2, 5)"], ["B", "(-2, -3)", "(0, 5)"], ["C", "(-1, 0)", "(-1, 2)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_ANGLE_MISSING_CENTRE, MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION |
 | checker result-code evidence | correct, missing-rotation-centre, unsupported-angle, wrong-rotation-amount, wrong-rotation-centre, wrong-transformation-type |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(407, {'task': 'describe_rotation'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2215,7 +2226,7 @@
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(-4, -3)", "(-3, -4)"], ["B", "(-4, 0)", "(0, -4)"], ["C", "(-2, -1)", "(-1, -2)"]]}` |
 | diagnostics exercised | MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS |
 | checker result-code evidence | correct, malformed-response, unsupported-reflection-line, wrong-reflection-axis, wrong-transformation-type |
-| validation checks | 21/21 pass |
+| validation checks | 28/28 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(865, {'task': 'describe_reflection'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2351,7 +2362,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(3, 2)"], ["B", "(-4, -2)"], ["C", "(-2, 1)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(3, 2)", "(3, 6)"], ["B", "(-4, -2)", "(-4, 2)"], ["C", "(-2, 1)", "(-2, 5)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_X, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 2 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(1315, {'task': 'translate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2508,7 +2519,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(0, 0)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(0, 0)", "(0, 2)"]]}` |
 | diagnostics exercised | MISC.TRANS.ROTATES_WRONG_DIRECTION, MISC.TRANS.USES_180_RULE_FOR_90, MISC.TRANS.ROTATES_ABOUT_ORIGIN, MISC.TRANS.SWAPS_WITHOUT_SIGN, MISC.TRANS.ROTATES_THE_CENTRE |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(11, {'task': 'rotate_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2597,7 +2608,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["P", "(-3, -1)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["P", "(-3, -1)", "(-3, 1)"]]}` |
 | diagnostics exercised | MISC.TRANS.REFLECTS_X_FOR_Y_AXIS, MISC.TRANS.NEGATES_WRONG_COORDINATE, MISC.TRANS.REFLECTS_Y_FOR_X_AXIS |
-| validation checks | 18/18 pass |
+| validation checks | 25/25 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(15, {'task': 'reflect_point'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2699,7 +2710,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(3, 2)"], ["B", "(-2, -3)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(3, 2)", "(-3, 0)"], ["B", "(-2, -3)", "(2, 5)"]]}` |
 | diagnostics exercised | MISC.TRANS.ROTATES_ABOUT_ORIGIN, MISC.TRANS.SWAPS_WITHOUT_SIGN, MISC.TRANS.ROTATES_THE_CENTRE, MISC.TRANS.APPLIES_TO_ONE_VERTEX |
-| validation checks | 19/19 pass |
+| validation checks | 26/26 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(42, {'task': 'rotate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2846,7 +2857,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(-4, -1)"], ["B", "(-4, -2)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(-4, -1)", "(-6, -1)"], ["B", "(-4, -2)", "(-6, -2)"]]}` |
 | diagnostics exercised | MISC.TRANS.REVERSES_VECTOR, MISC.TRANS.SWAPS_DX_DY, MISC.TRANS.CHANGES_ONLY_Y, MISC.TRANS.WRONG_SIGN_ONE_COMPONENT, MISC.TRANS.TRANSLATES_FROM_ORIGIN |
-| validation checks | 19/19 pass |
+| validation checks | 26/26 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(51, {'task': 'translate_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -2970,7 +2981,7 @@
 | student data table | `{"columns": ["Vertex", "Coordinates"], "rows": [["A", "(3, 4)"], ["B", "(-2, 4)"], ["C", "(0, -1)"], ["D", "(3, 1)"]]}` |
 | answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(3, 4)", "(-4, -3)"], ["B", "(-2, 4)", "(-4, 2)"], ["C", "(0, -1)", "(1, 0)"], ["D", "(3, 1)", "(-1, -3)"]]}` |
 | diagnostics exercised | MISC.TRANS.YNEGX_ONLY_SWAPS |
-| validation checks | 20/20 pass |
+| validation checks | 27/27 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(1391, {'task': 'reflect_shape'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -3102,6 +3113,149 @@
 <text class="tx-lbl" x="483" y="553" text-anchor="start">D′</text>
 <g class="tx-overlay">
 <line class="tx-mirror" x1="221" y1="71" x2="779" y2="629"/>
+</g>
+</svg>
+```
+
+</details>
+
+## describe_reflection — seed 8 — band 3 (transformation)
+
+| field | value |
+|---|---|
+| objective | SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01 |
+| interaction / answer | free-response / transformation |
+| difficulty band | 3 (axes: {"numericalComplexity": 0.125, "exactVsApproximate": 0, "reasoningSteps": 0.7, "abstraction": 0.65}) |
+| prompt | Describe fully the reflection that maps ABC onto A′B′C′. Give the full description of the transformation. |
+| transformation parameters | `{"kind": "reflection", "axis": {"kind": "vertical", "value": 0}}` |
+| source coords | [[1, -2], [2, 1], [0, 3]] |
+| image coords | [[-1, -2], [-2, 1], [0, 3]] |
+| canonical answer | `{"kind": "reflection", "axis": {"kind": "vertical", "value": 0}}` |
+| answer display | reflection in x = 0 |
+| accepted form / checker | Structured-descriptor checker: every canonical-equivalent wording is accepted (see acceptedWordingExamples); wrong / incomplete / ambiguous descriptions return the listed result codes (see rejectedWordingExamples + checkerResultCodeEvidence). |
+| canonical descriptor | `{"kind": "reflection", "axis": {"kind": "vertical", "value": 0}}` |
+| accepted wordings | reflection in x = 0; reflection in the y-axis |
+| rejected wordings → code | reflection in x = 1 → wrong-reflection-axis; translation by vector (1, 1) → wrong-transformation-type; reflection in y = 2x → unsupported-reflection-line; flip it over → malformed-response |
+| worked solution | 1. Compare corresponding labelled vertices to identify the transformation. → A->A′; B->B′; C->C′; 2. Determine the parameters from the correspondence. → reflection in x = 0 |
+| student alt text | A coordinate grid showing triangle ABC (A at (1, -2); B at (2, 1); C at (0, 3)) and its image A′B′C′ (A′ at (-1, -2); B′ at (-2, 1); C′ at (0, 3)). Describe the single transformation that maps the object onto its image. |
+| answer-key alt text | Answer key: the transformation mapping triangle ABC onto its image A′B′C′ is reflection in x = 0; the mirror line x = 0 is drawn. |
+| student data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(1, -2)", "(-1, -2)"], ["B", "(2, 1)", "(-2, 1)"], ["C", "(0, 3)", "(0, 3)"]]}` |
+| answer-key data table | `{"columns": ["Vertex", "Object", "Image"], "rows": [["A", "(1, -2)", "(-1, -2)"], ["B", "(2, 1)", "(-2, 1)"], ["C", "(0, 3)", "(0, 3)"]]}` |
+| diagnostics exercised | MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS |
+| checker result-code evidence | correct, malformed-response, unsupported-reflection-line, wrong-reflection-axis, wrong-transformation-type |
+| validation checks | 28/28 pass |
+| covers cells | 1 |
+| reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(8, {'task': 'describe_reflection'})))"` |
+| curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
+
+<details><summary>student figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="A coordinate grid showing triangle ABC (A at (1, -2); B at (2, 1); C at (0, 3)) and its image A′B′C′ (A′ at (-1, -2); B′ at (-2, 1); C′ at (0, 3)). Describe the single transformation that maps the object onto its image.">
+<title>Coordinate grid with an object and its image</title><desc>Object ABC: A at (1, -2); B at (2, 1); C at (0, 3). Image A′B′C′: A′ at (-1, -2); B′ at (-2, 1); C′ at (0, 3).</desc>
+<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>
+<g class="tx-base">
+<line class="tx-grid" x1="260" y1="70" x2="260" y2="630"/>
+<line class="tx-grid" x1="340" y1="70" x2="340" y2="630"/>
+<line class="tx-grid" x1="420" y1="70" x2="420" y2="630"/>
+<line class="tx-grid" x1="580" y1="70" x2="580" y2="630"/>
+<line class="tx-grid" x1="660" y1="70" x2="660" y2="630"/>
+<line class="tx-grid" x1="740" y1="70" x2="740" y2="630"/>
+<line class="tx-grid" x1="260" y1="630" x2="740" y2="630"/>
+<line class="tx-grid" x1="260" y1="550" x2="740" y2="550"/>
+<line class="tx-grid" x1="260" y1="470" x2="740" y2="470"/>
+<line class="tx-grid" x1="260" y1="310" x2="740" y2="310"/>
+<line class="tx-grid" x1="260" y1="230" x2="740" y2="230"/>
+<line class="tx-grid" x1="260" y1="150" x2="740" y2="150"/>
+<line class="tx-grid" x1="260" y1="70" x2="740" y2="70"/>
+<line class="tx-axis" x1="260" y1="390" x2="740" y2="390"/>
+<line class="tx-axis" x1="500" y1="630" x2="500" y2="70"/>
+<text class="tx-ticklbl" x="260" y="412" text-anchor="middle">-3</text>
+<text class="tx-ticklbl" x="340" y="412" text-anchor="middle">-2</text>
+<text class="tx-ticklbl" x="420" y="412" text-anchor="middle">-1</text>
+<text class="tx-ticklbl" x="580" y="412" text-anchor="middle">1</text>
+<text class="tx-ticklbl" x="660" y="412" text-anchor="middle">2</text>
+<text class="tx-ticklbl" x="740" y="412" text-anchor="middle">3</text>
+<text class="tx-ticklbl" x="490" y="636" text-anchor="end">-3</text>
+<text class="tx-ticklbl" x="490" y="556" text-anchor="end">-2</text>
+<text class="tx-ticklbl" x="490" y="476" text-anchor="end">-1</text>
+<text class="tx-ticklbl" x="490" y="316" text-anchor="end">1</text>
+<text class="tx-ticklbl" x="490" y="236" text-anchor="end">2</text>
+<text class="tx-ticklbl" x="490" y="156" text-anchor="end">3</text>
+<text class="tx-ticklbl" x="490" y="76" text-anchor="end">4</text>
+<text class="tx-ticklbl" x="490" y="412" text-anchor="end">0</text>
+<path class="tx-src-edge" d="M 580 550 L 660 310 L 500 150 Z"/>
+<circle class="tx-src-core" cx="580" cy="550" r="6"/>
+<circle class="tx-src-core" cx="660" cy="310" r="6"/>
+<circle class="tx-src-core" cx="500" cy="150" r="6"/>
+<path class="tx-img-edge" d="M 420 550 L 340 310 L 500 150 Z"/>
+<rect class="tx-img-open" x="413" y="543" width="14" height="14"/>
+<rect class="tx-img-open" x="333" y="303" width="14" height="14"/>
+<rect class="tx-img-open" x="493" y="143" width="14" height="14"/>
+<text class="tx-lbl" x="594" y="536" text-anchor="start">A</text>
+<text class="tx-lbl" x="674" y="296" text-anchor="start">B</text>
+<text class="tx-lbl" x="514" y="136" text-anchor="start">C</text>
+<text class="tx-lbl" x="434" y="536" text-anchor="start">A′</text>
+<text class="tx-lbl" x="354" y="296" text-anchor="start">B′</text>
+<text class="tx-lbl" x="486" y="136" text-anchor="end">C′</text>
+</g>
+</svg>
+```
+
+</details>
+<details><summary>answer-key figure (SVG)</summary>
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="Answer key: the transformation mapping triangle ABC onto its image A′B′C′ is reflection in x = 0; the mirror line x = 0 is drawn.">
+<title>Answer key — reflection in x = 0</title><desc>Object ABC: A at (1, -2); B at (2, 1); C at (0, 3). Image A′B′C′: A′ at (-1, -2); B′ at (-2, 1); C′ at (0, 3). The transformation is reflection in x = 0; the mirror line x = 0 is drawn.</desc>
+<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>
+<g class="tx-base">
+<line class="tx-grid" x1="260" y1="70" x2="260" y2="630"/>
+<line class="tx-grid" x1="340" y1="70" x2="340" y2="630"/>
+<line class="tx-grid" x1="420" y1="70" x2="420" y2="630"/>
+<line class="tx-grid" x1="580" y1="70" x2="580" y2="630"/>
+<line class="tx-grid" x1="660" y1="70" x2="660" y2="630"/>
+<line class="tx-grid" x1="740" y1="70" x2="740" y2="630"/>
+<line class="tx-grid" x1="260" y1="630" x2="740" y2="630"/>
+<line class="tx-grid" x1="260" y1="550" x2="740" y2="550"/>
+<line class="tx-grid" x1="260" y1="470" x2="740" y2="470"/>
+<line class="tx-grid" x1="260" y1="310" x2="740" y2="310"/>
+<line class="tx-grid" x1="260" y1="230" x2="740" y2="230"/>
+<line class="tx-grid" x1="260" y1="150" x2="740" y2="150"/>
+<line class="tx-grid" x1="260" y1="70" x2="740" y2="70"/>
+<line class="tx-axis" x1="260" y1="390" x2="740" y2="390"/>
+<line class="tx-axis" x1="500" y1="630" x2="500" y2="70"/>
+<text class="tx-ticklbl" x="260" y="412" text-anchor="middle">-3</text>
+<text class="tx-ticklbl" x="340" y="412" text-anchor="middle">-2</text>
+<text class="tx-ticklbl" x="420" y="412" text-anchor="middle">-1</text>
+<text class="tx-ticklbl" x="580" y="412" text-anchor="middle">1</text>
+<text class="tx-ticklbl" x="660" y="412" text-anchor="middle">2</text>
+<text class="tx-ticklbl" x="740" y="412" text-anchor="middle">3</text>
+<text class="tx-ticklbl" x="490" y="636" text-anchor="end">-3</text>
+<text class="tx-ticklbl" x="490" y="556" text-anchor="end">-2</text>
+<text class="tx-ticklbl" x="490" y="476" text-anchor="end">-1</text>
+<text class="tx-ticklbl" x="490" y="316" text-anchor="end">1</text>
+<text class="tx-ticklbl" x="490" y="236" text-anchor="end">2</text>
+<text class="tx-ticklbl" x="490" y="156" text-anchor="end">3</text>
+<text class="tx-ticklbl" x="490" y="76" text-anchor="end">4</text>
+<text class="tx-ticklbl" x="490" y="412" text-anchor="end">0</text>
+<path class="tx-src-edge" d="M 580 550 L 660 310 L 500 150 Z"/>
+<circle class="tx-src-core" cx="580" cy="550" r="6"/>
+<circle class="tx-src-core" cx="660" cy="310" r="6"/>
+<circle class="tx-src-core" cx="500" cy="150" r="6"/>
+<path class="tx-img-edge" d="M 420 550 L 340 310 L 500 150 Z"/>
+<rect class="tx-img-open" x="413" y="543" width="14" height="14"/>
+<rect class="tx-img-open" x="333" y="303" width="14" height="14"/>
+<rect class="tx-img-open" x="493" y="143" width="14" height="14"/>
+<text class="tx-lbl" x="594" y="536" text-anchor="start">A</text>
+<text class="tx-lbl" x="674" y="296" text-anchor="start">B</text>
+<text class="tx-lbl" x="514" y="136" text-anchor="start">C</text>
+<text class="tx-lbl" x="434" y="536" text-anchor="start">A′</text>
+<text class="tx-lbl" x="354" y="296" text-anchor="start">B′</text>
+<text class="tx-lbl" x="486" y="136" text-anchor="end">C′</text>
+</g>
+<g class="tx-overlay">
+<line class="tx-mirror" x1="500" y1="630" x2="500" y2="70"/>
 </g>
 </svg>
 ```

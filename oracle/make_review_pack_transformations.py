@@ -40,6 +40,34 @@ from spi_oracle.transformations_checker import check_description  # noqa: E402
 REVIEW_DIR = os.path.join(ROOT, "docs", "review")
 POOL = int(os.environ.get("SPI_POOL", "4000"))
 
+# The owner's cited fixed-point regression seeds (+ a describe source-plus-image case), guaranteed in the
+# pack so the corrected answer-key figures are shown explicitly (owner v1.0.2 #3).
+REGRESSION_SEEDS = [("rotate_shape", 3189), ("reflect_shape", 18), ("reflect_shape", 896),
+                    ("describe_reflection", 8)]
+import re as _re  # noqa: E402
+
+
+def _fixed_point_summary(item):
+    p = item["params"]
+    obj = p["objectType"]
+    src = [(c["x"], c["y"]) for c in p["source"]]
+    img = [(c["x"], c["y"]) for c in p["image"]]
+    fixed = [i for i in range(len(src)) if src[i] == img[i]]
+    key = item["media"][0]["spec"]["answerKeySvg"]
+    coords = {t: [int(x), int(y)] for x, y, t in
+              _re.findall(r'<text class="tx-lbl" x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)</text>', key)}
+    v = T.validate(item)
+    pairs = []
+    for i in fixed:
+        s_lab, i_lab = TS.SOURCE_LABELS[obj][i], TS.image_labels(obj)[i]
+        pairs.append({"vertex": i, "sourceLabel": s_lab, "sourceLabelXY": coords.get(s_lab),
+                      "imageLabel": i_lab, "imageLabelXY": coords.get(i_lab),
+                      "separated": coords.get(s_lab) != coords.get(i_lab)})
+    fp_checks = {c["name"]: c["ok"] for c in v["checks"]
+                 if "fixed-point" in c["name"] or "label-bbox-clearance" in c["name"] or c["name"] == "source-image-label-bbox-clearance"}
+    return {"task": p["task"], "seed": item["seed"], "fixedVertices": fixed, "labelPairs": pairs,
+            "allSeparated": all(pr["separated"] for pr in pairs), "valid": v["valid"], "checks": fp_checks}
+
 # Fields every exemplar must carry (owner REVISE #2); the builder fails if any is missing.
 REQUIRED_FIELDS = [
     "objectiveId", "task", "seed", "band", "axes", "interactionType", "answerType", "prompt",
@@ -301,15 +329,26 @@ def main() -> int:
 
     missing_cells = sorted(required - covered)
 
+    # Guarantee the owner's cited fixed-point regression seeds are present as exemplars (owner v1.0.2 #3).
+    chosen_seeds = {(it.get("params", {}).get("task"), it["seed"]) for it, _ in chosen_items}
+    for task, seed in REGRESSION_SEEDS:
+        if (task, seed) not in chosen_seeds:
+            chosen_items.append((T.generate(seed, {"task": task}), ["fixed-point-regression"]))
+
     # Build the full per-item exemplars + the fail-on-missing-field gate (owner REVISE #2).
     records, incomplete = [], []
     for it, gain in chosen_items:
         rec = _exemplar(it)
         rec["coversCells"] = gain
+        rec["fixedPointRegression"] = (rec["task"], rec["seed"]) in set(REGRESSION_SEEDS)
         miss = _missing_fields(rec)
         if miss:
             incomplete.append({"itemId": it["itemId"], "missing": miss})
         records.append(rec)
+
+    # Fixed-point regression evidence (owner v1.0.2 #3): the cited seeds' corrected answer-key figures.
+    fixed_point_regression = [_fixed_point_summary(T.generate(seed, {"task": task})) for task, seed in REGRESSION_SEEDS]
+    fp_regression_ok = all(s["valid"] and s["allSeparated"] and all(s["checks"].values()) for s in fixed_point_regression)
 
     all_valid = all(r["valid"] for r in records)
     descriptor_evidence_ok = all(
@@ -334,6 +373,7 @@ def main() -> int:
                         "recomputationMismatches": dc["recomputationMismatches"]},
         "multipleChoiceRejectedTasks": dist["multipleChoiceRejectedTasks"],
         "regressionInvariants": invariants,
+        "fixedPointRegression": {"cases": fixed_point_regression, "allSeparatedAndValid": fp_regression_ok},
         "presence": {
             "premiumLight": True, "premiumDark": True, "accessibleColour": True, "monochromePrint": True,
             "selfContained6000x4200Export": True, "multiItemWorksheet": True, "labelCollisionStress": True,
@@ -351,11 +391,11 @@ def main() -> int:
           and pack["descriptorRejectedWordingEvidenceConsistent"]
           and pack["resultCodes"]["reachable"] and pack["resultCodes"]["matrixMismatches"] == 0
           and not pack["diagnostics"]["inapplicable"] and pack["diagnostics"]["recomputationMismatches"] == 0
-          and pack["multipleChoiceRejectedTasks"] == 9 and inv_ok)
+          and pack["multipleChoiceRejectedTasks"] == 9 and inv_ok and fp_regression_ok)
     print(f"Review pack: {pack['itemCount']} full exemplars; covered={pack['allCovered']} valid={pack['allValid']} "
           f"complete={pack['allExemplarsComplete']} descriptorEvidence={descriptor_evidence_ok} "
           f"codes14={pack['resultCodes']['reachable']} diag={pack['diagnostics']['exercised']}/{pack['diagnostics']['total']} "
-          f"MC={pack['multipleChoiceRejectedTasks']}/9 regression={'OK' if inv_ok else 'FAIL'}")
+          f"MC={pack['multipleChoiceRejectedTasks']}/9 regression={'OK' if inv_ok else 'FAIL'} fixedPointRegression={'OK' if fp_regression_ok else 'FAIL'}")
     if missing_cells:
         print("MISSING CELLS:", missing_cells)
     if incomplete:
@@ -391,6 +431,18 @@ def _write_md(pack):
         L += ["**MISSING CELLS:** " + ", ".join(f"`{c}`" for c in pack["missingCells"]), ""]
     if pack["incompleteExemplars"]:
         L += ["**INCOMPLETE EXEMPLARS:** " + json.dumps(pack["incompleteExemplars"]), ""]
+
+    fpr = pack["fixedPointRegression"]
+    L += ["## Fixed-point answer-key label regression (owner v1.0.2)", "",
+          f"All cited seeds' corrected answer-key figures show the source and image labels at SEPARATED "
+          f"coordinates: **{fpr['allSeparatedAndValid']}**.", "",
+          "| task | seed | fixed vertex | source label @ | image label @ | separated | valid |",
+          "|---|---|---|---|---|---|---|"]
+    for s in fpr["cases"]:
+        for pr in s["labelPairs"]:
+            L.append(f"| {s['task']} | {s['seed']} | {pr['vertex']} | {pr['sourceLabel']} @ {pr['sourceLabelXY']} | "
+                     f"{pr['imageLabel']} @ {pr['imageLabelXY']} | {pr['separated']} | {s['valid']} |")
+    L.append("")
 
     for r in pack["records"]:
         L += [f"## {r['task']} — seed {r['seed']} — band {r['band']} ({r['answerType']})", ""]

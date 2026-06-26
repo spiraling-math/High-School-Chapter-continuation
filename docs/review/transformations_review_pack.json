@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.geometry.transformations",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
   "mode": "free-response",
   "requiredCells": [
@@ -154,7 +154,7 @@
   "missingCells": [],
   "allCovered": true,
   "allValid": true,
-  "itemCount": 22,
+  "itemCount": 23,
   "exemplarFieldSchema": {
     "required": [
       "objectiveId",
@@ -236,6 +236,151 @@
     "display_derived_from_canonical": true,
     "no_duplicate_descriptor_field": true
   },
+  "fixedPointRegression": {
+    "cases": [
+      {
+        "task": "rotate_shape",
+        "seed": 3189,
+        "fixedVertices": [
+          1
+        ],
+        "labelPairs": [
+          {
+            "vertex": 1,
+            "sourceLabel": "B",
+            "sourceLabelXY": [
+              444,
+              336
+            ],
+            "imageLabel": "B\u2032",
+            "imageLabelXY": [
+              416,
+              336
+            ],
+            "separated": true
+          }
+        ],
+        "allSeparated": true,
+        "valid": true,
+        "checks": {
+          "label-bbox-clearance": true,
+          "answer-key-label-bbox-clearance": true,
+          "student-label-bbox-clearance": true,
+          "label-bbox-clearance-includes-answer-key-overlay": true,
+          "source-image-label-bbox-clearance": true,
+          "fixed-point-labels-not-overlapped": true,
+          "fixed-point-correspondence-readable": true,
+          "fixed-point-marker-readable": true
+        }
+      },
+      {
+        "task": "reflect_shape",
+        "seed": 18,
+        "fixedVertices": [
+          1
+        ],
+        "labelPairs": [
+          {
+            "vertex": 1,
+            "sourceLabel": "B",
+            "sourceLabelXY": [
+              514,
+              207
+            ],
+            "imageLabel": "B\u2032",
+            "imageLabelXY": [
+              486,
+              207
+            ],
+            "separated": true
+          }
+        ],
+        "allSeparated": true,
+        "valid": true,
+        "checks": {
+          "label-bbox-clearance": true,
+          "answer-key-label-bbox-clearance": true,
+          "student-label-bbox-clearance": true,
+          "label-bbox-clearance-includes-answer-key-overlay": true,
+          "source-image-label-bbox-clearance": true,
+          "fixed-point-labels-not-overlapped": true,
+          "fixed-point-correspondence-readable": true,
+          "fixed-point-marker-readable": true
+        }
+      },
+      {
+        "task": "reflect_shape",
+        "seed": 896,
+        "fixedVertices": [
+          0
+        ],
+        "labelPairs": [
+          {
+            "vertex": 0,
+            "sourceLabel": "A",
+            "sourceLabelXY": [
+              346,
+              168
+            ],
+            "imageLabel": "A\u2032",
+            "imageLabelXY": [
+              318,
+              168
+            ],
+            "separated": true
+          }
+        ],
+        "allSeparated": true,
+        "valid": true,
+        "checks": {
+          "label-bbox-clearance": true,
+          "answer-key-label-bbox-clearance": true,
+          "student-label-bbox-clearance": true,
+          "label-bbox-clearance-includes-answer-key-overlay": true,
+          "source-image-label-bbox-clearance": true,
+          "fixed-point-labels-not-overlapped": true,
+          "fixed-point-correspondence-readable": true,
+          "fixed-point-marker-readable": true
+        }
+      },
+      {
+        "task": "describe_reflection",
+        "seed": 8,
+        "fixedVertices": [
+          2
+        ],
+        "labelPairs": [
+          {
+            "vertex": 2,
+            "sourceLabel": "C",
+            "sourceLabelXY": [
+              514,
+              136
+            ],
+            "imageLabel": "C\u2032",
+            "imageLabelXY": [
+              486,
+              136
+            ],
+            "separated": true
+          }
+        ],
+        "allSeparated": true,
+        "valid": true,
+        "checks": {
+          "label-bbox-clearance": true,
+          "answer-key-label-bbox-clearance": true,
+          "student-label-bbox-clearance": true,
+          "label-bbox-clearance-includes-answer-key-overlay": true,
+          "source-image-label-bbox-clearance": true,
+          "fixed-point-labels-not-overlapped": true,
+          "fixed-point-correspondence-readable": true,
+          "fixed-point-marker-readable": true
+        }
+      }
+    ],
+    "allSeparatedAndValid": true
+  },
   "presence": {
     "premiumLight": true,
     "premiumDark": true,
@@ -264,7 +409,7 @@
       "answerType": "table-completion",
       "prompt": "Rotate quadrilateral ABCD 90\u00b0 anticlockwise about (-1, -1). Give the coordinates of each image vertex (A\u2032B\u2032C\u2032D\u2032).",
       "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"A coordinate grid showing quadrilateral ABCD with vertices A at (2, 0); B at (-1, -1); C at (-2, -4); D at (2, -4). Rotate quadrilateral ABCD 90\u00b0 anticlockwise about (-1, -1).\">\n<title>Coordinate grid with quadrilateral ABCD</title><desc>Quadrilateral ABCD: A at (2, 0); B at (-1, -1); C at (-2, -4); D at (2, -4). The image is not shown.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"290\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"360\" y1=\"70\" x2=\"360\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"430\" y1=\"70\" x2=\"430\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"570\" y1=\"70\" x2=\"570\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"640\" y1=\"70\" x2=\"640\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"710\" y1=\"70\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"630\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"560\" x2=\"710\" y2=\"560\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"490\" x2=\"710\" y2=\"490\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"420\" x2=\"710\" y2=\"420\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"350\" x2=\"710\" y2=\"350\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"210\" x2=\"710\" y2=\"210\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"140\" x2=\"710\" y2=\"140\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"710\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"290\" y1=\"280\" x2=\"710\" y2=\"280\"/>\n<line class=\"tx-axis\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"290\" y=\"302\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"360\" y=\"302\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"430\" y=\"302\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"570\" y=\"302\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"640\" y=\"302\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"710\" y=\"302\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"636\" text-anchor=\"end\">-5</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"566\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"496\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"426\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"356\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"216\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"146\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"76\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"302\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 640 280 L 430 350 L 360 560 L 640 560 Z\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"280\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"430\" cy=\"350\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"360\" cy=\"560\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"560\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"654\" y=\"266\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"444\" y=\"336\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"374\" y=\"546\" text-anchor=\"start\">C</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"546\" text-anchor=\"start\">D</text>\n</g>\n</svg>",
-      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: quadrilateral ABCD is mapped to its image A\u2032B\u2032C\u2032D\u2032 with vertices A\u2032 at (-2, 2); B\u2032 at (-1, -1); C\u2032 at (2, -2); D\u2032 at (2, 2) by rotation 90 deg anticlockwise about (-1, -1); the centre of rotation (-1, -1) is marked.\">\n<title>Answer key \u2014 quadrilateral ABCD mapped to A\u2032B\u2032C\u2032D\u2032</title><desc>Quadrilateral ABCD: A at (2, 0); B at (-1, -1); C at (-2, -4); D at (2, -4). Image A\u2032B\u2032C\u2032D\u2032: A\u2032 at (-2, 2); B\u2032 at (-1, -1); C\u2032 at (2, -2); D\u2032 at (2, 2). The mapping is rotation 90 deg anticlockwise about (-1, -1); the centre of rotation (-1, -1) is marked.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"290\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"360\" y1=\"70\" x2=\"360\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"430\" y1=\"70\" x2=\"430\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"570\" y1=\"70\" x2=\"570\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"640\" y1=\"70\" x2=\"640\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"710\" y1=\"70\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"630\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"560\" x2=\"710\" y2=\"560\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"490\" x2=\"710\" y2=\"490\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"420\" x2=\"710\" y2=\"420\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"350\" x2=\"710\" y2=\"350\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"210\" x2=\"710\" y2=\"210\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"140\" x2=\"710\" y2=\"140\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"710\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"290\" y1=\"280\" x2=\"710\" y2=\"280\"/>\n<line class=\"tx-axis\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"290\" y=\"302\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"360\" y=\"302\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"430\" y=\"302\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"570\" y=\"302\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"640\" y=\"302\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"710\" y=\"302\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"636\" text-anchor=\"end\">-5</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"566\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"496\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"426\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"356\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"216\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"146\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"76\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"302\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 640 280 L 430 350 L 360 560 L 640 560 Z\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"280\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"430\" cy=\"350\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"360\" cy=\"560\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"560\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"654\" y=\"266\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"444\" y=\"336\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"374\" y=\"546\" text-anchor=\"start\">C</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"546\" text-anchor=\"start\">D</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 360 140 L 430 350 L 640 420 L 640 140 Z\"/>\n<rect class=\"tx-img-open\" x=\"353\" y=\"133\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"423\" y=\"343\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"633\" y=\"413\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"633\" y=\"133\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"374\" y=\"126\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"444\" y=\"336\" text-anchor=\"start\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"406\" text-anchor=\"start\">C\u2032</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"126\" text-anchor=\"start\">D\u2032</text>\n<g class=\"tx-overlay\">\n<circle class=\"tx-centre\" cx=\"430\" cy=\"350\" r=\"6\"/>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: quadrilateral ABCD is mapped to its image A\u2032B\u2032C\u2032D\u2032 with vertices A\u2032 at (-2, 2); B\u2032 at (-1, -1); C\u2032 at (2, -2); D\u2032 at (2, 2) by rotation 90 deg anticlockwise about (-1, -1); the centre of rotation (-1, -1) is marked.\">\n<title>Answer key \u2014 quadrilateral ABCD mapped to A\u2032B\u2032C\u2032D\u2032</title><desc>Quadrilateral ABCD: A at (2, 0); B at (-1, -1); C at (-2, -4); D at (2, -4). Image A\u2032B\u2032C\u2032D\u2032: A\u2032 at (-2, 2); B\u2032 at (-1, -1); C\u2032 at (2, -2); D\u2032 at (2, 2). The mapping is rotation 90 deg anticlockwise about (-1, -1); the centre of rotation (-1, -1) is marked.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"290\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"360\" y1=\"70\" x2=\"360\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"430\" y1=\"70\" x2=\"430\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"570\" y1=\"70\" x2=\"570\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"640\" y1=\"70\" x2=\"640\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"710\" y1=\"70\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"630\" x2=\"710\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"560\" x2=\"710\" y2=\"560\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"490\" x2=\"710\" y2=\"490\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"420\" x2=\"710\" y2=\"420\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"350\" x2=\"710\" y2=\"350\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"210\" x2=\"710\" y2=\"210\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"140\" x2=\"710\" y2=\"140\"/>\n<line class=\"tx-grid\" x1=\"290\" y1=\"70\" x2=\"710\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"290\" y1=\"280\" x2=\"710\" y2=\"280\"/>\n<line class=\"tx-axis\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"290\" y=\"302\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"360\" y=\"302\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"430\" y=\"302\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"570\" y=\"302\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"640\" y=\"302\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"710\" y=\"302\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"636\" text-anchor=\"end\">-5</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"566\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"496\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"426\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"356\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"216\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"146\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"76\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"302\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 640 280 L 430 350 L 360 560 L 640 560 Z\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"280\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"430\" cy=\"350\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"360\" cy=\"560\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"640\" cy=\"560\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"654\" y=\"266\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"444\" y=\"336\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"374\" y=\"546\" text-anchor=\"start\">C</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"546\" text-anchor=\"start\">D</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 360 140 L 430 350 L 640 420 L 640 140 Z\"/>\n<rect class=\"tx-img-open\" x=\"353\" y=\"133\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"423\" y=\"343\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"633\" y=\"413\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"633\" y=\"133\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"374\" y=\"126\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"416\" y=\"336\" text-anchor=\"end\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"406\" text-anchor=\"start\">C\u2032</text>\n<text class=\"tx-lbl\" x=\"654\" y=\"126\" text-anchor=\"start\">D\u2032</text>\n<g class=\"tx-overlay\">\n<circle class=\"tx-centre\" cx=\"430\" cy=\"350\" r=\"6\"/>\n</g>\n</svg>",
       "canonicalAnswer": {
         "cells": [
           {
@@ -517,6 +662,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -566,7 +739,8 @@
         "quadrant:Q4",
         "quarterTurns:1",
         "task:rotate_shape"
-      ]
+      ],
+      "fixedPointRegression": true
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01",
@@ -724,6 +898,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -737,7 +939,8 @@
         "object:rotate_point:point",
         "quarterTurns:2",
         "task:rotate_point"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01",
@@ -970,6 +1173,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -1059,7 +1290,8 @@
         "object:describe_translation:quadrilateral",
         "task:describe_translation",
         "vecSign:--"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01",
@@ -1304,6 +1536,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -1403,7 +1663,8 @@
         "object:describe_rotation:quadrilateral",
         "quarterTurns:3",
         "task:describe_rotation"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -1585,6 +1846,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -1596,7 +1885,8 @@
         "object:translate_point:point",
         "task:translate_point",
         "vecSign:++"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -1813,6 +2103,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -1840,7 +2158,8 @@
         "object:translate_shape:segment",
         "task:translate_shape",
         "vecSign:-+"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01",
@@ -1997,6 +2316,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -2008,7 +2355,8 @@
         "band:reflect_point:3",
         "object:reflect_point:point",
         "task:reflect_point"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
@@ -2025,7 +2373,7 @@
       "answerType": "table-completion",
       "prompt": "Reflect triangle ABC in x = -3. Give the coordinates of each image vertex (A\u2032B\u2032C\u2032).",
       "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"A coordinate grid showing triangle ABC with vertices A at (1, 0); B at (-3, 3); C at (0, 2). Reflect triangle ABC in x = -3.\">\n<title>Coordinate grid with triangle ABC</title><desc>Triangle ABC: A at (1, 0); B at (-3, 3); C at (0, 2). The image is not shown.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"70\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"156\" y1=\"135\" x2=\"156\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"242\" y1=\"135\" x2=\"242\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"328\" y1=\"135\" x2=\"328\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"414\" y1=\"135\" x2=\"414\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"500\" y1=\"135\" x2=\"500\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"586\" y1=\"135\" x2=\"586\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"672\" y1=\"135\" x2=\"672\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"844\" y1=\"135\" x2=\"844\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"930\" y1=\"135\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"565\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"393\" x2=\"930\" y2=\"393\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"307\" x2=\"930\" y2=\"307\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"221\" x2=\"930\" y2=\"221\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"930\" y2=\"135\"/>\n<line class=\"tx-axis\" x1=\"70\" y1=\"479\" x2=\"930\" y2=\"479\"/>\n<line class=\"tx-axis\" x1=\"758\" y1=\"565\" x2=\"758\" y2=\"135\"/>\n<text class=\"tx-ticklbl\" x=\"70\" y=\"501\" text-anchor=\"middle\">-8</text>\n<text class=\"tx-ticklbl\" x=\"156\" y=\"501\" text-anchor=\"middle\">-7</text>\n<text class=\"tx-ticklbl\" x=\"242\" y=\"501\" text-anchor=\"middle\">-6</text>\n<text class=\"tx-ticklbl\" x=\"328\" y=\"501\" text-anchor=\"middle\">-5</text>\n<text class=\"tx-ticklbl\" x=\"414\" y=\"501\" text-anchor=\"middle\">-4</text>\n<text class=\"tx-ticklbl\" x=\"500\" y=\"501\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"586\" y=\"501\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"672\" y=\"501\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"844\" y=\"501\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"930\" y=\"501\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"571\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"399\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"313\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"227\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"141\" text-anchor=\"end\">4</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"501\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 844 479 L 500 221 L 758 307 Z\"/>\n<circle class=\"tx-src-core\" cx=\"844\" cy=\"479\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"500\" cy=\"221\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"758\" cy=\"307\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"858\" y=\"465\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"207\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"772\" y=\"293\" text-anchor=\"start\">C</text>\n</g>\n</svg>",
-      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: triangle ABC is mapped to its image A\u2032B\u2032C\u2032 with vertices A\u2032 at (-7, 0); B\u2032 at (-3, 3); C\u2032 at (-6, 2) by reflection in x = -3; the mirror line x = -3 is drawn.\">\n<title>Answer key \u2014 triangle ABC mapped to A\u2032B\u2032C\u2032</title><desc>Triangle ABC: A at (1, 0); B at (-3, 3); C at (0, 2). Image A\u2032B\u2032C\u2032: A\u2032 at (-7, 0); B\u2032 at (-3, 3); C\u2032 at (-6, 2). The mapping is reflection in x = -3; the mirror line x = -3 is drawn.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"70\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"156\" y1=\"135\" x2=\"156\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"242\" y1=\"135\" x2=\"242\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"328\" y1=\"135\" x2=\"328\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"414\" y1=\"135\" x2=\"414\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"500\" y1=\"135\" x2=\"500\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"586\" y1=\"135\" x2=\"586\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"672\" y1=\"135\" x2=\"672\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"844\" y1=\"135\" x2=\"844\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"930\" y1=\"135\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"565\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"393\" x2=\"930\" y2=\"393\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"307\" x2=\"930\" y2=\"307\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"221\" x2=\"930\" y2=\"221\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"930\" y2=\"135\"/>\n<line class=\"tx-axis\" x1=\"70\" y1=\"479\" x2=\"930\" y2=\"479\"/>\n<line class=\"tx-axis\" x1=\"758\" y1=\"565\" x2=\"758\" y2=\"135\"/>\n<text class=\"tx-ticklbl\" x=\"70\" y=\"501\" text-anchor=\"middle\">-8</text>\n<text class=\"tx-ticklbl\" x=\"156\" y=\"501\" text-anchor=\"middle\">-7</text>\n<text class=\"tx-ticklbl\" x=\"242\" y=\"501\" text-anchor=\"middle\">-6</text>\n<text class=\"tx-ticklbl\" x=\"328\" y=\"501\" text-anchor=\"middle\">-5</text>\n<text class=\"tx-ticklbl\" x=\"414\" y=\"501\" text-anchor=\"middle\">-4</text>\n<text class=\"tx-ticklbl\" x=\"500\" y=\"501\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"586\" y=\"501\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"672\" y=\"501\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"844\" y=\"501\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"930\" y=\"501\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"571\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"399\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"313\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"227\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"141\" text-anchor=\"end\">4</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"501\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 844 479 L 500 221 L 758 307 Z\"/>\n<circle class=\"tx-src-core\" cx=\"844\" cy=\"479\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"500\" cy=\"221\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"758\" cy=\"307\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"858\" y=\"465\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"207\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"772\" y=\"293\" text-anchor=\"start\">C</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 156 479 L 500 221 L 242 307 Z\"/>\n<rect class=\"tx-img-open\" x=\"149\" y=\"472\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"493\" y=\"214\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"235\" y=\"300\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"170\" y=\"465\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"207\" text-anchor=\"start\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"256\" y=\"293\" text-anchor=\"start\">C\u2032</text>\n<g class=\"tx-overlay\">\n<line class=\"tx-mirror\" x1=\"500\" y1=\"565\" x2=\"500\" y2=\"135\"/>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: triangle ABC is mapped to its image A\u2032B\u2032C\u2032 with vertices A\u2032 at (-7, 0); B\u2032 at (-3, 3); C\u2032 at (-6, 2) by reflection in x = -3; the mirror line x = -3 is drawn.\">\n<title>Answer key \u2014 triangle ABC mapped to A\u2032B\u2032C\u2032</title><desc>Triangle ABC: A at (1, 0); B at (-3, 3); C at (0, 2). Image A\u2032B\u2032C\u2032: A\u2032 at (-7, 0); B\u2032 at (-3, 3); C\u2032 at (-6, 2). The mapping is reflection in x = -3; the mirror line x = -3 is drawn.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"70\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"156\" y1=\"135\" x2=\"156\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"242\" y1=\"135\" x2=\"242\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"328\" y1=\"135\" x2=\"328\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"414\" y1=\"135\" x2=\"414\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"500\" y1=\"135\" x2=\"500\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"586\" y1=\"135\" x2=\"586\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"672\" y1=\"135\" x2=\"672\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"844\" y1=\"135\" x2=\"844\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"930\" y1=\"135\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"565\" x2=\"930\" y2=\"565\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"393\" x2=\"930\" y2=\"393\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"307\" x2=\"930\" y2=\"307\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"221\" x2=\"930\" y2=\"221\"/>\n<line class=\"tx-grid\" x1=\"70\" y1=\"135\" x2=\"930\" y2=\"135\"/>\n<line class=\"tx-axis\" x1=\"70\" y1=\"479\" x2=\"930\" y2=\"479\"/>\n<line class=\"tx-axis\" x1=\"758\" y1=\"565\" x2=\"758\" y2=\"135\"/>\n<text class=\"tx-ticklbl\" x=\"70\" y=\"501\" text-anchor=\"middle\">-8</text>\n<text class=\"tx-ticklbl\" x=\"156\" y=\"501\" text-anchor=\"middle\">-7</text>\n<text class=\"tx-ticklbl\" x=\"242\" y=\"501\" text-anchor=\"middle\">-6</text>\n<text class=\"tx-ticklbl\" x=\"328\" y=\"501\" text-anchor=\"middle\">-5</text>\n<text class=\"tx-ticklbl\" x=\"414\" y=\"501\" text-anchor=\"middle\">-4</text>\n<text class=\"tx-ticklbl\" x=\"500\" y=\"501\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"586\" y=\"501\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"672\" y=\"501\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"844\" y=\"501\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"930\" y=\"501\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"571\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"399\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"313\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"227\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"141\" text-anchor=\"end\">4</text>\n<text class=\"tx-ticklbl\" x=\"748\" y=\"501\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 844 479 L 500 221 L 758 307 Z\"/>\n<circle class=\"tx-src-core\" cx=\"844\" cy=\"479\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"500\" cy=\"221\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"758\" cy=\"307\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"858\" y=\"465\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"207\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"772\" y=\"293\" text-anchor=\"start\">C</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 156 479 L 500 221 L 242 307 Z\"/>\n<rect class=\"tx-img-open\" x=\"149\" y=\"472\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"493\" y=\"214\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"235\" y=\"300\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"170\" y=\"465\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"486\" y=\"207\" text-anchor=\"end\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"256\" y=\"293\" text-anchor=\"start\">C\u2032</text>\n<g class=\"tx-overlay\">\n<line class=\"tx-mirror\" x1=\"500\" y1=\"565\" x2=\"500\" y2=\"135\"/>\n</g>\n</svg>",
       "canonicalAnswer": {
         "cells": [
           {
@@ -2238,6 +2586,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -2272,7 +2648,8 @@
         "band:reflect_shape:2",
         "object:reflect_shape:triangle",
         "task:reflect_shape"
-      ]
+      ],
+      "fixedPointRegression": true
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
@@ -2505,6 +2882,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -2585,7 +2990,8 @@
         "band:describe_reflection:3",
         "object:describe_reflection:quadrilateral",
         "task:describe_reflection"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01",
@@ -2800,6 +3206,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -2887,7 +3321,8 @@
         "band:describe_translation:2",
         "object:describe_translation:triangle",
         "vecSign:0-"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
@@ -2904,7 +3339,7 @@
       "answerType": "table-completion",
       "prompt": "Reflect line segment AB in y = -x. Give the coordinates of each image vertex (A\u2032B\u2032).",
       "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"A coordinate grid showing line segment AB with vertices A at (0, 0); B at (0, -3). Reflect line segment AB in y = -x.\">\n<title>Coordinate grid with line segment AB</title><desc>Line segment AB: A at (0, 0); B at (0, -3). The image is not shown.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"220\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"444\" y1=\"70\" x2=\"444\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"556\" y1=\"70\" x2=\"556\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"668\" y1=\"70\" x2=\"668\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"780\" y1=\"70\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"630\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"518\" x2=\"780\" y2=\"518\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"406\" x2=\"780\" y2=\"406\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"294\" x2=\"780\" y2=\"294\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"780\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"220\" y1=\"182\" x2=\"780\" y2=\"182\"/>\n<line class=\"tx-axis\" x1=\"332\" y1=\"630\" x2=\"332\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"220\" y=\"204\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"444\" y=\"204\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"556\" y=\"204\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"668\" y=\"204\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"780\" y=\"204\" text-anchor=\"middle\">4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"636\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"524\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"412\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"300\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"76\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"204\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 332 182 L 332 518\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"182\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"518\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"346\" y=\"168\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"346\" y=\"504\" text-anchor=\"start\">B</text>\n</g>\n</svg>",
-      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: line segment AB is mapped to its image A\u2032B\u2032 with vertices A\u2032 at (0, 0); B\u2032 at (3, 0) by reflection in y = -x; the mirror line y = -x is drawn.\">\n<title>Answer key \u2014 line segment AB mapped to A\u2032B\u2032</title><desc>Line segment AB: A at (0, 0); B at (0, -3). Image A\u2032B\u2032: A\u2032 at (0, 0); B\u2032 at (3, 0). The mapping is reflection in y = -x; the mirror line y = -x is drawn.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"220\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"444\" y1=\"70\" x2=\"444\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"556\" y1=\"70\" x2=\"556\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"668\" y1=\"70\" x2=\"668\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"780\" y1=\"70\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"630\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"518\" x2=\"780\" y2=\"518\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"406\" x2=\"780\" y2=\"406\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"294\" x2=\"780\" y2=\"294\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"780\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"220\" y1=\"182\" x2=\"780\" y2=\"182\"/>\n<line class=\"tx-axis\" x1=\"332\" y1=\"630\" x2=\"332\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"220\" y=\"204\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"444\" y=\"204\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"556\" y=\"204\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"668\" y=\"204\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"780\" y=\"204\" text-anchor=\"middle\">4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"636\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"524\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"412\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"300\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"76\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"204\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 332 182 L 332 518\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"182\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"518\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"346\" y=\"168\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"346\" y=\"504\" text-anchor=\"start\">B</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 332 182 L 668 182\"/>\n<rect class=\"tx-img-open\" x=\"325\" y=\"175\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"661\" y=\"175\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"346\" y=\"168\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"682\" y=\"168\" text-anchor=\"start\">B\u2032</text>\n<g class=\"tx-overlay\">\n<line class=\"tx-mirror\" x1=\"220\" y1=\"70\" x2=\"780\" y2=\"630\"/>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: line segment AB is mapped to its image A\u2032B\u2032 with vertices A\u2032 at (0, 0); B\u2032 at (3, 0) by reflection in y = -x; the mirror line y = -x is drawn.\">\n<title>Answer key \u2014 line segment AB mapped to A\u2032B\u2032</title><desc>Line segment AB: A at (0, 0); B at (0, -3). Image A\u2032B\u2032: A\u2032 at (0, 0); B\u2032 at (3, 0). The mapping is reflection in y = -x; the mirror line y = -x is drawn.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"220\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"444\" y1=\"70\" x2=\"444\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"556\" y1=\"70\" x2=\"556\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"668\" y1=\"70\" x2=\"668\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"780\" y1=\"70\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"630\" x2=\"780\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"518\" x2=\"780\" y2=\"518\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"406\" x2=\"780\" y2=\"406\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"294\" x2=\"780\" y2=\"294\"/>\n<line class=\"tx-grid\" x1=\"220\" y1=\"70\" x2=\"780\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"220\" y1=\"182\" x2=\"780\" y2=\"182\"/>\n<line class=\"tx-axis\" x1=\"332\" y1=\"630\" x2=\"332\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"220\" y=\"204\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"444\" y=\"204\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"556\" y=\"204\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"668\" y=\"204\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"780\" y=\"204\" text-anchor=\"middle\">4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"636\" text-anchor=\"end\">-4</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"524\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"412\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"300\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"76\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"322\" y=\"204\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 332 182 L 332 518\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"182\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"332\" cy=\"518\" r=\"6\"/>\n<text class=\"tx-lbl\" x=\"346\" y=\"168\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"346\" y=\"504\" text-anchor=\"start\">B</text>\n</g>\n<path class=\"tx-img-edge\" d=\"M 332 182 L 668 182\"/>\n<rect class=\"tx-img-open\" x=\"325\" y=\"175\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"661\" y=\"175\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"318\" y=\"168\" text-anchor=\"end\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"682\" y=\"168\" text-anchor=\"start\">B\u2032</text>\n<g class=\"tx-overlay\">\n<line class=\"tx-mirror\" x1=\"220\" y1=\"70\" x2=\"780\" y2=\"630\"/>\n</g>\n</svg>",
       "canonicalAnswer": {
         "cells": [
           {
@@ -3079,6 +3514,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -3105,7 +3568,8 @@
         "axisFamily:y=-x",
         "band:reflect_shape:3",
         "object:reflect_shape:segment"
-      ]
+      ],
+      "fixedPointRegression": true
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -3369,6 +3833,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -3409,7 +3901,8 @@
         "band:translate_shape:3",
         "object:translate_shape:quadrilateral",
         "vecSign:+0"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01",
@@ -3645,6 +4138,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -3677,7 +4198,8 @@
       "coversCells": [
         "band:rotate_shape:3",
         "object:rotate_shape:triangle"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -3859,6 +4381,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -3868,7 +4418,8 @@
       "coversCells": [
         "band:translate_point:1",
         "vecSign:+-"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01",
@@ -4090,6 +4641,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -4179,7 +4758,8 @@
       "coversCells": [
         "band:describe_rotation:3",
         "object:describe_rotation:triangle"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
@@ -4394,6 +4974,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -4472,7 +5080,8 @@
       "coversCells": [
         "band:describe_reflection:4",
         "object:describe_reflection:triangle"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -4707,6 +5316,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -4739,7 +5376,8 @@
       "coversCells": [
         "object:translate_shape:triangle",
         "vecSign:0+"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01",
@@ -4917,6 +5555,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -4925,7 +5591,8 @@
       "checkerResultCodeEvidence": [],
       "coversCells": [
         "band:rotate_point:3"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01",
@@ -5092,6 +5759,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -5100,7 +5795,8 @@
       "checkerResultCodeEvidence": [],
       "coversCells": [
         "band:reflect_point:2"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01",
@@ -5308,6 +6004,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -5332,7 +6056,8 @@
       "checkerResultCodeEvidence": [],
       "coversCells": [
         "object:rotate_shape:segment"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -5544,6 +6269,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -5568,7 +6321,8 @@
       "checkerResultCodeEvidence": [],
       "coversCells": [
         "vecSign:-0"
-      ]
+      ],
+      "fixedPointRegression": false
     },
     {
       "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
@@ -5812,6 +6566,34 @@
         {
           "name": "label-bbox-clearance",
           "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
         }
       ],
       "valid": true,
@@ -5850,7 +6632,329 @@
       "checkerResultCodeEvidence": [],
       "coversCells": [
         "object:reflect_shape:quadrilateral"
-      ]
+      ],
+      "fixedPointRegression": false
+    },
+    {
+      "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
+      "task": "describe_reflection",
+      "seed": 8,
+      "band": 3,
+      "axes": {
+        "numericalComplexity": 0.125,
+        "exactVsApproximate": 0,
+        "reasoningSteps": 0.7,
+        "abstraction": 0.65
+      },
+      "interactionType": "free-response",
+      "answerType": "transformation",
+      "prompt": "Describe fully the reflection that maps ABC onto A\u2032B\u2032C\u2032. Give the full description of the transformation.",
+      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"A coordinate grid showing triangle ABC (A at (1, -2); B at (2, 1); C at (0, 3)) and its image A\u2032B\u2032C\u2032 (A\u2032 at (-1, -2); B\u2032 at (-2, 1); C\u2032 at (0, 3)). Describe the single transformation that maps the object onto its image.\">\n<title>Coordinate grid with an object and its image</title><desc>Object ABC: A at (1, -2); B at (2, 1); C at (0, 3). Image A\u2032B\u2032C\u2032: A\u2032 at (-1, -2); B\u2032 at (-2, 1); C\u2032 at (0, 3).</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"260\" y1=\"70\" x2=\"260\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"340\" y1=\"70\" x2=\"340\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"420\" y1=\"70\" x2=\"420\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"580\" y1=\"70\" x2=\"580\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"660\" y1=\"70\" x2=\"660\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"740\" y1=\"70\" x2=\"740\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"630\" x2=\"740\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"550\" x2=\"740\" y2=\"550\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"470\" x2=\"740\" y2=\"470\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"310\" x2=\"740\" y2=\"310\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"230\" x2=\"740\" y2=\"230\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"150\" x2=\"740\" y2=\"150\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"70\" x2=\"740\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"260\" y1=\"390\" x2=\"740\" y2=\"390\"/>\n<line class=\"tx-axis\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"260\" y=\"412\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"340\" y=\"412\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"420\" y=\"412\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"580\" y=\"412\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"660\" y=\"412\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"740\" y=\"412\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"636\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"556\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"476\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"316\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"236\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"156\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"76\" text-anchor=\"end\">4</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"412\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 580 550 L 660 310 L 500 150 Z\"/>\n<circle class=\"tx-src-core\" cx=\"580\" cy=\"550\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"660\" cy=\"310\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"500\" cy=\"150\" r=\"6\"/>\n<path class=\"tx-img-edge\" d=\"M 420 550 L 340 310 L 500 150 Z\"/>\n<rect class=\"tx-img-open\" x=\"413\" y=\"543\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"333\" y=\"303\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"493\" y=\"143\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"594\" y=\"536\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"674\" y=\"296\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"136\" text-anchor=\"start\">C</text>\n<text class=\"tx-lbl\" x=\"434\" y=\"536\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"354\" y=\"296\" text-anchor=\"start\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"486\" y=\"136\" text-anchor=\"end\">C\u2032</text>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 700\" role=\"img\" aria-label=\"Answer key: the transformation mapping triangle ABC onto its image A\u2032B\u2032C\u2032 is reflection in x = 0; the mirror line x = 0 is drawn.\">\n<title>Answer key \u2014 reflection in x = 0</title><desc>Object ABC: A at (1, -2); B at (2, 1); C at (0, 3). Image A\u2032B\u2032C\u2032: A\u2032 at (-1, -2); B\u2032 at (-2, 1); C\u2032 at (0, 3). The transformation is reflection in x = 0; the mirror line x = 0 is drawn.</desc>\n<style>.tx-grid{stroke:#bbb;stroke-width:0.75;fill:none}.tx-axis{stroke:#111;stroke-width:2.5;fill:none}.tx-src-edge{stroke:#111;stroke-width:3;fill:none}.tx-src-core{fill:#111}.tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-img-open{fill:#fff;stroke:#111;stroke-width:3}.tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-vec{stroke:#111;stroke-width:3;fill:none}.tx-centre{fill:#111;stroke:#fff;stroke-width:2}text{font-family:sans-serif;font-size:26px;fill:#111}.tx-ticklbl{font-size:18px;fill:#333}.tx-lbl{font-size:26px;fill:#111}</style>\n<g class=\"tx-base\">\n<line class=\"tx-grid\" x1=\"260\" y1=\"70\" x2=\"260\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"340\" y1=\"70\" x2=\"340\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"420\" y1=\"70\" x2=\"420\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"580\" y1=\"70\" x2=\"580\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"660\" y1=\"70\" x2=\"660\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"740\" y1=\"70\" x2=\"740\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"630\" x2=\"740\" y2=\"630\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"550\" x2=\"740\" y2=\"550\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"470\" x2=\"740\" y2=\"470\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"310\" x2=\"740\" y2=\"310\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"230\" x2=\"740\" y2=\"230\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"150\" x2=\"740\" y2=\"150\"/>\n<line class=\"tx-grid\" x1=\"260\" y1=\"70\" x2=\"740\" y2=\"70\"/>\n<line class=\"tx-axis\" x1=\"260\" y1=\"390\" x2=\"740\" y2=\"390\"/>\n<line class=\"tx-axis\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n<text class=\"tx-ticklbl\" x=\"260\" y=\"412\" text-anchor=\"middle\">-3</text>\n<text class=\"tx-ticklbl\" x=\"340\" y=\"412\" text-anchor=\"middle\">-2</text>\n<text class=\"tx-ticklbl\" x=\"420\" y=\"412\" text-anchor=\"middle\">-1</text>\n<text class=\"tx-ticklbl\" x=\"580\" y=\"412\" text-anchor=\"middle\">1</text>\n<text class=\"tx-ticklbl\" x=\"660\" y=\"412\" text-anchor=\"middle\">2</text>\n<text class=\"tx-ticklbl\" x=\"740\" y=\"412\" text-anchor=\"middle\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"636\" text-anchor=\"end\">-3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"556\" text-anchor=\"end\">-2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"476\" text-anchor=\"end\">-1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"316\" text-anchor=\"end\">1</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"236\" text-anchor=\"end\">2</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"156\" text-anchor=\"end\">3</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"76\" text-anchor=\"end\">4</text>\n<text class=\"tx-ticklbl\" x=\"490\" y=\"412\" text-anchor=\"end\">0</text>\n<path class=\"tx-src-edge\" d=\"M 580 550 L 660 310 L 500 150 Z\"/>\n<circle class=\"tx-src-core\" cx=\"580\" cy=\"550\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"660\" cy=\"310\" r=\"6\"/>\n<circle class=\"tx-src-core\" cx=\"500\" cy=\"150\" r=\"6\"/>\n<path class=\"tx-img-edge\" d=\"M 420 550 L 340 310 L 500 150 Z\"/>\n<rect class=\"tx-img-open\" x=\"413\" y=\"543\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"333\" y=\"303\" width=\"14\" height=\"14\"/>\n<rect class=\"tx-img-open\" x=\"493\" y=\"143\" width=\"14\" height=\"14\"/>\n<text class=\"tx-lbl\" x=\"594\" y=\"536\" text-anchor=\"start\">A</text>\n<text class=\"tx-lbl\" x=\"674\" y=\"296\" text-anchor=\"start\">B</text>\n<text class=\"tx-lbl\" x=\"514\" y=\"136\" text-anchor=\"start\">C</text>\n<text class=\"tx-lbl\" x=\"434\" y=\"536\" text-anchor=\"start\">A\u2032</text>\n<text class=\"tx-lbl\" x=\"354\" y=\"296\" text-anchor=\"start\">B\u2032</text>\n<text class=\"tx-lbl\" x=\"486\" y=\"136\" text-anchor=\"end\">C\u2032</text>\n</g>\n<g class=\"tx-overlay\">\n<line class=\"tx-mirror\" x1=\"500\" y1=\"630\" x2=\"500\" y2=\"70\"/>\n</g>\n</svg>",
+      "canonicalAnswer": {
+        "kind": "reflection",
+        "axis": {
+          "kind": "vertical",
+          "value": 0
+        }
+      },
+      "answerDisplay": "reflection in x = 0",
+      "acceptedFormOrCheckerBehaviour": "Structured-descriptor checker: every canonical-equivalent wording is accepted (see acceptedWordingExamples); wrong / incomplete / ambiguous descriptions return the listed result codes (see rejectedWordingExamples + checkerResultCodeEvidence).",
+      "workedSolution": [
+        {
+          "number": 1,
+          "transformation": "Compare corresponding labelled vertices to identify the transformation.",
+          "intermediateResult": "A->A\u2032; B->B\u2032; C->C\u2032"
+        },
+        {
+          "number": 2,
+          "transformation": "Determine the parameters from the correspondence.",
+          "intermediateResult": "reflection in x = 0"
+        }
+      ],
+      "transformationParameters": {
+        "kind": "reflection",
+        "axis": {
+          "kind": "vertical",
+          "value": 0
+        }
+      },
+      "sourceCoords": [
+        [
+          1,
+          -2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "imageCoords": [
+        [
+          -1,
+          -2
+        ],
+        [
+          -2,
+          1
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "studentAltText": "A coordinate grid showing triangle ABC (A at (1, -2); B at (2, 1); C at (0, 3)) and its image A\u2032B\u2032C\u2032 (A\u2032 at (-1, -2); B\u2032 at (-2, 1); C\u2032 at (0, 3)). Describe the single transformation that maps the object onto its image.",
+      "studentDataTable": {
+        "columns": [
+          "Vertex",
+          "Object",
+          "Image"
+        ],
+        "rows": [
+          [
+            "A",
+            "(1, -2)",
+            "(-1, -2)"
+          ],
+          [
+            "B",
+            "(2, 1)",
+            "(-2, 1)"
+          ],
+          [
+            "C",
+            "(0, 3)",
+            "(0, 3)"
+          ]
+        ]
+      },
+      "answerKeyAltText": "Answer key: the transformation mapping triangle ABC onto its image A\u2032B\u2032C\u2032 is reflection in x = 0; the mirror line x = 0 is drawn.",
+      "answerKeyDataTable": {
+        "columns": [
+          "Vertex",
+          "Object",
+          "Image"
+        ],
+        "rows": [
+          [
+            "A",
+            "(1, -2)",
+            "(-1, -2)"
+          ],
+          [
+            "B",
+            "(2, 1)",
+            "(-2, 1)"
+          ],
+          [
+            "C",
+            "(0, 3)",
+            "(0, 3)"
+          ]
+        ]
+      },
+      "diagnosticsExercised": [
+        {
+          "misconceptionId": "MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS",
+          "kind": "descriptor",
+          "expectedResultCode": "wrong-reflection-axis"
+        }
+      ],
+      "validationChecks": [
+        {
+          "name": "object-not-unchanged",
+          "ok": true
+        },
+        {
+          "name": "reflection-axis-condition",
+          "ok": true
+        },
+        {
+          "name": "congruence-squared-distances",
+          "ok": true
+        },
+        {
+          "name": "orientation-reversed",
+          "ok": true
+        },
+        {
+          "name": "answer-agrees-with-descriptor",
+          "ok": true
+        },
+        {
+          "name": "descriptor-display-derived",
+          "ok": true
+        },
+        {
+          "name": "descriptor-unique",
+          "ok": true
+        },
+        {
+          "name": "answer-key-base-geometry-identical",
+          "ok": true
+        },
+        {
+          "name": "answer-key-overlay-additive-only",
+          "ok": true
+        },
+        {
+          "name": "describe-student-shows-both-figures",
+          "ok": true
+        },
+        {
+          "name": "describe-student-no-descriptor-named",
+          "ok": true
+        },
+        {
+          "name": "student-and-key-a11y-channel-specific",
+          "ok": true
+        },
+        {
+          "name": "answer-key-a11y-does-not-say-image-hidden",
+          "ok": true
+        },
+        {
+          "name": "answer-key-a11y-describes-overlay",
+          "ok": true
+        },
+        {
+          "name": "student-a11y-answer-free",
+          "ok": true
+        },
+        {
+          "name": "no-duplicate-svg-ids-student",
+          "ok": true
+        },
+        {
+          "name": "marker-reference-resolves-within-own-svg-student",
+          "ok": true
+        },
+        {
+          "name": "no-duplicate-svg-ids-key",
+          "ok": true
+        },
+        {
+          "name": "marker-reference-resolves-within-own-svg-key",
+          "ok": true
+        },
+        {
+          "name": "label-inside-canvas",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "answer-key-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "student-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "label-bbox-clearance-includes-answer-key-overlay",
+          "ok": true
+        },
+        {
+          "name": "source-image-label-bbox-clearance",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-labels-not-overlapped",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-correspondence-readable",
+          "ok": true
+        },
+        {
+          "name": "fixed-point-marker-readable",
+          "ok": true
+        }
+      ],
+      "valid": true,
+      "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import transformations as T; print(T.serialize(T.generate(8, {'task': 'describe_reflection'})))\"",
+      "curriculumReviewDecision": null,
+      "canonicalDescriptor": {
+        "kind": "reflection",
+        "axis": {
+          "kind": "vertical",
+          "value": 0
+        }
+      },
+      "descriptorDisplay": "reflection in x = 0",
+      "acceptedWordingExamples": [
+        {
+          "wording": "reflection in x = 0",
+          "expectedCode": "correct"
+        },
+        {
+          "wording": "reflection in the y-axis",
+          "expectedCode": "correct"
+        }
+      ],
+      "rejectedWordingExamples": [
+        {
+          "wording": "reflection in x = 1",
+          "expectedCode": "wrong-reflection-axis",
+          "actualCode": "wrong-reflection-axis",
+          "ok": true
+        },
+        {
+          "wording": "translation by vector (1, 1)",
+          "expectedCode": "wrong-transformation-type",
+          "actualCode": "wrong-transformation-type",
+          "ok": true
+        },
+        {
+          "wording": "reflection in y = 2x",
+          "expectedCode": "unsupported-reflection-line",
+          "actualCode": "unsupported-reflection-line",
+          "ok": true
+        },
+        {
+          "wording": "flip it over",
+          "expectedCode": "malformed-response",
+          "actualCode": "malformed-response",
+          "ok": true
+        }
+      ],
+      "checkerResultCodeEvidence": [
+        {
+          "wording": "reflection in x = 0",
+          "code": "correct"
+        },
+        {
+          "wording": "reflection in the y-axis",
+          "code": "correct"
+        },
+        {
+          "wording": "reflection in x = 1",
+          "code": "wrong-reflection-axis"
+        },
+        {
+          "wording": "translation by vector (1, 1)",
+          "code": "wrong-transformation-type"
+        },
+        {
+          "wording": "reflection in y = 2x",
+          "code": "unsupported-reflection-line"
+        },
+        {
+          "wording": "flip it over",
+          "code": "malformed-response"
+        }
+      ],
+      "coversCells": [
+        "fixed-point-regression"
+      ],
+      "fixedPointRegression": true
     }
   ]
 }
