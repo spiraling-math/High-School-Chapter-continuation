@@ -19,7 +19,7 @@
     "commonMisconceptions": ["MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY", "MISC.TRANS.CHANGES_ONLY_X", "MISC.TRANS.WRONG_SIGN_ONE_COMPONENT"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (translation of a point)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01",
@@ -41,7 +41,7 @@
     "commonMisconceptions": ["MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY", "MISC.TRANS.TRANSLATES_FROM_ORIGIN", "MISC.TRANS.WRONG_SIGN_ONE_COMPONENT"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (translation of a shape)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_POINT.01",
@@ -63,7 +63,7 @@
     "commonMisconceptions": ["MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NEGATES_WRONG_COORDINATE", "MISC.TRANS.YX_CHANGES_BOTH_SIGNS", "MISC.TRANS.REFLECTS_X0_FOR_XA"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (reflection of a point)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01",
@@ -85,7 +85,7 @@
     "commonMisconceptions": ["MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NEGATES_WRONG_COORDINATE", "MISC.TRANS.YNEGX_ONLY_SWAPS", "MISC.TRANS.REFLECTS_Y0_FOR_YB"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (reflection of a shape)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_POINT.01",
@@ -107,7 +107,7 @@
     "commonMisconceptions": ["MISC.TRANS.ROTATES_WRONG_DIRECTION", "MISC.TRANS.ROTATES_ABOUT_ORIGIN", "MISC.TRANS.USES_180_RULE_FOR_90", "MISC.TRANS.SWAPS_WITHOUT_SIGN"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (rotation of a point)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01",
@@ -129,7 +129,7 @@
     "commonMisconceptions": ["MISC.TRANS.ROTATES_WRONG_DIRECTION", "MISC.TRANS.ROTATES_ABOUT_ORIGIN", "MISC.TRANS.ROTATES_THE_CENTRE", "MISC.TRANS.APPLIES_TO_ONE_VERTEX"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (rotation of a shape)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_TRANSLATION.01",
@@ -151,7 +151,7 @@
     "commonMisconceptions": ["MISC.TRANS.RIGHT_TYPE_WRONG_VECTOR", "MISC.TRANS.REVERSES_VECTOR", "MISC.TRANS.SWAPS_DX_DY"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.TRANSLATE_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a translation)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_REFLECTION.01",
@@ -173,7 +173,7 @@
     "commonMisconceptions": ["MISC.TRANS.RIGHT_REFLECTION_WRONG_AXIS", "MISC.TRANS.REFLECTS_X_FOR_Y_AXIS", "MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.REFLECT_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a reflection)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.GEO.TRANS.DESCRIBE_ROTATION.01",
@@ -195,6 +195,6 @@
     "commonMisconceptions": ["MISC.TRANS.RIGHT_ANGLE_MISSING_CENTRE", "MISC.TRANS.RIGHT_CENTRE_WRONG_DIRECTION", "MISC.TRANS.NAMES_REFLECTION_FOR_ROTATION"],
     "relatedObjectives": ["SPI.MIDDLE.GEO.TRANS.ROTATE_SHAPE.01"],
     "sourceReferences": [{ "sourceId": "SRC-middle-transformations", "locator": "Middle School coordinate transformations (describe a rotation)" }],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   }
 ]

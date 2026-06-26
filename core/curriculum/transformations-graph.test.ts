@@ -76,7 +76,7 @@ test("transformation objective metadata follows the owner decisions (A, B, P)", 
     const o = byId.get(OBJECTIVE_BY_TASK[t])!;
     assert.equal(o.domain, "geometry", `${t} domain`);
     assert.equal(o.strand, "coordinate-transformations", `${t} strand`);
-    assert.equal(o.reviewStatus, "approved-for-implementation", `${t} reviewStatus (owner P)`);
+    assert.equal(o.reviewStatus, "approved", `${t} reviewStatus (owner final APPROVE)`);
     assert.deepEqual(o.answerTypes, [ANSWER_TYPE_BY_TASK[t]], `${t} answerTypes must be exactly ["${ANSWER_TYPE_BY_TASK[t]}"]`);
     assert.ok(!o.answerTypes.includes("multiple-choice"), `${t} must not list multiple-choice`);
     for (const m of o.commonMisconceptions ?? []) {
