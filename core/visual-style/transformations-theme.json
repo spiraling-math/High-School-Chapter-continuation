@@ -1,0 +1,32 @@
+{
+  "id": "spi-math-transformations-theme/1",
+  "extends": "cartesian-theme",
+  "note": "Presentation theme for gen.geometry.transformations. Reuses the cartesian-theme variable scheme and per-mode palette, adding transformation-specific element variables (source/image edges + vertices, mirror line, vector arrow, rotation centre). Modes are sets of CSS custom properties applied to each figure's OWN root SVG (class=tx-figure); one immutable common ruleset reads them, so figures stay isolated per root. The monochrome 'print' mode reproduces the canonical authoritative look (the canonical media[0].svg is never mutated). The source/image distinction is carried by SHAPE (filled circle vs open square) and DASH (solid vs dashed edge) in commonCss, so it survives in every mode and is never colour-only.",
+  "commonCss": ".tx-figure .tx-grid{stroke:var(--tx-grid);stroke-width:0.75;fill:none}.tx-figure .tx-axis{stroke:var(--tx-axis);stroke-width:2.5;fill:none}.tx-figure .tx-src-edge{stroke:var(--tx-src-edge);stroke-width:3;fill:none}.tx-figure .tx-src-core{fill:var(--tx-src-core)}.tx-figure .tx-img-edge{stroke:var(--tx-img-edge);stroke-width:3;fill:none;stroke-dasharray:8 5}.tx-figure .tx-img-open{fill:var(--tx-img-open-fill);stroke:var(--tx-img-open-stroke);stroke-width:3}.tx-figure .tx-mirror{stroke:var(--tx-mirror);stroke-width:2;stroke-dasharray:2 6;fill:none}.tx-figure .tx-vec{stroke:var(--tx-vec);stroke-width:3;fill:none}.tx-figure .tx-centre{fill:var(--tx-centre-fill);stroke:var(--tx-centre-stroke);stroke-width:2}.tx-figure text{font-family:sans-serif;font-size:26px;fill:var(--tx-text)}.tx-figure .tx-ticklbl{font-size:18px;fill:var(--tx-ticklbl)}.tx-figure .tx-lbl{font-size:26px;fill:var(--tx-text)}",
+  "modes": {
+    "print": {
+      "--tx-grid": "#bbbbbb", "--tx-axis": "#111111", "--tx-src-edge": "#111111", "--tx-src-core": "#111111",
+      "--tx-img-edge": "#111111", "--tx-img-open-fill": "#ffffff", "--tx-img-open-stroke": "#111111",
+      "--tx-mirror": "#111111", "--tx-vec": "#111111", "--tx-centre-fill": "#111111", "--tx-centre-stroke": "#ffffff",
+      "--tx-text": "#111111", "--tx-ticklbl": "#333333", "--tx-bg": "#ffffff"
+    },
+    "premium": {
+      "--tx-grid": "#e9edff", "--tx-axis": "#1e293b", "--tx-src-edge": "#2563eb", "--tx-src-core": "#dc2626",
+      "--tx-img-edge": "#7c3aed", "--tx-img-open-fill": "#ffffff", "--tx-img-open-stroke": "#7c3aed",
+      "--tx-mirror": "#7c3aed", "--tx-vec": "#1e293b", "--tx-centre-fill": "#dc2626", "--tx-centre-stroke": "#ffffff",
+      "--tx-text": "#111827", "--tx-ticklbl": "#475569", "--tx-bg": "#ffffff"
+    },
+    "premium-dark": {
+      "--tx-grid": "#334155", "--tx-axis": "#e5e7eb", "--tx-src-edge": "#60a5fa", "--tx-src-core": "#f87171",
+      "--tx-img-edge": "#c4b5fd", "--tx-img-open-fill": "#0b1220", "--tx-img-open-stroke": "#c4b5fd",
+      "--tx-mirror": "#c4b5fd", "--tx-vec": "#e5e7eb", "--tx-centre-fill": "#f87171", "--tx-centre-stroke": "#0b1220",
+      "--tx-text": "#e5e7eb", "--tx-ticklbl": "#cbd5e1", "--tx-bg": "#0b1220"
+    },
+    "accessible": {
+      "--tx-grid": "#cccccc", "--tx-axis": "#000000", "--tx-src-edge": "#0072b2", "--tx-src-core": "#d55e00",
+      "--tx-img-edge": "#009e73", "--tx-img-open-fill": "#ffffff", "--tx-img-open-stroke": "#009e73",
+      "--tx-mirror": "#009e73", "--tx-vec": "#000000", "--tx-centre-fill": "#d55e00", "--tx-centre-stroke": "#ffffff",
+      "--tx-text": "#000000", "--tx-ticklbl": "#333333", "--tx-bg": "#ffffff"
+    }
+  }
+}

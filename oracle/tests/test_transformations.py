@@ -180,12 +180,40 @@ class TestGeneratorContract(unittest.TestCase):
             self.assertIn("′", cell["location"])  # U+2032 PRIME
 
     def test_channels_base_identical_and_additive(self):
+        # The shared <g class="tx-base"> geometry group is byte-identical across channels; the channel
+        # a11y <title>/<desc> and the key-only overlay differ (owner N + #3 + #4).
         for task in T.TASKS:
             it = T.generate(13, {"task": task})
             m = it["media"][0]
             student, key = m["svg"], m["spec"]["answerKeySvg"]
-            self.assertTrue(key.startswith(student[: student.rindex("</svg>")]), f"{task} base identical")
+            self.assertEqual(T._tx_base(student), T._tx_base(key), f"{task} base identical")
+            self.assertNotEqual(T._tx_base(student), "", f"{task} has a base group")
             self.assertGreater(len(key), len(student), f"{task} key additive")
+            self.assertIn('<g class="tx-overlay">', key, f"{task} key has overlay")
+
+    def test_answer_key_a11y_channel_specific(self):
+        # owner #3: answer-key <desc> describes the image + overlay and never says "image not shown".
+        import re
+        for task in T.TASKS:
+            it = T.generate(21, {"task": task})
+            m = it["media"][0]
+            s = re.search(r"<desc>([^<]*)</desc>", m["svg"]).group(1)
+            k = re.search(r"<desc>([^<]*)</desc>", m["spec"]["answerKeySvg"]).group(1)
+            self.assertNotEqual(s, k, f"{task} channel-specific desc")
+            self.assertNotIn("not shown", k.lower(), f"{task} key must not say image hidden")
+            self.assertNotIn("not shown", m["spec"]["answerKeyAltText"].lower(), f"{task} key alt")
+
+    def test_no_duplicate_svg_ids_and_marker_refs_resolve(self):
+        # owner #4: per-SVG unique ids; every url(#id) resolves within its own SVG.
+        import re
+        for task in T.TASKS:
+            it = T.generate(21, {"task": task})
+            m = it["media"][0]
+            for svg in (m["svg"], m["spec"]["answerKeySvg"]):
+                ids = re.findall(r'id="([^"]+)"', svg)
+                self.assertEqual(len(ids), len(set(ids)), f"{task} duplicate ids")
+                for ref in re.findall(r"url\(#([^)]+)\)", svg):
+                    self.assertIn(ref, set(ids), f"{task} dangling ref {ref}")
 
     def test_perform_hides_image_describe_shows_both(self):
         perf = T.generate(2, {"task": "rotate_shape"})["media"][0]["svg"]

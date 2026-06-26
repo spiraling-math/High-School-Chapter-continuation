@@ -20,6 +20,7 @@ domains/geometry/transformations.ts mirrors this byte-for-byte.
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from .seeded_random import Mulberry32
@@ -30,8 +31,8 @@ from . import transformations_misconceptions as TM
 from .transformations_checker import check_description
 
 GENERATOR_ID = "gen.geometry.transformations"
-GENERATOR_VERSION = "1.0.0"
-VALIDATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
+VALIDATOR_VERSION = "1.0.1"
 
 OBJECTIVE_BY_TASK = {
     "translate_point": "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -104,7 +105,7 @@ STYLE = (
     ".tx-img-edge{stroke:#111;stroke-width:3;fill:none;stroke-dasharray:8 5}"
     ".tx-img-open{fill:#fff;stroke:#111;stroke-width:3}"
     ".tx-mirror{stroke:#111;stroke-width:2;stroke-dasharray:2 6;fill:none}"
-    ".tx-vec{stroke:#111;stroke-width:3;fill:none;marker-end:url(#tx-arrow)}"
+    ".tx-vec{stroke:#111;stroke-width:3;fill:none}"
     ".tx-centre{fill:#111;stroke:#fff;stroke-width:2}"
     "text{font-family:sans-serif;font-size:26px;fill:#111}"
     ".tx-ticklbl{font-size:18px;fill:#333}"
@@ -216,15 +217,16 @@ def _label_els(placed: List[Dict[str, Any]]) -> List[str]:
 
 
 def _overlay_els(task: str, desc: Dict[str, Any], src: List[TC.Point], img: List[TC.Point],
-                 lay: Dict[str, int]) -> List[str]:
+                 lay: Dict[str, int], uid: str) -> List[str]:
     """The answer-key-only solution overlay (owner N). Names/draws the transformation."""
     out: List[str] = ['<g class="tx-overlay">']
     kind = desc["kind"]
     if kind == "translation":
-        # one representative vector arrow from a source vertex to its image
+        # one representative vector arrow from a source vertex to its image; the marker-end is set as an
+        # ATTRIBUTE (not via the shared CSS class) so it references this SVG's namespaced marker (owner #4)
         sx, sy = proj_x(lay, src[0][0]), proj_y(lay, src[0][1])
         ix, iy = proj_x(lay, img[0][0]), proj_y(lay, img[0][1])
-        out.append(f'<line class="tx-vec" x1="{sx}" y1="{sy}" x2="{ix}" y2="{iy}"/>')
+        out.append(f'<line class="tx-vec" x1="{sx}" y1="{sy}" x2="{ix}" y2="{iy}" marker-end="url(#tx-arrow-{uid})"/>')
     elif kind == "reflection":
         ax = desc["axis"]
         wx0, wx1, wy0, wy1 = lay["wx0"], lay["wx1"], lay["wy0"], lay["wy1"]
@@ -250,35 +252,47 @@ def _overlay_els(task: str, desc: Dict[str, Any], src: List[TC.Point], img: List
     return out
 
 
-def _arrow_defs() -> str:
-    return ('<defs><marker id="tx-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" '
+def _arrow_defs(uid: str) -> str:
+    """Per-SVG marker defs (owner #4): the marker id is namespaced by the item/channel uid so multiple
+    inline SVGs in one document (worksheet/audit) never collide."""
+    return (f'<defs><marker id="tx-arrow-{uid}" markerWidth="10" markerHeight="10" refX="8" refY="3" '
             'orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#111"/></marker></defs>')
 
 
-def render(task: str, params: Dict[str, Any], answer_key: bool) -> str:
-    """Render the student (answer_key=False) or answer-key (answer_key=True) SVG. The base geometry +
-    student annotations are byte-identical across channels; the key appends only the overlay group."""
+def render(task: str, params: Dict[str, Any], answer_key: bool, uid: str) -> str:
+    """Render the student (answer_key=False) or answer-key (answer_key=True) SVG.
+
+    The SHARED base geometry + student annotations live in a <g class="tx-base"> group that is
+    byte-identical across the two channels (owner N); the key adds only the perform image + the overlay
+    group AFTER it. The channel-specific accessibility text (<title>/<desc>/aria-label, owner #3) and the
+    key-only namespaced marker defs (owner #4) sit in the header, OUTSIDE the shared base group."""
     src, img, desc = params["source"], params["image"], params["descriptor"]
     obj = params["objectType"]
+    kind = params["kind"]
     perform = not task.startswith("describe")
     lay = params["layout"]
-    acc = _accessibility(task, params)
+    acc = _accessibility(task, params, answer_key)
 
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {VIEW_W} {VIEW_H}" role="img" aria-label="{_esc(acc["alt"])}">']
     out.append(f"<title>{_esc(acc['title'])}</title><desc>{_esc(acc['desc'])}</desc>")
-    out.append(f"<style>{STYLE}</style>{_arrow_defs()}")
-    out += _grid_axes(lay)
+    out.append(f"<style>{STYLE}</style>")
+    if answer_key and kind == "translation":
+        out.append(_arrow_defs(uid))  # marker defs only in the channel that draws the vector (owner #4)
 
-    # base geometry + student annotations (identical in both channels)
-    out += _object_els(src, lay, image=False)
+    # ----- shared base geometry + student annotations (byte-identical in both channels) -----
+    base: List[str] = []
+    base += _grid_axes(lay)
+    base += _object_els(src, lay, image=False)
     label_items = [(lab, proj_x(lay, v[0]), proj_y(lay, v[1])) for lab, v in zip(TS.SOURCE_LABELS[obj], src)]
-    show_image_in_student = not perform  # describe tasks show the image to the student (owner N)
-    if show_image_in_student:
-        out += _object_els(img, lay, image=True)
+    if not perform:  # describe tasks show the image to the student (owner N)
+        base += _object_els(img, lay, image=True)
         label_items += [(lab, proj_x(lay, v[0]), proj_y(lay, v[1])) for lab, v in zip(TS.image_labels(obj), img)]
     placed = _place_labels(label_items)
     params["_labelPlacements"] = placed
-    out += _label_els(placed)
+    base += _label_els(placed)
+    out.append('<g class="tx-base">')
+    out += base
+    out.append("</g>")
 
     if answer_key:
         if perform:
@@ -287,7 +301,7 @@ def render(task: str, params: Dict[str, Any], answer_key: bool) -> str:
             img_labels = _place_labels([(lab, proj_x(lay, v[0]), proj_y(lay, v[1]))
                                         for lab, v in zip(TS.image_labels(obj), img)])
             out += _label_els(img_labels)
-        out += _overlay_els(task, desc, src, img, lay)
+        out += _overlay_els(task, desc, src, img, lay, uid)
 
     out.append("</svg>")
     return "\n".join(out)
@@ -482,29 +496,70 @@ def _src_label_str(obj: str) -> str:
     return "".join(TS.SOURCE_LABELS[obj])
 
 
-def _accessibility(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
+def _img_label_str(obj: str) -> str:
+    return "".join(TS.image_labels(obj))
+
+
+def _overlay_phrase(desc: Dict[str, Any]) -> str:
+    """How the answer-key overlay depicts the transformation (owner #3 — key channel describes it)."""
+    kind = desc["kind"]
+    if kind == "translation":
+        v = desc["vector"]
+        return f"the translation vector ({v['dx']}, {v['dy']}) is drawn as an arrow"
+    if kind == "reflection":
+        return f"the mirror line {TC._axis_equation(desc['axis'])} is drawn"
+    c = desc["centre"]
+    return f"the centre of rotation ({c['x']}, {c['y']}) is marked"
+
+
+def _accessibility(task: str, params: Dict[str, Any], answer_key: bool = False) -> Dict[str, Any]:
+    """Channel-specific accessibility text (owner #3). The STUDENT channel is answer-free (perform: the
+    image is not shown; describe: the transformation is never named). The ANSWER-KEY channel describes
+    the displayed image and the solution overlay (transformed coordinates + construction), and never
+    repeats the student-only "the image is not shown."."""
     obj = params["objectType"]
     src = params["source"]
+    img = params["image"]
+    desc = params["descriptor"]
     perform = not task.startswith("describe")
+    labels, img_labels = _src_label_str(obj), _img_label_str(obj)
     src_desc = "; ".join(f"{lab} at ({v[0]}, {v[1]})" for lab, v in zip(TS.SOURCE_LABELS[obj], src))
-    if perform:
+    img_desc = "; ".join(f"{lab} at ({v[0]}, {v[1]})" for lab, v in zip(TS.image_labels(obj), img))
+    src_table = [["Vertex", "Coordinates"]] + [[lab, f"({v[0]}, {v[1]})"] for lab, v in zip(TS.SOURCE_LABELS[obj], src)]
+    full_table = ([["Vertex", "Object", "Image"]]
+                  + [[TS.SOURCE_LABELS[obj][i], f"({src[i][0]}, {src[i][1]})", f"({img[i][0]}, {img[i][1]})"]
+                     for i in range(len(src))])
+
+    if perform and not answer_key:
         instr = _instruction(task, params)
-        alt = f"A coordinate grid showing {_obj_phrase(obj)} {_src_label_str(obj)} with vertices {src_desc}. {instr}"
-        title = f"Coordinate grid with {_obj_phrase(obj)} {_src_label_str(obj)}"
-        desc = f"{_obj_phrase(obj).capitalize()} {_src_label_str(obj)}: {src_desc}. The image is not shown."
-        table = [["Vertex", "Coordinates"]] + [[lab, f"({v[0]}, {v[1]})"] for lab, v in zip(TS.SOURCE_LABELS[obj], src)]
-    else:
-        img = params["image"]
-        img_desc = "; ".join(f"{lab} at ({v[0]}, {v[1]})" for lab, v in zip(TS.image_labels(obj), img))
-        alt = (f"A coordinate grid showing {_obj_phrase(obj)} {_src_label_str(obj)} ({src_desc}) and its image "
+        alt = f"A coordinate grid showing {_obj_phrase(obj)} {labels} with vertices {src_desc}. {instr}"
+        title = f"Coordinate grid with {_obj_phrase(obj)} {labels}"
+        desc_t = f"{_obj_phrase(obj).capitalize()} {labels}: {src_desc}. The image is not shown."
+        table = src_table
+    elif perform and answer_key:
+        disp = TC.format_display(desc)
+        alt = (f"Answer key: {_obj_phrase(obj)} {labels} is mapped to its image {img_labels} with vertices "
+               f"{img_desc} by {disp}; {_overlay_phrase(desc)}.")
+        title = f"Answer key — {_obj_phrase(obj)} {labels} mapped to {img_labels}"
+        desc_t = (f"{_obj_phrase(obj).capitalize()} {labels}: {src_desc}. Image {img_labels}: {img_desc}. "
+                  f"The mapping is {disp}; {_overlay_phrase(desc)}.")
+        table = full_table
+    elif not perform and not answer_key:
+        alt = (f"A coordinate grid showing {_obj_phrase(obj)} {labels} ({src_desc}) and its image {img_labels} "
                f"({img_desc}). Describe the single transformation that maps the object onto its image.")
-        title = f"Coordinate grid with an object and its image"
-        desc = f"Object {_src_label_str(obj)}: {src_desc}. Image: {img_desc}."
-        table = ([["Vertex", "Object", "Image"]]
-                 + [[TS.SOURCE_LABELS[obj][i], f"({src[i][0]}, {src[i][1]})", f"({img[i][0]}, {img[i][1]})"]
-                    for i in range(len(src))])
-    return {"alt": alt, "title": title, "desc": desc, "dataTable": table,
-            "spokenMath": alt, "longDescription": f"{title}. {desc}"}
+        title = "Coordinate grid with an object and its image"
+        desc_t = f"Object {labels}: {src_desc}. Image {img_labels}: {img_desc}."
+        table = full_table
+    else:  # describe + answer key
+        disp = TC.format_display(desc)
+        alt = (f"Answer key: the transformation mapping {_obj_phrase(obj)} {labels} onto its image "
+               f"{img_labels} is {disp}; {_overlay_phrase(desc)}.")
+        title = f"Answer key — {disp}"
+        desc_t = (f"Object {labels}: {src_desc}. Image {img_labels}: {img_desc}. "
+                  f"The transformation is {disp}; {_overlay_phrase(desc)}.")
+        table = full_table
+    return {"alt": alt, "title": title, "desc": desc_t, "dataTable": table,
+            "spokenMath": alt, "longDescription": f"{title}. {desc_t}"}
 
 
 # --------------------------------------------------------------------------- #
@@ -576,7 +631,7 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
     interaction = config.get("interactionType", "free-response")
     if interaction not in SUPPORTED_INTERACTIONS:
         raise InteractionNotSupported(
-            f"gen.geometry.transformations supports only free-response in v1.0.0 (requested {interaction!r})")
+            f"gen.geometry.transformations supports only free-response (requested {interaction!r})")
     task = config.get("task")
     if task is None:
         task = _TASKS[Mulberry32(seed).next_int(0, len(_TASKS) - 1)]
@@ -584,14 +639,17 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
         raise ValueError(f"unknown task {task!r}")
 
     params = _params(seed, task)
-    student_svg = render(task, params, answer_key=False)
-    key_svg = render(task, params, answer_key=True)
-    acc = _accessibility(task, params)
+    item_id = f"ITEM-TRANS-{task}-{seed}"
+    uid = item_id  # marker-id namespace base (owner #4); the audit/exports add a per-card suffix
+    student_svg = render(task, params, answer_key=False, uid=uid)
+    key_svg = render(task, params, answer_key=True, uid=uid)
+    acc = _accessibility(task, params, answer_key=False)        # student channel (answer-free)
+    acc_key = _accessibility(task, params, answer_key=True)     # answer-key channel (owner #3)
     diff = _difficulty(task, params)
     ans = _answer(task, params)
 
     item: Dict[str, Any] = {
-        "itemId": f"ITEM-TRANS-{task}-{seed}",
+        "itemId": item_id,
         "schemaVersion": "1.0.0",
         "objectiveIds": [OBJECTIVE_BY_TASK[task]],
         "generatorId": GENERATOR_ID,
@@ -605,7 +663,15 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
             "id": "fig-1",
             "kind": "svg",
             "svg": student_svg,
-            "spec": {"answerKeySvg": key_svg, "labelPlacements": params.get("_labelPlacements", [])},
+            "spec": {
+                "answerKeySvg": key_svg,
+                "labelPlacements": params.get("_labelPlacements", []),
+                "markerIdBase": uid,
+                # answer-key channel accessibility (owner #3): describes the displayed image + overlay.
+                "answerKeyAltText": acc_key["alt"],
+                "answerKeyLongDescription": acc_key["longDescription"],
+                "answerKeyDataTable": {"columns": acc_key["dataTable"][0], "rows": acc_key["dataTable"][1:]},
+            },
             "toScale": True,
             "altText": acc["alt"],
             "longDescription": acc["longDescription"],
@@ -700,16 +766,14 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         uniq = TS.unique_descriptor(kind, src, img)
         add("descriptor-unique", uniq is not None and TC.descriptors_equal(uniq, desc))
 
-    # channels (owner N): base geometry identical, key is additive
+    # channels (owner N): the SHARED base-geometry group is byte-identical; the key is purely additive.
     media = item["media"][0]
     student = media["svg"]
     key = media["spec"]["answerKeySvg"]
-    add("answer-key-base-geometry-identical", key.startswith(student[: student.rindex("</svg>")]))
-    add("answer-key-overlay-additive-only", len(key) >= len(student) and student != key)
+    add("answer-key-base-geometry-identical", _tx_base(student) != "" and _tx_base(student) == _tx_base(key))
+    add("answer-key-overlay-additive-only", len(key) >= len(student) and student != key and '<g class="tx-overlay">' in key)
 
     # leakage (owner N): the perform student channel must not draw the image or list its vertices.
-    # (The instruction legitimately states the given vector/centre/axis, so we check STRUCTURE — the
-    # hidden image figure and the source-only data table — not coordinate substrings.)
     if perform:
         add("perform-student-image-hidden", '<rect class="tx-img-open"' not in student)
         rows = media["dataTableFallback"]["rows"]
@@ -719,6 +783,29 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
     else:
         add("describe-student-shows-both-figures", '<rect class="tx-img-open"' in student)
         add("describe-student-no-descriptor-named", TC.format_display(desc) not in student)
+
+    # accessibility channels (owner #3): student answer-free; answer-key describes image + overlay.
+    s_desc = _svg_desc(student)
+    k_desc = _svg_desc(key)
+    overlay_phrase = _overlay_phrase(desc)
+    add("student-and-key-a11y-channel-specific", s_desc != k_desc and s_desc != "" and k_desc != "")
+    add("answer-key-a11y-does-not-say-image-hidden",
+        "not shown" not in k_desc.lower() and "not shown" not in media["spec"]["answerKeyAltText"].lower())
+    add("answer-key-a11y-describes-overlay",
+        overlay_phrase in k_desc and TC.format_display(desc) in k_desc)
+    if perform:
+        add("student-a11y-answer-free", "the image is not shown" in s_desc.lower()
+            and TC.format_display(desc) not in s_desc)
+    else:
+        add("student-a11y-answer-free", TC.format_display(desc) not in s_desc
+            and TC.format_display(desc) not in media["altText"])
+
+    # SVG id safety (owner #4): no duplicate ids within an SVG; every url(#id) resolves in its own SVG.
+    for chan, svg in (("student", student), ("key", key)):
+        ids = re.findall(r'id="([^"]+)"', svg)
+        add(f"no-duplicate-svg-ids-{chan}", len(ids) == len(set(ids)))
+        refs = re.findall(r'url\(#([^)]+)\)', svg)
+        add(f"marker-reference-resolves-within-own-svg-{chan}", all(r in set(ids) for r in refs))
 
     # label clearance (owner M)
     placements = media["spec"].get("labelPlacements", [])
@@ -736,6 +823,21 @@ def _labels_pairwise_clear(placements: List[Dict[str, Any]]) -> bool:
             if _overlap(boxes[i], boxes[j]):
                 return False
     return True
+
+
+def _tx_base(svg: str) -> str:
+    """The shared base-geometry group <g class="tx-base">...</g> (no nested groups), or "" if absent."""
+    a = svg.find('<g class="tx-base">')
+    if a < 0:
+        return ""
+    b = svg.find("</g>", a)
+    return svg[a:b] if b >= 0 else ""
+
+
+def _svg_desc(svg: str) -> str:
+    a = svg.find("<desc>")
+    b = svg.find("</desc>", a)
+    return svg[a + 6:b] if a >= 0 and b >= 0 else ""
 
 
 def serialize(item: Dict[str, Any]) -> str:
