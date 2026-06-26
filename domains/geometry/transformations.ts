@@ -1,5 +1,5 @@
 /**
- * gen.geometry.transformations v1.0.1 — generator, family-local Cartesian renderer, and validator.
+ * gen.geometry.transformations v1.0.2 — generator, family-local Cartesian renderer, and validator.
  *
  * Byte-for-byte TypeScript mirror of oracle/spi_oracle/transformations.py.
  * EXACT (owner F): integer coordinates only; no trig/float/tolerance/irrational.
@@ -15,8 +15,8 @@ import type { Point } from "./transformations-core.ts";
 type Json = any;
 
 export const GENERATOR_ID = "gen.geometry.transformations";
-export const GENERATOR_VERSION = "1.0.1";
-export const VALIDATOR_VERSION = "1.0.1";
+export const GENERATOR_VERSION = "1.0.2";
+export const VALIDATOR_VERSION = "1.0.2";
 
 export const OBJECTIVE_BY_TASK: Record<string, string> = {
   translate_point: "SPI.MIDDLE.GEO.TRANS.TRANSLATE_POINT.01",
@@ -136,9 +136,18 @@ function viehHGuard(): number {
   return VIEW_H - 4;
 }
 
-function placeLabels(items: [string, number, number][]): Json[] {
+function placeLabels(
+  items: [string, number, number][],
+  occupied: [number, number, number, number][] = [],
+): Json[] {
+  // items: (text, px, py) screen anchors. Returns placements with a clear bounding box, choosing the
+  // first candidate offset that avoids every other label box, every marker, the canvas edge, and every
+  // pre-OCCUPIED box. `occupied` lets the answer-key image-label pass avoid the already-placed base
+  // source-label boxes + source markers, so a fixed vertex's source label and image label never coincide
+  // (owner v1.0.2 fixed-point policy: separated deterministic offsets).
   const placed: Json[] = [];
   const markerBoxes = items.map(([, px, py]) => bbox(px, py + 9, 22, 22));
+  const blocked = occupied.slice();
   for (const [text, px, py] of items) {
     const w = LABEL_W_PER_CHAR * text.length + 6;
     let chosen: Json | null = null;
@@ -154,6 +163,9 @@ function placeLabels(items: [string, number, number][]): Json[] {
         continue;
       }
       if (markerBoxes.some((mb) => overlap(box, mb))) {
+        continue;
+      }
+      if (blocked.some((ob) => overlap(box, ob))) {
         continue;
       }
       chosen = { text, x: lx, y: ly, anchor, box };
@@ -324,10 +336,20 @@ function render(task: string, params: Json, answerKey: boolean, uid: string): st
 
   if (answerKey) {
     if (perform) {
-      // the key reveals the image first, then the overlay (owner N)
+      // the key reveals the image first, then the overlay (owner N). The image labels are placed
+      // CLEAR of the already-placed base source-label boxes + source markers, so at a fixed vertex
+      // (image coincides with source) the image label never lands on top of the source label
+      // (owner v1.0.2 fixed-point policy).
       out.push(...objectEls(img, lay, true));
-      const imgLabels = placeLabels(zipLabels(TS.imageLabels(obj), img, lay));
-      out.push(...labelEls(imgLabels));
+      const occupied: [number, number, number, number][] = (placed as Json[]).map(
+        (pl) => pl.box as [number, number, number, number],
+      );
+      for (const v of src as Point[]) {
+        occupied.push(bbox(projX(lay, v[0]), projY(lay, v[1]) + 9, 22, 22));
+      }
+      const imgLabelPlacements = placeLabels(zipLabels(TS.imageLabels(obj), img, lay), occupied);
+      params._keyLabelPlacements = imgLabelPlacements;
+      out.push(...labelEls(imgLabelPlacements));
     }
     out.push(...overlayEls(task, desc, src, img, lay, uid));
   }
@@ -1047,6 +1069,71 @@ export function validate(item: Json): Json {
   add("label-inside-canvas", placements.every((pl) => !pl.clearanceFailed));
   add("label-bbox-clearance", labelsPairwiseClear(placements));
 
+  // serialized-SVG label clearance, INCLUDING the answer-key image labels + overlay (owner v1.0.2 #2):
+  // parse the actual <text class="tx-lbl"> elements from each emitted SVG and check pairwise clearance,
+  // so an exact source/image label overlap at a fixed vertex can never slip past internal anchors.
+  const studentLbls = svgLabelBoxes(student);
+  const keyLbls = svgLabelBoxes(key);
+  add("answer-key-label-bbox-clearance", boxesPairwiseClear(keyLbls.map(([b]) => b)));
+  add("student-label-bbox-clearance", boxesPairwiseClear(studentLbls.map(([b]) => b)));
+  add(
+    "label-bbox-clearance-includes-answer-key-overlay",
+    keyLbls.length >= studentLbls.length && boxesPairwiseClear(keyLbls.map(([b]) => b)),
+  );
+  // specifically: no source label box overlaps any image label box in the answer key.
+  const srcLabSet = new Set(TS.SOURCE_LABELS[obj] as string[]);
+  const srcBoxes = keyLbls.filter(([, t]) => srcLabSet.has(t)).map(([b]) => b);
+  const imgBoxes = keyLbls.filter(([, t]) => t.endsWith(TS.PRIME)).map(([b]) => b);
+  add(
+    "source-image-label-bbox-clearance",
+    srcBoxes.every((sb) => imgBoxes.every((ib) => !overlap(sb, ib))),
+  );
+
+  // fixed-point label policy (owner v1.0.2): for every fixed vertex the source label and its image
+  // label must be at DISTINCT positions, with non-overlapping boxes, and both present near the vertex.
+  const fixed: number[] = [];
+  for (let i = 0; i < src.length; i++) {
+    if (src[i] && img[i] && (src[i] as Point)[0] === (img[i] as Point)[0] && (src[i] as Point)[1] === (img[i] as Point)[1]) {
+      fixed.push(i);
+    }
+  }
+  const keyTextBox: Record<string, [number, number, number, number]> = {};
+  for (const [b, t] of keyLbls) {
+    keyTextBox[t] = b;
+  }
+  let fpOk = true;
+  let fpReadable = true;
+  const srcLabelsArr = TS.SOURCE_LABELS[obj] as string[];
+  const imgLabelsArr = TS.imageLabels(obj);
+  for (const i of fixed) {
+    const sLab = srcLabelsArr[i] as string;
+    const iLab = imgLabelsArr[i] as string;
+    const sb = keyTextBox[sLab];
+    const ib = keyTextBox[iLab];
+    if (sb === undefined || ib === undefined) {
+      fpReadable = false;
+      continue;
+    }
+    if (overlap(sb, ib) || (sb[0] === ib[0] && sb[1] === ib[1] && sb[2] === ib[2] && sb[3] === ib[3])) {
+      fpOk = false;
+    }
+  }
+  add("fixed-point-labels-not-overlapped", fpOk);
+  add(
+    "fixed-point-correspondence-readable",
+    fpReadable &&
+      (fixed.length === 0 ||
+        fixed.every((i) => (srcLabelsArr[i] as string) in keyTextBox && (imgLabelsArr[i] as string) in keyTextBox)),
+  );
+  // the marker for a fixed vertex is present: every image vertex carries an open-square marker and
+  // every source vertex a filled circle, so a fixed (coincident) vertex shows BOTH at the same point.
+  add(
+    "fixed-point-marker-readable",
+    fixed.length === 0 ||
+      (countOccurrences(key, '<rect class="tx-img-open"') === img.length &&
+        countOccurrences(key, '<circle class="tx-src-core"') === src.length),
+  );
+
   const valid = checks.every((c) => c.ok);
   // `valid` is the Python oracle field (golden-parity); `status` is the SDK GenValidationResult field.
   return { valid, status: valid ? "pass" : "fail", validatorVersion: VALIDATOR_VERSION, checks };
@@ -1074,6 +1161,12 @@ function arraysEqual(a: string[], b: string[]): boolean {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
+/** Mirror of Python str.count(sub): non-overlapping occurrences of `sub` in `s`. */
+function countOccurrences(s: string, sub: string): number {
+  if (sub.length === 0) return s.length + 1;
+  return s.split(sub).length - 1;
+}
+
 function txBase(svg: string): string {
   // The shared base-geometry group <g class="tx-base">...</g> (no nested groups), or "" if absent.
   const a = svg.indexOf('<g class="tx-base">');
@@ -1092,6 +1185,10 @@ function svgDesc(svg: string): string {
 
 function labelsPairwiseClear(placements: Json[]): boolean {
   const boxes = placements.filter((pl) => "box" in pl).map((pl) => pl.box as [number, number, number, number]);
+  return boxesPairwiseClear(boxes);
+}
+
+function boxesPairwiseClear(boxes: [number, number, number, number][]): boolean {
   for (let i = 0; i < boxes.length; i++) {
     for (let j = i + 1; j < boxes.length; j++) {
       if (overlap(boxes[i] as [number, number, number, number], boxes[j] as [number, number, number, number])) {
@@ -1100,6 +1197,25 @@ function labelsPairwiseClear(placements: Json[]): boolean {
     }
   }
   return true;
+}
+
+function svgLabelBoxes(svg: string): [[number, number, number, number], string][] {
+  // Recompute the bounding box of every <text class="tx-lbl"> element actually emitted in the SVG
+  // (source labels + answer-key image labels), from its serialized x / y / text-anchor — the same
+  // geometry placeLabels uses. Inspects the SERIALIZED SVG, not internal anchors (owner v1.0.2).
+  const out: [[number, number, number, number], string][] = [];
+  const re = /<text class="tx-lbl" x="(-?\d+)" y="(-?\d+)" text-anchor="(start|end|middle)">([^<]*)<\/text>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(svg)) !== null) {
+    const lx = parseInt(m[1] as string, 10);
+    const ly = parseInt(m[2] as string, 10);
+    const anchor = m[3] as string;
+    const text = m[4] as string;
+    const w = LABEL_W_PER_CHAR * text.length + 6;
+    const cx = lx + (anchor === "start" ? Math.floor(w / 2) : anchor === "end" ? -Math.floor(w / 2) : 0);
+    out.push([bbox(cx, ly + LABEL_H, w, LABEL_H), text]);
+  }
+  return out;
 }
 
 export function serialize(item: Json): string {

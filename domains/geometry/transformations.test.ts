@@ -263,7 +263,7 @@ test("all 9 tasks generate and validate across several seeds", () => {
   }
 });
 
-test("v1.0.1 SVG structure: tx-base group, namespaced marker, channel-specific a11y", () => {
+test("v1.0.2 SVG structure: tx-base group, namespaced marker, channel-specific a11y", () => {
   // translation perform task -> the answer key draws the vector via a namespaced marker.
   const item = generate(7, { interactionType: "free-response", task: "translate_point" });
   const student = item.media[0].svg as string;
@@ -323,6 +323,74 @@ test("describe channel: student never names the transformation; key describes ov
   assert.equal(validate(item).valid, true);
 });
 
+test("v1.0.2 fixed-point labels: cited seeds give SEPARATED source/image labels in the answer key", () => {
+  // Owner v1.0.2 REVISE: at a fixed vertex (image coincides with source) the source label and its
+  // image label must be placed at DISTINCT positions in the serialized answer-key SVG, and the new
+  // validator checks must all pass. The three cited regression seeds + a describe fixed-point case.
+  const seeds: [string, number][] = [
+    ["rotate_shape", 3189],
+    ["reflect_shape", 18],
+    ["reflect_shape", 896],
+    ["describe_reflection", 8],
+  ];
+  const labelCoords = (svg: string): Record<string, [number, number]> => {
+    const out: Record<string, [number, number]> = {};
+    const re = /<text class="tx-lbl" x="(-?\d+)" y="(-?\d+)" text-anchor="\w+">([^<]*)<\/text>/g;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(svg)) !== null) {
+      out[m[3] as string] = [parseInt(m[1] as string, 10), parseInt(m[2] as string, 10)];
+    }
+    return out;
+  };
+  for (const [task, seed] of seeds) {
+    const item = generate(seed, { interactionType: "free-response", task });
+    const p = item.params;
+    const obj = p.objectType as string;
+    const src = (p.source as { x: number; y: number }[]).map((c) => [c.x, c.y] as [number, number]);
+    const img = (p.image as { x: number; y: number }[]).map((c) => [c.x, c.y] as [number, number]);
+    const fixed: number[] = [];
+    for (let i = 0; i < src.length; i++) {
+      if ((src[i] as [number, number])[0] === (img[i] as [number, number])[0] && (src[i] as [number, number])[1] === (img[i] as [number, number])[1]) {
+        fixed.push(i);
+      }
+    }
+    assert.ok(fixed.length > 0, `${task} seed ${seed} should have a fixed vertex`);
+    const key = item.media[0].spec.answerKeySvg as string;
+    const coords = labelCoords(key);
+    const srcLabels = TS.SOURCE_LABELS[obj] as string[];
+    const imgLabels = TS.imageLabels(obj);
+    for (const i of fixed) {
+      const sLab = srcLabels[i] as string;
+      const iLab = imgLabels[i] as string;
+      assert.ok(sLab in coords, `${task} ${seed} source label ${sLab}`);
+      assert.ok(iLab in coords, `${task} ${seed} image label ${iLab}`);
+      const sc = coords[sLab] as [number, number];
+      const ic = coords[iLab] as [number, number];
+      assert.ok(
+        !(sc[0] === ic[0] && sc[1] === ic[1]),
+        `${task} seed ${seed}: ${sLab} and ${iLab} overlap at (${sc[0]}, ${sc[1]})`,
+      );
+    }
+    // the new v1.0.2 validator checks all pass for the fixed-point seeds.
+    const v = validate(item);
+    assert.equal(v.valid, true, `${task} ${seed} valid`);
+    const names: Record<string, boolean> = {};
+    for (const c of v.checks as { name: string; ok: boolean }[]) {
+      names[c.name] = c.ok;
+    }
+    for (const chk of [
+      "fixed-point-labels-not-overlapped",
+      "source-image-label-bbox-clearance",
+      "answer-key-label-bbox-clearance",
+      "label-bbox-clearance-includes-answer-key-overlay",
+      "fixed-point-marker-readable",
+      "fixed-point-correspondence-readable",
+    ]) {
+      assert.equal(names[chk], true, `${task} ${seed} ${chk}`);
+    }
+  }
+});
+
 test("random task selection when no task is pinned", () => {
   const item = generate(42, { interactionType: "free-response" });
   assert.ok(TASKS.includes(item.params.task));
@@ -339,7 +407,7 @@ test("unsupported interaction (e.g. multiple-choice) throws InteractionNotSuppor
 test("describe() advertises the generator surface", () => {
   const d = describe();
   assert.equal(d.generatorId, "gen.geometry.transformations");
-  assert.equal(d.version, "1.0.1");
+  assert.equal(d.version, "1.0.2");
   assert.deepEqual(d.tasks, TASKS);
   assert.deepEqual(d.interactionTypes, ["free-response"]);
   assert.deepEqual(d.answerTypes, ["coordinate", "table-completion", "transformation"]);

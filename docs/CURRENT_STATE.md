@@ -2,7 +2,25 @@
 
 Last updated: 2026-06-25.
 
-## `gen.geometry.transformations` v1.0.1 — PENDING-REVIEW (2026-06-25)
+## `gen.geometry.transformations` v1.0.2 — PENDING-REVIEW (2026-06-25)
+
+**Owner REVISE (DECISION_LOG #56): answer-key fixed-point label layout only → v1.0.2; family accepted;
+v1.0.1 preserved at tag `transformations-v1.0.1`.** At a fixed vertex (a source vertex coincident with
+its image), the answer-key previously serialized the source label and image label at IDENTICAL SVG
+coordinates (e.g. rotate_shape 3189: B and B′ both at `444,336`), and the old clearance check inspected
+only internal base anchors. Canonical policy (documented): **separated deterministic offsets** — the
+answer-key image-label pass now avoids the already-placed base source-label boxes + source markers, so a
+fixed vertex's two labels never coincide (B @ `444` / B′ @ `416`). The clearance validator now inspects
+the **serialized answer-key SVG** `<text>` elements: `answer-key-label-bbox-clearance`,
+`student-label-bbox-clearance`, `source-image-label-bbox-clearance`,
+`label-bbox-clearance-includes-answer-key-overlay`, `fixed-point-labels-not-overlapped`,
+`fixed-point-correspondence-readable`, `fixed-point-marker-readable`. Regression evidence (review pack +
+tests): rotate_shape 3189, reflect_shape 18, reflect_shape 896, and describe_reflection 8 (source-plus-
+image) all show separated labels. Canonical MATHEMATICAL answers unchanged (only answer-key label
+positions changed → v1.0.2). Fixed points remain mathematically valid + in review-pack coverage. **Next
+owner decision: APPROVE or REJECT of v1.0.2.**
+
+### (Historical) v1.0.1 review-package correction (DECISION_LOG #55)
 
 **Owner REVISE (DECISION_LOG #55): review-package corrected → v1.0.1; family accepted in principle;
 v1.0.0 preserved at tag `transformations-v1.0.0`.** The seven required corrections are applied (canonical
