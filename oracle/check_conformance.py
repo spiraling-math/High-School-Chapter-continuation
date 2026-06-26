@@ -30,6 +30,7 @@ from spi_oracle import geometry as geoang  # noqa: E402
 from spi_oracle import coordinate_lines as coord  # noqa: E402
 from spi_oracle import data_handling as stats  # noqa: E402
 from spi_oracle import transformations as trans  # noqa: E402
+from spi_oracle import ratio as ratio  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -222,6 +223,19 @@ def main() -> int:
         ok &= validate(trans.generate(7, {"task": task}), item_schema, registry, f"transformation item task={task}")
     for seed in (1, 42, 123456789):
         ok &= validate(trans.generate(seed), item_schema, registry, f"transformation item seed={seed}")
+
+    # 4h. Live ratio & proportion items (ratio / exact-rational / integer / table-completion /
+    # multiple-choice answers; 12 tasks; bar models, double number lines, best-buy table).
+    for task in ratio.RATIO_TASKS:
+        cfg = {"task": task}
+        if task in ratio.MC_ONLY_TASKS:
+            cfg["interactionType"] = "multiple-choice"
+        ok &= validate(ratio.generate(7, cfg), item_schema, registry, f"ratio item task={task}")
+    for task in ("simplify", "ratio_to_fraction", "fraction_to_ratio", "direct_proportion", "inverse_proportion"):
+        ok &= validate(ratio.generate(5, {"task": task, "interactionType": "multiple-choice"}),
+                       item_schema, registry, f"ratio item task={task} (MC)")
+    for seed in (1, 42, 123456789):
+        ok &= validate(ratio.generate(seed), item_schema, registry, f"ratio item seed={seed}")
 
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]

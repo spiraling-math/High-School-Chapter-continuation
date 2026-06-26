@@ -1,0 +1,28 @@
+{
+  "id": "spi-math-ratio-theme/1",
+  "extends": null,
+  "note": "Presentation theme for gen.proportion.ratio. A NEW additive theme (it does not extend a shared scheme): bar models (ratio_to_fraction, fraction_to_ratio, share_two_part, share_three_part, missing_part), double number lines (direct_proportion, unit_rate, simple_scale), and a proportional semantic table (best_buy). Modes are sets of CSS custom properties applied to each figure's OWN root SVG (class=rt-figure); one immutable common ruleset reads them, so figures stay isolated per root. The monochrome 'print' mode reproduces the canonical authoritative look (the canonical media[0].svg is never mutated). The GIVEN vs UNKNOWN distinction is carried by SHAPE / DASH / FILL (a given segment is solid-filled with a solid edge; an unknown segment is hatched/unfilled with a dashed edge and a '?' marker), so it survives in every mode and is never colour-only.",
+  "commonCss": ".rt-figure .rt-bar-given{fill:var(--rt-bar-given-fill);stroke:var(--rt-bar-stroke);stroke-width:2}.rt-figure .rt-bar-unknown{fill:var(--rt-bar-unknown-fill);stroke:var(--rt-bar-stroke);stroke-width:2;stroke-dasharray:6 4}.rt-figure .rt-bar-frame{fill:none;stroke:var(--rt-bar-stroke);stroke-width:2.5}.rt-figure .rt-divider{stroke:var(--rt-bar-stroke);stroke-width:1.5}.rt-figure .rt-axis{stroke:var(--rt-axis);stroke-width:2.5;fill:none}.rt-figure .rt-tick{stroke:var(--rt-axis);stroke-width:2}.rt-figure .rt-given-pt{fill:var(--rt-given);stroke:var(--rt-axis);stroke-width:2}.rt-figure .rt-unknown-pt{fill:var(--rt-unknown-fill);stroke:var(--rt-unknown-stroke);stroke-width:2.5;stroke-dasharray:4 3}.rt-figure .rt-rung{stroke:var(--rt-axis);stroke-width:1.5;stroke-dasharray:3 4}.rt-figure .rt-table-line{stroke:var(--rt-axis);stroke-width:2;fill:none}.rt-figure .rt-table-given{fill:var(--rt-bar-given-fill);stroke:var(--rt-axis);stroke-width:1.5}.rt-figure text{font-family:sans-serif;font-size:26px;fill:var(--rt-text)}.rt-figure .rt-ticklbl{font-size:20px;fill:var(--rt-ticklbl)}.rt-figure .rt-lbl{font-size:26px;fill:var(--rt-text)}.rt-figure .rt-unknown-lbl{font-size:28px;font-weight:bold;fill:var(--rt-unknown-stroke)}",
+  "modes": {
+    "print": {
+      "--rt-bar-given-fill": "#dddddd", "--rt-bar-unknown-fill": "#ffffff", "--rt-bar-stroke": "#111111",
+      "--rt-axis": "#111111", "--rt-given": "#111111", "--rt-unknown-fill": "#ffffff", "--rt-unknown-stroke": "#111111",
+      "--rt-text": "#111111", "--rt-ticklbl": "#333333", "--rt-bg": "#ffffff"
+    },
+    "premium": {
+      "--rt-bar-given-fill": "#dbeafe", "--rt-bar-unknown-fill": "#ffffff", "--rt-bar-stroke": "#1e293b",
+      "--rt-axis": "#1e293b", "--rt-given": "#2563eb", "--rt-unknown-fill": "#ffffff", "--rt-unknown-stroke": "#7c3aed",
+      "--rt-text": "#111827", "--rt-ticklbl": "#475569", "--rt-bg": "#ffffff"
+    },
+    "premium-dark": {
+      "--rt-bar-given-fill": "#1e3a5f", "--rt-bar-unknown-fill": "#0b1220", "--rt-bar-stroke": "#e5e7eb",
+      "--rt-axis": "#e5e7eb", "--rt-given": "#60a5fa", "--rt-unknown-fill": "#0b1220", "--rt-unknown-stroke": "#c4b5fd",
+      "--rt-text": "#e5e7eb", "--rt-ticklbl": "#cbd5e1", "--rt-bg": "#0b1220"
+    },
+    "accessible": {
+      "--rt-bar-given-fill": "#cfe8ff", "--rt-bar-unknown-fill": "#ffffff", "--rt-bar-stroke": "#000000",
+      "--rt-axis": "#000000", "--rt-given": "#0072b2", "--rt-unknown-fill": "#ffffff", "--rt-unknown-stroke": "#d55e00",
+      "--rt-text": "#000000", "--rt-ticklbl": "#333333", "--rt-bg": "#ffffff"
+    }
+  }
+}

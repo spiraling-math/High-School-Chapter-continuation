@@ -1,0 +1,557 @@
+{
+  "generatorId": "gen.proportion.ratio",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "sweepSeeds": 10000,
+  "invalid": 0,
+  "nonreproducible": 0,
+  "mcPolicy": {
+    "frOnlyTasksRejectingMc": 6,
+    "frOnlyTaskCount": 6,
+    "mcEligibleAcceptingMc": 5,
+    "mcEligibleNonBestBuyCount": 5,
+    "bestBuyRejectsFr": true,
+    "ok": true
+  },
+  "tasks": {
+    "simplify": {
+      "objectiveId": "SPI.MIDDLE.RATIO.SIMPLIFY.01",
+      "items": 809,
+      "declaredBand": [
+        1,
+        3
+      ],
+      "bandCounts": {
+        "1": 517,
+        "3": 292
+      },
+      "bandPct": {
+        "1": 63.9,
+        "3": 36.1
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "ratio": 809
+      },
+      "interactions": {
+        "free-response": 809
+      },
+      "highComplexity": 292,
+      "lowComplexity": 517,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "write_from_quantities": {
+      "objectiveId": "SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01",
+      "items": 855,
+      "declaredBand": [
+        1,
+        3
+      ],
+      "bandCounts": {
+        "1": 513,
+        "3": 342
+      },
+      "bandPct": {
+        "1": 60.0,
+        "3": 40.0
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "ratio": 855
+      },
+      "interactions": {
+        "free-response": 855
+      },
+      "highComplexity": 342,
+      "lowComplexity": 513,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "ratio_to_fraction": {
+      "objectiveId": "SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01",
+      "items": 829,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 497,
+        "3": 332
+      },
+      "bandPct": {
+        "2": 60.0,
+        "3": 40.0
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "exact-rational": 829
+      },
+      "interactions": {
+        "free-response": 829
+      },
+      "highComplexity": 332,
+      "lowComplexity": 497,
+      "fractionResultItems": 829,
+      "edgeItems": 0
+    },
+    "fraction_to_ratio": {
+      "objectiveId": "SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01",
+      "items": 869,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 721,
+        "3": 148
+      },
+      "bandPct": {
+        "2": 83.0,
+        "3": 17.0
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "ratio": 869
+      },
+      "interactions": {
+        "free-response": 869
+      },
+      "highComplexity": 148,
+      "lowComplexity": 721,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "share_two_part": {
+      "objectiveId": "SPI.MIDDLE.RATIO.SHARE_TWO_PART.01",
+      "items": 803,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 479,
+        "3": 324
+      },
+      "bandPct": {
+        "2": 59.7,
+        "3": 40.3
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "table-completion": 803
+      },
+      "interactions": {
+        "free-response": 803
+      },
+      "highComplexity": 324,
+      "lowComplexity": 479,
+      "fractionResultItems": 0,
+      "edgeItems": 352
+    },
+    "share_three_part": {
+      "objectiveId": "SPI.MIDDLE.RATIO.SHARE_THREE_PART.01",
+      "items": 847,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 303,
+        "4": 544
+      },
+      "bandPct": {
+        "3": 35.8,
+        "4": 64.2
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "table-completion": 847
+      },
+      "interactions": {
+        "free-response": 847
+      },
+      "highComplexity": 544,
+      "lowComplexity": 303,
+      "fractionResultItems": 0,
+      "edgeItems": 434
+    },
+    "missing_part": {
+      "objectiveId": "SPI.MIDDLE.RATIO.MISSING_PART.01",
+      "items": 839,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 618,
+        "3": 221
+      },
+      "bandPct": {
+        "2": 73.7,
+        "3": 26.3
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "integer": 839
+      },
+      "interactions": {
+        "free-response": 839
+      },
+      "highComplexity": 221,
+      "lowComplexity": 618,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "direct_proportion": {
+      "objectiveId": "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
+      "items": 820,
+      "declaredBand": [
+        2,
+        4
+      ],
+      "bandCounts": {
+        "2": 547,
+        "4": 273
+      },
+      "bandPct": {
+        "2": 66.7,
+        "4": 33.3
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "exact-rational": 273,
+        "integer": 547
+      },
+      "interactions": {
+        "free-response": 820
+      },
+      "highComplexity": 273,
+      "lowComplexity": 547,
+      "fractionResultItems": 273,
+      "edgeItems": 0
+    },
+    "inverse_proportion": {
+      "objectiveId": "SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01",
+      "items": 836,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 691,
+        "4": 145
+      },
+      "bandPct": {
+        "3": 82.7,
+        "4": 17.3
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "integer": 836
+      },
+      "interactions": {
+        "free-response": 836
+      },
+      "highComplexity": 145,
+      "lowComplexity": 691,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "unit_rate": {
+      "objectiveId": "SPI.MIDDLE.RATIO.UNIT_RATE.01",
+      "items": 812,
+      "declaredBand": [
+        2,
+        3
+      ],
+      "bandCounts": {
+        "2": 499,
+        "3": 313
+      },
+      "bandPct": {
+        "2": 61.5,
+        "3": 38.5
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "integer": 499,
+        "exact-rational": 313
+      },
+      "interactions": {
+        "free-response": 812
+      },
+      "highComplexity": 313,
+      "lowComplexity": 499,
+      "fractionResultItems": 313,
+      "edgeItems": 0
+    },
+    "best_buy": {
+      "objectiveId": "SPI.MIDDLE.RATIO.BEST_BUY.01",
+      "items": 847,
+      "declaredBand": [
+        3,
+        4
+      ],
+      "bandCounts": {
+        "3": 427,
+        "4": 420
+      },
+      "bandPct": {
+        "3": 50.4,
+        "4": 49.6
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "multiple-choice": 847
+      },
+      "interactions": {
+        "multiple-choice": 847
+      },
+      "highComplexity": 420,
+      "lowComplexity": 427,
+      "fractionResultItems": 0,
+      "edgeItems": 0
+    },
+    "simple_scale": {
+      "objectiveId": "SPI.MIDDLE.RATIO.SIMPLE_SCALE.01",
+      "items": 834,
+      "declaredBand": [
+        2,
+        4
+      ],
+      "bandCounts": {
+        "2": 323,
+        "4": 511
+      },
+      "bandPct": {
+        "2": 38.7,
+        "4": 61.3
+      },
+      "unreachableDeclaredBands": [],
+      "answerTypes": {
+        "integer": 323,
+        "exact-rational": 511
+      },
+      "interactions": {
+        "free-response": 834
+      },
+      "highComplexity": 511,
+      "lowComplexity": 323,
+      "fractionResultItems": 511,
+      "edgeItems": 0
+    }
+  },
+  "checkerMatrix": {
+    "cases": [
+      {
+        "expected": "2:3",
+        "response": "2:3",
+        "requireSimplest": true,
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "4:6",
+        "requireSimplest": true,
+        "expectedCode": "equivalent-not-simplified",
+        "actualCode": "equivalent-not-simplified",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "4:6",
+        "requireSimplest": false,
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "3:2",
+        "requireSimplest": true,
+        "expectedCode": "wrong-order",
+        "actualCode": "wrong-order",
+        "ok": true
+      },
+      {
+        "expected": "2:3:5",
+        "response": "4:6:10",
+        "requireSimplest": false,
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "2:3:5",
+        "response": "4:6:10",
+        "requireSimplest": true,
+        "expectedCode": "equivalent-not-simplified",
+        "actualCode": "equivalent-not-simplified",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2:5",
+        "requireSimplest": true,
+        "expectedCode": "wrong-ratio",
+        "actualCode": "wrong-ratio",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2:3:5",
+        "requireSimplest": true,
+        "expectedCode": "wrong-number-of-parts",
+        "actualCode": "wrong-number-of-parts",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "0:3",
+        "requireSimplest": true,
+        "expectedCode": "zero-or-negative-part",
+        "actualCode": "zero-or-negative-part",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "-2:3",
+        "requireSimplest": true,
+        "expectedCode": "zero-or-negative-part",
+        "actualCode": "zero-or-negative-part",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2 : 3",
+        "requireSimplest": true,
+        "expectedCode": "correct",
+        "actualCode": "correct",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2:3 cats",
+        "requireSimplest": true,
+        "expectedCode": "unparsed-trailing-text",
+        "actualCode": "unparsed-trailing-text",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2 to 3",
+        "requireSimplest": true,
+        "expectedCode": "unsupported-term",
+        "actualCode": "unsupported-term",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "",
+        "requireSimplest": true,
+        "expectedCode": "malformed-response",
+        "actualCode": "malformed-response",
+        "ok": true
+      },
+      {
+        "expected": "2:3",
+        "response": "2,3",
+        "requireSimplest": true,
+        "expectedCode": "unsupported-term",
+        "actualCode": "unsupported-term",
+        "ok": true
+      }
+    ],
+    "mismatches": 0,
+    "codesReached": [
+      "correct",
+      "equivalent-not-simplified",
+      "malformed-response",
+      "unparsed-trailing-text",
+      "unsupported-term",
+      "wrong-number-of-parts",
+      "wrong-order",
+      "wrong-ratio",
+      "zero-or-negative-part"
+    ],
+    "allCodesReachable": true,
+    "ratioCodes": [
+      "correct",
+      "equivalent-not-simplified",
+      "wrong-order",
+      "wrong-ratio",
+      "wrong-number-of-parts",
+      "zero-or-negative-part",
+      "unsupported-term",
+      "unparsed-trailing-text",
+      "malformed-response"
+    ]
+  },
+  "diagnosticCoverage": {
+    "exercisedByTask": {
+      "direct_proportion": [
+        "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE",
+        "MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY",
+        "MISC.RATIO.INVERSE_FOR_DIRECT"
+      ],
+      "inverse_proportion": [
+        "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE",
+        "MISC.RATIO.DIRECT_FOR_INVERSE",
+        "MISC.RATIO.MULTIPLIES_NOT_DIVIDES_UNITARY"
+      ],
+      "simple_scale": [
+        "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE",
+        "MISC.RATIO.SCALE_WRONG_DIRECTION"
+      ],
+      "missing_part": [
+        "MISC.RATIO.DIVIDES_BY_ONE_PART",
+        "MISC.RATIO.MULTIPLIES_NOT_DIVIDES_UNITARY"
+      ],
+      "simplify": [
+        "MISC.RATIO.ADDS_PARTS_WRONG",
+        "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED",
+        "MISC.RATIO.NOT_SIMPLIFIED"
+      ],
+      "write_from_quantities": [
+        "MISC.RATIO.NOT_SIMPLIFIED",
+        "MISC.RATIO.REVERSED_ORDER"
+      ],
+      "ratio_to_fraction": [
+        "MISC.RATIO.FRACTION_PART_OVER_PART",
+        "MISC.RATIO.PART_AS_WHOLE",
+        "MISC.RATIO.REVERSED_ORDER"
+      ],
+      "fraction_to_ratio": [
+        "MISC.RATIO.ADDS_PARTS_WRONG",
+        "MISC.RATIO.NOT_SIMPLIFIED",
+        "MISC.RATIO.PART_AS_WHOLE",
+        "MISC.RATIO.REVERSED_ORDER"
+      ],
+      "share_three_part": [
+        "MISC.RATIO.DIVIDES_BY_ONE_PART",
+        "MISC.RATIO.WRONG_TOTAL_PARTS"
+      ],
+      "share_two_part": [
+        "MISC.RATIO.DIVIDES_BY_ONE_PART",
+        "MISC.RATIO.PART_AS_WHOLE",
+        "MISC.RATIO.WRONG_TOTAL_PARTS"
+      ],
+      "unit_rate": [
+        "MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY"
+      ],
+      "best_buy": [
+        "MISC.RATIO.LOWEST_PRICE_NOT_BEST",
+        "MISC.RATIO.NO_UNIT_RATE_COMPARE"
+      ]
+    },
+    "totalRules": 16,
+    "exercised": 16,
+    "inapplicableRules": [],
+    "recomputationMismatches": 0
+  },
+  "allBandsReachable": true,
+  "failures": []
+}
