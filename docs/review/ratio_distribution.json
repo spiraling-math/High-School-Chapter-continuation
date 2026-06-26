@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.proportion.ratio",
-  "generatorVersion": "1.0.0",
-  "validatorVersion": "1.0.0",
+  "generatorVersion": "1.0.1",
+  "validatorVersion": "1.0.1",
   "sweepSeeds": 10000,
   "invalid": 0,
   "nonreproducible": 0,
@@ -215,26 +215,26 @@
         4
       ],
       "bandCounts": {
-        "2": 83,
-        "3": 450,
-        "4": 287
+        "2": 105,
+        "3": 449,
+        "4": 266
       },
       "bandPct": {
-        "2": 10.1,
-        "3": 54.9,
-        "4": 35.0
+        "2": 12.8,
+        "3": 54.8,
+        "4": 32.4
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
-        "exact-rational": 273,
-        "integer": 547
+        "integer": 567,
+        "exact-rational": 253
       },
       "interactions": {
         "free-response": 820
       },
-      "highComplexity": 273,
-      "lowComplexity": 547,
-      "fractionResultItems": 273,
+      "highComplexity": 253,
+      "lowComplexity": 567,
+      "fractionResultItems": 253,
       "edgeItems": 0
     },
     "inverse_proportion": {
@@ -272,24 +272,24 @@
         3
       ],
       "bandCounts": {
-        "2": 499,
-        "3": 313
+        "2": 500,
+        "3": 312
       },
       "bandPct": {
-        "2": 61.5,
-        "3": 38.5
+        "2": 61.6,
+        "3": 38.4
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
-        "integer": 499,
-        "exact-rational": 313
+        "integer": 500,
+        "exact-rational": 312
       },
       "interactions": {
         "free-response": 812
       },
-      "highComplexity": 313,
-      "lowComplexity": 499,
-      "fractionResultItems": 313,
+      "highComplexity": 312,
+      "lowComplexity": 500,
+      "fractionResultItems": 312,
       "edgeItems": 0
     },
     "best_buy": {
@@ -300,12 +300,12 @@
         4
       ],
       "bandCounts": {
-        "3": 451,
-        "4": 396
+        "3": 427,
+        "4": 420
       },
       "bandPct": {
-        "3": 53.2,
-        "4": 46.8
+        "3": 50.4,
+        "4": 49.6
       },
       "unreachableDeclaredBands": [],
       "answerTypes": {
@@ -314,8 +314,8 @@
       "interactions": {
         "multiple-choice": 847
       },
-      "highComplexity": 396,
-      "lowComplexity": 451,
+      "highComplexity": 420,
+      "lowComplexity": 427,
       "fractionResultItems": 0,
       "edgeItems": 0
     },

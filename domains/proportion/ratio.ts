@@ -17,8 +17,8 @@ import * as RM from "./ratio-misconceptions.ts";
 type Json = any;
 
 export const GENERATOR_ID = "gen.proportion.ratio";
-export const GENERATOR_VERSION = "1.0.0";
-export const VALIDATOR_VERSION = "1.0.0";
+export const GENERATOR_VERSION = "1.0.1";
+export const VALIDATOR_VERSION = "1.0.1";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 // --------------------------------------------------------------------------- //
@@ -143,20 +143,52 @@ const _SHARE_THEMES: [string, string[], string][] = [
   ["Sharing marbles", ["Gus", "Hana", "Ivan"], "marbles"],
   ["Sharing stickers", ["Jo", "Kim", "Lee"], "stickers"],
 ];
-const _RATE_THEMES: [string, string][] = [
+// CONTEXT-DOMAIN REGISTRY (correction #3) — mirror of ratio.py. Classifies every rate/quantity amount
+// noun into a domain that determines whether a FRACTIONAL answer is meaningful:
+//   count-discrete-integer-only : count nouns (books, apples, ...) — answer MUST be an integer.
+//   continuous-measure          : litres, metres, kilograms, hours, ... — rational allowed.
+//   abstract-number             : units, points, parts — rational allowed (simple_scale per #5).
+//   average-rate-allowed        : a count noun used ONLY with explicit "average ... per ..." wording —
+//                                 rational allowed. Reserved for v1.0.1.
+const CONTEXT_DOMAIN_COUNT = "count-discrete-integer-only";
+const CONTEXT_DOMAIN_CONTINUOUS = "continuous-measure";
+const CONTEXT_DOMAIN_ABSTRACT = "abstract-number";
+const CONTEXT_DOMAIN_AVERAGE = "average-rate-allowed";
+
+const _CONTEXT_DOMAINS: Record<string, string> = {
+  books: CONTEXT_DOMAIN_COUNT,
+  apples: CONTEXT_DOMAIN_COUNT,
+  pencils: CONTEXT_DOMAIN_COUNT,
+  eggs: CONTEXT_DOMAIN_COUNT,
+  litres: CONTEXT_DOMAIN_CONTINUOUS,
+  metres: CONTEXT_DOMAIN_CONTINUOUS,
+  kilograms: CONTEXT_DOMAIN_CONTINUOUS,
+  grams: CONTEXT_DOMAIN_CONTINUOUS,
+  kilometres: CONTEXT_DOMAIN_CONTINUOUS,
+  "litres of water": CONTEXT_DOMAIN_CONTINUOUS,
+};
+
+// Rate themes are (amountNoun, perNoun) split by the amount noun's domain. An INTEGER answer may use
+// either a count-discrete OR a continuous theme; a FRACTIONAL answer must use a continuous theme.
+const _RATE_THEMES_COUNT: [string, string][] = [
   ["books", "shelves"],
   ["apples", "bags"],
-  ["pages", "minutes"],
+  ["pencils", "boxes"],
+  ["eggs", "trays"],
+];
+const _RATE_THEMES_CONTINUOUS: [string, string][] = [
   ["litres", "tanks"],
   ["kilometres", "hours"],
-  ["words", "lines"],
+  ["grams", "spoons"],
+  ["metres", "rolls"],
+  ["kilograms", "sacks"],
 ];
-const _BUY_THEMES: [string, string, string][] = [
-  ["rice", "grams", "pack"],
-  ["juice", "millilitres", "bottle"],
-  ["nails", "nails", "box"],
-  ["paper", "sheets", "ream"],
-  ["seeds", "seeds", "packet"],
+const _BUY_THEMES: [string, string][] = [
+  ["pencils", "pencil"],
+  ["apples", "apple"],
+  ["notebooks", "notebook"],
+  ["markers", "marker"],
+  ["erasers", "eraser"],
 ];
 const _INVERSE_THEMES: [string, string, string][] = [
   ["workers", "days", "to finish the job"],
@@ -164,10 +196,13 @@ const _INVERSE_THEMES: [string, string, string][] = [
   ["machines", "minutes", "to complete the batch"],
   ["painters", "days", "to paint the hall"],
 ];
-const _SCALE_THEMES: [string, string, string, string][] = [
-  ["map", "the real distance", "centimetres on the map", "kilometres on the ground"],
-  ["model", "the real length", "centimetres on the model", "metres in real life"],
-  ["plan", "the real width", "centimetres on the plan", "metres in the building"],
+// Dimensionless scale contexts (correction #5, POLICY A): NO cm/km/m anywhere.
+// (kind, srcUnitWord, dstUnitWord) where the units are abstract "... units".
+const _SCALE_THEMES: [string, string, string][] = [
+  ["model", "model unit", "real unit"],
+  ["plan", "plan unit", "actual unit"],
+  ["drawing", "drawing unit", "real unit"],
+  ["map", "map unit", "ground unit"],
 ];
 
 function _n(rng: Mulberry32, k: number): number {
@@ -180,6 +215,131 @@ function _pick<T>(rng: Mulberry32, items: T[]): T {
 
 function _dispRat(f: Rational): string {
   return f.den === 1 ? String(f.num) : `${f.num}/${f.den}`;
+}
+
+// GRAMMATICAL NOUN REGISTRY (follow-up correction) — mirror of ratio.py _NOUNS. Every noun a count can
+// precede is an EXPLICIT (singular, plural) pair, keyed by the PLURAL form the theme tables store.
+const _NOUNS: Record<string, [string, string]> = {
+  books: ["book", "books"],
+  shelves: ["shelf", "shelves"],
+  apples: ["apple", "apples"],
+  bags: ["bag", "bags"],
+  pencils: ["pencil", "pencils"],
+  boxes: ["box", "boxes"],
+  eggs: ["egg", "eggs"],
+  trays: ["tray", "trays"],
+  litres: ["litre", "litres"],
+  tanks: ["tank", "tanks"],
+  kilometres: ["kilometre", "kilometres"],
+  hours: ["hour", "hours"],
+  grams: ["gram", "grams"],
+  spoons: ["spoon", "spoons"],
+  metres: ["metre", "metres"],
+  rolls: ["roll", "rolls"],
+  kilograms: ["kilogram", "kilograms"],
+  sacks: ["sack", "sacks"],
+  notebooks: ["notebook", "notebooks"],
+  markers: ["marker", "markers"],
+  erasers: ["eraser", "erasers"],
+  tokens: ["token", "tokens"],
+  oranges: ["orange", "oranges"],
+  pears: ["pear", "pears"],
+  boys: ["boy", "boys"],
+  girls: ["girl", "girls"],
+  teachers: ["teacher", "teachers"],
+  roses: ["rose", "roses"],
+  tulips: ["tulip", "tulips"],
+  daisies: ["daisy", "daisies"],
+  "red paint": ["red paint", "red paint"],
+  "white paint": ["white paint", "white paint"],
+  "blue paint": ["blue paint", "blue paint"],
+  flour: ["flour", "flour"],
+  sugar: ["sugar", "sugar"],
+  butter: ["butter", "butter"],
+  pieces: ["piece", "pieces"],
+  people: ["person", "people"],
+  plants: ["plant", "plants"],
+  pounds: ["pound", "pounds"],
+  sweets: ["sweet", "sweets"],
+  marbles: ["marble", "marbles"],
+  stickers: ["sticker", "stickers"],
+  workers: ["worker", "workers"],
+  taps: ["tap", "taps"],
+  machines: ["machine", "machines"],
+  painters: ["painter", "painters"],
+  days: ["day", "days"],
+  minutes: ["minute", "minutes"],
+  parts: ["part", "parts"],
+};
+
+function _isOne(n: Json): boolean {
+  const val = n instanceof Rational && n.den === 1 ? n.num : n;
+  return val === 1;
+}
+
+function _forms(word: string): [string, string] {
+  // (singular, plural) for a noun stored in its PLURAL form; regular '+s' fallback for words not
+  // in the registry (e.g. dynamically composed scale unit words). Mirror of ratio.py _forms.
+  if (Object.prototype.hasOwnProperty.call(_NOUNS, word)) {
+    return _NOUNS[word] as [string, string];
+  }
+  return [word, word + "s"];
+}
+
+function _countPair(n: Json, sing: string, plur: string): string {
+  return `${_fmtVal(n)} ${_isOne(n) ? sing : plur}`;
+}
+
+function _count(n: Json, word: string): string {
+  const [sing, plur] = _forms(word);
+  return _countPair(n, sing, plur);
+}
+
+function _singular(word: string): string {
+  return _forms(word)[0];
+}
+
+// Grammatical count phrase for a dimensionless scale unit (correction #5): "1 model unit" /
+// "2 model units" (scale words pluralize regularly via the _forms '+s' fallback). Mirror of ratio.py.
+function _units(n: Json, word: string): string {
+  return _count(n, word);
+}
+
+// Plural forms that MUST NOT follow a count of 1 or the word "per" (mirror of ratio.py _PLURAL_FORMS).
+const _PLURAL_FORMS: Set<string> = new Set<string>(
+  [
+    ...Object.values(_NOUNS)
+      .filter(([sing, plur]) => sing !== plur)
+      .map(([, plur]) => plur),
+    "units",
+    "tokens",
+    "parts",
+    "shelve",
+  ],
+);
+const _GRAMMAR_RE_ONE = /\b1 ([A-Za-z]+)\b/g;
+const _GRAMMAR_RE_PER = /\bper ([A-Za-z]+)\b/g;
+
+function _grammarViolations(text: string): string[] {
+  // "1 <plural>" or "per <plural>"/"per shelve" violations; mass nouns (sing == plur) exempt.
+  // Mirror of ratio.py _grammar_violations.
+  const out: string[] = [];
+  let m: RegExpExecArray | null;
+  _GRAMMAR_RE_ONE.lastIndex = 0;
+  while ((m = _GRAMMAR_RE_ONE.exec(text)) !== null) {
+    const w = m[1] as string;
+    if (_PLURAL_FORMS.has(w)) {
+      out.push(`1 ${w}`);
+    }
+  }
+  _GRAMMAR_RE_PER.lastIndex = 0;
+  while ((m = _GRAMMAR_RE_PER.exec(text)) !== null) {
+    const w = m[1] as string;
+    if (_PLURAL_FORMS.has(w)) {
+      out.push(`per ${w}`);
+    }
+  }
+  return out;
 }
 
 function _esc(s: string): string {
@@ -295,7 +455,8 @@ function _drawMissingPart(rng: Mulberry32): Json | null {
 }
 
 function _drawDirectProportion(rng: Mulberry32): Json | null {
-  const [a, b] = _pick(rng, _RATE_THEMES);
+  // Correction #3: numeric draw FIRST, compute the EXACT answer, then pick a context whose domain
+  // matches (integer -> count OR continuous; fractional -> continuous only). Mirror of ratio.py.
   const quantity = 2 + _n(rng, 7);
   const oneUnitNum = 1 + _n(rng, 12);
   const wholeResult = _n(rng, 2) === 0;
@@ -309,6 +470,9 @@ function _drawDirectProportion(rng: Mulberry32): Json | null {
   if (target === quantity) {
     return null;
   }
+  const answer = new Rational(total, quantity).mul(Rational.from(target));
+  const pool = answer.den === 1 ? [..._RATE_THEMES_COUNT, ..._RATE_THEMES_CONTINUOUS] : _RATE_THEMES_CONTINUOUS;
+  const [a, b] = _pick(rng, pool);
   return { task: "direct_proportion", givenLabel: a, perLabel: b, quantity, total, target };
 }
 
@@ -331,7 +495,8 @@ function _drawInverseProportion(rng: Mulberry32): Json | null {
 }
 
 function _drawUnitRate(rng: Mulberry32): Json | null {
-  const [a, b] = _pick(rng, _RATE_THEMES);
+  // Correction #3: numeric draw FIRST, compute the EXACT rate, then pick a context by domain
+  // (fractional rate -> continuous-measure only). Mirror of ratio.py.
   const quantity = 2 + _n(rng, 7);
   const whole = _n(rng, 2) === 0;
   let total: number;
@@ -343,28 +508,36 @@ function _drawUnitRate(rng: Mulberry32): Json | null {
   if (total === 0) {
     return null;
   }
+  const rate = new Rational(total, quantity);
+  const pool = rate.den === 1 ? [..._RATE_THEMES_COUNT, ..._RATE_THEMES_CONTINUOUS] : _RATE_THEMES_CONTINUOUS;
+  const [a, b] = _pick(rng, pool);
   return { task: "unit_rate", amountLabel: a, perLabel: b, total, quantity };
 }
 
 function _drawBestBuy(rng: Mulberry32): Json | null {
-  const [product, unit, pack] = _pick(rng, _BUY_THEMES);
+  // Correction #4: COST-LIKE DENOMINATOR policy (no currency). Each option is
+  // "<itemCount> <items> for <tokenCost> tokens"; unit rate = tokenCost/itemCount (tokens per item);
+  // best = strict MINIMUM tokens-per-item. Mirror of ratio.py.
+  const [items, item] = _pick(rng, _BUY_THEMES);
   const nOpts = 2 + _n(rng, 2);
   const options: Json[] = [];
   for (let i = 0; i < nOpts; i++) {
-    const packSize = 2 + _n(rng, 9);
-    const per = 1 + _n(rng, 12);
-    const totalAmount = packSize * per;
+    const itemCount = 3 + _n(rng, 28); // 3..30
+    const tokenCost = 2 + _n(rng, 11); // 2..12
     options.push({
       label: String.fromCharCode("A".charCodeAt(0) + i),
-      packSize,
-      totalAmount,
-      unitRate: { num: totalAmount, den: packSize },
+      itemCount,
+      tokenCost,
+      unitRate: { num: tokenCost, den: itemCount },
     });
   }
-  // require a UNIQUE strict-minimum exact unit rate (redraw on a tie)
-  const rates = options.map((o) => new Rational(o.totalAmount as number, o.packSize as number));
-  // require ALL option unit rates PAIRWISE DISTINCT — two equal non-winning rates would render two
-  // byte-identical MC option displays. Redraw on any tie. (Mirror of Python `len(set(rates)) != len`.)
+  // require all (itemCount, tokenCost) displays distinct, all cost-per-item rates pairwise distinct,
+  // AND a unique strict-MINIMUM cost-per-item. Redraw on any tie. (Mirror of ratio.py.)
+  const displays = options.map((o) => `${o.itemCount}:${o.tokenCost}`);
+  if (new Set(displays).size !== displays.length) {
+    return null;
+  }
+  const rates = options.map((o) => new Rational(o.tokenCost as number, o.itemCount as number));
   let anyTie = false;
   for (let i = 0; i < rates.length && !anyTie; i++) {
     for (let j = i + 1; j < rates.length; j++) {
@@ -386,12 +559,13 @@ function _drawBestBuy(rng: Mulberry32): Json | null {
     return null;
   }
   const correct = options[winners[0] as number].label as string;
-  return { task: "best_buy", product, unit, pack, options, correctLabel: correct };
+  return { task: "best_buy", items, item, options, correctLabel: correct };
 }
 
 function _drawSimpleScale(rng: Mulberry32): Json | null {
-  const [kind, _what, srcUnit, dstUnit] = _pick(rng, _SCALE_THEMES);
-  void _what;
+  // Correction #5 (POLICY A, dimensionless): NO cm/km/m. Abstract "... unit" words; the answer is the
+  // BARE NUMBER of dst units = value*num/den (no cross-unit conversion). Mirror of ratio.py.
+  const [kind, srcUnit, dstUnit] = _pick(rng, _SCALE_THEMES);
   const fnum = 1 + _n(rng, 9);
   const fden = 1 + _n(rng, 9);
   if (fnum === fden) {
@@ -508,7 +682,8 @@ function _acceptable(task: string, params: Json): boolean {
     return sol !== null && (sol as number) > 0;
   }
   if (task === "best_buy") {
-    const rates = (params.options as Json[]).map((o) => new Rational(o.totalAmount as number, o.packSize as number));
+    // Correction #4: cost-per-item = tokenCost/itemCount; best = strict MIN tokens-per-item.
+    const rates = (params.options as Json[]).map((o) => new Rational(o.tokenCost as number, o.itemCount as number));
     const mn = _minRational(rates);
     return rates.filter((r) => r.equals(mn)).length === 1;
   }
@@ -609,7 +784,7 @@ function _barSegments(task: string, params: Json): [number[], boolean[], string[
   }
   if (task === "share_two_part" || task === "share_three_part") {
     const parts = params.parts as number[];
-    const labels = (params.labels as string[]).map((lab, i) => `${lab} (${parts[i]} parts)`);
+    const labels = (params.labels as string[]).map((lab, i) => `${lab} (${_count(parts[i], "parts")})`);
     return [parts.slice(), parts.map(() => false), labels];
   }
   if (task === "missing_part") {
@@ -718,7 +893,7 @@ function _barCaption(task: string, params: Json): string {
     return `Bar model: ${params.num} of ${params.den} equal parts shaded`;
   }
   if (task === "share_two_part" || task === "share_three_part") {
-    return `Bar model: ${params.total} ${params.unit} shared in ${RC.formatRatio(params.parts as number[])}`;
+    return `Bar model: ${_count(params.total, params.unit as string)} shared in ${RC.formatRatio(params.parts as number[])}`;
   }
   if (task === "missing_part") {
     return `Bar model: parts in the ratio ${RC.formatRatio(params.parts as number[])}`;
@@ -853,15 +1028,16 @@ function _renderTable(task: string, params: Json, answerKey: boolean, acc: Json)
   const colW = Math.floor((x1 - x0) / (n + 1));
   const y0 = 80;
   const rowH = 56;
+  // Correction #4: cost-like columns — items + tokens; the unknown row is COST PER ITEM.
   const rows = [
     "Option",
-    `Total ${params.unit}`,
-    `${_capitalize(params.pack as string)} size`,
-    `Unit rate (${params.unit} per item)`,
+    `${_capitalize(params.items as string)}`,
+    "Tokens",
+    `Cost per ${params.item} (tokens)`,
   ];
   const nRows = rows.length;
   out.push('<g class="rt-base">');
-  out.push(`<text class="rt-lbl" x="${Math.floor(TBL_W / 2)}" y="48" text-anchor="middle">${_esc("Compare the options by unit rate")}</text>`);
+  out.push(`<text class="rt-lbl" x="${Math.floor(TBL_W / 2)}" y="48" text-anchor="middle">${_esc("Compare the options by cost per item")}</text>`);
   for (let r = 0; r < nRows + 1; r++) {
     const y = y0 + r * rowH;
     out.push(`<line class="rt-table-line" x1="${x0}" y1="${y}" x2="${x0 + colW * (n + 1)}" y2="${y}"/>`);
@@ -878,8 +1054,8 @@ function _renderTable(task: string, params: Json, answerKey: boolean, acc: Json)
     const o = options[i];
     const cx = x0 + colW * (i + 1) + Math.floor(colW / 2);
     out.push(`<text class="rt-lbl" x="${cx}" y="${y0 + 36}" text-anchor="middle">${_esc(o.label as string)}</text>`);
-    out.push(`<text class="rt-lbl" x="${cx}" y="${y0 + rowH + 36}" text-anchor="middle">${o.totalAmount}</text>`);
-    out.push(`<text class="rt-lbl" x="${cx}" y="${y0 + 2 * rowH + 36}" text-anchor="middle">${o.packSize}</text>`);
+    out.push(`<text class="rt-lbl" x="${cx}" y="${y0 + rowH + 36}" text-anchor="middle">${o.itemCount}</text>`);
+    out.push(`<text class="rt-lbl" x="${cx}" y="${y0 + 2 * rowH + 36}" text-anchor="middle">${o.tokenCost}</text>`);
   }
   out.push("</g>");
   const ry = y0 + 3 * rowH + 36;
@@ -888,7 +1064,7 @@ function _renderTable(task: string, params: Json, answerKey: boolean, acc: Json)
     for (let i = 0; i < options.length; i++) {
       const o = options[i];
       const cx = x0 + colW * (i + 1) + Math.floor(colW / 2);
-      const rate = new Rational(o.totalAmount as number, o.packSize as number);
+      const rate = new Rational(o.tokenCost as number, o.itemCount as number);
       const mark = o.label === (params.correctLabel as string) ? " ✓" : "";
       out.push(`<text class="rt-unknown-lbl" x="${cx}" y="${ry}" text-anchor="middle">${_esc(_dispRat(rate) + mark)}</text>`);
     }
@@ -1073,12 +1249,12 @@ function _difficulty(task: string, params: Json): Json {
 // --------------------------------------------------------------------------- //
 function _dataTable(task: string, params: Json, answerKey: boolean): Json {
   if (task === "share_two_part" || task === "share_three_part") {
-    let rows: string[][] = (params.labels as string[]).map((lab, i) => [lab, `${(params.parts as number[])[i]} parts`]);
+    let rows: string[][] = (params.labels as string[]).map((lab, i) => [lab, _count((params.parts as number[])[i], "parts")]);
     if (answerKey) {
       const shares = RC.share(params.total as number, params.parts as number[]) as number[];
       rows = (params.labels as string[]).map((lab, i) => [
         lab,
-        `${(params.parts as number[])[i]} parts -> ${shares[i]} ${params.unit}`,
+        `${_count((params.parts as number[])[i], "parts")} -> ${_count(shares[i], params.unit as string)}`,
       ]);
     }
     return { columns: ["Share", "Ratio part"], rows };
@@ -1090,27 +1266,27 @@ function _dataTable(task: string, params: Json, answerKey: boolean): Json {
       ["", ""],
       ["", ""],
     ];
-    rows[ki] = [(params.labels as string[])[ki] as string, `${(params.parts as number[])[ki]} parts = ${params.knownValue}`];
+    rows[ki] = [(params.labels as string[])[ki] as string, `${_count((params.parts as number[])[ki], "parts")} = ${params.knownValue}`];
     rows[mi] = [
       (params.labels as string[])[mi] as string,
-      `${(params.parts as number[])[mi]} parts = ` + (answerKey ? String(_solve(task, params)) : "?"),
+      `${_count((params.parts as number[])[mi], "parts")} = ` + (answerKey ? String(_solve(task, params)) : "?"),
     ];
     return { columns: ["Part", "Value"], rows };
   }
   if (task === "best_buy") {
-    const cols = ["Option", `Total ${params.unit}`, "Pack size"];
+    const cols = ["Option", _capitalize(params.items as string), "Tokens"];
     let rows: string[][] = (params.options as Json[]).map((o) => [
       o.label as string,
-      String(o.totalAmount),
-      String(o.packSize),
+      String(o.itemCount),
+      String(o.tokenCost),
     ]);
     if (answerKey) {
-      cols.push("Unit rate");
+      cols.push(`Cost per ${params.item} (tokens)`);
       rows = (params.options as Json[]).map((o) => [
         o.label as string,
-        String(o.totalAmount),
-        String(o.packSize),
-        _dispRat(new Rational(o.totalAmount as number, o.packSize as number)) +
+        String(o.itemCount),
+        String(o.tokenCost),
+        _dispRat(new Rational(o.tokenCost as number, o.itemCount as number)) +
           (o.label === (params.correctLabel as string) ? " (best)" : ""),
       ]);
     }
@@ -1150,7 +1326,7 @@ function _accessibility(task: string, params: Json, answerKey: boolean): Json {
     base = "A double number line aligning the two proportional quantities.";
     title = "Double number line";
   } else if (fig === "table") {
-    base = "A comparison table of the options' total amount and pack size.";
+    base = "A comparison table of each option's item count and token cost.";
     title = "Best-buy comparison table";
   } else {
     base = "No figure; the data is given in the prompt.";
@@ -1183,7 +1359,7 @@ function _instruction(task: string, params: Json): string {
   }
   if (task === "write_from_quantities") {
     const qs = (params.quantities as number[])
-      .map((v, i) => `${v} ${(params.labels as string[])[i]}`)
+      .map((v, i) => _count(v, (params.labels as string[])[i] as string))
       .join(", ");
     return (
       `In a ${(params.title as string).toLowerCase()} there are ${qs}. ` +
@@ -1208,7 +1384,7 @@ function _instruction(task: string, params: Json): string {
   }
   if (task === "share_two_part" || task === "share_three_part") {
     return (
-      `Share ${params.total} ${params.unit} between ${(params.labels as string[]).join(", ")} ` +
+      `Share ${_count(params.total, params.unit as string)} between ${(params.labels as string[]).join(", ")} ` +
       `in the ratio ${RC.formatRatio(params.parts as number[])}. Give each share.`
     );
   }
@@ -1217,49 +1393,56 @@ function _instruction(task: string, params: Json): string {
     const mi = params.missingIndex as number;
     return (
       `${(params.labels as string[])[ki]} and ${(params.labels as string[])[mi]} share an amount in the ratio ` +
-      `${RC.formatRatio(params.parts as number[])}. ${(params.labels as string[])[ki]} gets ${params.knownValue} ` +
-      `${params.unit}. How many ${params.unit} does ${(params.labels as string[])[mi]} get?`
+      `${RC.formatRatio(params.parts as number[])}. ${(params.labels as string[])[ki]} gets ` +
+      `${_count(params.knownValue, params.unit as string)}. How many ${_forms(params.unit as string)[1]} ` +
+      `does ${(params.labels as string[])[mi]} get?`
     );
   }
   if (task === "direct_proportion") {
     return (
-      `${params.quantity} ${params.perLabel} hold ${params.total} ${params.givenLabel}. ` +
-      `How many ${params.givenLabel} are in ${params.target} ${params.perLabel}? ` +
+      `${_count(params.quantity, params.perLabel as string)} hold ` +
+      `${_count(params.total, params.givenLabel as string)}. ` +
+      `How many ${_forms(params.givenLabel as string)[1]} are in ${_count(params.target, params.perLabel as string)}? ` +
       `Give an exact value.`
     );
   }
   if (task === "inverse_proportion") {
     return (
-      `${params.q1} ${params.agent} take ${params.v1} ${params.unit} ${params.tail}. ` +
-      `How many ${params.unit} would ${params.q2} ${params.agent} take ${params.tail}?`
+      `${_count(params.q1, params.agent as string)} take ${_count(params.v1, params.unit as string)} ${params.tail}. ` +
+      `How many ${_forms(params.unit as string)[1]} would ${_count(params.q2, params.agent as string)} take ${params.tail}?`
     );
   }
   if (task === "unit_rate") {
-    const perLabel = params.perLabel as string;
-    const singular = perLabel.endsWith("s") ? perLabel.slice(0, -1) : perLabel;
     return (
-      `${params.quantity} ${params.perLabel} hold ${params.total} ${params.amountLabel}. ` +
-      `How many ${params.amountLabel} per ${singular}? ` +
+      `${_count(params.quantity, params.perLabel as string)} hold ` +
+      `${_count(params.total, params.amountLabel as string)}. ` +
+      `How many ${_forms(params.amountLabel as string)[1]} per ${_singular(params.perLabel as string)}? ` +
       `Give an exact value.`
     );
   }
   if (task === "best_buy") {
+    // Correction #4: cost-like — "<itemCount> <items> for <tokenCost> tokens"; best = lowest cost
+    // per <singular-item>. itemCount/tokenCost routed through _count for grammatical agreement.
     const opts = (params.options as Json[])
       .map(
         (o) =>
-          `option ${o.label} has ${o.totalAmount} ${params.unit} in a ${params.pack} of ${o.packSize}`,
+          `option ${o.label} offers ${_countPair(o.itemCount, params.item as string, params.items as string)} ` +
+          `for ${_count(o.tokenCost, "tokens")}`,
       )
       .join("; ");
     return (
-      `You can buy ${params.product}: ${opts}. Which option is the best value ` +
-      `(the lowest amount per item)? Choose the best option.`
+      `You can buy ${params.items}: ${opts}. Which option is the best value ` +
+      `(the lowest cost per ${params.item})? Choose the best option.`
     );
   }
   if (task === "simple_scale") {
+    // Correction #5 (POLICY A, dimensionless): grammatical "... unit/units"; a BARE-NUMBER answer of
+    // dst units; NO cross-unit conversion.
     return (
-      `On a ${params.scaleKind}, ${params.factorDen} ${params.srcUnit} represent ` +
-      `${params.factorNum} ${params.dstUnit}. What do ${params.value} ${params.srcUnit} ` +
-      `represent? Give an exact value.`
+      `On a ${params.scaleKind}, ${_units(params.factorDen, params.srcUnit as string)} represent ` +
+      `${_units(params.factorNum, params.dstUnit as string)}. A part measures ` +
+      `${_units(params.value, params.srcUnit as string)}. How many ${params.dstUnit}s long is it ` +
+      `in reality? Give an exact value.`
     );
   }
   throw new Error(task);
@@ -1334,20 +1517,24 @@ function _solution(task: string, params: Json): Json {
   } else if (task === "unit_rate") {
     step("Divide the total by the number of units", `${params.total} ÷ ${params.quantity} = ${_dispRat(sol as Rational)}`);
   } else if (task === "best_buy") {
+    // Correction #4: cost per item = tokens ÷ items; the best value is the lowest cost per item.
+    // Every count->noun (tokens, items, the rate's tokens) routes through _count for agreement
+    // (a rate of exactly 1 reads "1 token per <item>", never "1 tokens").
     for (const o of params.options as Json[]) {
-      const rate = new Rational(o.totalAmount as number, o.packSize as number);
+      const rate = new Rational(o.tokenCost as number, o.itemCount as number);
       step(
-        `Unit rate of option ${o.label}`,
-        `${o.totalAmount} ÷ ${o.packSize} = ${_dispRat(rate)} ${params.unit} per item`,
+        `Cost per ${params.item} of option ${o.label}`,
+        `${_count(o.tokenCost, "tokens")} ÷ ${_countPair(o.itemCount, params.item as string, params.items as string)} ` +
+          `= ${_count(rate, "tokens")} per ${params.item}`,
       );
     }
     const rates: Record<string, Rational> = {};
     for (const o of params.options as Json[]) {
-      rates[o.label as string] = new Rational(o.totalAmount as number, o.packSize as number);
+      rates[o.label as string] = new Rational(o.tokenCost as number, o.itemCount as number);
     }
     step(
-      "Compare the unit rates and choose the strict minimum",
-      `lowest is ${_dispRat(rates[params.correctLabel as string] as Rational)} -> option ${params.correctLabel}`,
+      "Compare the cost per item and choose the strict minimum",
+      `the lowest cost per ${params.item} is ${_dispRat(rates[params.correctLabel as string] as Rational)} -> option ${params.correctLabel}`,
     );
   } else if (task === "simple_scale") {
     const v = params.value as number;
@@ -1577,7 +1764,7 @@ export function generate(seed: number, config?: Json): Json {
       const opt: Json = {
         label: o.label,
         value: o.label,
-        display: `${o.totalAmount} ${params.unit} per ${params.pack} of ${o.packSize}`,
+        display: `${_countPair(o.itemCount, params.item as string, params.items as string)} for ${_count(o.tokenCost, "tokens")}`,
         correct,
       };
       if (!correct && o.label in diags) {
@@ -1703,6 +1890,69 @@ export function validate(item: Json): Json {
     if (task === "simple_scale") {
       add("scale-recomputes", f.equals(Rational.from(p.value as number).mul(new Rational(p.factorNum as number, p.factorDen as number))));
     }
+    // --- correction #3 (context-value compatibility) for direct_proportion / unit_rate ---
+    if (task === "direct_proportion" || task === "unit_rate") {
+      const amountNoun = (task === "direct_proportion" ? p.givenLabel : p.amountLabel) as string;
+      const domain = _CONTEXT_DOMAINS[amountNoun];
+      const isInt = f.den === 1;
+      const compatible = domain !== undefined && (domain !== CONTEXT_DOMAIN_COUNT || isInt);
+      add("context-answer-compatible", compatible, `${amountNoun} domain=${domain} answerInt=${isInt}`);
+      add(
+        "discrete-count-answer-integer",
+        domain !== CONTEXT_DOMAIN_COUNT || isInt,
+        "a count-discrete context carries an integer answer",
+      );
+      add(
+        "rational-answer-uses-continuous-or-average-context",
+        isInt || domain === CONTEXT_DOMAIN_CONTINUOUS || domain === CONTEXT_DOMAIN_ABSTRACT || domain === CONTEXT_DOMAIN_AVERAGE,
+        "a fractional answer uses a continuous / abstract / average context",
+      );
+      add(
+        "no-fractional-books-students-sheets-or-people",
+        !(domain === CONTEXT_DOMAIN_COUNT && !isInt),
+        "no count-noun context carries a fractional answer",
+      );
+      if (task === "unit_rate") {
+        add(
+          "unit-rate-context-allows-rational",
+          isInt || domain === CONTEXT_DOMAIN_CONTINUOUS || domain === CONTEXT_DOMAIN_ABSTRACT || domain === CONTEXT_DOMAIN_AVERAGE,
+          "a fractional unit rate uses a continuous / abstract / average context",
+        );
+      }
+    }
+    // --- correction #5 (simple-scale wording + answer contract) ---
+    if (task === "simple_scale") {
+      const instr = item.prompt.instruction as string;
+      const grammatical =
+        instr.indexOf(_units(p.factorDen, p.srcUnit as string)) !== -1 &&
+        instr.indexOf(_units(p.factorNum, p.dstUnit as string)) !== -1 &&
+        instr.indexOf(_units(p.value, p.srcUnit as string)) !== -1;
+      add("scale-unit-wording-grammatical", grammatical, "displayed counts use grammatical singular/plural units");
+      let spOk = true;
+      for (const [cnt, word] of [
+        [p.factorDen, p.srcUnit],
+        [p.factorNum, p.dstUnit],
+        [p.value, p.srcUnit],
+      ] as [number, string][]) {
+        const phrase = _units(cnt, word);
+        if (cnt === 1 && phrase.endsWith("s")) spOk = false;
+        if (cnt !== 1 && !phrase.endsWith("s")) spOk = false;
+      }
+      add("singular-plural-units-correct", spOk, "1 <word> vs n <word>s");
+      add(
+        "scale-answer-contract-matches-prompt",
+        instr.indexOf(`How many ${p.dstUnit}s long`) !== -1 &&
+          f.equals(Rational.from(p.value as number).mul(new Rational(p.factorNum as number, p.factorDen as number))),
+        "prompt asks a bare number of dst units; answer is that number",
+      );
+      const mtokens = ["cm", "km", " m ", "centimetre", "kilometre", "metre", "centimeter", "kilometer", "meter"];
+      add(
+        "measurement-unit-answer-not-bare-number",
+        !mtokens.some((tok) => instr.indexOf(tok) !== -1),
+        "no measurement-unit token in a dimensionless scale prompt",
+      );
+      add("no-cross-unit-conversion-in-v1", p.direction === "multiply", "a single multiplicative scale factor; no cross-unit conversion");
+    }
   } else if (kind === "table") {
     const cells = answer.canonical.cells as Json[];
     const byLabel: Record<string, number> = {};
@@ -1726,9 +1976,10 @@ export function validate(item: Json): Json {
     );
     add("total-divisible-by-parts", (p.total as number) % (p.parts as number[]).reduce((s2, v) => s2 + v, 0) === 0);
   } else if (kind === "mc") {
+    // best_buy: independent strict-minimum COST-PER-ITEM (tokens per item) re-derivation (#4).
     const rates: Record<string, Rational> = {};
     for (const o of p.options as Json[]) {
-      rates[o.label as string] = new Rational(o.totalAmount as number, o.packSize as number);
+      rates[o.label as string] = new Rational(o.tokenCost as number, o.itemCount as number);
     }
     const mn = _minRational(Object.values(rates));
     const winners = Object.keys(rates).filter((lab) => (rates[lab] as Rational).equals(mn));
@@ -1740,10 +1991,46 @@ export function validate(item: Json): Json {
     );
     const witOk = (p.options as Json[]).every((o) =>
       new Rational(o.unitRate.num as number, o.unitRate.den as number).equals(
-        new Rational(o.totalAmount as number, o.packSize as number),
+        new Rational(o.tokenCost as number, o.itemCount as number),
       ),
     );
     add("best-buy-unit-rate-witness-exact", witOk);
+    // --- correction #4 new checks: cost-per-item direction + cost-like (token) denominator ---
+    const instr = item.prompt.instruction as string;
+    add(
+      "best-buy-rate-direction-consistent",
+      (p.options as Json[]).every((o) => o.unitRate.den === o.itemCount && o.unitRate.num === o.tokenCost),
+      "unitRate is tokenCost/itemCount (cost per item) for every option",
+    );
+    const noCurrency = !["$", "£", "€", "¥"].some((sym) => instr.indexOf(sym) !== -1);
+    add(
+      "best-buy-context-has-cost-like-denominator",
+      instr.indexOf("tokens") !== -1 && noCurrency,
+      "cost expressed in tokens, no currency symbol",
+    );
+    add(
+      "best-buy-strict-minimum-cost-per-unit",
+      winners.length === 1 && (rates[p.correctLabel as string] as Rational).equals(mn),
+      "the correct option is the unique strict-minimum tokens-per-item",
+    );
+    const promptLowest = instr.indexOf(`the lowest cost per ${p.item}`) !== -1;
+    add(
+      "best-buy-prompt-matches-validator",
+      promptLowest && p.correctLabel === (winners.length > 0 ? winners[0] : null),
+      "prompt asks lowest cost per item; correct option is strict-min tokens-per-item",
+    );
+    const diags: Record<string, Json> = {};
+    for (const d of RM.diagnosticsFor(task, p)) {
+      diags[d.predictedResponse as string] = d;
+    }
+    const feedbackOk = Object.keys(diags).every((lbl) => lbl !== p.correctLabel);
+    add("best-buy-feedback-matches-rate-direction", feedbackOk, "every diagnostic's predicted (wrong) option differs from the correct option");
+    const mostItems = _maxByLabel(p.options as Json[], (o) => o.itemCount as number);
+    const fewestTokens = _minByLabel(p.options as Json[], (o) => o.tokenCost as number);
+    const coincideOk =
+      (mostItems !== p.correctLabel || (rates[mostItems] as Rational).equals(mn)) &&
+      (fewestTokens !== p.correctLabel || (rates[fewestTokens] as Rational).equals(mn));
+    add("no-lowest-product-amount-as-best-value", coincideOk, "the correct option is the min cost-per-item, not merely most-items/fewest-tokens");
   }
 
   const media = item.media || [];
@@ -1805,6 +2092,31 @@ export function validate(item: Json): Json {
       add("mc-distractors-misconception-backed", _distractorsRecompute(task, p, item));
     }
   }
+
+  // --- follow-up correction: grammatical noun-count agreement across all surfaced text ---
+  const grammarTextParts: string[] = [item.prompt.instruction as string];
+  for (const s of item.solution.steps as Json[]) {
+    grammarTextParts.push(s.transformation as string);
+    grammarTextParts.push(s.intermediateResult as string);
+  }
+  for (const o of (item.options || []) as Json[]) {
+    grammarTextParts.push(String(o.display ?? ""));
+  }
+  const media2 = (item.media || []) as Json[];
+  if (media2.length > 0) {
+    const m = media2[0];
+    const dt = m.dataTableFallback || {};
+    for (const row of (dt.rows || []) as Json[][]) {
+      for (const c of row) grammarTextParts.push(String(c));
+    }
+    const spec = m.spec || {};
+    const kdt = spec.answerKeyDataTableFallback || {};
+    for (const row of (kdt.rows || []) as Json[][]) {
+      for (const c of row) grammarTextParts.push(String(c));
+    }
+  }
+  const violations = _grammarViolations(grammarTextParts.join(" \n "));
+  add("noun-count-grammatical", violations.length === 0, `violations=${pyList(violations.slice(0, 5))}`);
 
   const valid = checks.every((c) => c.ok);
   // `valid` is the Python oracle field (golden-parity); `status` is the SDK GenValidationResult field.
@@ -1897,6 +2209,33 @@ function _distractorsRecompute(task: string, params: Json, item: Json): boolean 
 }
 
 // helpers
+// max/min by (primary, label) tuple — mirror Python max/min(options, key=lambda o: (n, o["label"]))["label"].
+function _maxByLabel(items: Json[], primary: (o: Json) => number): string {
+  let bestLbl = items[0].label as string;
+  let bestKey: [number, string] = [primary(items[0]), items[0].label as string];
+  for (let i = 1; i < items.length; i++) {
+    const k: [number, string] = [primary(items[i]), items[i].label as string];
+    if (k[0] > bestKey[0] || (k[0] === bestKey[0] && k[1] > bestKey[1])) {
+      bestKey = k;
+      bestLbl = items[i].label as string;
+    }
+  }
+  return bestLbl;
+}
+
+function _minByLabel(items: Json[], primary: (o: Json) => number): string {
+  let bestLbl = items[0].label as string;
+  let bestKey: [number, string] = [primary(items[0]), items[0].label as string];
+  for (let i = 1; i < items.length; i++) {
+    const k: [number, string] = [primary(items[i]), items[i].label as string];
+    if (k[0] < bestKey[0] || (k[0] === bestKey[0] && k[1] < bestKey[1])) {
+      bestKey = k;
+      bestLbl = items[i].label as string;
+    }
+  }
+  return bestLbl;
+}
+
 function arraysEqual<T>(a: T[], b: T[]): boolean {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }

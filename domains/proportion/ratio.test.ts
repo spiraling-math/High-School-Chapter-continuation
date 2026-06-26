@@ -414,6 +414,143 @@ test("DEFECT 8: the two omitted reverse objectiveRelationships are present", () 
 });
 
 // --------------------------------------------------------------------------- //
+// v1.0.1 owner REVISE corrections #3/#4/#5/#6 (mirror of oracle/tests/test_ratio.py)
+// --------------------------------------------------------------------------- //
+const COUNT_NOUNS = new Set(["books", "apples", "pencils", "eggs"]);
+
+test("version bump: generator + validator are 1.0.1; item schemaVersion stays 1.0.0", () => {
+  assert.equal(GENERATOR_VERSION, "1.0.1");
+  assert.equal(VALIDATOR_VERSION, "1.0.1");
+  const item = generate(1, { task: "simplify" });
+  assert.equal(item.schemaVersion, "1.0.0");
+  assert.equal(item.generatorVersion, "1.0.1");
+  assert.equal(validate(item).validatorVersion, "1.0.1");
+});
+
+test("CORRECTION #3: no fractional count noun in direct_proportion / unit_rate; context checks pass", () => {
+  for (let seed = 1; seed <= 3000; seed++) {
+    for (const task of ["direct_proportion", "unit_rate"]) {
+      const it = generate(seed, { task });
+      const p = it.params;
+      const amount = (task === "direct_proportion" ? p.givenLabel : p.amountLabel) as string;
+      const den = it.answer.canonical.den as number;
+      if (COUNT_NOUNS.has(amount)) {
+        assert.equal(den, 1, `${task} seed ${seed}: fractional ${amount}`);
+      }
+      const names: Record<string, boolean> = {};
+      for (const c of validate(it).checks as { name: string; ok: boolean }[]) names[c.name] = c.ok;
+      for (const chk of [
+        "context-answer-compatible",
+        "discrete-count-answer-integer",
+        "rational-answer-uses-continuous-or-average-context",
+        "no-fractional-books-students-sheets-or-people",
+      ]) {
+        assert.equal(names[chk], true, `${task} seed ${seed} ${chk}`);
+      }
+      if (task === "unit_rate") assert.equal(names["unit-rate-context-allows-rational"], true);
+    }
+  }
+});
+
+test("CORRECTION #4: best_buy marks lowest cost per item; cost-like tokens, no currency", () => {
+  for (let seed = 1; seed <= 3000; seed++) {
+    const it = generate(seed, { task: "best_buy" });
+    const p = it.params;
+    const instr = it.prompt.instruction as string;
+    assert.ok(instr.indexOf("tokens") !== -1, `seed ${seed} missing tokens`);
+    for (const sym of ["$", "£", "€", "¥"]) assert.equal(instr.indexOf(sym), -1, `seed ${seed} currency ${sym}`);
+    assert.ok(instr.indexOf(`the lowest cost per ${p.item}`) !== -1, `seed ${seed} prompt wording`);
+    // correct option is the strict-min tokens-per-item
+    const rates: Record<string, Rational> = {};
+    for (const o of p.options as { label: string; tokenCost: number; itemCount: number }[]) {
+      rates[o.label] = new Rational(o.tokenCost, o.itemCount);
+    }
+    let min: Rational | null = null;
+    for (const r of Object.values(rates)) if (min === null || r.num * min.den < min.num * r.den) min = r;
+    const winners = Object.keys(rates).filter((l) => (rates[l] as Rational).equals(min as Rational));
+    assert.equal(winners.length, 1, `seed ${seed} not unique min`);
+    assert.equal(p.correctLabel, winners[0], `seed ${seed} correct != min`);
+    const names: Record<string, boolean> = {};
+    for (const c of validate(it).checks as { name: string; ok: boolean }[]) names[c.name] = c.ok;
+    for (const chk of [
+      "best-buy-rate-direction-consistent",
+      "best-buy-context-has-cost-like-denominator",
+      "best-buy-strict-minimum-cost-per-unit",
+      "best-buy-prompt-matches-validator",
+      "best-buy-feedback-matches-rate-direction",
+      "no-lowest-product-amount-as-best-value",
+    ]) {
+      assert.equal(names[chk], true, `seed ${seed} ${chk}`);
+    }
+  }
+});
+
+test("CORRECTION #4: best_buy diagnostics predict WRONG options only", () => {
+  for (let seed = 1; seed <= 1500; seed++) {
+    const it = generate(seed, { task: "best_buy" });
+    const p = it.params;
+    for (const d of RM.diagnosticsFor("best_buy", p)) {
+      assert.notEqual(d.predictedResponse, p.correctLabel, `seed ${seed} diagnostic hits correct option`);
+    }
+  }
+});
+
+test("CORRECTION #5: simple_scale is dimensionless, grammatical, bare-number answer", () => {
+  for (let seed = 1; seed <= 3000; seed++) {
+    const it = generate(seed, { task: "simple_scale" });
+    const p = it.params;
+    const instr = it.prompt.instruction as string;
+    for (const tok of ["cm", "km", "centimetre", "kilometre", "metre", " m "]) {
+      assert.equal(instr.indexOf(tok), -1, `seed ${seed} measurement unit ${tok}`);
+    }
+    assert.ok(!/\b1 (model|plan|drawing|map|real|actual|ground) units\b/.test(instr), `seed ${seed} bad singular`);
+    const f = new Rational(it.answer.canonical.num as number, it.answer.canonical.den as number);
+    assert.ok(f.equals(Rational.from(p.value as number).mul(new Rational(p.factorNum as number, p.factorDen as number))));
+    const names: Record<string, boolean> = {};
+    for (const c of validate(it).checks as { name: string; ok: boolean }[]) names[c.name] = c.ok;
+    for (const chk of [
+      "scale-unit-wording-grammatical",
+      "singular-plural-units-correct",
+      "scale-answer-contract-matches-prompt",
+      "measurement-unit-answer-not-bare-number",
+      "no-cross-unit-conversion-in-v1",
+    ]) {
+      assert.equal(names[chk], true, `seed ${seed} ${chk}`);
+    }
+  }
+});
+
+test("CORRECTION #6: diagnostic predictions are distinct per item (collision deduped)", () => {
+  for (let seed = 1; seed <= 4000; seed++) {
+    const it = generate(seed);
+    const p = it.params;
+    const preds = RM.diagnosticsFor(p.task as string, p).map((d: { predictedResponse: string }) => d.predictedResponse);
+    assert.equal(new Set(preds).size, preds.length, `seed ${seed} task ${p.task} duplicate predictions`);
+  }
+  // the share_three_part collision (seed 14) collapses to a single canonical diagnostic.
+  const it14 = generate(14, { task: "share_three_part" });
+  const ds = RM.diagnosticsFor("share_three_part", it14.params);
+  const preds = ds.map((d: { predictedResponse: string }) => d.predictedResponse);
+  assert.equal(new Set(preds).size, preds.length);
+  assert.equal(ds[0].misconceptionId, "MISC.RATIO.WRONG_TOTAL_PARTS");
+});
+
+test("CORRECTION #6: every diagnostic's rationale + feedback match its registry source", () => {
+  const byId: Record<string, { observableError: string; feedback: string }> = {};
+  for (const m of RM.MISCONCEPTIONS) byId[m.misconceptionId as string] = m;
+  for (let seed = 1; seed <= 1500; seed++) {
+    const it = generate(seed);
+    const p = it.params;
+    for (const d of RM.diagnosticsFor(p.task as string, p)) {
+      const reg = byId[d.misconceptionId as string] as { observableError: string; feedback: string };
+      assert.equal(d.observableError, reg.observableError);
+      assert.equal(d.feedback, reg.feedback);
+      assert.ok(d.predictedResponse !== null && d.predictedResponse !== undefined);
+    }
+  }
+});
+
+// --------------------------------------------------------------------------- //
 // describe() + constants
 // --------------------------------------------------------------------------- //
 test("describe() reports the generator metadata", () => {

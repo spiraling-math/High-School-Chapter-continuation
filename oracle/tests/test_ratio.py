@@ -221,6 +221,218 @@ class TestRegressionDefects(unittest.TestCase):
                       by_id["MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE"]["objectiveRelationships"])
 
 
+class TestRevisionCorrections(unittest.TestCase):
+    """v1.0.1 owner REVISE corrections #3 (context-value compatibility), #4 (best-buy cost-like
+    semantics), #5 (simple-scale wording + answer contract), #6 (collided diagnostic dedup)."""
+
+    _COUNT_NOUNS = {"books", "apples", "pencils", "eggs"}
+
+    def test_version_bump(self):
+        # decision #8: generator + validator bump to 1.0.1; the ITEM SCHEMA version (schemaVersion)
+        # stays 1.0.0. The generated item carries the bumped generatorVersion.
+        self.assertEqual(R.GENERATOR_VERSION, "1.0.1")
+        self.assertEqual(R.VALIDATOR_VERSION, "1.0.1")
+        it = R.generate(1, {"task": "simplify"})
+        self.assertEqual(it["schemaVersion"], "1.0.0")        # item schema unchanged
+        self.assertEqual(it["generatorVersion"], "1.0.1")     # generator version bumped
+        self.assertEqual(R.validate(it)["validatorVersion"], "1.0.1")
+
+    def test_no_fractional_count_noun_in_rate_tasks(self):
+        # CORRECTION #3: a direct_proportion / unit_rate item NEVER shows a count noun with a
+        # fractional answer; the context-domain validator checks must pass for every item.
+        for seed in range(1, 4000):
+            for task in ("direct_proportion", "unit_rate"):
+                it = R.generate(seed, {"task": task})
+                p = it["params"]
+                amount = p["givenLabel"] if task == "direct_proportion" else p["amountLabel"]
+                f = Fraction(it["answer"]["canonical"]["num"], it["answer"]["canonical"]["den"])
+                if amount in self._COUNT_NOUNS:
+                    self.assertEqual(f.denominator, 1,
+                                     f"{task} seed {seed}: fractional {amount} answer {f}")
+                names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+                for chk in ("context-answer-compatible", "discrete-count-answer-integer",
+                            "rational-answer-uses-continuous-or-average-context",
+                            "no-fractional-books-students-sheets-or-people"):
+                    self.assertTrue(names.get(chk), f"{task} seed {seed} {chk}")
+                if task == "unit_rate":
+                    self.assertTrue(names.get("unit-rate-context-allows-rational"))
+
+    def test_context_domain_registry_classifies_every_amount_noun(self):
+        # every amount noun used by the rate tasks is classified in the registry.
+        used = set()
+        for seed in range(1, 2000):
+            for task in ("direct_proportion", "unit_rate"):
+                p = R.generate(seed, {"task": task})["params"]
+                used.add(p["givenLabel"] if task == "direct_proportion" else p["amountLabel"])
+        for noun in used:
+            self.assertIn(noun, R._CONTEXT_DOMAINS, f"{noun} unclassified")
+
+    def test_best_buy_cost_like_lowest_per_item(self):
+        # CORRECTION #4: best_buy marks the lowest-cost-per-item option, cost is in tokens (no currency),
+        # and the new validator checks pass.
+        for seed in range(1, 3000):
+            it = R.generate(seed, {"task": "best_buy"})
+            p = it["params"]
+            instr = it["prompt"]["instruction"]
+            self.assertIn("tokens", instr)
+            for sym in ("$", "£", "€", "¥"):
+                self.assertNotIn(sym, instr)
+            self.assertIn(f"the lowest cost per {p['item']}", instr)
+            # the correct option IS the strict-min tokens-per-item
+            rates = {o["label"]: Fraction(o["tokenCost"], o["itemCount"]) for o in p["options"]}
+            mn = min(rates.values())
+            winners = [lab for lab, r in rates.items() if r == mn]
+            self.assertEqual(len(winners), 1)
+            self.assertEqual(p["correctLabel"], winners[0])
+            names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+            for chk in ("best-buy-rate-direction-consistent",
+                        "best-buy-context-has-cost-like-denominator",
+                        "best-buy-strict-minimum-cost-per-unit",
+                        "best-buy-prompt-matches-validator",
+                        "best-buy-feedback-matches-rate-direction",
+                        "no-lowest-product-amount-as-best-value"):
+                self.assertTrue(names.get(chk), f"seed {seed} {chk}")
+
+    def test_best_buy_diagnostics_are_wrong_options(self):
+        # CORRECTION #4: each best_buy diagnostic predicts a WRONG option (never the correct one) and
+        # follows the cost-per-item direction (max raw tokens / min raw tokens).
+        for seed in range(1, 1500):
+            it = R.generate(seed, {"task": "best_buy"})
+            p = it["params"]
+            for d in RM.diagnostics_for("best_buy", p):
+                self.assertNotEqual(d["predictedResponse"], p["correctLabel"],
+                                    f"seed {seed} diagnostic points at correct option")
+
+    def test_simple_scale_dimensionless_grammar(self):
+        # CORRECTION #5: no cm/km/m; grammatical singular/plural units; a bare-number answer.
+        import re
+        for seed in range(1, 4000):
+            it = R.generate(seed, {"task": "simple_scale"})
+            p = it["params"]
+            instr = it["prompt"]["instruction"]
+            for tok in ("cm", "km", "centimetre", "kilometre", "metre", " m "):
+                self.assertNotIn(tok, instr, f"seed {seed} has measurement unit {tok!r}")
+            # never "1 <word>s"
+            self.assertIsNone(re.search(r"\b1 (model|plan|drawing|map|real|actual|ground) units\b", instr),
+                              f"seed {seed} bad singular: {instr}")
+            # answer is a bare rational number = value*num/den
+            f = Fraction(it["answer"]["canonical"]["num"], it["answer"]["canonical"]["den"])
+            self.assertEqual(f, Fraction(p["value"]) * Fraction(p["factorNum"], p["factorDen"]))
+            names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+            for chk in ("scale-unit-wording-grammatical", "singular-plural-units-correct",
+                        "scale-answer-contract-matches-prompt",
+                        "measurement-unit-answer-not-bare-number", "no-cross-unit-conversion-in-v1"):
+                self.assertTrue(names.get(chk), f"seed {seed} {chk}")
+
+    def test_simple_scale_singular_unit_is_grammatical(self):
+        # spot the singular case: a count of 1 must read "1 <word>" not "1 <word>s".
+        seen_singular = False
+        for seed in range(1, 5000):
+            it = R.generate(seed, {"task": "simple_scale"})
+            p = it["params"]
+            if 1 in (p["factorNum"], p["factorDen"], p["value"]):
+                instr = it["prompt"]["instruction"]
+                # the unit word right after a lone " 1 " must be singular
+                self.assertNotRegex(instr, r"\b1 \w+ units\b")
+                seen_singular = True
+        self.assertTrue(seen_singular, "expected at least one scale item with a unit count of 1")
+
+    def test_diagnostic_predictions_distinct_per_item(self):
+        # CORRECTION #6: no item returns two diagnostics with the same predicted response counted as
+        # exercised; the colliding duplicate is dropped.
+        for seed in range(1, 4000):
+            it = R.generate(seed)
+            p = it["params"]
+            preds = [d["predictedResponse"] for d in RM.diagnostics_for(p["task"], p)]
+            self.assertEqual(len(preds), len(set(preds)),
+                             f"seed {seed} task {p['task']} duplicate predicted responses {preds}")
+
+    def test_diagnostic_collision_not_counted_as_exercised(self):
+        # CORRECTION #6: the share_three_part collision (two diagnostics, identical predicted response)
+        # now yields a single exercised diagnostic.
+        it = R.generate(14, {"task": "share_three_part"})
+        p = it["params"]
+        ds = RM.diagnostics_for("share_three_part", p)
+        preds = [d["predictedResponse"] for d in ds]
+        self.assertEqual(len(preds), len(set(preds)))
+        # the surviving canonical diagnostic is the FIRST in emit/registry order (WRONG_TOTAL_PARTS).
+        self.assertEqual(ds[0]["misconceptionId"], "MISC.RATIO.WRONG_TOTAL_PARTS")
+
+    def _grammar_blob(self, it):
+        parts = [it["prompt"]["instruction"]]
+        for s in it["solution"]["steps"]:
+            parts.append(s["transformation"]); parts.append(s["intermediateResult"])
+        for o in it.get("options", []):
+            parts.append(str(o.get("display", "")))
+        media = it.get("media") or []
+        if media:
+            m = media[0]
+            for row in (m.get("dataTableFallback") or {}).get("rows", []):
+                parts.extend(str(c) for c in row)
+            for row in ((m.get("spec") or {}).get("answerKeyDataTableFallback") or {}).get("rows", []):
+                parts.extend(str(c) for c in row)
+        return "  ".join(parts)
+
+    def test_no_grammar_errors_across_all_tasks(self):
+        # FOLLOW-UP: ZERO "1 <plural>" and ZERO "per <plural>"/"per shelve" across a 3000-seed sweep of
+        # EVERY task; the noun-count-grammatical validator check must pass for every item.
+        import re as _re
+        one_re = _re.compile(r"\b1 ([a-z]+s)\b")
+        per_re = _re.compile(r"\bper ([a-z]+)\b")
+        for seed in range(1, 3001):
+            for task in R.RATIO_TASKS:
+                it = R.generate(seed, {"task": task})
+                blob = self._grammar_blob(it)
+                for m in one_re.finditer(blob):
+                    self.assertNotIn(m.group(1), R._PLURAL_FORMS,
+                                     f"{task} seed {seed}: '1 {m.group(1)}'")
+                for m in per_re.finditer(blob):
+                    self.assertNotIn(m.group(1), R._PLURAL_FORMS,
+                                     f"{task} seed {seed}: 'per {m.group(1)}'")
+                names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+                self.assertTrue(names.get("noun-count-grammatical"),
+                                f"{task} seed {seed} noun-count-grammatical")
+
+    def test_count_helper_singular_plural(self):
+        # the grammatical helpers produce explicit singular/plural (no naive [:-1]).
+        self.assertEqual(R._count(1, "boxes"), "1 box")
+        self.assertEqual(R._count(3, "boxes"), "3 boxes")
+        self.assertEqual(R._count(1, "shelves"), "1 shelf")
+        self.assertEqual(R._count(5, "shelves"), "5 shelves")
+        self.assertEqual(R._count(1, "tokens"), "1 token")
+        self.assertEqual(R._count(1, "daisies"), "1 daisy")
+        self.assertEqual(R._count(2, "daisies"), "2 daisies")
+        self.assertEqual(R._singular("shelves"), "shelf")
+        self.assertEqual(R._singular("spoons"), "spoon")
+        # mass nouns are invariant
+        self.assertEqual(R._count(1, "flour"), "1 flour")
+        self.assertEqual(R._count(3, "flour"), "3 flour")
+        # scale unit words pluralize regularly via the fallback
+        self.assertEqual(R._units(1, "model unit"), "1 model unit")
+        self.assertEqual(R._units(2, "model unit"), "2 model units")
+
+    def test_grammar_violations_detector(self):
+        # the detector flags exactly the bad forms and nothing grammatical.
+        self.assertEqual(R._grammar_violations("there are 1 boys here"), ["1 boys"])
+        self.assertEqual(R._grammar_violations("how many per shelve"), ["per shelve"])
+        self.assertEqual(R._grammar_violations("per shelves now"), ["per shelves"])
+        self.assertEqual(R._grammar_violations("1 box and 3 boxes per shelf"), [])
+        self.assertEqual(R._grammar_violations("1 flour is uncountable"), [])
+
+    def test_diagnostic_rationale_and_feedback_match_prediction(self):
+        # CORRECTION #6: every returned diagnostic carries the rationale + feedback for its own
+        # misconception (the registry source of truth), matching its predicted response + error.
+        by_id = {m["misconceptionId"]: m for m in RM.MISCONCEPTIONS}
+        for seed in range(1, 1500):
+            it = R.generate(seed)
+            p = it["params"]
+            for d in RM.diagnostics_for(p["task"], p):
+                reg = by_id[d["misconceptionId"]]
+                self.assertEqual(d["observableError"], reg["observableError"])
+                self.assertEqual(d["feedback"], reg["feedback"])
+                self.assertIsNotNone(d["predictedResponse"])
+
+
 class TestParityFixture(unittest.TestCase):
     def test_parity_fixture_reproducible(self):
         path = os.path.join(ROOT, "oracle", "golden", "ratio.parity.json")

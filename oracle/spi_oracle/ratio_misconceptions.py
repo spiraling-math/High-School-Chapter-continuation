@@ -332,13 +332,16 @@ def diagnostics_for(task: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
                                  Fraction(quantity, total)))
 
     elif task == "best_buy":
+        # Correction #4: cost-like tokens. NO_UNIT_RATE_COMPARE ignores item count and picks by the raw
+        # token total (highest tokenCost); LOWEST_PRICE_NOT_BEST picks the fewest total tokens (cheapest)
+        # rather than the lowest tokens-per-item. Both are WRONG directions (never the cost-per-item min).
         options = params["options"]
         correct_label = params["correctLabel"]
-        # NO_UNIT_RATE_COMPARE: compares by raw total amount -> picks the largest total.
-        by_total = max(options, key=lambda o: (o["totalAmount"], o["label"]))
+        # NO_UNIT_RATE_COMPARE: compares by raw token total -> picks the largest token cost.
+        by_total = max(options, key=lambda o: (o["tokenCost"], o["label"]))
         out.append(_choice_diag("MISC.RATIO.NO_UNIT_RATE_COMPARE", correct_label, by_total["label"]))
-        # LOWEST_PRICE_NOT_BEST: picks the smallest total amount (cheapest pack), not the best rate.
-        by_lowest = min(options, key=lambda o: (o["totalAmount"], o["label"]))
+        # LOWEST_PRICE_NOT_BEST: picks the smallest total tokens (cheapest), not the lowest cost-per-item.
+        by_lowest = min(options, key=lambda o: (o["tokenCost"], o["label"]))
         out.append(_choice_diag("MISC.RATIO.LOWEST_PRICE_NOT_BEST", correct_label, by_lowest["label"]))
 
     elif task == "simple_scale":
@@ -354,7 +357,22 @@ def diagnostics_for(task: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
         out.append(_num_diag("MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE", correct,
                              Fraction(value + fnum - fden)))
 
-    return [d for d in out if d is not None]
+    # Correction #6: DEDUPE colliding predictions. When two applicable diagnostics for the SAME item
+    # predict the IDENTICAL student response, only ONE is a distinct exercised pathway. Keep the FIRST
+    # in deterministic registry/emit order (the canonical diagnostic for that predicted response) and
+    # DROP the colliding duplicate so it is never counted as exercised. Keying on predictedResponse (the
+    # observable student answer) is exact: identical predicted responses are grading-indistinguishable.
+    deduped: List[Dict[str, Any]] = []
+    seen_predictions: set = set()
+    for d in out:
+        if d is None:
+            continue
+        key = d["predictedResponse"]
+        if key in seen_predictions:
+            continue  # collided duplicate -> omitted (not counted as exercised)
+        seen_predictions.add(key)
+        deduped.append(d)
+    return deduped
 
 
 def _table_diag(mid: str, correct_cells: List[int], labels: List[str],

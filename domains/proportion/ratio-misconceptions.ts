@@ -442,13 +442,16 @@ export function diagnosticsFor(task: string, params: Json): Json[] {
       out.push(_numDiag("MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY", correct, new Rational(quantity, total)));
     }
   } else if (task === "best_buy") {
+    // Correction #4: cost-like tokens. NO_UNIT_RATE_COMPARE ignores item count and picks by the raw
+    // token total (highest tokenCost); LOWEST_PRICE_NOT_BEST picks the fewest total tokens (cheapest).
+    // Both are WRONG directions (never the cost-per-item min).
     const options = params.options as Json[];
     const correctLabel = params.correctLabel as string;
-    // NO_UNIT_RATE_COMPARE: compares by raw total -> picks the largest total.
-    const byTotal = _maxBy(options, (o) => [o.totalAmount as number, o.label as string]);
+    // NO_UNIT_RATE_COMPARE: compares by raw token total -> picks the largest token cost.
+    const byTotal = _maxBy(options, (o) => [o.tokenCost as number, o.label as string]);
     out.push(_choiceDiag("MISC.RATIO.NO_UNIT_RATE_COMPARE", correctLabel, byTotal.label as string));
-    // LOWEST_PRICE_NOT_BEST: picks the smallest total (cheapest pack).
-    const byLowest = _minBy(options, (o) => [o.totalAmount as number, o.label as string]);
+    // LOWEST_PRICE_NOT_BEST: picks the smallest total tokens (cheapest), not the lowest cost-per-item.
+    const byLowest = _minBy(options, (o) => [o.tokenCost as number, o.label as string]);
     out.push(_choiceDiag("MISC.RATIO.LOWEST_PRICE_NOT_BEST", correctLabel, byLowest.label as string));
   } else if (task === "simple_scale") {
     const value = params.value as number;
@@ -464,7 +467,24 @@ export function diagnosticsFor(task: string, params: Json): Json[] {
     out.push(_numDiag("MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE", correct, Rational.from(value + fnum - fden)));
   }
 
-  return out.filter((d): d is Json => d !== null);
+  // Correction #6: DEDUPE colliding predictions. When two applicable diagnostics for the SAME item
+  // predict the IDENTICAL student response, only ONE is a distinct exercised pathway. Keep the FIRST in
+  // deterministic emit order (the canonical diagnostic for that predicted response) and DROP the
+  // colliding duplicate so it is never counted as exercised. Mirror of ratio_misconceptions.py.
+  const deduped: Json[] = [];
+  const seenPredictions = new Set<string>();
+  for (const d of out) {
+    if (d === null) {
+      continue;
+    }
+    const key = d.predictedResponse as string;
+    if (seenPredictions.has(key)) {
+      continue; // collided duplicate -> omitted (not counted as exercised)
+    }
+    seenPredictions.add(key);
+    deduped.push(d);
+  }
+  return deduped;
 }
 
 // max/min by a tuple key (lexicographic [number, string]), matching Python max(..., key=...) which

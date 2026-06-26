@@ -197,7 +197,8 @@ export const GENERATORS: GeneratorModule[] = [
     id: ratio.GENERATOR_ID,
     version: ratio.GENERATOR_VERSION,
     label: "Ratio & proportion — simplify, share, direct/inverse, best buy",
-    // PENDING REVIEW (implemented v1.0.0, awaiting the owner's APPROVE/REVISE/REJECT). Registered as
+    // PENDING REVIEW (implemented v1.0.1 — owner REVISE corrections #3/#4/#5/#6 applied, awaiting the
+    // owner's next APPROVE/REVISE/REJECT). Registered as
     // pending-review ONLY: generatorsForMode("review") sees it; normal Studio (generatorsForMode("normal"))
     // and production exports/samples (approvedGenerators()) do NOT. The TS mirror is byte-parity with the
     // Python oracle (gated by oracle/golden/ratio.*). The twelve SPI.MIDDLE.RATIO.* objectives are

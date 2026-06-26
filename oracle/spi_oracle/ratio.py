@@ -43,8 +43,8 @@ from spi_oracle import ratio_core as RC  # noqa: E402
 from spi_oracle import ratio_misconceptions as RM  # noqa: E402
 
 GENERATOR_ID = "gen.proportion.ratio"
-GENERATOR_VERSION = "1.0.0"
-VALIDATOR_VERSION = "1.0.0"
+GENERATOR_VERSION = "1.0.1"
+VALIDATOR_VERSION = "1.0.1"
 CALCULATOR_POLICY = "calculator-not-required"
 
 # --------------------------------------------------------------------------- #
@@ -136,14 +136,53 @@ _SHARE_THEMES = [
     ("Sharing marbles", ["Gus", "Hana", "Ivan"], "marbles"),
     ("Sharing stickers", ["Jo", "Kim", "Lee"], "stickers"),
 ]
-_RATE_THEMES = [
-    ("books", "shelves"), ("apples", "bags"), ("pages", "minutes"),
-    ("litres", "tanks"), ("kilometres", "hours"), ("words", "lines"),
+# --------------------------------------------------------------------------- #
+# CONTEXT-DOMAIN REGISTRY (correction #3). Every rate/quantity noun used by a
+# direct_proportion / unit_rate item is classified into a CONTEXT DOMAIN that
+# determines whether a FRACTIONAL answer is meaningful for that noun:
+#   * count-discrete-integer-only : physical count nouns (books, apples, ...) —
+#       the answer (and any displayed per-context quantity) MUST be an integer.
+#   * continuous-measure          : litres, metres, kilograms, hours, ... —
+#       rational answers are allowed.
+#   * abstract-number             : units, points, parts — rational allowed
+#       (used by simple_scale per correction #5).
+#   * average-rate-allowed        : a count noun used ONLY with explicit
+#       "average ... per ..." wording — rational allowed. Reserved for v1.0.1;
+#       all rational rate answers route through continuous-measure instead.
+# The amount noun ("books") is the quantity whose value is the ANSWER; the per
+# noun ("shelves") is the basis. A theme's domain is the AMOUNT noun's domain.
+# --------------------------------------------------------------------------- #
+CONTEXT_DOMAIN_COUNT = "count-discrete-integer-only"
+CONTEXT_DOMAIN_CONTINUOUS = "continuous-measure"
+CONTEXT_DOMAIN_ABSTRACT = "abstract-number"
+CONTEXT_DOMAIN_AVERAGE = "average-rate-allowed"
+
+# Amount-noun -> context domain. Count nouns demand an integer answer; measures
+# allow rational answers. (Used to route compute-answer-then-pick-context.)
+_CONTEXT_DOMAINS = {
+    # count-discrete (integer-only answers)
+    "books": CONTEXT_DOMAIN_COUNT, "apples": CONTEXT_DOMAIN_COUNT,
+    "pencils": CONTEXT_DOMAIN_COUNT, "eggs": CONTEXT_DOMAIN_COUNT,
+    # continuous-measure (rational answers allowed)
+    "litres": CONTEXT_DOMAIN_CONTINUOUS, "metres": CONTEXT_DOMAIN_CONTINUOUS,
+    "kilograms": CONTEXT_DOMAIN_CONTINUOUS, "grams": CONTEXT_DOMAIN_CONTINUOUS,
+    "kilometres": CONTEXT_DOMAIN_CONTINUOUS, "litres of water": CONTEXT_DOMAIN_CONTINUOUS,
+}
+
+# Rate themes are (amountNoun, perNoun) split by the amount noun's domain. An
+# INTEGER answer may use either a count-discrete OR a continuous theme; a
+# FRACTIONAL answer must use a continuous theme (never a count noun) so an item
+# never claims a fractional book / apple / pencil.
+_RATE_THEMES_COUNT = [
+    ("books", "shelves"), ("apples", "bags"), ("pencils", "boxes"), ("eggs", "trays"),
+]
+_RATE_THEMES_CONTINUOUS = [
+    ("litres", "tanks"), ("kilometres", "hours"), ("grams", "spoons"),
+    ("metres", "rolls"), ("kilograms", "sacks"),
 ]
 _BUY_THEMES = [
-    ("rice", "grams", "pack"), ("juice", "millilitres", "bottle"),
-    ("nails", "nails", "box"), ("paper", "sheets", "ream"),
-    ("seeds", "seeds", "packet"),
+    ("pencils", "pencil"), ("apples", "apple"), ("notebooks", "notebook"),
+    ("markers", "marker"), ("erasers", "eraser"),
 ]
 _INVERSE_THEMES = [
     ("workers", "days", "to finish the job"),
@@ -151,11 +190,58 @@ _INVERSE_THEMES = [
     ("machines", "minutes", "to complete the batch"),
     ("painters", "days", "to paint the hall"),
 ]
+# Dimensionless scale contexts (correction #5, POLICY A): NO cm/km/m anywhere.
+# (kind, srcUnitWord, dstUnitWord) where the units are abstract "... units".
 _SCALE_THEMES = [
-    ("map", "the real distance", "centimetres on the map", "kilometres on the ground"),
-    ("model", "the real length", "centimetres on the model", "metres in real life"),
-    ("plan", "the real width", "centimetres on the plan", "metres in the building"),
+    ("model", "model unit", "real unit"),
+    ("plan", "plan unit", "actual unit"),
+    ("drawing", "drawing unit", "real unit"),
+    ("map", "map unit", "ground unit"),
 ]
+
+# --------------------------------------------------------------------------- #
+# GRAMMATICAL NOUN REGISTRY (follow-up correction). Every noun a count can precede
+# is stored as an EXPLICIT (singular, plural) pair so display never relies on a
+# naive `[:-1]`/`+ "s"` singularizer (which mis-produces "1 boys", "per shelve").
+# Keyed by the PLURAL form (the canonical form the theme tables store). _count()
+# routes EVERY "<count> <noun>" through this map; _singular() gives the "per <unit>"
+# form. Mirrored byte-for-byte in ratio.ts.
+# --------------------------------------------------------------------------- #
+_NOUNS = {
+    # rate amount/per nouns
+    "books": ("book", "books"), "shelves": ("shelf", "shelves"),
+    "apples": ("apple", "apples"), "bags": ("bag", "bags"),
+    "pencils": ("pencil", "pencils"), "boxes": ("box", "boxes"),
+    "eggs": ("egg", "eggs"), "trays": ("tray", "trays"),
+    "litres": ("litre", "litres"), "tanks": ("tank", "tanks"),
+    "kilometres": ("kilometre", "kilometres"), "hours": ("hour", "hours"),
+    "grams": ("gram", "grams"), "spoons": ("spoon", "spoons"),
+    "metres": ("metre", "metres"), "rolls": ("roll", "rolls"),
+    "kilograms": ("kilogram", "kilograms"), "sacks": ("sack", "sacks"),
+    # best_buy item + tokens
+    "notebooks": ("notebook", "notebooks"), "markers": ("marker", "markers"),
+    "erasers": ("eraser", "erasers"), "tokens": ("token", "tokens"),
+    # write_from_quantities labels
+    "oranges": ("orange", "oranges"), "pears": ("pear", "pears"),
+    "boys": ("boy", "boys"), "girls": ("girl", "girls"),
+    "teachers": ("teacher", "teachers"), "roses": ("rose", "roses"),
+    "tulips": ("tulip", "tulips"), "daisies": ("daisy", "daisies"),
+    # mass / uncountable nouns used as labels (singular == plural form)
+    "red paint": ("red paint", "red paint"), "white paint": ("white paint", "white paint"),
+    "blue paint": ("blue paint", "blue paint"),
+    "flour": ("flour", "flour"), "sugar": ("sugar", "sugar"), "butter": ("butter", "butter"),
+    # _QTY_THEMES units (only ever appear as bare labels, registered for completeness)
+    "pieces": ("piece", "pieces"), "people": ("person", "people"), "plants": ("plant", "plants"),
+    # share units
+    "pounds": ("pound", "pounds"), "sweets": ("sweet", "sweets"),
+    "marbles": ("marble", "marbles"), "stickers": ("sticker", "stickers"),
+    # inverse-proportion agents + units
+    "workers": ("worker", "workers"), "taps": ("tap", "taps"),
+    "machines": ("machine", "machines"), "painters": ("painter", "painters"),
+    "days": ("day", "days"), "minutes": ("minute", "minutes"),
+    # ratio-part word (figures, data tables, solutions) — "1 part" vs "2 parts"
+    "parts": ("part", "parts"),
+}
 
 
 def _n(rng: Mulberry32, k: int) -> int:
@@ -168,6 +254,74 @@ def _pick(rng: Mulberry32, items: List[Any]) -> Any:
 
 def _disp_rat(f: Fraction) -> str:
     return str(f.numerator) if f.denominator == 1 else f"{f.numerator}/{f.denominator}"
+
+
+def _is_one(n: Any) -> bool:
+    """True iff the displayed count is exactly 1 (an integer 1 or the Fraction 1)."""
+    val = n.numerator if isinstance(n, Fraction) and n.denominator == 1 else n
+    return val == 1
+
+
+def _forms(word: str) -> Tuple[str, str]:
+    """(singular, plural) for a noun stored in its PLURAL form. Falls back to regular '+s'
+    pluralization for words not in the registry (e.g. dynamically composed unit words)."""
+    if word in _NOUNS:
+        return _NOUNS[word]
+    return (word, word + "s")
+
+
+def _count_pair(n: Any, sing: str, plur: str) -> str:
+    """Grammatical "<count> <noun>" from an EXPLICIT (singular, plural) pair (used where the pair is
+    already at hand, e.g. best_buy's (item, items)). Mirrored byte-for-byte in ratio.ts."""
+    return f"{_fmt_val(n)} {sing if _is_one(n) else plur}"
+
+
+def _count(n: Any, word: str) -> str:
+    """Grammatical "<count> <noun>" using the EXPLICIT (singular, plural) registry: '1 box' /
+    '2 boxes', '1 shelf' / '5 shelves', '1 token' / '9 tokens'. Mirrored byte-for-byte in ratio.ts."""
+    sing, plur = _forms(word)
+    return _count_pair(n, sing, plur)
+
+
+def _singular(word: str) -> str:
+    """The singular form of a registry noun, for 'per <unit>' phrasing ('per shelf', 'per spoon')."""
+    return _forms(word)[0]
+
+
+# Plural forms that MUST NOT follow a count of 1 or the word "per". Built from the registry (any noun
+# whose singular differs from its plural) plus the scale-unit plurals "<word> units" and the fixed
+# count word "tokens". Used by _grammar_violations + the noun-count-grammatical validator check.
+_PLURAL_FORMS = frozenset(
+    [plur for (sing, plur) in _NOUNS.values() if sing != plur]
+    + ["units", "tokens", "parts", "shelve"]   # 'shelve' = the old naive-singularizer artifact (guard)
+)
+# scale unit plurals like "model units"/"real units" pluralize regularly; the generic "units" guard
+# below catches them via the trailing token.
+_GRAMMAR_RE_ONE = re.compile(r"\b1 ([A-Za-z]+)\b")
+_GRAMMAR_RE_PER = re.compile(r"\bper ([A-Za-z]+)\b")
+
+
+def _grammar_violations(text: str) -> List[str]:
+    """Return the list of count-agreement violations in `text`: any "1 <plural>" (plural after a count
+    of one) or any "per <plural>"/"per shelve" (a count-basis that must be singular). Mass nouns
+    (singular == plural) are exempt. Mirrored byte-for-byte in ratio.ts."""
+    out: List[str] = []
+    for m in _GRAMMAR_RE_ONE.finditer(text):
+        w = m.group(1)
+        if w in _PLURAL_FORMS:
+            out.append(f"1 {w}")
+    for m in _GRAMMAR_RE_PER.finditer(text):
+        w = m.group(1)
+        if w in _PLURAL_FORMS:
+            out.append(f"per {w}")
+    return out
+
+
+def _units(n: Any, word: str) -> str:
+    """Grammatical count phrase for a dimensionless scale unit (correction #5): '1 model unit' /
+    '2 model units'. Scale unit words pluralize regularly ('+s'). Delegates to _count via the
+    regular-plural fallback. Mirrored byte-for-byte in ratio.ts."""
+    return _count(n, word)
 
 
 def _esc(s: str) -> str:
@@ -253,7 +407,9 @@ def _draw_missing_part(rng: Mulberry32) -> Optional[Dict[str, Any]]:
 
 
 def _draw_direct_proportion(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    a, b = _pick(rng, _RATE_THEMES)
+    # Correction #3: draw numeric params, compute the EXACT answer FIRST, then choose a context whose
+    # domain MATCHES the answer (integer -> count-discrete OR continuous; fractional -> continuous only,
+    # never a count noun). Theme draw moves AFTER the numeric draw — fixtures regenerate.
     quantity = 2 + _n(rng, 7)                 # 2..8 units
     one_unit_num = 1 + _n(rng, 12)            # total per unit basis
     whole_result = _n(rng, 2) == 0
@@ -264,6 +420,9 @@ def _draw_direct_proportion(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     target = 2 + _n(rng, 9)                   # 2..10
     if target == quantity:
         return None
+    answer = Fraction(total, quantity) * target
+    pool = _RATE_THEMES_COUNT + _RATE_THEMES_CONTINUOUS if answer.denominator == 1 else _RATE_THEMES_CONTINUOUS
+    a, b = _pick(rng, pool)
     return {"task": "direct_proportion", "givenLabel": a, "perLabel": b,
             "quantity": quantity, "total": total, "target": target}
 
@@ -283,7 +442,8 @@ def _draw_inverse_proportion(rng: Mulberry32) -> Optional[Dict[str, Any]]:
 
 
 def _draw_unit_rate(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    a, b = _pick(rng, _RATE_THEMES)
+    # Correction #3: numeric draw FIRST, compute the EXACT rate, then pick a context by domain
+    # (fractional rate -> continuous-measure only; never a count noun).
     quantity = 2 + _n(rng, 7)
     whole = _n(rng, 2) == 0
     if whole:
@@ -292,25 +452,33 @@ def _draw_unit_rate(rng: Mulberry32) -> Optional[Dict[str, Any]]:
         total = 1 + _n(rng, 40)
     if total == 0:
         return None
+    rate = Fraction(total, quantity)
+    pool = _RATE_THEMES_COUNT + _RATE_THEMES_CONTINUOUS if rate.denominator == 1 else _RATE_THEMES_CONTINUOUS
+    a, b = _pick(rng, pool)
     return {"task": "unit_rate", "amountLabel": a, "perLabel": b,
             "total": total, "quantity": quantity}
 
 
 def _draw_best_buy(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    product, unit, pack = _pick(rng, _BUY_THEMES)
+    # Correction #4: COST-LIKE DENOMINATOR policy (no currency). Each option is
+    # "<itemCount> <items> for <tokenCost> tokens"; the unit rate is COST PER ITEM =
+    # Fraction(tokenCost, itemCount) (tokens per item); the BEST VALUE is the STRICT MINIMUM
+    # tokens-per-item. items is the plural noun, item the singular.
+    items, item = _pick(rng, _BUY_THEMES)
     n_opts = 2 + _n(rng, 2)                    # 2 or 3 options
     options = []
     for i in range(n_opts):
-        pack_size = 2 + _n(rng, 9)             # 2..10
-        per = 1 + _n(rng, 12)                  # amount per unit basis
-        total_amount = pack_size * per
-        options.append({"label": chr(ord("A") + i), "packSize": pack_size,
-                        "totalAmount": total_amount,
-                        "unitRate": {"num": total_amount, "den": pack_size}})
-    # require a UNIQUE strict-minimum exact unit rate (redraw on a tie)
-    rates = [Fraction(o["totalAmount"], o["packSize"]) for o in options]
-    # require ALL option unit rates PAIRWISE DISTINCT — two equal non-winning rates would render two
-    # byte-identical MC option displays (e.g. "48 sheets per ream of 4"). Redraw on any tie.
+        item_count = 3 + _n(rng, 28)           # 3..30
+        token_cost = 2 + _n(rng, 11)           # 2..12
+        options.append({"label": chr(ord("A") + i), "itemCount": item_count,
+                        "tokenCost": token_cost,
+                        "unitRate": {"num": token_cost, "den": item_count}})
+    # Require all option (itemCount, tokenCost) displays distinct (no byte-identical option), all
+    # cost-per-item rates pairwise distinct, AND a unique strict-MINIMUM cost-per-item. Redraw on a tie.
+    displays = [(o["itemCount"], o["tokenCost"]) for o in options]
+    if len(set(displays)) != len(displays):
+        return None
+    rates = [Fraction(o["tokenCost"], o["itemCount"]) for o in options]
     if len(set(rates)) != len(rates):
         return None
     mn = min(rates)
@@ -318,12 +486,14 @@ def _draw_best_buy(rng: Mulberry32) -> Optional[Dict[str, Any]]:
     if len(winners) != 1:
         return None
     correct = options[winners[0]]["label"]
-    return {"task": "best_buy", "product": product, "unit": unit, "pack": pack,
+    return {"task": "best_buy", "items": items, "item": item,
             "options": options, "correctLabel": correct}
 
 
 def _draw_simple_scale(rng: Mulberry32) -> Optional[Dict[str, Any]]:
-    kind, _what, src_unit, dst_unit = _pick(rng, _SCALE_THEMES)
+    # Correction #5 (POLICY A, dimensionless): NO cm/km/m. srcUnit/dstUnit are abstract "... units".
+    # The answer is the BARE NUMBER of dst units = value*num/den (no cross-unit conversion).
+    kind, src_unit, dst_unit = _pick(rng, _SCALE_THEMES)
     fnum = 1 + _n(rng, 9)
     fden = 1 + _n(rng, 9)
     if fnum == fden:
@@ -395,7 +565,8 @@ def _acceptable(task: str, params: Dict[str, Any]) -> bool:
     if task == "inverse_proportion":
         return sol is not None and sol > 0   # integer-only; positive
     if task == "best_buy":
-        rates = [Fraction(o["totalAmount"], o["packSize"]) for o in params["options"]]
+        # Correction #4: cost-per-item = tokenCost / itemCount; best = strict MIN tokens-per-item.
+        rates = [Fraction(o["tokenCost"], o["itemCount"]) for o in params["options"]]
         mn = min(rates)
         return sum(1 for r in rates if r == mn) == 1  # unique strict minimum
     if task == "ratio_to_fraction":
@@ -484,7 +655,7 @@ def _bar_segments(task: str, params: Dict[str, Any]) -> Tuple[List[int], List[bo
         return weights, [True, True], labels
     if task in ("share_two_part", "share_three_part"):
         parts = params["parts"]
-        labels = [f"{lab} ({p} parts)" for lab, p in zip(params["labels"], parts)]
+        labels = [f"{lab} ({_count(p, 'parts')})" for lab, p in zip(params["labels"], parts)]
         return list(parts), [False] * len(parts), labels  # share values are the unknowns
     if task == "missing_part":
         parts = params["parts"]
@@ -571,7 +742,7 @@ def _bar_caption(task: str, params: Dict[str, Any]) -> str:
     if task == "fraction_to_ratio":
         return f"Bar model: {params['num']} of {params['den']} equal parts shaded"
     if task in ("share_two_part", "share_three_part"):
-        return f"Bar model: {params['total']} {params['unit']} shared in {RC.format_ratio(params['parts'])}"
+        return f"Bar model: {_count(params['total'], params['unit'])} shared in {RC.format_ratio(params['parts'])}"
     if task == "missing_part":
         return f"Bar model: parts in the ratio {RC.format_ratio(params['parts'])}"
     return "Bar model"
@@ -657,12 +828,14 @@ def _render_table(task: str, params: Dict[str, Any], answer_key: bool, acc: Dict
     col_w = (x1 - x0) // (n + 1)
     y0 = 80
     row_h = 56
-    rows = ["Option", f"Total {params['unit']}", f"{params['pack'].capitalize()} size",
-            f"Unit rate ({params['unit']} per item)"]
+    # Correction #4: cost-like columns — items + tokens; the unknown row is COST PER ITEM
+    # (tokens per <singular-item>).
+    rows = ["Option", f"{params['items'].capitalize()}", "Tokens",
+            f"Cost per {params['item']} (tokens)"]
     n_rows = len(rows)
-    # ----- shared base: a fixed 4-row grid + row headers + given option/total/pack values (NO rates) ----
+    # ----- shared base: a fixed 4-row grid + row headers + given option/items/tokens values (NO rates) ----
     out.append('<g class="rt-base">')
-    out.append(f'<text class="rt-lbl" x="{TBL_W // 2}" y="48" text-anchor="middle">{_esc("Compare the options by unit rate")}</text>')
+    out.append(f'<text class="rt-lbl" x="{TBL_W // 2}" y="48" text-anchor="middle">{_esc("Compare the options by cost per item")}</text>')
     for r in range(n_rows + 1):
         y = y0 + r * row_h
         out.append(f'<line class="rt-table-line" x1="{x0}" y1="{y}" x2="{x0 + col_w * (n + 1)}" y2="{y}"/>')
@@ -675,17 +848,17 @@ def _render_table(task: str, params: Dict[str, Any], answer_key: bool, acc: Dict
     for i, o in enumerate(options):
         cx = x0 + col_w * (i + 1) + col_w // 2
         out.append(f'<text class="rt-lbl" x="{cx}" y="{y0 + 36}" text-anchor="middle">{_esc(o["label"])}</text>')
-        out.append(f'<text class="rt-lbl" x="{cx}" y="{y0 + row_h + 36}" text-anchor="middle">{o["totalAmount"]}</text>')
-        out.append(f'<text class="rt-lbl" x="{cx}" y="{y0 + 2 * row_h + 36}" text-anchor="middle">{o["packSize"]}</text>')
+        out.append(f'<text class="rt-lbl" x="{cx}" y="{y0 + row_h + 36}" text-anchor="middle">{o["itemCount"]}</text>')
+        out.append(f'<text class="rt-lbl" x="{cx}" y="{y0 + 2 * row_h + 36}" text-anchor="middle">{o["tokenCost"]}</text>')
     out.append("</g>")
-    # ----- role-specific channel: the unit-rate row is the UNKNOWN (a '?' for the student, the exact
+    # ----- role-specific channel: the cost-per-item row is the UNKNOWN (a '?' for the student, the exact
     # rate + a check mark on the best option in the key) -----
     ry = y0 + 3 * row_h + 36
     if answer_key:
         out.append('<g class="rt-overlay">')
         for i, o in enumerate(options):
             cx = x0 + col_w * (i + 1) + col_w // 2
-            rate = Fraction(o["totalAmount"], o["packSize"])
+            rate = Fraction(o["tokenCost"], o["itemCount"])
             mark = " ✓" if o["label"] == params["correctLabel"] else ""
             out.append(f'<text class="rt-unknown-lbl" x="{cx}" y="{ry}" text-anchor="middle">{_esc(_disp_rat(rate) + mark)}</text>')
         out.append("</g>")
@@ -829,25 +1002,25 @@ def _difficulty(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
 # --------------------------------------------------------------------------- #
 def _data_table(task: str, params: Dict[str, Any], answer_key: bool) -> Dict[str, Any]:
     if task in ("share_two_part", "share_three_part"):
-        rows = [[lab, f"{p} parts"] for lab, p in zip(params["labels"], params["parts"])]
+        rows = [[lab, _count(p, "parts")] for lab, p in zip(params["labels"], params["parts"])]
         if answer_key:
             shares = RC.share(params["total"], params["parts"])
-            rows = [[lab, f"{p} parts -> {v} {params['unit']}"]
+            rows = [[lab, f"{_count(p, 'parts')} -> {_count(v, params['unit'])}"]
                     for lab, p, v in zip(params["labels"], params["parts"], shares)]
         return {"columns": ["Share", "Ratio part"], "rows": rows}
     if task == "missing_part":
         ki, mi = params["knownIndex"], params["missingIndex"]
         rows = [["", ""], ["", ""]]
-        rows[ki] = [params["labels"][ki], f"{params['parts'][ki]} parts = {params['knownValue']}"]
-        rows[mi] = [params["labels"][mi], f"{params['parts'][mi]} parts = " + (str(_solve(task, params)) if answer_key else "?")]
+        rows[ki] = [params["labels"][ki], f"{_count(params['parts'][ki], 'parts')} = {params['knownValue']}"]
+        rows[mi] = [params["labels"][mi], f"{_count(params['parts'][mi], 'parts')} = " + (str(_solve(task, params)) if answer_key else "?")]
         return {"columns": ["Part", "Value"], "rows": rows}
     if task == "best_buy":
-        cols = ["Option", f"Total {params['unit']}", "Pack size"]
-        rows = [[o["label"], str(o["totalAmount"]), str(o["packSize"])] for o in params["options"]]
+        cols = ["Option", params["items"].capitalize(), "Tokens"]
+        rows = [[o["label"], str(o["itemCount"]), str(o["tokenCost"])] for o in params["options"]]
         if answer_key:
-            cols.append("Unit rate")
-            rows = [[o["label"], str(o["totalAmount"]), str(o["packSize"]),
-                     _disp_rat(Fraction(o["totalAmount"], o["packSize"]))
+            cols.append(f"Cost per {params['item']} (tokens)")
+            rows = [[o["label"], str(o["itemCount"]), str(o["tokenCost"]),
+                     _disp_rat(Fraction(o["tokenCost"], o["itemCount"]))
                      + (" (best)" if o["label"] == params["correctLabel"] else "")]
                     for o in params["options"]]
         return {"columns": cols, "rows": rows}
@@ -876,7 +1049,7 @@ def _accessibility(task: str, params: Dict[str, Any], answer_key: bool) -> Dict[
         base = "A double number line aligning the two proportional quantities."
         title = "Double number line"
     elif fig == "table":
-        base = "A comparison table of the options' total amount and pack size."
+        base = "A comparison table of each option's item count and token cost."
         title = "Best-buy comparison table"
     else:
         base = "No figure; the data is given in the prompt."
@@ -898,7 +1071,7 @@ def _instruction(task: str, params: Dict[str, Any]) -> str:
     if task == "simplify":
         return f"Write the ratio {RC.format_ratio(params['parts'])} in its simplest form."
     if task == "write_from_quantities":
-        qs = ", ".join(f"{v} {lab}" for v, lab in zip(params["quantities"], params["labels"]))
+        qs = ", ".join(_count(v, lab) for v, lab in zip(params["quantities"], params["labels"]))
         return (f"In a {params['title'].lower()} there are {qs}. "
                 f"Write the ratio of {' to '.join(params['labels'])} in its simplest form.")
     if task == "ratio_to_fraction":
@@ -911,33 +1084,42 @@ def _instruction(task: str, params: Dict[str, Any]) -> str:
         return (f"In a group, {params['num']}/{params['den']} are one type and the rest are another. "
                 f"Write the ratio of the first type to the rest in its simplest form.")
     if task in ("share_two_part", "share_three_part"):
-        return (f"Share {params['total']} {params['unit']} between {', '.join(params['labels'])} "
+        return (f"Share {_count(params['total'], params['unit'])} between {', '.join(params['labels'])} "
                 f"in the ratio {RC.format_ratio(params['parts'])}. Give each share.")
     if task == "missing_part":
         ki, mi = params["knownIndex"], params["missingIndex"]
         return (f"{params['labels'][ki]} and {params['labels'][mi]} share an amount in the ratio "
-                f"{RC.format_ratio(params['parts'])}. {params['labels'][ki]} gets {params['knownValue']} "
-                f"{params['unit']}. How many {params['unit']} does {params['labels'][mi]} get?")
+                f"{RC.format_ratio(params['parts'])}. {params['labels'][ki]} gets "
+                f"{_count(params['knownValue'], params['unit'])}. How many {_forms(params['unit'])[1]} "
+                f"does {params['labels'][mi]} get?")
     if task == "direct_proportion":
-        return (f"{params['quantity']} {params['perLabel']} hold {params['total']} {params['givenLabel']}. "
-                f"How many {params['givenLabel']} are in {params['target']} {params['perLabel']}? "
+        return (f"{_count(params['quantity'], params['perLabel'])} hold "
+                f"{_count(params['total'], params['givenLabel'])}. "
+                f"How many {_forms(params['givenLabel'])[1]} are in {_count(params['target'], params['perLabel'])}? "
                 f"Give an exact value.")
     if task == "inverse_proportion":
-        return (f"{params['q1']} {params['agent']} take {params['v1']} {params['unit']} {params['tail']}. "
-                f"How many {params['unit']} would {params['q2']} {params['agent']} take {params['tail']}?")
+        return (f"{_count(params['q1'], params['agent'])} take {_count(params['v1'], params['unit'])} {params['tail']}. "
+                f"How many {_forms(params['unit'])[1]} would {_count(params['q2'], params['agent'])} take {params['tail']}?")
     if task == "unit_rate":
-        return (f"{params['quantity']} {params['perLabel']} hold {params['total']} {params['amountLabel']}. "
-                f"How many {params['amountLabel']} per {params['perLabel'][:-1] if params['perLabel'].endswith('s') else params['perLabel']}? "
+        return (f"{_count(params['quantity'], params['perLabel'])} hold "
+                f"{_count(params['total'], params['amountLabel'])}. "
+                f"How many {_forms(params['amountLabel'])[1]} per {_singular(params['perLabel'])}? "
                 f"Give an exact value.")
     if task == "best_buy":
-        opts = "; ".join(f"option {o['label']} has {o['totalAmount']} {params['unit']} in a {params['pack']} of {o['packSize']}"
+        # Correction #4: cost-like — "<itemCount> <items> for <tokenCost> tokens"; best = lowest
+        # cost per <singular-item>. itemCount/tokenCost routed through _count for grammatical agreement.
+        opts = "; ".join(f"option {o['label']} offers {_count_pair(o['itemCount'], params['item'], params['items'])} "
+                         f"for {_count(o['tokenCost'], 'tokens')}"
                          for o in params["options"])
-        return (f"You can buy {params['product']}: {opts}. Which option is the best value "
-                f"(the lowest amount per item)? Choose the best option.")
+        return (f"You can buy {params['items']}: {opts}. Which option is the best value "
+                f"(the lowest cost per {params['item']})? Choose the best option.")
     if task == "simple_scale":
-        return (f"On a {params['scaleKind']}, {params['factorDen']} {params['srcUnit']} represent "
-                f"{params['factorNum']} {params['dstUnit']}. What do {params['value']} {params['srcUnit']} "
-                f"represent? Give an exact value.")
+        # Correction #5 (POLICY A, dimensionless): grammatical "... unit/units"; a BARE-NUMBER answer
+        # of dst units; NO cross-unit conversion.
+        return (f"On a {params['scaleKind']}, {_units(params['factorDen'], params['srcUnit'])} represent "
+                f"{_units(params['factorNum'], params['dstUnit'])}. A part measures "
+                f"{_units(params['value'], params['srcUnit'])}. How many {params['dstUnit']}s long is it "
+                f"in reality? Give an exact value.")
     raise ValueError(task)
 
 
@@ -996,13 +1178,17 @@ def _solution(task: str, params: Dict[str, Any]) -> Dict[str, Any]:
         step("Divide the total by the number of units",
              f"{params['total']} ÷ {params['quantity']} = {_disp_rat(sol)}")
     elif task == "best_buy":
+        # Correction #4: cost per item = tokens ÷ items; the best value is the lowest cost per item.
+        # Every count->noun (tokens, items, the rate's tokens) routes through _count for agreement
+        # (a rate of exactly 1 reads "1 token per <item>", never "1 tokens").
         for o in params["options"]:
-            rate = Fraction(o["totalAmount"], o["packSize"])
-            step(f"Unit rate of option {o['label']}",
-                 f"{o['totalAmount']} ÷ {o['packSize']} = {_disp_rat(rate)} {params['unit']} per item")
-        rates = {o["label"]: Fraction(o["totalAmount"], o["packSize"]) for o in params["options"]}
-        step("Compare the unit rates and choose the strict minimum",
-             f"lowest is {_disp_rat(rates[params['correctLabel']])} -> option {params['correctLabel']}")
+            rate = Fraction(o["tokenCost"], o["itemCount"])
+            step(f"Cost per {params['item']} of option {o['label']}",
+                 f"{_count(o['tokenCost'], 'tokens')} ÷ {_count_pair(o['itemCount'], params['item'], params['items'])} "
+                 f"= {_count(rate, 'tokens')} per {params['item']}")
+        rates = {o["label"]: Fraction(o["tokenCost"], o["itemCount"]) for o in params["options"]}
+        step("Compare the cost per item and choose the strict minimum",
+             f"the lowest cost per {params['item']} is {_disp_rat(rates[params['correctLabel']])} -> option {params['correctLabel']}")
     elif task == "simple_scale":
         v, fnum, fden = params["value"], params["factorNum"], params["factorDen"]
         step("Find the scale factor", f"{fnum}/{fden}")
@@ -1171,14 +1357,14 @@ def generate(seed: int, config: Optional[Dict[str, Any]] = None) -> Dict[str, An
 
     if mc and task == "best_buy":
         # The MC option set IS the labelled buy options (A/B/C); the correct one has the strict-minimum
-        # unit rate. Option order is fixed (the figure/table already lays them out as A/B/C). Each
+        # cost per item. Option order is fixed (the figure/table already lays them out as A/B/C). Each
         # wrong option carries the misconception a student picking it would exhibit.
         diags = {d["predictedResponse"]: d for d in RM.diagnostics_for(task, params)}
         item["options"] = []
         for o in params["options"]:
             correct = o["label"] == params["correctLabel"]
             opt = {"label": o["label"], "value": o["label"],
-                   "display": f"{o['totalAmount']} {params['unit']} per {params['pack']} of {o['packSize']}",
+                   "display": f"{_count_pair(o['itemCount'], params['item'], params['items'])} for {_count(o['tokenCost'], 'tokens')}",
                    "correct": correct}
             if not correct and o["label"] in diags:
                 opt["misconceptionId"] = diags[o["label"]]["misconceptionId"]
@@ -1274,6 +1460,61 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             add("direct-cross-multiplies", f == Fraction(p["total"], p["quantity"]) * p["target"])
         if task == "simple_scale":
             add("scale-recomputes", f == Fraction(p["value"]) * Fraction(p["factorNum"], p["factorDen"]))
+        # --- correction #3 (context-value compatibility) for direct_proportion / unit_rate ---
+        if task in ("direct_proportion", "unit_rate"):
+            amount_noun = p["givenLabel"] if task == "direct_proportion" else p["amountLabel"]
+            domain = _CONTEXT_DOMAINS.get(amount_noun)
+            is_int = f.denominator == 1
+            # the answer is compatible with its context's domain (count-discrete demands an integer)
+            compatible = domain is not None and (
+                domain != CONTEXT_DOMAIN_COUNT or is_int)
+            add("context-answer-compatible", compatible,
+                f"{amount_noun} domain={domain} answerInt={is_int}")
+            add("discrete-count-answer-integer",
+                domain != CONTEXT_DOMAIN_COUNT or is_int,
+                "a count-discrete context carries an integer answer")
+            add("rational-answer-uses-continuous-or-average-context",
+                is_int or domain in (CONTEXT_DOMAIN_CONTINUOUS, CONTEXT_DOMAIN_ABSTRACT, CONTEXT_DOMAIN_AVERAGE),
+                "a fractional answer uses a continuous / abstract / average context")
+            # no fractional books/students/sheets/people: a count-noun context never carries a fraction
+            add("no-fractional-books-students-sheets-or-people",
+                not (domain == CONTEXT_DOMAIN_COUNT and not is_int),
+                "no count-noun context carries a fractional answer")
+            if task == "unit_rate":
+                add("unit-rate-context-allows-rational",
+                    is_int or domain in (CONTEXT_DOMAIN_CONTINUOUS, CONTEXT_DOMAIN_ABSTRACT, CONTEXT_DOMAIN_AVERAGE),
+                    "a fractional unit rate uses a continuous / abstract / average context")
+        # --- correction #5 (simple-scale wording + answer contract) ---
+        if task == "simple_scale":
+            instr = item["prompt"]["instruction"]
+            # grammatical: never "1 <word>s"; correct singular/plural for every displayed count
+            grammatical = (_units(p["factorDen"], p["srcUnit"]) in instr
+                           and _units(p["factorNum"], p["dstUnit"]) in instr
+                           and _units(p["value"], p["srcUnit"]) in instr)
+            add("scale-unit-wording-grammatical", grammatical,
+                "displayed counts use grammatical singular/plural units")
+            # explicit singular/plural correctness: a count of 1 is singular, any other count is plural
+            sp_ok = True
+            for cnt, word in ((p["factorDen"], p["srcUnit"]), (p["factorNum"], p["dstUnit"]),
+                              (p["value"], p["srcUnit"])):
+                phrase = _units(cnt, word)
+                if cnt == 1 and phrase.endswith("s"):
+                    sp_ok = False
+                if cnt != 1 and not phrase.endswith("s"):
+                    sp_ok = False
+            add("singular-plural-units-correct", sp_ok, "1 <word> vs n <word>s")
+            # the prompt asks for a number of dst abstract units and the answer is that bare number
+            add("scale-answer-contract-matches-prompt",
+                f"How many {p['dstUnit']}s long" in instr and f == Fraction(p["value"]) * Fraction(p["factorNum"], p["factorDen"]),
+                "prompt asks a bare number of dst units; answer is that number")
+            # NO measurement unit is being asked while returning a bare number (no cm/km/m tokens)
+            mtokens = ("cm", "km", " m ", "centimetre", "kilometre", "metre", "centimeter",
+                       "kilometer", "meter")
+            add("measurement-unit-answer-not-bare-number",
+                not any(tok in instr for tok in mtokens),
+                "no measurement-unit token in a dimensionless scale prompt")
+            add("no-cross-unit-conversion-in-v1", p["direction"] == "multiply",
+                "a single multiplicative scale factor; no cross-unit conversion")
     elif kind == "table":
         cells = answer["canonical"]["cells"]
         by_label = {c["location"]: c["value"] for c in cells}
@@ -1284,17 +1525,49 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
         add("shares-sum-to-whole", sum(by_label.values()) == p["total"], f"sum == {p['total']}")
         add("total-divisible-by-parts", p["total"] % sum(p["parts"]) == 0)
     elif kind == "mc":
-        # best_buy: independent strict-minimum unit-rate re-derivation
-        rates = {o["label"]: Fraction(o["totalAmount"], o["packSize"]) for o in p["options"]}
+        # best_buy: independent strict-minimum COST-PER-ITEM (tokens per item) re-derivation (#4).
+        rates = {o["label"]: Fraction(o["tokenCost"], o["itemCount"]) for o in p["options"]}
         mn = min(rates.values())
         winners = [lab for lab, r in rates.items() if r == mn]
         add("best-buy-unique-strict-min", len(winners) == 1, f"winners={winners}")
         add("best-buy-correct-is-min", winners and winners[0] == answer["canonical"] == p["correctLabel"],
             f"min option {winners[0] if winners else None}")
-        # stored unit-rate witness agrees with the recomputed exact rate
-        wit_ok = all(Fraction(o["unitRate"]["num"], o["unitRate"]["den"]) == Fraction(o["totalAmount"], o["packSize"])
+        # stored unit-rate witness agrees with the recomputed exact cost-per-item rate
+        wit_ok = all(Fraction(o["unitRate"]["num"], o["unitRate"]["den"]) == Fraction(o["tokenCost"], o["itemCount"])
                      for o in p["options"])
         add("best-buy-unit-rate-witness-exact", wit_ok)
+        # --- correction #4 new checks: cost-per-item direction + cost-like (token) denominator ---
+        instr = item["prompt"]["instruction"]
+        # the rate the validator uses is tokens-per-item (denominator = items); the winner is the strict min
+        add("best-buy-rate-direction-consistent",
+            all(o["unitRate"]["den"] == o["itemCount"] and o["unitRate"]["num"] == o["tokenCost"] for o in p["options"]),
+            "unitRate is tokenCost/itemCount (cost per item) for every option")
+        # cost-like denominator: the cost is in TOKENS (no currency symbol) — assert tokens wording, no $/£/€
+        no_currency = not any(sym in instr for sym in ("$", "£", "€", "¥"))
+        add("best-buy-context-has-cost-like-denominator",
+            "tokens" in instr and no_currency, "cost expressed in tokens, no currency symbol")
+        add("best-buy-strict-minimum-cost-per-unit", len(winners) == 1 and rates[p["correctLabel"]] == mn,
+            "the correct option is the unique strict-minimum tokens-per-item")
+        # prompt agrees with the validator: it asks for the lowest cost per item AND the marked-correct
+        # option is the strict-min tokens-per-item
+        prompt_lowest = f"the lowest cost per {p['item']}" in instr
+        add("best-buy-prompt-matches-validator",
+            prompt_lowest and p["correctLabel"] == (winners[0] if winners else None),
+            "prompt asks lowest cost per item; correct option is strict-min tokens-per-item")
+        # feedback (per-option misconception) never lands on the correct option, and the two diagnostics
+        # point at the lowest-total / highest-total options (wrong direction), never the cost-per-item min
+        diags = {d["predictedResponse"]: d for d in RM.diagnostics_for(task, p)}
+        feedback_ok = all(lbl != p["correctLabel"] for lbl in diags)
+        add("best-buy-feedback-matches-rate-direction", feedback_ok,
+            "every diagnostic's predicted (wrong) option differs from the correct option")
+        # the correct option is NOT simply the one with the most items or the fewest tokens unless that
+        # also has the min cost-per-item
+        most_items = max(p["options"], key=lambda o: (o["itemCount"], o["label"]))["label"]
+        fewest_tokens = min(p["options"], key=lambda o: (o["tokenCost"], o["label"]))["label"]
+        coincide_ok = ((most_items != p["correctLabel"] or rates[most_items] == mn)
+                       and (fewest_tokens != p["correctLabel"] or rates[fewest_tokens] == mn))
+        add("no-lowest-product-amount-as-best-value", coincide_ok,
+            "the correct option is the min cost-per-item, not merely most-items/fewest-tokens")
 
     # role-based figure leakage (owner J): the unknown is not rendered as a value in the STUDENT figure;
     # the answer key is additive. A given value equal to the answer is NOT leakage.
@@ -1351,6 +1624,29 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
             add("mc-option-count", len(opts) == 4, f"{len(opts)} options")
             # each distractor recomputes from its declared misconception via diagnostics_for
             add("mc-distractors-misconception-backed", _distractors_recompute(task, p, item))
+
+    # --- follow-up correction: grammatical noun-count agreement across all surfaced text ---
+    # Assemble every learner-visible string that can contain a "<count> <noun>" and assert it has no
+    # "1 <plural>" (plural after a count of one) and no malformed "per <plural>" (must be singular).
+    grammar_text_parts: List[str] = [item["prompt"]["instruction"]]
+    for s in item["solution"]["steps"]:
+        grammar_text_parts.append(s["transformation"])
+        grammar_text_parts.append(s["intermediateResult"])
+    for o in (item.get("options") or []):
+        grammar_text_parts.append(str(o.get("display", "")))
+    media = item.get("media") or []
+    if media:
+        m = media[0]
+        for dt_key in ("dataTableFallback",):
+            dt = m.get(dt_key) or {}
+            for row in dt.get("rows", []):
+                grammar_text_parts.extend(str(c) for c in row)
+        spec = m.get("spec") or {}
+        kdt = spec.get("answerKeyDataTableFallback") or {}
+        for row in kdt.get("rows", []):
+            grammar_text_parts.extend(str(c) for c in row)
+    violations = _grammar_violations(" \n ".join(grammar_text_parts))
+    add("noun-count-grammatical", not violations, f"violations={violations[:5]}")
 
     valid = all(c["ok"] for c in checks)
     return {"valid": valid, "validatorVersion": VALIDATOR_VERSION, "checks": checks}
