@@ -6,7 +6,7 @@
  * OBJECTIVE_BY_TASK (no alternative spellings); domain geometry / strand coordinate-transformations /
  * GEO.TRANS segment; the per-task answer types (coordinate / table-completion / transformation; never
  * multiple-choice); coordinate-lines (GEO.COORD) prerequisites; MISC.TRANS.* misconception references;
- * and the approved-for-implementation review status.
+ * and the curriculum-approved review status (owner final APPROVE, DECISION_LOG #57).
  *
  * Run:  node --test core/curriculum/transformations-graph.test.ts
  */

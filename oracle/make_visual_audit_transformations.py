@@ -122,7 +122,7 @@ def main() -> int:
 <body>
 <header>
   <h1>{T.GENERATOR_ID} v{GEN_VER} — visual audit</h1>
-  <div class="meta">validator v{VAL_VER} · commit {html.escape(commit[:12])} · PENDING-REVIEW · source = filled circle + solid edge; image = open square + dashed edge (distinct without colour)</div>
+  <div class="meta">validator v{VAL_VER} · commit {html.escape(commit[:12])} · CURRICULUM-APPROVED (DECISION_LOG #57) · source = filled circle + solid edge; image = open square + dashed edge (distinct without colour)</div>
 </header>
 <p>Each figure stamps its mode's CSS custom properties on its own <code>class="tx-figure"</code> root; one
 shared <code>var()</code> ruleset reads them, so modes are isolated per root and reordering cards cannot
@@ -131,7 +131,7 @@ show both figures. The answer-key channel shares byte-identical base geometry an
 {''.join(gallery)}
 <section class="mode-block" data-mode="premium-dark"><h2>Label-collision stress (premium dark)</h2>
 <div class="pair">{''.join(stress)}</div></section>
-<footer class="meta">gen.geometry.transformations v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · generated for curriculum review (pending-review).</footer>
+<footer class="meta">gen.geometry.transformations v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · curriculum-approved (DECISION_LOG #57).</footer>
 <script>
   window.__trans = {{
     generatorId: "{T.GENERATOR_ID}", version: "{GEN_VER}", validatorVersion: "{VAL_VER}", commit: "{html.escape(commit)}",

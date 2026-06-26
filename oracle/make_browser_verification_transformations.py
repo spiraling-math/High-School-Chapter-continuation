@@ -151,7 +151,7 @@ def main() -> int:
 
     report = {
         "generatorId": T.GENERATOR_ID, "generatorVersion": T.GENERATOR_VERSION,
-        "validatorVersion": T.VALIDATOR_VERSION, "approvalStatus": "pending-review",
+        "validatorVersion": T.VALIDATOR_VERSION, "approvalStatus": "approved",
         "gitCommit": _commit(),
         "viewBox": "0 0 1000 700", "exportPx": [6000, 4200], "modes": MODES,
         "themeId": THEME["id"], "auditElements": list(ELEMENTS),

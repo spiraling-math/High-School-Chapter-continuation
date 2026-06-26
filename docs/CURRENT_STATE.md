@@ -2,7 +2,24 @@
 
 Last updated: 2026-06-25.
 
-## `gen.geometry.transformations` v1.0.2 — PENDING-REVIEW (2026-06-25)
+## `gen.geometry.transformations` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
+
+**Owner final APPROVE (DECISION_LOG #57): generator + validator v1.0.2 curriculum-approved; the nine
+`SPI.MIDDLE.GEO.TRANS.*` objectives approved; the shared transformation-descriptor infrastructure approved
+(`answer.type "transformation"` canonical-first + the translation/reflection/rotation descriptor union +
+parser/canonicalizer/formatter/equivalence checker + the 14 result codes — NOT enlargements/compositions/
+arbitrary-angle/arbitrary-lines/fractional/matrix/functions/tessellations/3D).** The generator is registered
+`approvalStatus: approved` (selectable in normal Studio + included in production samples; only v1.0.2
+registered); the 23 reviewed exemplars are approved golden exemplars; the v1.0.2 review package (golden/
+parity/canonical-SVG/parser-checker/schema-conformance fixtures, review pack md/json, coverage matrix,
+visual audit, distribution, browser verification, manifest, 6000×4200 export hashes) is **frozen immutable**
+(manifest SHA-256 + artifact-identity tests); tag **`approved-transformations-v1.0.2`** (v1.0.0/v1.0.1
+preserved as historical/unapproved). Newly generated items begin at machine-validated; no auto-approval/
+publication. **Non-blocking future calibration debt** (do NOT alter approved v1.0.2 output): `translate_shape`
+band-2 concentration; some shape-object types intentionally rare in the 10k distribution; describe-task
+difficulty bands reached via a single deterministic structural lever.
+
+### (Historical) v1.0.2 fixed-point label correction (DECISION_LOG #56)
 
 **Owner REVISE (DECISION_LOG #56): answer-key fixed-point label layout only → v1.0.2; family accepted;
 v1.0.1 preserved at tag `transformations-v1.0.1`.** At a fixed vertex (a source vertex coincident with

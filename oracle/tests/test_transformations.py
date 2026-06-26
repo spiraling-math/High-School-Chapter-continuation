@@ -390,9 +390,11 @@ class TestArtifactIdentity(unittest.TestCase):
     def test_manifest_tag_terminology(self):
         self._present()
         vt = self.manifest["versionTags"]
-        self.assertEqual(vt["previousVersionTag"], "transformations-v1.0.0")
-        self.assertEqual(vt["currentImplementationTag"], "transformations-v1.0.1")
-        self.assertIsNone(vt["approvedTag"])  # created only on owner APPROVE
+        self.assertEqual(vt["previousVersionTag"], "transformations-v1.0.1")
+        self.assertEqual(vt["currentImplementationTag"], "transformations-v1.0.2")
+        self.assertEqual(vt["approvedTag"], "approved-transformations-v1.0.2")  # created on owner APPROVE
+        self.assertEqual(self.manifest["approvalStatus"], "approved")
+        self.assertEqual(self.manifest["objectiveReviewStatus"], "approved")
 
     def test_manifest_hashes_match_files(self):
         self._present()

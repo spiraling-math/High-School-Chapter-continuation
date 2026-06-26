@@ -81,22 +81,34 @@ def main() -> int:
     manifest = {
         "generatorId": T.GENERATOR_ID, "generatorVersion": T.GENERATOR_VERSION,
         "validatorVersion": T.VALIDATOR_VERSION,
-        "approvalStatus": "pending-review",
-        "objectiveReviewStatus": "approved-for-implementation",
+        "approvalStatus": "approved",
+        "objectiveReviewStatus": "approved",
         "gitCommit": os.environ.get("SPI_BUILD_COMMIT") or _git_commit(),
-        # v1.0.0 implemented but unapproved (preserved at tag transformations-v1.0.0); v1.0.1 corrects the
-        # review-package defects (owner REVISE). The approved tag is created only on owner APPROVE.
+        # Version tags (owner final APPROVE): the approved reference tag is created on approval; the
+        # superseded implementation tags are recorded as historical, never as the approval tag.
         "versionTags": {
-            "previousVersionTag": "transformations-v1.0.0",
-            "currentImplementationTag": "transformations-v1.0.1",
-            "approvedTag": None,
+            "previousVersionTag": "transformations-v1.0.1",
+            "currentImplementationTag": "transformations-v1.0.2",
+            "approvedTag": "approved-transformations-v1.0.2",
         },
-        "schemaExtension": "answer.type 'transformation' (canonical-first: descriptor IS answer.canonical) — APPROVED",
+        # Approval housekeeping (owner final APPROVE) — metadata only; does NOT alter canonical output.
+        "approval": {
+            "decision": "curriculum-approved",
+            "approvedTag": "approved-transformations-v1.0.2",
+            "approvedAt": os.environ.get("SPI_APPROVAL_DATE", "2026-06-26"),
+            "approvalCommit": os.environ.get("SPI_APPROVAL_COMMIT", ""),
+            "decisionLog": "DECISION_LOG.md #57",
+            "sharedInfrastructure": ("answer.type 'transformation' (canonical-first descriptor in "
+                                     "answer.canonical) + translation/reflection/rotation descriptor union + "
+                                     "parser/canonicalizer/formatter/equivalence checker + the 14 result codes "
+                                     "— APPROVED. Does NOT authorize enlargements, compositions, arbitrary-angle "
+                                     "rotations, arbitrary reflection lines, fractional vectors/centres, matrices, "
+                                     "transformations of functions, tessellations, or 3D."),
+        },
         "objectiveIds": [T.OBJECTIVE_BY_TASK[t] for t in T.TASKS],
         "tasks": list(T.TASKS),
         "interactionTypes": ["free-response"],
         "answerTypes": ["coordinate", "table-completion", "transformation"],
-        "hiddenFromNormalStudioAndProduction": True,
         "artifacts": artifacts,
     }
     with open(os.path.join(REVIEW_DIR, "transformations_manifest.json"), "w", encoding="utf-8") as fh:

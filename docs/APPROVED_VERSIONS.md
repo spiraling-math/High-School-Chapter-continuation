@@ -16,7 +16,9 @@ committed golden/parity fixtures.
 | `gen.geometry.coordinate-lines` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_coordinate_lines_PROPOSAL.md` | `660b50e` | 2026-06-24 |
 | `gen.stats.data-handling` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_statistics_data_handling_PROPOSAL.md` | `17540e8` | 2026-06-25 |
 | `gen.measurement.mensuration` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_mensuration_PROPOSAL.md` | tag `approved-mensuration-v1.0.1` | 2026-06-25 |
+| `gen.geometry.transformations` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_transformations_PROPOSAL.md` | tag `approved-transformations-v1.0.2` | 2026-06-26 |
 | `gen.measurement.mensuration` | 1.0.0 | preserved (superseded by 1.0.1; never approved) | — | tag `mensuration-v1.0.0` | — |
+| `gen.geometry.transformations` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `transformations-v1.0.{0,1}` | — |
 | `gen.stats.data-handling` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `stats-data-handling-v1.0.{0,1}` | — |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
 | `gen.sequences.arithmetic` | 1.0.0, 1.0.1 | preserved (superseded by 1.1.0) | — | `5a962a7`, `4cbb6a1` | — |
@@ -248,6 +250,40 @@ coverage**. The 28 reviewed representative items are approved golden exemplars. 
 **Non-blocking calibration/efficiency debt** (do not alter approved output): difficulty + median-band
 concentration in some reading/range tasks; the high `mode_from_list` multiple-choice deterministic
 redraw rate.
+
+## Coordinate-transformations generator — curriculum-approved at v1.0.2 (2026-06-26, `DECISION_LOG.md` #57)
+
+`gen.geometry.transformations` v1.0.2 + validator v1.0.2 are curriculum-approved (tag
+`approved-transformations-v1.0.2`). Approved: the nine `SPI.MIDDLE.GEO.TRANS.*` objectives; the nine
+FREE-RESPONSE tasks (translate/reflect/rotate × point/shape + describe_translation/reflection/rotation);
+the exact integer transformation engine (translation; reflect x=a/y=b/y=x/y=-x; quarter-turn rotation via
+translate-to-centre, ACW q=1/2/3 — no trig/float/tolerance/irrational); the coordinate (point), table-
+completion (shape, A′…D′ U+2032) and structured `answer.type "transformation"` descriptor answer
+contracts; the parser/canonicalizer/formatter/equivalence checker + the 14-code vocabulary; the
+source/image shape model; the object-and-image Cartesian renderer reusing the approved cartesian-theme via
+the additive `core/visual-style/transformations-theme`; the student-vs-answer-key channel separation; the
+fixed-point label-placement policy (separated deterministic offsets); the independent validator; the
+`MISC.TRANS.*` misconception/diagnostic registry; the difficulty model + declared ranges; the accessibility
+model; premium/premium-dark/accessible/print modes with per-root style isolation; the self-contained
+6000×4200 export contract; and the artifact-identity + fixed-point regression checks.
+
+**Shared transformation-descriptor infrastructure APPROVED** (the platform's first structured non-numeric
+mapping answer): `answer.type "transformation"`, the canonical-first descriptor stored in
+`answer.canonical`, the translation/reflection/rotation descriptor union, the transformation
+parser/canonicalizer/formatter/equivalence checker, and the 14 result codes. This approval does **NOT**
+authorize enlargements, compositions, arbitrary-angle rotations, arbitrary reflection lines, fractional
+vectors/centres, matrix methods, transformations of functions, tessellations, or 3D transformations.
+
+The **23 reviewed representative items** (`docs/review/transformations_review_pack.{md,json}`) are approved
+golden exemplars. Frozen immutable (manifest SHA-256 + artifact-identity/integrity tests): golden + 360-
+entry parity + canonical-SVG + parser/checker + schema-conformance fixtures; review pack md/json + coverage
+matrix; visual audit; distribution report; browser-verification report; generation manifest; and the
+premium/premium-dark/accessible/print 6000×4200 export hashes. v1.0.0 / v1.0.1 are preserved (historical,
+never approved) at tags `transformations-v1.0.{0,1}`.
+
+**Non-blocking future calibration debt** (do not alter approved v1.0.2 output): `translate_shape` band-2
+concentration; some shape-object types intentionally rare in the 10,000-seed distribution; describe-task
+difficulty bands reached through a single deterministic structural lever.
 
 ## Lifecycle policy (unchanged)
 

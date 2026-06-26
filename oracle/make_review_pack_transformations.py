@@ -362,7 +362,7 @@ def main() -> int:
 
     pack = {
         "generatorId": T.GENERATOR_ID, "generatorVersion": T.GENERATOR_VERSION,
-        "validatorVersion": T.VALIDATOR_VERSION, "approvalStatus": "pending-review", "mode": "free-response",
+        "validatorVersion": T.VALIDATOR_VERSION, "approvalStatus": "approved", "mode": "free-response",
         "requiredCells": sorted(required), "coveredCells": sorted(covered), "missingCells": missing_cells,
         "allCovered": not missing_cells, "allValid": all_valid, "itemCount": len(records),
         "exemplarFieldSchema": {"required": REQUIRED_FIELDS, "describeOnly": DESCRIBE_FIELDS, "shapeOnly": SHAPE_FIELDS},
@@ -411,7 +411,7 @@ def _write_md(pack):
     L = [
         f"# gen.geometry.transformations v{pack['generatorVersion']} — Curriculum Review Pack",
         "",
-        f"> **PENDING-REVIEW.** Free-response only. Generator **{pack['generatorId']} v{pack['generatorVersion']}**, "
+        f"> **CURRICULUM-APPROVED (DECISION_LOG #57).** Free-response only. Generator **{pack['generatorId']} v{pack['generatorVersion']}**, "
         f"validator v{pack['validatorVersion']}. Required coverage cells are derived from the distribution "
         f"report; every exemplar below carries the full per-item record (owner REVISE #2) and a "
         f"`curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.",
