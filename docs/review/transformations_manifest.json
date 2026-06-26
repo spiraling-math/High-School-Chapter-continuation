@@ -126,12 +126,12 @@
     },
     "schema": {
       "path": "schemas/question-item.schema.json",
-      "sha256": "6b9730bbb5239baeaf1ac66367878363e73e12b442a5ac964e821c2cfc83ff58",
+      "sha256": "988ffca9f10ddb2417bb9960cc52c7c438a82dea7bf3d66f62173bdd64e02f34",
       "present": true
     },
     "compiledValidator": {
       "path": "core/schema/compiled/question-item.validator.mjs",
-      "sha256": "7fbee9840199696794aa3b76776a9bdee712977d5ebc431968deb48fa1fe85ef",
+      "sha256": "6eb43b7a3222ea5ad3fe3f3af395e0cd1055ba840c0eedc9b91b5cffee29cc8e",
       "present": true
     },
     "themeJson": {
