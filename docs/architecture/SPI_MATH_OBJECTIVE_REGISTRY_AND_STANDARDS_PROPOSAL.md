@@ -594,13 +594,14 @@ Today `graph-check.ts` classifies every such reference as a **warning** — "unr
 |---|---|---|---|
 | Duplicate ID | **error** | Same `objectiveId` in two records | already in `graph-check.ts` |
 | Prerequisite cycle | **error** | Directed cycle over `prerequisites[]` | already in `graph-check.ts` |
-| Missing objective / referenced-undefined | **error** (global) | A `prerequisites[]` target that exists in **no** file | promoted from today's warning, now the global set is loaded |
+| **Known-baseline referenced-undefined** | **non-blocking (recorded)** | A `prerequisites[]` target that exists in **no** file AND is in the committed known-baseline set (§7.5) | the existing approved data's referenced-but-undefined IDs, frozen as a baseline |
+| **New referenced-undefined** | **error** (global) | A `prerequisites[]` target that exists in **no** file AND is **not** in the known-baseline set | a regression: a reference introduced after the baseline was frozen |
 | Retired-objective dependence | **error** | A *live* objective whose prerequisite resolves to a `retired` record | new (depends on §6 status) |
 | Unapproved/placeholder dependence | **warning** | An approved/published objective whose prerequisite resolves to a `draft`/`proposed` record | new (governance signal) |
 | Invalid cross-domain link | **warning** | A `crossDomainRelationships[]` target that does not resolve, or points within the *same* domain | new |
 | Dangling lateral link | **warning** | A `relatedObjectives[]` target that does not resolve | new |
 
-The promotion of "missing prerequisite" from warning to **error at the global level** is the single most important behavioral change here, and exactly the latent issue the unified registry exists to surface: the five references in §7.2 each become an actionable error telling the author either to author the missing foundational objective or to remove the dependency. (**Authoring those objectives is out of Phase-1 scope** — the model's job is to *report* the gap precisely, not fill it.)
+**This resolves the errors-vs-output-neutrality contradiction (owner correction A).** Promoting *every* referenced-undefined to a blocking error would be self-contradictory: the proposal also forbids authoring the missing foundational objectives in Phase 1 and requires output-neutrality, so the gate could never pass without doing out-of-scope work. The resolution is the **known-baseline policy** (§7.5): the referenced-undefined IDs that *already exist* in the approved data (the five in §7.2 and any siblings) are recorded once in a committed baseline and reported as `knownBaselineReferencedUndefined` (non-blocking, stable, visible) — Phase 1 neither blocks on them nor authors them. Only a **new** referenced-undefined introduced *after* the baseline is frozen is a blocking error. The registry's job is to *report the gap precisely and stop the gap from growing*, not to fill it.
 
 ### 7.4 Approval-aware layering
 
@@ -613,17 +614,35 @@ This makes the prerequisite graph a *governance* instrument, not merely structur
 *Illustrative — not to implement now:*
 
 ```ts
-// Global report extends the existing GraphReport with new diagnostic buckets.
-interface GlobalGraphReport extends GraphReport {        // ok, objectiveCount, errors, warnings
-  missing: string[];               // referenced-but-undefined prerequisite IDs
-  retiredDependence: Edge[];       // live → retired
-  placeholderDependence: Edge[];   // approved → draft/proposed
-  invalidCrossDomain: Edge[];      // unresolved or same-domain cross-links
-  danglingRelated: Edge[];         // unresolved relatedObjectives links
+// Global report extends the existing GraphReport with the eight owner-specified buckets (correction A).
+interface GlobalGraphReport extends GraphReport {           // ok, objectiveCount, errors, warnings
+  knownBaselineReferencedUndefined: string[]; // referenced-undefined IDs in the committed baseline (non-blocking)
+  newReferencedUndefined: string[];           // referenced-undefined IDs NOT in the baseline (BLOCKING error)
+  retiredDependence: Edge[];                   // live → retired (error)
+  placeholderDependence: Edge[];               // approved/published → draft/proposed (warning)
+  invalidCrossDomain: Edge[];                  // unresolved or same-domain cross-links (warning)
+  danglingRelated: Edge[];                     // unresolved relatedObjectives links (warning)
 }
 ```
 
-The function continues to return `ok: errors.length === 0`, so a single CI gate — the registry's `graph()` query (§5.4) — guards the whole curriculum.
+`ok` is now `errors.length === 0 && newReferencedUndefined.length === 0` — `knownBaselineReferencedUndefined` does NOT affect `ok`. A single CI gate — the registry's `graph()` query (§5.4) — guards the whole curriculum.
+
+### 7.5 Known-baseline referenced-undefined policy (final, binding — owner correction A)
+
+The platform's existing approved objective data already references prerequisite IDs that are not (yet) defined as objectives (§7.2). Because Phase 1 must be **output-neutral** and **must not author new objectives**, these pre-existing gaps cannot be treated as blocking errors without making the gate unsatisfiable. The final rule:
+
+1. **Record the baseline.** Every referenced-but-undefined prerequisite ID present in the *current approved objective set* is enumerated once and written to a committed **registry gap report** plus a committed **known-baseline set** (an explicit, sorted ID list — illustrative location `curriculum/registry/known-baseline-referenced-undefined.json`, committed with the Phase 1 implementation).
+2. **The baseline does not block Phase 1.** Authoring the missing foundational objectives is explicitly out of scope; the known baseline is reported, not gated.
+3. **New gaps block.** Any referenced-but-undefined prerequisite introduced *after* the baseline is frozen is a **blocking error** (`newReferencedUndefined`).
+4. **No artifact may grow the gap.** Any generator, objective, review pack, or alignment artifact introduced after Phase 1 must not create a new unresolved prerequisite reference.
+5. **Eight report buckets.** The global graph report contains, separately: `errors`, `warnings`, `knownBaselineReferencedUndefined`, `newReferencedUndefined`, `retiredDependence`, `placeholderDependence`, `invalidCrossDomain`, `danglingRelated`.
+6. **The CI gate FAILS when** any of: duplicate IDs exist; a prerequisite cycle exists; a live objective depends on a `retired` objective; `newReferencedUndefined` is non-empty; a generator's objective references do not resolve; a review-pack's objective references do not resolve; a standards-alignment SPI reference does not resolve; approved-objective immutability is violated; or approved-family fixture drift occurs.
+7. **The CI gate PASSES when** the only unresolved prerequisite references are *exactly* the approved known-baseline set, the known-baseline set is explicitly reported, and no new unresolved references are introduced.
+8. **Coverage distinguishes three kinds** (§10): `G0_noGenerator` — objectives that **exist** but have no generator; `knownBaselineReferencedUndefined` — IDs that **do not yet exist** as objectives (recorded baseline); `newReferencedUndefined` — IDs that do not exist and are **not** baseline (blocking errors).
+9. **Phase 1 exit criterion (revised wording).** Not "zero referencedUndefined", but: **"zero NEW referenced-undefined IDs; the known-baseline referenced-undefined set is recorded, stable, and separately reported."**
+10. **Future phase (reserved, separately gated).** The known-baseline list is the authoritative backlog that should drive a later **foundational objective-authoring phase** — explicitly out of this registry phase and gated by a separate owner approval (§16).
+
+A baseline entry is *retired from the baseline* only when the corresponding objective is later authored (the reference then resolves) — never by silently re-classifying it; the baseline file shrinks only as real objectives are added in that future, separately-approved phase.
 
 ---
 
@@ -674,22 +693,24 @@ The capstone query, `coverage()`, partitions the global objective set against th
 |---|---|---|
 | `coveredApproved` | **G2_approved** | objective is `approved`/`published` AND reached by an `approved` generator task — the production-ready core |
 | `coveredPending` | **G1_pendingOnly** | reached only by a `pending-review` generator — in flight, review-mode only |
-| `definedUncovered` | **G0_noGenerator** | objective exists but no generator task maps to it — a real curriculum gap (e.g. the foundational `NUM`/`ALG` objectives) |
-| `referencedUndefined` | (not a tier) | an ID referenced (as prereq/task target) with **no record** — a §7 error, surfaced here as a coverage hole |
+| `definedUncovered` | **G0_noGenerator** | objective **exists** but no generator task maps to it — a real curriculum gap (e.g. the foundational `NUM`/`ALG` objectives) |
+| `knownBaselineReferencedUndefined` | (not a tier) | an ID referenced (as prereq) that has **no record** AND is in the committed baseline (§7.5) — recorded, non-blocking |
+| `newReferencedUndefined` | (not a tier) | an ID referenced that has **no record** AND is **not** baseline — a §7 **blocking error**, surfaced here too |
 | `orphanedTasks` | (not a tier) | a generator task whose `OBJECTIVE_BY_TASK` target is missing/retired — a parity failure; must never occur for an approved family |
 
-The three tiers `G2/G1/G0` and the three bucket names `coveredApproved/coveredPending/definedUncovered` are **synonyms** for the same partition; `referencedUndefined` and `orphanedTasks` are *not* tiers (they name error conditions over IDs/tasks, not classifications of existing objectives).
+The three tiers `G2/G1/G0` and the three bucket names `coveredApproved/coveredPending/definedUncovered` are **synonyms** for the same partition over objectives that *exist*. The owner's correction-A distinction is explicit here (§7.5): **`G0_noGenerator`** = an objective that **exists** but is uncovered; **`knownBaselineReferencedUndefined`** = an ID that **does not yet exist** as an objective but is a recorded baseline gap (non-blocking); **`newReferencedUndefined`** = an ID that does not exist and is **not** baseline (a blocking error). `*ReferencedUndefined` and `orphanedTasks` are *not* coverage tiers (they name ID/task conditions, not classifications of existing objectives).
 
 *Illustrative — not to implement now:*
 
 ```ts
 interface CoverageReport {
-  coveredApproved: string[];        // G2 — production core
-  coveredPending: string[];         // G1 — review-mode only
-  definedUncovered: string[];       // G0 — curriculum gaps (no generator yet)
-  referencedUndefined: string[];    // also a §7 error (NOT a tier)
+  coveredApproved: string[];                    // G2 — production core
+  coveredPending: string[];                     // G1 — review-mode only
+  definedUncovered: string[];                   // G0_noGenerator — objective EXISTS, no generator yet
+  knownBaselineReferencedUndefined: string[];   // referenced ID, no record, in the committed baseline (non-blocking)
+  newReferencedUndefined: string[];             // referenced ID, no record, NOT baseline (§7 BLOCKING error)
   orphanedTasks: { generatorId: string; task: string; objectiveId: string }[];
-  byGenerator: Record<string, string[]>;   // generatorId → objectiveIds assessed
+  byGenerator: Record<string, string[]>;        // generatorId → objectiveIds assessed
 }
 ```
 
@@ -1040,7 +1061,7 @@ export interface GraphReport {
 }
 ```
 
-The current `checkCurriculumGraph` already distinguishes hard errors (duplicate id, prerequisite cycle) from warnings (an unresolved prerequisite). The registry gate keeps that split: anything provably wrong from the loaded set is an **error**; anything that may legitimately resolve elsewhere (a not-yet-loaded framework file) is a **warning**. No check ever mutates an objective, artifact, or manifest — the gate is **read-only**, consistent with output-neutrality.
+The current `checkCurriculumGraph` already distinguishes hard errors (duplicate id, prerequisite cycle) from warnings (an unresolved prerequisite). The registry gate keeps that split and adds the §7.5 baseline buckets: the global gate's pass/fail follows the `GlobalGraphReport` (§7.4), where **`ok = errors.length === 0 && newReferencedUndefined.length === 0`** — the `knownBaselineReferencedUndefined` bucket is reported but never gates. Concretely, the **gate FAILS** when any of {duplicate IDs; prerequisite cycle; live→`retired` dependence; `newReferencedUndefined` non-empty; unresolved generator objective reference; unresolved review-pack objective reference; unresolved standards-alignment SPI reference; approved-objective immutability violation; approved-family fixture drift}; the **gate PASSES** when the only unresolved prerequisite references are exactly the recorded known-baseline set and no new one is introduced (owner correction A, §7.5 points 6–7). No check ever mutates an objective, artifact, or manifest — the gate is **read-only**, consistent with output-neutrality.
 
 ### 11.2 The integrity-check catalogue
 
@@ -1050,7 +1071,7 @@ The current `checkCurriculumGraph` already distinguishes hard errors (duplicate 
 | G2 | **Duplicate IDs** | no two objectives share an `objectiveId` | yes (`checkCurriculumGraph`) | run over the **global** set |
 | G3 | **Invalid stage** | `stage ∈` schema enum | schema validation only | **new graph-level rule** (error) so a bad stage fails CI even if a file bypasses Ajv |
 | G4 | **Invalid domain / strand** | `domain` ∈ closed vocab; `strand` **present-or-valid** (if present, ∈ registered set) | partial (per-family literal asserts) | **new global enum rule** (error) sourced from the §4 vocabulary |
-| G5 | **Broken prerequisite links** | every `prerequisites[]` entry resolves to a loaded objective | yes (resolves→edge; else warning; cycle→error) | **promoted to error globally** (whole curriculum is loaded; §7) |
+| G5 | **Broken prerequisite links (baseline-aware, §7.5)** | every `prerequisites[]` entry resolves to a loaded objective, **or** is in the committed known-baseline set | yes (resolves→edge; else warning; cycle→error) | a referenced-undefined ID in the baseline → `knownBaselineReferencedUndefined` (**non-blocking, recorded**); one NOT in the baseline → `newReferencedUndefined` (**error**). This is correction A: the gate never blocks on the frozen baseline, only on regressions. |
 | G6 | **Prerequisite cycles** | the resolved prerequisite graph is a DAG | yes (DFS three-colour) | unchanged |
 | G7 | **Lifecycle violations** | `reviewStatus ∈` enum; transitions follow §6/§14.5; no `approved`-referenced objective sits below `approved` | schema enum only | **new rule** (error on illegal value/back-transition; warning on draft objective referenced by a pending-review generator) |
 | G8 | **Approved-objective immutability** | the bytes of every objective file with `approved` objectives match the sha256 in its family manifest | yes for ratio (manifest records `SPI.MIDDLE.RATIO.json` sha256) | **generalise** the manifest sha256 check to *every* family (error on drift) |
@@ -1377,8 +1398,8 @@ Build a loader that reads all eleven `curriculum/objectives/*.json` files into o
 ### 15.2 Step 2 — Global curriculum graph check
 
 Promote the per-family graph tests to a **single whole-registry check** running `checkCurriculumGraph(allObjectives)` across all 70 objectives at once.
-- **Deliverable:** a global graph test asserting `ok: true`, `objectiveCount: 70`, zero duplicate IDs, zero cycles, and a reviewed list of `referencedUndefined` ids (the §7.2 foundational prerequisites, now global **errors** to be acted on or accepted as warnings per policy).
-- **Guardrail:** the global check **subsumes but does not delete** the per-family checks; it must be green (or its referenced-undefined set explicitly triaged) *before any other Phase 1 step proceeds* — the integrity baseline.
+- **Deliverable:** a global graph test asserting `ok: true`, `objectiveCount: 70`, zero duplicate IDs, zero cycles, **`newReferencedUndefined: []`**, and the `knownBaselineReferencedUndefined` set equal to the committed baseline file (§7.5). Step 2 also **writes the committed baseline** (`curriculum/registry/known-baseline-referenced-undefined.json`) + the **registry gap report** (`docs/review/objective_registry_gap_report.json`) enumerating the eight buckets (§7.4). Per correction A the exit criterion is **"zero NEW referenced-undefined IDs; the known-baseline referenced-undefined set is recorded, stable, and separately reported"** — NOT "zero referencedUndefined".
+- **Guardrail:** the global check **subsumes but does not delete** the per-family checks; its `ok` (errors empty AND `newReferencedUndefined` empty, §11.1) must be true *before any other Phase 1 step proceeds* — the integrity baseline. The baseline file is authored ONCE from the current approved data; thereafter it is frozen (it shrinks only when a future, separately-gated authoring phase defines a missing objective, §16).
 
 ### 15.3 Step 3 — Lifecycle + governance tests
 
@@ -1480,7 +1501,14 @@ Analytics dashboards, coverage analytics beyond the static Phase-1 coverage repo
 - **Deferred:** dashboards, live metrics, auto-publishing pipelines, telemetry; nothing auto-advances items past `machine-validated` or auto-publishes.
 - **Gate:** a separate future phase, separately approved; analytics may **read** the registry but never **mutate** approved objectives, generator output, or fixtures.
 
-### 16.5 Summary of the Phase-1 boundary
+### 16.5 Foundational objective authoring (driven by the known-baseline list) — RESERVED
+
+The `knownBaselineReferencedUndefined` set (§7.5) — the prerequisite IDs the approved data references but does not yet define (e.g. `SPI.MIDDLE.ALG.SUBSTITUTION.01`, `SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01`, `SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01`, `SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01`, `SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01`) — is the **authoritative backlog** for a later phase that *authors those foundational objectives*. This is the owner-directed correction-A future recommendation (§7.5 point 10).
+- **Architectural seam already in place:** the committed baseline file + the registry gap report make the backlog explicit, sorted, and machine-readable; as each missing objective is authored its reference resolves and the baseline shrinks by exactly that ID (§7.5).
+- **Deferred:** authoring any of the baseline objectives; this registry phase only *records and freezes* the list, it never fills it.
+- **Gate:** a **separate** owner-approved sub-phase (propose → review → APPROVE/REVISE/REJECT), explicitly **not part of this registry implementation**. When it runs, each newly-authored objective is itself output-neutral with respect to all approved generator families (it only *adds* a definition that an existing reference already points at).
+
+### 16.6 Summary of the Phase-1 boundary
 
 | Capability | Phase 1 | Future (separately gated) |
 |---|---|---|
