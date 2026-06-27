@@ -1,6 +1,36 @@
 # Current State
 
-Last updated: 2026-06-26.
+Last updated: 2026-06-27.
+
+## Objective Registry & Standards — Phase 1 IMPLEMENTED (2026-06-27; output-neutral; pending owner review)
+
+**Phase 1 of `docs/architecture/SPI_MATH_OBJECTIVE_REGISTRY_AND_STANDARDS_PROPOSAL.md` is implemented as a
+pure READ LAYER over the existing eleven `curriculum/objectives/*.json` files (DECISION_LOG #62). Nothing is
+approved here — this is an implementation for owner review.** New artifacts only: `core/curriculum/objective-registry.ts`
+(read-only unified index keyed by `objectiveId`; `loadRegistry/all/byId/byStage/byDomain/byStrand/count` + the
+variable-depth ID-grammar parser), `core/curriculum/registry-graph.ts` (the GLOBAL graph check over all 70
+objectives — the eight buckets + the §11 G1–G13 predicates; `ok = errors empty AND newReferencedUndefined empty`),
+`core/curriculum/generator-capability.ts` (the coverage join), `curriculum/registry/known-baseline-referenced-undefined.json`
+(the frozen 5-ID baseline), `schemas/standard-alignment.schema.json` (NEW additive alignment schema — the objective
+schema is untouched), `curriculum/alignments/pilot.json` (a 2-record ratio pilot at `status: "proposed"`), the
+reports `docs/review/objective_registry_gap_report.json` / `objective_coverage_report.json` /
+`objective_registry_manifest.json` (+ generator `scripts/build-registry-reports.mjs`), and the README
+`docs/architecture/OBJECTIVE_REGISTRY_PHASE1.md`.
+
+- **Global graph:** `ok === true`, objectiveCount **70**, `newReferencedUndefined: []`. The committed
+  **known-baseline** referenced-undefined set (5, non-blocking, §7.5): `SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01`,
+  `SPI.MIDDLE.ALG.SUBSTITUTION.01`, `SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01`, `SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01`,
+  `SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01`.
+- **Coverage:** G2_approved **66** / G1_pendingOnly **0** / G0_noGenerator **4** (the four `definedUncovered`:
+  `SPI.MIDDLE.ALG.EXPAND_BRACKETS.01`, `SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01`, `SPI.MIDDLE.GEO.COORD.CARTESIAN_PLANE.01`,
+  `SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01` — objectives that EXIST but no generator task maps to them). orphanedTasks 0.
+- **Alignment store:** the separate SPI-keyed store (`curriculum/alignments/`) is additive; the 30 inline
+  `externalAlignments` records on the 7 approved files are frozen and untouched. The pilot validates against the
+  new schema and every `linkedSpiObjectiveIds` resolves to a non-retired objective; direction is alignment → SPI.
+- **Output-neutral (verified):** `git diff --name-only HEAD` empty — the 11 objective files, all `oracle/golden/*`,
+  `schemas/curriculum-objective.schema.json`, and every approved-family generator/review-pack/manifest are
+  byte-for-byte unchanged. TS **369/369** (323 + 46 new), 13 Python suites (321 tests) PASS, typecheck exit 0,
+  registry manifest 0 drift. No approved tag cut.
 
 ## `gen.proportion.ratio` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
 
