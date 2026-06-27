@@ -1,6 +1,6 @@
 # gen.proportion.ratio v1.0.2 — Curriculum Review Pack
 
-> **PENDING REVIEW.** Generator **gen.proportion.ratio v1.0.2**, validator v1.0.2. Objectives are approved-for-implementation. Required coverage cells are derived from the 10,000-seed distribution report; every exemplar below carries the full per-item record and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
+> **CURRICULUM-APPROVED** (owner final decision, DECISION_LOG.md #61). Generator **gen.proportion.ratio v1.0.2**, validator v1.0.2. Objectives are approved. Required coverage cells are derived from the 10,000-seed distribution report; every exemplar below carries the full per-item record and a `curriculumReviewDecision` field. The reviewed representative items are recorded as approved golden exemplars.
 
 ## Summary
 
