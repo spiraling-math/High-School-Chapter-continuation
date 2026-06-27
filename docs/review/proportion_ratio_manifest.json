@@ -2,14 +2,22 @@
   "generatorId": "gen.proportion.ratio",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
-  "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
-  "hiddenFromNormalStudioAndProduction": true,
+  "approvalStatus": "approved",
+  "objectiveReviewStatus": "approved",
+  "gitCommit": "7bd7709b8fbb368594a90823a7a9a546f6506033",
+  "hiddenFromNormalStudioAndProduction": false,
   "versionTags": {
     "previousVersionTag": "ratio-v1.0.1",
     "currentImplementationTag": "ratio-v1.0.2",
-    "approvedTag": null
+    "approvedTag": "approved-ratio-v1.0.2"
+  },
+  "approval": {
+    "decision": "curriculum-approved",
+    "approvedTag": "approved-ratio-v1.0.2",
+    "approvalDate": "2026-06-26",
+    "approvalCommit": "7bd7709b8fbb368594a90823a7a9a546f6506033",
+    "decisionLogRef": "DECISION_LOG.md #61",
+    "sharedInfrastructure": "answer.type 'ratio' (canonical-first ordered simplest-form positive-integer tuple in answer.canonical; derived answer.display; order-sensitive equivalence) + the ratio parser/formatter/canonicalizer/equivalence checker + the 9-code ratio-checker vocabulary \u2014 APPROVED. Does NOT authorize zero/negative parts, decimal/irrational/approximate ratio terms, percentages, currency conversion, recipe-scaling-with-units, similar-triangle scale, gradient-as-ratio, gear/lever ratios, probability odds, trig ratios, or algebraic ratio proofs."
   },
   "schemaExtension": {
     "note": "answer.type 'ratio' (canonical-first) \u2014 APPROVED",
@@ -76,12 +84,12 @@
     },
     "oracleMisconceptions": {
       "path": "oracle/spi_oracle/ratio_misconceptions.py",
-      "sha256": "42623f5c40e660bf7ec9ebb6ac5ec822485225ed1424a1f4d41477d49ca54744",
+      "sha256": "c18aff595d0e2a42015f43af65cecb6eb5b9b05c5ef18d82c476ff7186d9d88e",
       "present": true
     },
     "oracleGenerator": {
       "path": "oracle/spi_oracle/ratio.py",
-      "sha256": "e12861ddbb807d19ba9ded4bc26bcca8aceb3de5c0f0143c6e9142a248839e2d",
+      "sha256": "1e182a28fbc2545ef2d485f3e264a584944d5bec7449a2310145de2f28a0a385",
       "present": true
     },
     "golden": {
@@ -101,12 +109,12 @@
     },
     "tsMisconceptions": {
       "path": "domains/proportion/ratio-misconceptions.ts",
-      "sha256": "ca3f4ab84dbdaa15b9ba265473cd71e1b9ee84b5ad8f3ce34cb26a47a0f8c2d8",
+      "sha256": "d9f44af31041483d35f086b75e8f02528d3ca42d8c1d0f40d754a51689e0a81e",
       "present": true
     },
     "tsGenerator": {
       "path": "domains/proportion/ratio.ts",
-      "sha256": "2ed5997d801af749d0b36d9e442080074087ef048806a252b580dd361114b9b0",
+      "sha256": "791e26b827af402c62f336b6f5ffb8081fe26cd351fb5b79378b1eb90f52f6ea",
       "present": true
     },
     "tsParityTest": {
@@ -121,7 +129,7 @@
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.RATIO.json",
-      "sha256": "d91fd4aa4310945954eda4adfc4f39befb3977214fe8a415bd50c39f2cc49554",
+      "sha256": "d351394f6fc36423fd7aff0362451a0974a76c01faa1fba0667dcb513b178843",
       "present": true
     },
     "objectiveIds": {
@@ -151,7 +159,7 @@
     },
     "reviewPackJson": {
       "path": "docs/review/proportion_ratio_review_pack.json",
-      "sha256": "64cb8764b1e5fd076d65bcb1fcbf85fc7e45acf49d013dd602a4a4ce8a3dd55f",
+      "sha256": "f2feda6a0390e4220210732c37b7a49d045483fc45540958b75309d46d52cc2c",
       "present": true
     },
     "reviewPackMd": {
@@ -161,12 +169,12 @@
     },
     "visualAudit": {
       "path": "docs/review/proportion_ratio_visual_audit.html",
-      "sha256": "4fe0d9334a5a07e6a3b807ba8d3b46d287e4001d80fd7aacadc7e8557d5af246",
+      "sha256": "48314407663db2a826905f47531756ec0b3cff511ac578ad39d46f7fead3756e",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/proportion_ratio_browser_verification.json",
-      "sha256": "919b43294662cade79ab8360618daafa4efcb7ddd240e54ae6958944134c8877",
+      "sha256": "696c4a32c756b8c1a3f876a3c540410817f20c68cfe4d0e73ba721b03f3ab04e",
       "present": true
     },
     "realBrowserStyles": {

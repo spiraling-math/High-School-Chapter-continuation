@@ -2,8 +2,8 @@
   "generatorId": "gen.proportion.ratio",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
-  "objectiveReviewStatus": "approved-for-implementation",
+  "approvalStatus": "approved",
+  "objectiveReviewStatus": "approved",
   "requiredCells": [
     "answerType:exact-rational",
     "answerType:integer",

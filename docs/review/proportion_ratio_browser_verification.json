@@ -2,8 +2,8 @@
   "generatorId": "gen.proportion.ratio",
   "generatorVersion": "1.0.2",
   "validatorVersion": "1.0.2",
-  "approvalStatus": "pending-review",
-  "gitCommit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
+  "approvalStatus": "approved",
+  "gitCommit": "7bd7709b8fbb368594a90823a7a9a546f6506033",
   "exportPx": [
     6000,
     4200
