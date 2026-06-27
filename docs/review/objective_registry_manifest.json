@@ -2,7 +2,7 @@
   "generatorId": "objective-registry-reporter",
   "generatorVersion": "1.0.0",
   "approvalStatus": "phase-1-implemented",
-  "gitCommit": "ceb5d7ae7d0589fc7d6b272b0fcdcfe5d78a7750",
+  "gitCommit": "65f9ede0681dedb94880327af5341e7535952e51",
   "versionTags": {
     "currentImplementationTag": "objective-registry-phase1-v1.0.0"
   },
@@ -30,14 +30,19 @@
       "sha256": "3f8fa1528bf32cea66071891fc6aebb4a022df861a492ffb21e61d473457978a",
       "present": true
     },
+    "registryIndex": {
+      "path": "docs/review/objective_registry_index.json",
+      "sha256": "860e026b4e15a5a504cd4652dad0983243f488c14200bb9aa76fe48d9c4297c7",
+      "present": true
+    },
     "gapReport": {
       "path": "docs/review/objective_registry_gap_report.json",
-      "sha256": "66e0342a5540748195362d56f133c982034d6f7d7323dff18eaa74f3859caa8e",
+      "sha256": "9aeb19fde3bbe0d00289b936df8a39206147f599ee9d6d908c969226ff1a8d7e",
       "present": true
     },
     "coverageReport": {
       "path": "docs/review/objective_coverage_report.json",
-      "sha256": "3385db83dbeed3fa0adfbb53b26409cfa9dcfdcded4f2e5694d1134aeee32c7d",
+      "sha256": "941b0908b932591fc5f75fd974c5f312752149605f1789ae8e36813c5ec2f73d",
       "present": true
     },
     "alignmentSchema": {
@@ -52,7 +57,7 @@
     },
     "reportBuilder": {
       "path": "scripts/build-registry-reports.mjs",
-      "sha256": "28d1687c03d14a8e48f63bb458700c111dd5967e6eda38980db9530569de9a5f",
+      "sha256": "88542642eee973eb67213f1b164e37d36841d08ee63e7255ff6b4ea0b3e8655f",
       "present": true
     }
   },
