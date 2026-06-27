@@ -35,17 +35,22 @@ Git tags identify the approved reference implementations:
 
 | Generator | Version | Status | Spec | Decision | Submitted |
 | --- | --- | --- | --- | --- | --- |
-| `gen.proportion.ratio` | 1.0.0 | **pending-review** (implemented oracle-first; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #58 | 2026-06-26 |
+| `gen.proportion.ratio` | **1.0.1** | **pending-review** (corrected per REVISE; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #59 | 2026-06-26 |
+| `gen.proportion.ratio` | 1.0.0 | preserved (superseded by 1.0.1; never approved) | — | tag `ratio-v1.0.0` | — |
 
-`gen.proportion.ratio` v1.0.0 is implemented and registered `approvalStatus: pending-review` (review-mode
-only; excluded from production exports/samples), awaiting the owner's APPROVE / REVISE / REJECT. Its twelve
+`gen.proportion.ratio` v1.0.1 is implemented and registered `approvalStatus: pending-review` (review-mode
+only; excluded from production exports/samples), awaiting the owner's APPROVE / REJECT. Its twelve
 `SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation` (not yet curriculum-approved). The additive
-`answer.type "ratio"` schema extension is approved. The family was hardened by a 10-dimension adversarial
-review (8 defects found + fixed in v1.0.0, headlined by a critical unicode-digit grading-path parity break)
-+ a re-audit (0 regressions). It is **not** recorded among the approved generators/objectives/exemplars above
-and creates no frozen approval artifacts until the owner approves it. Review package:
-`docs/review/proportion_ratio_review_pack.{md,json}`, `proportion_ratio_visual_audit.html`,
-`proportion_ratio_browser_verification.json`, `proportion_ratio_manifest.json`.
+`answer.type "ratio"` schema extension is approved. History: implemented v1.0.0 (DECISION_LOG #58; hardened by
+a 10-dimension adversarial review — 8 defects found + fixed, headlined by a critical unicode-digit grading-
+path parity break — + a re-audit); owner **REVISE → v1.0.1** (DECISION_LOG #59) applied nine corrections
+(artifact identity, real live-Chromium computed styles, context-value compatibility, best-buy cost-per-item
+semantics, dimensionless simple-scale, collided-diagnostic dedup, family-wide noun grammar). v1.0.0 preserved
+unchanged at tag `ratio-v1.0.0`; only v1.0.1 is registered. It is **not** recorded among the approved
+generators/objectives/exemplars above and creates no frozen approval artifacts until the owner approves it.
+Review package: `docs/review/proportion_ratio_review_pack.{md,json}`, `proportion_ratio_visual_audit.html`,
+`proportion_ratio_browser_verification.json` (real captured styles), `ratio_real_browser_styles.json`,
+`proportion_ratio_manifest.json`.
 
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).

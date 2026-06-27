@@ -2,10 +2,25 @@
 
 Last updated: 2026-06-26.
 
-## `gen.proportion.ratio` v1.0.0 — IMPLEMENTED, PENDING-REVIEW (2026-06-26)
+## `gen.proportion.ratio` v1.0.1 — CORRECTED, PENDING-REVIEW (2026-06-26)
 
-**Owner REVISE-with-authorization (DECISION_LOG #58, decisions A–M): implemented oracle-first and registered
-`pending-review`; awaiting the owner's APPROVE / REVISE / REJECT.** The platform's **ninth** generator family
+**Owner REVISE (DECISION_LOG #59): nine corrections applied → v1.0.1 (v1.0.0 preserved at tag
+`ratio-v1.0.0`); awaiting the owner's APPROVE / REJECT.** Corrections: **#1** artifact identity (review pack
++ audit + browser report + manifest regenerated from ONE build commit `bf396ad`, all on v1.0.1 + that
+commit; 7 blocking identity checks); **#2** REAL live-Chromium computed styles captured via the Preview tool
+across all four modes and asserted to match the theme (browser verification 23/23, `realBrowserComputedStyles`
+no longer null); **#3** context-value compatibility (a four-domain context registry; direct_proportion +
+unit_rate pick a context matching the answer type — no more fractional book/student counts); **#4** best-buy
+cost-like-denominator semantics (tokens; best value = strict minimum tokens-per-item); **#5** dimensionless
+simple-scale wording (no cm/km/m; grammatical; bare-number answer); **#6** collided-diagnostic dedup; **plus**
+a family-wide noun-grammar fix ("1 boy"/"per shelf"). v1.0.0 is preserved unchanged at its tag; the canonical
+MATHEMATICAL answer contract is unchanged. **Verification:** TS 320/320; 13 Python suites (ratio 39 tests
+incl. artifact-identity + real-browser + manifest integrity); conformance ALL PASS; golden 16 + 360 parity
+byte-for-byte; 10k RESULT OK; browser verification 23/23; manifest 21/21 (0 drift); all eight approved
+families byte-for-byte UNCHANGED; ratio still excluded from production samples. **Next decision: APPROVE or
+REJECT of the corrected v1.0.1 package.**
+
+The platform's **ninth** generator family
 and **fourth** structured canonical-first answer type. Twelve tasks under `SPI.MIDDLE.RATIO.*` (simplify;
 write-from-quantities; ratio↔fraction-of-whole; share two-/three-part; missing-part; direct + inverse
 proportion by the unitary method; unit-rate; best-buy; simple-scale). The additive `answer.type "ratio"`
@@ -32,8 +47,9 @@ declared bands reachable / MC policy correct / all 9 codes / 16/16 diagnostics; 
 reachability-derived cells; visual audit (4 modes) + browser verification 15/15; manifest 20/20 SHA-256 (0
 drift); typecheck exit 0; **all eight approved families byte-for-byte UNCHANGED** (only the shared schema/
 validator hashes in the mensuration + transformations manifests were re-frozen for the additive extension).
-The twelve `SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation`. **Next owner decision: APPROVE,
-REVISE, or REJECT of the implemented `gen.proportion.ratio` v1.0.0 family.**
+The twelve `SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation`. (The v1.0.0 implementation +
+adversarial-review history above is retained for context; the owner's REVISE corrections were applied in
+v1.0.1 — see the dated header.) **Next owner decision: APPROVE or REJECT of the corrected v1.0.1 package.**
 
 ## `gen.geometry.transformations` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
 
