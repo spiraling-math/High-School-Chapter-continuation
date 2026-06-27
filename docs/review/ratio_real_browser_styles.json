@@ -1,0 +1,34 @@
+{
+  "generatorId": "gen.proportion.ratio",
+  "version": "1.0.1",
+  "commit": "bf396adfed52a188a3856c3f1e18aa8e0dff13dc",
+  "capturedFrom": "real-chromium-getComputedStyle",
+  "capturedVia": "Claude Preview tool window.__ratio.computed() over the served visual audit (review-static :8772)",
+  "note": "Live getComputedStyle of the rendered rt-* SVG elements per mode/channel. Values are the browser's resolved CSS (rgb()/hex). They match the baked ratio-theme; print is monochrome (the unknown is distinguished by dash + shape, not colour).",
+  "computed": {
+    "premium": {
+      "share_two_part:student": {"bg": "#ffffff", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(30, 41, 59)", "lbl": "rgb(17, 24, 39)", "unknownLbl": "rgb(124, 58, 237)"},
+      "missing_part:student": {"bg": "#ffffff", "barGiven": "rgb(219, 234, 254)", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(30, 41, 59)", "lbl": "rgb(17, 24, 39)", "unknownLbl": "rgb(124, 58, 237)"},
+      "direct_proportion:student": {"bg": "#ffffff", "axis": "rgb(30, 41, 59)", "givenPt": "rgb(37, 99, 235)", "unknownPt": "rgb(255, 255, 255)", "unknownPtDash": "4px, 3px", "rung": "rgb(30, 41, 59)", "rungDash": "3px, 4px", "lbl": "rgb(17, 24, 39)", "ticklbl": "rgb(71, 85, 105)", "unknownLbl": "rgb(124, 58, 237)"},
+      "best_buy:student": {"bg": "#ffffff", "tableLine": "rgb(30, 41, 59)", "lbl": "rgb(17, 24, 39)", "ticklbl": "rgb(71, 85, 105)", "unknownLbl": "rgb(124, 58, 237)"}
+    },
+    "premium-dark": {
+      "share_two_part:student": {"bg": "#0b1220", "barUnknown": "rgb(11, 18, 32)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(229, 231, 235)", "lbl": "rgb(229, 231, 235)", "unknownLbl": "rgb(196, 181, 253)"},
+      "missing_part:student": {"bg": "#0b1220", "barGiven": "rgb(30, 58, 95)", "barUnknown": "rgb(11, 18, 32)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(229, 231, 235)", "lbl": "rgb(229, 231, 235)", "unknownLbl": "rgb(196, 181, 253)"},
+      "direct_proportion:student": {"bg": "#0b1220", "axis": "rgb(229, 231, 235)", "givenPt": "rgb(96, 165, 250)", "unknownPt": "rgb(11, 18, 32)", "unknownPtDash": "4px, 3px", "rung": "rgb(229, 231, 235)", "rungDash": "3px, 4px", "lbl": "rgb(229, 231, 235)", "ticklbl": "rgb(203, 213, 225)", "unknownLbl": "rgb(196, 181, 253)"},
+      "best_buy:student": {"bg": "#0b1220", "tableLine": "rgb(229, 231, 235)", "lbl": "rgb(229, 231, 235)", "ticklbl": "rgb(203, 213, 225)", "unknownLbl": "rgb(196, 181, 253)"}
+    },
+    "accessible": {
+      "share_two_part:student": {"bg": "#ffffff", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(0, 0, 0)", "lbl": "rgb(0, 0, 0)", "unknownLbl": "rgb(213, 94, 0)"},
+      "missing_part:student": {"bg": "#ffffff", "barGiven": "rgb(207, 232, 255)", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(0, 0, 0)", "lbl": "rgb(0, 0, 0)", "unknownLbl": "rgb(213, 94, 0)"},
+      "direct_proportion:student": {"bg": "#ffffff", "axis": "rgb(0, 0, 0)", "givenPt": "rgb(0, 114, 178)", "unknownPt": "rgb(255, 255, 255)", "unknownPtDash": "4px, 3px", "rung": "rgb(0, 0, 0)", "rungDash": "3px, 4px", "lbl": "rgb(0, 0, 0)", "ticklbl": "rgb(51, 51, 51)", "unknownLbl": "rgb(213, 94, 0)"},
+      "best_buy:student": {"bg": "#ffffff", "tableLine": "rgb(0, 0, 0)", "lbl": "rgb(0, 0, 0)", "ticklbl": "rgb(51, 51, 51)", "unknownLbl": "rgb(213, 94, 0)"}
+    },
+    "print": {
+      "share_two_part:student": {"bg": "#ffffff", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(17, 17, 17)", "lbl": "rgb(17, 17, 17)", "unknownLbl": "rgb(17, 17, 17)"},
+      "missing_part:student": {"bg": "#ffffff", "barGiven": "rgb(221, 221, 221)", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(17, 17, 17)", "lbl": "rgb(17, 17, 17)", "unknownLbl": "rgb(17, 17, 17)"},
+      "direct_proportion:student": {"bg": "#ffffff", "axis": "rgb(17, 17, 17)", "givenPt": "rgb(17, 17, 17)", "unknownPt": "rgb(255, 255, 255)", "unknownPtDash": "4px, 3px", "rung": "rgb(17, 17, 17)", "rungDash": "3px, 4px", "lbl": "rgb(17, 17, 17)", "ticklbl": "rgb(51, 51, 51)", "unknownLbl": "rgb(17, 17, 17)"},
+      "best_buy:student": {"bg": "#ffffff", "tableLine": "rgb(17, 17, 17)", "lbl": "rgb(17, 17, 17)", "ticklbl": "rgb(51, 51, 51)", "unknownLbl": "rgb(17, 17, 17)"}
+    }
+  }
+}

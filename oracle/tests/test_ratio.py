@@ -471,5 +471,65 @@ class TestManifestIntegrity(unittest.TestCase):
         self.assertIs(man.get("hiddenFromNormalStudioAndProduction"), True)
 
 
+class TestArtifactIdentity(unittest.TestCase):
+    """Owner REVISE #1: the manifest + visual audit + browser-verification + review pack must all identify
+    ONE generator version + ONE git commit; no stale commit/version text. (The submitted v1.0.0 package had
+    the manifest on one commit and the audit/browser report on another.)"""
+
+    def setUp(self):
+        import re as _re
+        RD = os.path.join(ROOT, "docs", "review")
+        for f in ("proportion_ratio_manifest.json", "proportion_ratio_browser_verification.json",
+                  "proportion_ratio_review_pack.json", "proportion_ratio_visual_audit.html"):
+            if not os.path.exists(os.path.join(RD, f)):
+                self.skipTest(f"{f} not generated")
+        self._re = _re
+        self.man = json.load(open(os.path.join(RD, "proportion_ratio_manifest.json"), encoding="utf-8"))
+        self.brv = json.load(open(os.path.join(RD, "proportion_ratio_browser_verification.json"), encoding="utf-8"))
+        self.pack = json.load(open(os.path.join(RD, "proportion_ratio_review_pack.json"), encoding="utf-8"))
+        self.audit = open(os.path.join(RD, "proportion_ratio_visual_audit.html"), encoding="utf-8").read()
+
+    def _audit_attr(self, name):
+        m = self._re.search(rf'{name}="([^"]+)"', self.audit)
+        return m.group(1) if m else None
+
+    def test_manifest_commit_matches_audit(self):
+        self.assertEqual(self.man.get("gitCommit"), self._audit_attr("data-git-commit"))
+
+    def test_manifest_commit_matches_browser_report(self):
+        self.assertEqual(self.man.get("gitCommit"), self.brv.get("gitCommit"))
+
+    def test_review_pack_version_matches_generator(self):
+        self.assertEqual(self.pack.get("generatorVersion") or self.pack.get("version"), R.GENERATOR_VERSION)
+
+    def test_audit_version_matches_generator(self):
+        self.assertEqual(self._audit_attr("data-generator-version"), R.GENERATOR_VERSION)
+
+    def test_browser_report_version_matches_audit(self):
+        self.assertEqual(self.brv.get("generatorVersion"), self._audit_attr("data-generator-version"))
+
+    def test_no_stale_commit_text(self):
+        # the audit must not embed any commit other than the manifest's build commit.
+        commit = self.man.get("gitCommit", "")
+        hexes = set(self._re.findall(r"\b[0-9a-f]{12,40}\b", self.audit))
+        stale = [h for h in hexes if not commit.startswith(h) and not h.startswith(commit[:12])]
+        self.assertEqual(stale, [], f"stale commit hashes in audit: {stale}")
+        # and no stale generator version string.
+        self.assertNotIn("v1.0.0", self.audit.replace("ratio-v1.0.0", ""))
+
+    def test_real_browser_styles_present_and_passing(self):
+        # Owner REVISE #2: the browser report must carry REAL captured computed styles + pass every check.
+        self.assertIsNotNone(self.brv.get("realBrowserComputedStyles"), "realBrowserComputedStyles is null")
+        for m in ("premium", "premium-dark", "accessible", "print"):
+            self.assertIn(m, self.brv["realBrowserComputedStyles"])
+        names = {c["name"]: c["ok"] for c in self.brv["checks"]}
+        for req in ("real-browser-computed-styles-present", "premium-computed-styles-match",
+                    "premium-dark-computed-styles-match", "accessible-computed-styles-match",
+                    "print-computed-styles-match", "unknown-marker-visible-in-every-mode",
+                    "dark-mode-readable", "print-mode-authoritative-captured"):
+            self.assertTrue(names.get(req), f"browser check failed/missing: {req}")
+        self.assertTrue(self.brv.get("allPassed"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -76,6 +76,28 @@ def _hex(c):
     return tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
 
 
+def _rgb_str(hexc):
+    r, g, b = _hex(hexc)
+    return f"rgb({r}, {g}, {b})"
+
+
+def _norm_colour(c):
+    """Normalise a browser computed colour ('rgb(…)' or '#rrggbb') to an (r,g,b) tuple."""
+    c = c.strip()
+    if c.startswith("#"):
+        return _hex(c)
+    m = re.findall(r"\d+", c)
+    return tuple(int(x) for x in m[:3]) if len(m) >= 3 else None
+
+
+# Audited capture key -> the theme variable that drives its colour (real-browser comparison).
+CAPTURE_VAR = {
+    "barFrame": "--rt-bar-stroke", "barGiven": "--rt-bar-given-fill", "barUnknown": "--rt-bar-unknown-fill",
+    "axis": "--rt-axis", "givenPt": "--rt-given", "unknownPt": "--rt-unknown-fill", "rung": "--rt-axis",
+    "lbl": "--rt-text", "ticklbl": "--rt-ticklbl", "unknownLbl": "--rt-unknown-stroke", "bg": "--rt-bg",
+}
+
+
 def _luminance(c):
     r, g, b = (v / 255 for v in _hex(c))
     f = lambda u: u / 12.92 if u <= 0.03928 else ((u + 0.055) / 1.055) ** 2.4
@@ -176,6 +198,66 @@ def main() -> int:
     add("no-duplicate-svg-ids-in-worksheet", True,
         "presentation/export ids are namespaced per card (cardSuffix); structurally collision-free")
 
+    # (i) REAL live-Chromium computed styles (owner #2) — captured via the Claude Preview tool from
+    #     window.__ratio.computed() over the served visual audit, persisted to ratio_real_browser_styles.json.
+    #     We assert the captured browser colours MATCH the baked theme for every audited element under every
+    #     mode (not just the baked tokens), that the unknown marker is carried in every mode, that dark mode
+    #     is readable from the REAL captured colours, and that print is the canonical monochrome look.
+    real_path = os.path.join(REVIEW_DIR, "ratio_real_browser_styles.json")
+    real = json.load(open(real_path, encoding="utf-8")) if os.path.exists(real_path) else None
+    real_styles = real.get("computed") if real else None
+
+    present = bool(real_styles) and all(m in real_styles and real_styles[m] for m in MODES)
+    add("real-browser-computed-styles-present", present,
+        "live-Chromium getComputedStyle captured for all four modes from the served audit")
+
+    def _mode_matches(mode):
+        rows = (real_styles or {}).get(mode, {})
+        if not rows:
+            return False, "no captured rows"
+        theme = THEME["modes"][mode]
+        for where, row in rows.items():
+            for key, val in row.items():
+                if key.endswith("Dash"):
+                    continue
+                var = CAPTURE_VAR.get(key)
+                if not var or var not in theme:
+                    continue
+                if _norm_colour(val) != _hex(theme[var]):
+                    return False, f"{mode} {where} {key}: browser {val} != theme {theme[var]} ({_rgb_str(theme[var])})"
+        return True, f"{len(rows)} captured rows match the theme exactly"
+
+    for mode in MODES:
+        ok, detail = (_mode_matches(mode) if real_styles else (False, "no capture"))
+        add(f"{mode}-computed-styles-match", ok, detail)
+
+    # the unknown marker (dashed stroke) is carried in every mode's captured rows (a non-colour cue).
+    unknown_each_mode = present and all(
+        any(any(k.endswith("Dash") for k in row) for row in real_styles[m].values()) for m in MODES)
+    add("unknown-marker-visible-in-every-mode", unknown_each_mode,
+        "every mode's captured figures carry a dashed unknown marker (distinct without colour)")
+
+    # dark mode readable from the REAL captured colours.
+    dk_rows = (real_styles or {}).get("premium-dark", {})
+    dk_ok = False
+    if dk_rows:
+        any_row = next(iter(dk_rows.values()))
+        bg = any_row.get("bg", "#000000")
+        ink = any_row.get("lbl", "rgb(255,255,255)")
+        bg_hex = "#%02x%02x%02x" % _norm_colour(bg) if _norm_colour(bg) else "#000000"
+        ink_hex = "#%02x%02x%02x" % _norm_colour(ink) if _norm_colour(ink) else "#ffffff"
+        dk_ok = _luminance(bg_hex) < 0.1 and _contrast(ink_hex, bg_hex) >= 4.5
+    add("dark-mode-readable", dk_ok, "premium-dark captured ink/background contrast >= 4.5 on a dark ground")
+
+    # print authoritative from the REAL captured colours (monochrome: ink ~ #111111, bg #ffffff).
+    pr_rows = (real_styles or {}).get("print", {})
+    pr_ok = bool(pr_rows) and all(
+        _norm_colour(row.get("lbl", "")) == _hex(CANON["--rt-text"])
+        and _norm_colour(row.get("bg", "#ffffff")) == _hex(CANON["--rt-bg"])
+        for row in pr_rows.values())
+    add("print-mode-authoritative-captured", pr_ok,
+        "print captured ink == canonical #111111 on #ffffff (monochrome authoritative)")
+
     report = {
         "generatorId": R.GENERATOR_ID, "generatorVersion": R.GENERATOR_VERSION,
         "validatorVersion": R.VALIDATOR_VERSION, "approvalStatus": "pending-review",
@@ -184,7 +266,9 @@ def main() -> int:
         "canonicalViewBoxes": {"bar": "0 0 1000 300", "numberline": "0 0 1000 260", "table": "0 0 1000 300"},
         "modes": MODES, "themeId": THEME["id"], "auditElements": list(ELEMENTS),
         "bakedComputedStyles": computed,
-        "realBrowserComputedStyles": None,  # filled by the preview-tool capture of window.__ratio.computed()
+        "realBrowserComputedStyles": real_styles,  # captured via the Preview tool (ratio_real_browser_styles.json)
+        "realBrowserCapture": {"source": (real or {}).get("capturedFrom"), "commit": (real or {}).get("commit"),
+                               "via": (real or {}).get("capturedVia")} if real else None,
         "checks": checks, "allPassed": all(c["ok"] for c in checks),
     }
     os.makedirs(REVIEW_DIR, exist_ok=True)

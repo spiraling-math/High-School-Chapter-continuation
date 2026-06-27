@@ -55,6 +55,7 @@ ARTIFACTS = {
     "reviewPackMd": "docs/review/proportion_ratio_review_pack.md",
     "visualAudit": "docs/review/proportion_ratio_visual_audit.html",
     "browserVerification": "docs/review/proportion_ratio_browser_verification.json",
+    "realBrowserStyles": "docs/review/ratio_real_browser_styles.json",
 }
 
 
