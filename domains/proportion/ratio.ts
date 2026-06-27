@@ -2318,6 +2318,6 @@ export function describe(): Json {
     interactionTypes: ["free-response", "multiple-choice"],
     answerTypes: ["ratio", "exact-rational", "integer", "table-completion", "multiple-choice"],
     difficultyRanges: Object.fromEntries(RATIO_TASKS.map((t) => [OBJECTIVE_BY_TASK[t], [...(TASK_BANDS[t] as [number, number])]])),
-    approvalStatus: "pending-review",
+    approvalStatus: "approved",
   };
 }

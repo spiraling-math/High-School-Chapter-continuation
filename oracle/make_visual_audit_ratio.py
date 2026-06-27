@@ -142,7 +142,7 @@ def main() -> int:
 <body>
 <header>
   <h1>{R.GENERATOR_ID} v{GEN_VER} — visual audit</h1>
-  <div class="meta">validator v{VAL_VER} · commit {html.escape(commit[:12])} · PENDING REVIEW · given = solid-filled solid edge (or filled point); unknown = hatched/dashed segment + '?' (or open dashed point) — distinct without colour</div>
+  <div class="meta">validator v{VAL_VER} · commit {html.escape(commit[:12])} · CURRICULUM-APPROVED · given = solid-filled solid edge (or filled point); unknown = hatched/dashed segment + '?' (or open dashed point) — distinct without colour</div>
 </header>
 <p>Each figure stamps its mode's CSS custom properties on its own <code>class="rt-figure"</code> root; one
 shared <code>var()</code> ruleset reads them, so modes are isolated per root and reordering cards cannot
@@ -152,7 +152,7 @@ Print is the canonical monochrome authoritative look.</p>
 {''.join(gallery)}
 <section class="mode-block" data-mode="premium-dark"><h2>Label/figure stress (premium dark, answer-key channel)</h2>
 <div class="pair">{''.join(stress)}</div></section>
-<footer class="meta">{R.GENERATOR_ID} v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · pending review.</footer>
+<footer class="meta">{R.GENERATOR_ID} v{GEN_VER} · validator v{VAL_VER} · commit {html.escape(commit[:12])} · curriculum-approved.</footer>
 <script>
   window.__ratio = {{
     generatorId: "{R.GENERATOR_ID}", version: "{GEN_VER}", validatorVersion: "{VAL_VER}", commit: "{html.escape(commit)}",

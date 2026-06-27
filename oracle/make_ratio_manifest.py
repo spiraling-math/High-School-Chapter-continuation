@@ -1,11 +1,11 @@
 """gen.proportion.ratio artifact manifest.
 
-Mirror of make_transformations_manifest. approvalStatus is PENDING-REVIEW: implementation is authorized +
-machine-validated, but the family is hidden from normal Studio + production exports until the owner's
-APPROVE/REVISE/REJECT of the implemented v1.0.0 family. Objectives are approved-for-implementation. The
-answer.type 'ratio' (canonical-first) schema extension is recorded as APPROVED. Version tags follow the
-established terminology; the approvedTag is null until approval. The manifest is metadata only and does
-not alter generator output.
+Mirror of make_transformations_manifest. approvalStatus is APPROVED (owner final curriculum APPROVE,
+DECISION_LOG.md #61): the family is selectable in normal Studio + included in production exports. Objectives
+are approved. The answer.type 'ratio' (canonical-first) schema extension is APPROVED. Version tags follow
+the established terminology; the approvedTag is approved-ratio-v1.0.2 (created on approval). An approval
+block records the decision date, decision-log ref, and approval commit. The manifest is metadata only and
+does not alter generator output.
 
   PYTHONIOENCODING=utf-8 python oracle/make_ratio_manifest.py
 
@@ -85,15 +85,32 @@ def main() -> int:
     manifest = {
         "generatorId": R.GENERATOR_ID, "generatorVersion": R.GENERATOR_VERSION,
         "validatorVersion": R.VALIDATOR_VERSION,
-        "approvalStatus": "pending-review",
-        "objectiveReviewStatus": "approved-for-implementation",
+        "approvalStatus": "approved",
+        "objectiveReviewStatus": "approved",
         "gitCommit": os.environ.get("SPI_BUILD_COMMIT") or _git_commit(),
-        "hiddenFromNormalStudioAndProduction": True,
-        # Version tags (established terminology). The approvedTag is null until the owner approves.
+        "hiddenFromNormalStudioAndProduction": False,
+        # Version tags (owner final APPROVE): the approved reference tag is created on approval; the
+        # superseded implementation tags are recorded as historical, never as the approval tag.
         "versionTags": {
             "previousVersionTag": "ratio-v1.0.1",
             "currentImplementationTag": "ratio-v1.0.2",
-            "approvedTag": None,
+            "approvedTag": "approved-ratio-v1.0.2",
+        },
+        # Approval housekeeping (owner final APPROVE) — metadata only; does NOT alter canonical output.
+        "approval": {
+            "decision": "curriculum-approved",
+            "approvedTag": "approved-ratio-v1.0.2",
+            "approvalDate": os.environ.get("SPI_APPROVAL_DATE", "2026-06-26"),
+            "approvalCommit": os.environ.get("SPI_BUILD_COMMIT") or _git_commit(),
+            "decisionLogRef": "DECISION_LOG.md #61",
+            "sharedInfrastructure": ("answer.type 'ratio' (canonical-first ordered simplest-form positive-"
+                                     "integer tuple in answer.canonical; derived answer.display; order-"
+                                     "sensitive equivalence) + the ratio parser/formatter/canonicalizer/"
+                                     "equivalence checker + the 9-code ratio-checker vocabulary — APPROVED. "
+                                     "Does NOT authorize zero/negative parts, decimal/irrational/approximate "
+                                     "ratio terms, percentages, currency conversion, recipe-scaling-with-units, "
+                                     "similar-triangle scale, gradient-as-ratio, gear/lever ratios, probability "
+                                     "odds, trig ratios, or algebraic ratio proofs."),
         },
         "schemaExtension": {
             "note": "answer.type 'ratio' (canonical-first) — APPROVED",

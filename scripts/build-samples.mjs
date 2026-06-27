@@ -22,6 +22,7 @@ import * as coordinateLines from "../domains/geometry/coordinate-lines.ts";
 import * as dataHandling from "../domains/statistics/data-handling.ts";
 import * as mensuration from "../domains/measurement/mensuration.ts";
 import * as transformations from "../domains/geometry/transformations.ts";
+import * as ratio from "../domains/proportion/ratio.ts";
 import { makeRecord } from "../core/bank/record.ts";
 import { studentWorksheet } from "../exporters/html/worksheet.ts";
 import { answerKey } from "../exporters/html/answer-key.ts";
@@ -81,6 +82,19 @@ for (const task of ["translate_point", "translate_shape", "reflect_point", "refl
   "rotate_point", "rotate_shape", "describe_translation", "describe_reflection", "describe_rotation"]) {
   const item = transformations.generate(13, { task });
   records.push(makeRecord(item, transformations.validate(item).status, { mode: "free-response", genConfig: { interactionType: "free-response", task } }));
+}
+
+// Include ratio & proportion (all twelve tasks) — curriculum-approved at v1.0.2 (DECISION_LOG #61).
+// best_buy is MULTIPLE-CHOICE only; the six FR-only tasks (write_from_quantities, share_two_part,
+// share_three_part, missing_part, unit_rate, simple_scale) are free-response; the MC-eligible non-best_buy
+// tasks use multiple-choice (their default). An explicit MC request on an FR-only task is rejected.
+for (const [task, mode] of [["simplify", "multiple-choice"], ["write_from_quantities", "free-response"],
+  ["ratio_to_fraction", "multiple-choice"], ["fraction_to_ratio", "multiple-choice"],
+  ["share_two_part", "free-response"], ["share_three_part", "free-response"], ["missing_part", "free-response"],
+  ["direct_proportion", "multiple-choice"], ["inverse_proportion", "multiple-choice"],
+  ["unit_rate", "free-response"], ["best_buy", "multiple-choice"], ["simple_scale", "free-response"]]) {
+  const item = ratio.generate(13, { task, interactionType: mode });
+  records.push(makeRecord(item, ratio.validate(item).status, { mode, genConfig: { interactionType: mode, task } }));
 }
 
 const katexCss = inlineKatexCss();

@@ -1786,5 +1786,5 @@ def describe() -> Dict[str, Any]:
         "interactionTypes": ["free-response", "multiple-choice"],
         "answerTypes": ["ratio", "exact-rational", "integer", "table-completion", "multiple-choice"],
         "difficultyRanges": {OBJECTIVE_BY_TASK[t]: list(TASK_BANDS[t]) for t in RATIO_TASKS},
-        "approvalStatus": "pending-review",
+        "approvalStatus": "approved",
     }

@@ -10,7 +10,7 @@
     "allowedRepresentations": ["numeric"], "vocabulary": ["ratio", "simplest form", "greatest common divisor", "part"],
     "answerTypes": ["ratio"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 1, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.NOT_SIMPLIFIED", "MISC.RATIO.EQUIVALENT_NOT_SIMPLIFIED", "MISC.RATIO.ADDS_PARTS_WRONG"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01",
@@ -23,7 +23,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["ratio", "quantity", "order", "simplest form"],
     "answerTypes": ["ratio"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 1, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.REVERSED_ORDER", "MISC.RATIO.NOT_SIMPLIFIED"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01",
@@ -36,7 +36,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["ratio", "fraction", "whole", "total parts"],
     "answerTypes": ["exact-rational"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.FRACTION_PART_OVER_PART", "MISC.RATIO.PART_AS_WHOLE"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01",
@@ -49,7 +49,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["fraction", "ratio", "whole", "remaining part"],
     "answerTypes": ["ratio"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.REVERSED_ORDER", "MISC.RATIO.NOT_SIMPLIFIED"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.SHARE_TWO_PART.01",
@@ -63,7 +63,7 @@
     "vocabulary": ["share", "ratio", "total parts", "one part"],
     "answerTypes": ["table-completion"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.WRONG_TOTAL_PARTS", "MISC.RATIO.DIVIDES_BY_ONE_PART", "MISC.RATIO.PART_AS_WHOLE"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.SHARE_THREE_PART.01",
@@ -77,7 +77,7 @@
     "vocabulary": ["share", "three-part ratio", "total parts", "one part"],
     "answerTypes": ["table-completion"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 3, "max": 4},
     "commonMisconceptions": ["MISC.RATIO.WRONG_TOTAL_PARTS", "MISC.RATIO.DIVIDES_BY_ONE_PART"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.MISSING_PART.01",
@@ -90,7 +90,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["missing part", "one part", "known part", "ratio"],
     "answerTypes": ["integer"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.DIVIDES_BY_ONE_PART", "MISC.RATIO.MULTIPLIES_NOT_DIVIDES_UNITARY"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
@@ -103,7 +103,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["direct proportion", "unitary method", "one unit", "rate"],
     "answerTypes": ["integer", "exact-rational"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 4},
     "commonMisconceptions": ["MISC.RATIO.INVERSE_FOR_DIRECT", "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE", "MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01",
@@ -116,7 +116,7 @@
     "allowedRepresentations": ["numeric"], "vocabulary": ["inverse proportion", "unitary method", "product invariant"],
     "answerTypes": ["integer"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 3, "max": 4},
     "commonMisconceptions": ["MISC.RATIO.DIRECT_FOR_INVERSE", "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.UNIT_RATE.01",
@@ -129,7 +129,7 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["unit rate", "per", "one unit"],
     "answerTypes": ["integer", "exact-rational"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 3},
     "commonMisconceptions": ["MISC.RATIO.DIVIDES_NOT_MULTIPLIES_UNITARY"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.BEST_BUY.01",
@@ -143,7 +143,7 @@
     "vocabulary": ["best buy", "unit rate", "value for money"],
     "answerTypes": ["multiple-choice"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 3, "max": 4},
     "commonMisconceptions": ["MISC.RATIO.NO_UNIT_RATE_COMPARE", "MISC.RATIO.LOWEST_PRICE_NOT_BEST"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   },
   {
     "objectiveId": "SPI.MIDDLE.RATIO.SIMPLE_SCALE.01",
@@ -156,6 +156,6 @@
     "allowedRepresentations": ["numeric", "diagram"], "vocabulary": ["scale", "scale factor", "map scale", "model"],
     "answerTypes": ["integer", "exact-rational"], "calculatorPolicy": "calculator-not-required", "difficultyRange": {"min": 2, "max": 4},
     "commonMisconceptions": ["MISC.RATIO.SCALE_WRONG_DIRECTION", "MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE"],
-    "reviewStatus": "approved-for-implementation", "version": "1.0.0"
+    "reviewStatus": "approved", "version": "1.0.0"
   }
 ]

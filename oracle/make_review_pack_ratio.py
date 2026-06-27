@@ -314,8 +314,8 @@ def main() -> int:
 
     pack = {
         "generatorId": R.GENERATOR_ID, "generatorVersion": R.GENERATOR_VERSION,
-        "validatorVersion": R.VALIDATOR_VERSION, "approvalStatus": "pending-review",
-        "objectiveReviewStatus": "approved-for-implementation",
+        "validatorVersion": R.VALIDATOR_VERSION, "approvalStatus": "approved",
+        "objectiveReviewStatus": "approved",
         "requiredCells": sorted(required), "coveredCells": sorted(covered), "missingCells": missing_cells,
         "allCovered": not missing_cells, "allValid": all_valid, "itemCount": len(records),
         "exemplarFieldSchema": {"required": REQUIRED_FIELDS, "figureOnly": FIGURE_FIELDS, "mcOnly": MC_FIELDS},

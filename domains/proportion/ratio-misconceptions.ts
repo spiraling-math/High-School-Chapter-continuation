@@ -25,7 +25,7 @@ function _m(mid: string, title: string, obs: string, feedback: string, hint: str
     feedback,
     remediationHint: hint,
     objectiveRelationships: [...objs],
-    reviewStatus: "proposed",
+    reviewStatus: "approved",
     version: "1.0.0",
   };
 }

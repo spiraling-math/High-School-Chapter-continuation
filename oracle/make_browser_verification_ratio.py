@@ -260,7 +260,7 @@ def main() -> int:
 
     report = {
         "generatorId": R.GENERATOR_ID, "generatorVersion": R.GENERATOR_VERSION,
-        "validatorVersion": R.VALIDATOR_VERSION, "approvalStatus": "pending-review",
+        "validatorVersion": R.VALIDATOR_VERSION, "approvalStatus": "approved",
         "gitCommit": _commit(),
         "exportPx": [EXPORT_W, EXPORT_H], "exportStageViewBox": f"0 0 {STAGE_W} {STAGE_H}",
         "canonicalViewBoxes": {"bar": "0 0 1000 300", "numberline": "0 0 1000 260", "table": "0 0 1000 300"},

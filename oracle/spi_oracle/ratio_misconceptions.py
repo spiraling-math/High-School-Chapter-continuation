@@ -24,7 +24,7 @@ def _m(mid: str, title: str, obs: str, feedback: str, hint: str, objs: List[str]
     return {
         "misconceptionId": mid, "domain": DOMAIN, "title": title,
         "description": obs, "observableError": obs, "feedback": feedback, "remediationHint": hint,
-        "objectiveRelationships": list(objs), "reviewStatus": "proposed", "version": "1.0.0",
+        "objectiveRelationships": list(objs), "reviewStatus": "approved", "version": "1.0.0",
     }
 
 

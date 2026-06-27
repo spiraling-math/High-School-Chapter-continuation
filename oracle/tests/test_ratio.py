@@ -467,8 +467,8 @@ class TestManifestIntegrity(unittest.TestCase):
                 continue
             got = hashlib.sha256(open(fp, "rb").read()).hexdigest()
             self.assertEqual(got, want, f"{name} hash drift: {p}")
-        self.assertEqual(man.get("approvalStatus"), "pending-review")
-        self.assertIs(man.get("hiddenFromNormalStudioAndProduction"), True)
+        self.assertEqual(man.get("approvalStatus"), "approved")
+        self.assertIs(man.get("hiddenFromNormalStudioAndProduction"), False)
 
 
 class TestArtifactIdentity(unittest.TestCase):

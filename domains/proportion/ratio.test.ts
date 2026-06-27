@@ -560,7 +560,7 @@ test("describe() reports the generator metadata", () => {
   assert.equal(GENERATOR_ID, "gen.proportion.ratio");
   assert.equal(d.tasks.length, 12);
   assert.deepEqual(d.answerTypes, ["ratio", "exact-rational", "integer", "table-completion", "multiple-choice"]);
-  assert.equal(d.approvalStatus, "pending-review");
+  assert.equal(d.approvalStatus, "approved");
 });
 
 test("serialize is stable and round-trips through JSON", () => {
