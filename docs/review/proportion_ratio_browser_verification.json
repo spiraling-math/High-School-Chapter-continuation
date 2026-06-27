@@ -1,9 +1,9 @@
 {
   "generatorId": "gen.proportion.ratio",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
-  "gitCommit": "bf396adfed52a188a3856c3f1e18aa8e0dff13dc",
+  "gitCommit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
   "exportPx": [
     6000,
     4200
@@ -239,7 +239,7 @@
   },
   "realBrowserCapture": {
     "source": "real-chromium-getComputedStyle",
-    "commit": "bf396adfed52a188a3856c3f1e18aa8e0dff13dc",
+    "commit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
     "via": "Claude Preview tool window.__ratio.computed() over the served visual audit (review-static :8772)"
   },
   "checks": [

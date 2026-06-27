@@ -38,12 +38,12 @@ test("the registered generators are the expected set", () => {
     "gen.stats.data-handling@1.0.2",
     "gen.measurement.mensuration@1.0.1",
     "gen.geometry.transformations@1.0.2",
-    "gen.proportion.ratio@1.0.1",
+    "gen.proportion.ratio@1.0.2",
   ]);
 });
 
-test("approval lifecycle: eight families approved; ratio v1.0.1 registered PENDING-REVIEW (gated)", () => {
-  // The eight earlier families are curriculum-approved. gen.proportion.ratio v1.0.1 is implemented and
+test("approval lifecycle: eight families approved; ratio v1.0.2 registered PENDING-REVIEW (gated)", () => {
+  // The eight earlier families are curriculum-approved. gen.proportion.ratio v1.0.2 is implemented and
   // registered as pending-review ONLY: review mode sees it, but normal Studio and production exports do
   // NOT — it stays hidden until the owner's APPROVE/REVISE/REJECT. This proves the gate genuinely hides a
   // pending-review generator (not just the degenerate "nothing pending" case).

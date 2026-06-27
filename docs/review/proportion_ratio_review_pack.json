@@ -1,7 +1,7 @@
 {
   "generatorId": "gen.proportion.ratio",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
   "requiredCells": [
@@ -1851,7 +1851,7 @@
       },
       "interactionType": "free-response",
       "answerType": "integer",
-      "prompt": "On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.",
+      "prompt": "On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.",
       "canonicalAnswer": {
         "num": 12,
         "den": 1
@@ -1918,11 +1918,39 @@
           "ok": true
         },
         {
+          "name": "singular-plural-units-correct",
+          "ok": true
+        },
+        {
+          "name": "singular-plural-units-correct-inspects-rendered-text",
+          "ok": true
+        },
+        {
           "name": "scale-unit-wording-grammatical",
           "ok": true
         },
         {
-          "name": "singular-plural-units-correct",
+          "name": "scale-unit-wording-grammatical-inspects-rendered-text",
+          "ok": true
+        },
+        {
+          "name": "scale-singular-represents",
+          "ok": true
+        },
+        {
+          "name": "scale-plural-represent",
+          "ok": true
+        },
+        {
+          "name": "scale-prompt-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-a11y-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-svg-desc-grammar-valid",
           "ok": true
         },
         {
@@ -1993,9 +2021,9 @@
       "valid": true,
       "reproductionCommand": "python -c \"import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(4, {'task': 'simple_scale'})))\"",
       "curriculumReviewDecision": null,
-      "studentAltText": "A double number line aligning the two proportional quantities. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.",
-      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"A double number line aligning the two proportional quantities. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">plan unit</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">actual unit</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">1</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">2</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">6</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
-      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">plan unit</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">actual unit</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">1</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">2</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">6</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">12</text>\n</g>\n</svg>",
+      "studentAltText": "A double number line aligning the two proportional quantities. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.",
+      "studentFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"A double number line aligning the two proportional quantities. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">plan unit</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">actual unit</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">1</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">2</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">6</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-student\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">?</text>\n</g>\n</svg>",
+      "answerKeyFigureSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1000 260\" role=\"img\" aria-label=\"Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.\">\n<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>\n<style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>\n<g class=\"rt-base\">\n<text class=\"rt-lbl\" x=\"500\" y=\"52\" text-anchor=\"middle\">Double number line</text>\n<line class=\"rt-axis\" x1=\"120\" y1=\"110\" x2=\"880\" y2=\"110\"/>\n<line class=\"rt-axis\" x1=\"120\" y1=\"200\" x2=\"880\" y2=\"200\"/>\n<text class=\"rt-lbl\" x=\"104\" y=\"118\" text-anchor=\"end\">plan unit</text>\n<text class=\"rt-lbl\" x=\"104\" y=\"208\" text-anchor=\"end\">actual unit</text>\n<line class=\"rt-rung\" x1=\"373\" y1=\"110\" x2=\"373\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"96\" text-anchor=\"middle\">1</text>\n<circle class=\"rt-given-pt\" cx=\"373\" cy=\"200\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"373\" y=\"236\" text-anchor=\"middle\">2</text>\n<line class=\"rt-rung\" x1=\"626\" y1=\"110\" x2=\"626\" y2=\"200\"/>\n<circle class=\"rt-given-pt\" cx=\"626\" cy=\"110\" r=\"6\"/>\n<text class=\"rt-ticklbl\" x=\"626\" y=\"96\" text-anchor=\"middle\">6</text>\n<circle class=\"rt-unknown-pt\" cx=\"626\" cy=\"200\" r=\"7\"/>\n</g>\n<g class=\"rt-overlay\">\n<text class=\"rt-unknown-lbl\" x=\"626\" y=\"236\" text-anchor=\"middle\">12</text>\n</g>\n</svg>",
       "studentDataTable": {
         "columns": [
           "plan unit",
@@ -4797,11 +4825,39 @@
           "ok": true
         },
         {
+          "name": "singular-plural-units-correct",
+          "ok": true
+        },
+        {
+          "name": "singular-plural-units-correct-inspects-rendered-text",
+          "ok": true
+        },
+        {
           "name": "scale-unit-wording-grammatical",
           "ok": true
         },
         {
-          "name": "singular-plural-units-correct",
+          "name": "scale-unit-wording-grammatical-inspects-rendered-text",
+          "ok": true
+        },
+        {
+          "name": "scale-singular-represents",
+          "ok": true
+        },
+        {
+          "name": "scale-plural-represent",
+          "ok": true
+        },
+        {
+          "name": "scale-prompt-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-a11y-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-svg-desc-grammar-valid",
           "ok": true
         },
         {
@@ -5468,11 +5524,39 @@
           "ok": true
         },
         {
+          "name": "singular-plural-units-correct",
+          "ok": true
+        },
+        {
+          "name": "singular-plural-units-correct-inspects-rendered-text",
+          "ok": true
+        },
+        {
           "name": "scale-unit-wording-grammatical",
           "ok": true
         },
         {
-          "name": "singular-plural-units-correct",
+          "name": "scale-unit-wording-grammatical-inspects-rendered-text",
+          "ok": true
+        },
+        {
+          "name": "scale-singular-represents",
+          "ok": true
+        },
+        {
+          "name": "scale-plural-represent",
+          "ok": true
+        },
+        {
+          "name": "scale-prompt-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-a11y-grammar-valid",
+          "ok": true
+        },
+        {
+          "name": "scale-svg-desc-grammar-valid",
           "ok": true
         },
         {

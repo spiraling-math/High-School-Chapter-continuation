@@ -1,14 +1,14 @@
 {
   "generatorId": "gen.proportion.ratio",
-  "generatorVersion": "1.0.1",
-  "validatorVersion": "1.0.1",
+  "generatorVersion": "1.0.2",
+  "validatorVersion": "1.0.2",
   "approvalStatus": "pending-review",
   "objectiveReviewStatus": "approved-for-implementation",
-  "gitCommit": "bf396adfed52a188a3856c3f1e18aa8e0dff13dc",
+  "gitCommit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
   "hiddenFromNormalStudioAndProduction": true,
   "versionTags": {
-    "previousVersionTag": null,
-    "currentImplementationTag": "ratio-v1.0.0",
+    "previousVersionTag": "ratio-v1.0.1",
+    "currentImplementationTag": "ratio-v1.0.2",
     "approvedTag": null
   },
   "schemaExtension": {
@@ -81,17 +81,17 @@
     },
     "oracleGenerator": {
       "path": "oracle/spi_oracle/ratio.py",
-      "sha256": "14abe0f6e455bca6e78578f2dfc9a12a4650ba0f54d9e07fa3de0b8b43f3a740",
+      "sha256": "e12861ddbb807d19ba9ded4bc26bcca8aceb3de5c0f0143c6e9142a248839e2d",
       "present": true
     },
     "golden": {
       "path": "oracle/golden/ratio.golden.json",
-      "sha256": "9f38655a7a4ac0b37aef277593147ba33da3fae12971d22b7651f6a2dfa94bab",
+      "sha256": "6167eb59c92c9b00d3a1b8eda14bf2eb630aa452cd072606642fe6b88af73fc2",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/ratio.parity.json",
-      "sha256": "7af3ba0587ff8e3f7d3207d6d9a79bfb4b7b754b4681fe642acd3f8e23f6b85c",
+      "sha256": "11d84c1ebb50b35b348ab9b7442024894d562016bff347d410acdab2339cdca8",
       "present": true
     },
     "tsCore": {
@@ -106,7 +106,7 @@
     },
     "tsGenerator": {
       "path": "domains/proportion/ratio.ts",
-      "sha256": "f7d7f536e759d33226b969eea8f774e9d1894942ccd491183a220e650730d057",
+      "sha256": "2ed5997d801af749d0b36d9e442080074087ef048806a252b580dd361114b9b0",
       "present": true
     },
     "tsParityTest": {
@@ -146,32 +146,32 @@
     },
     "distribution": {
       "path": "docs/review/ratio_distribution.json",
-      "sha256": "b8b4acea9c66ee6e1cc51d027a2acda8754c2d5b1d97962f323f2e51f2821511",
+      "sha256": "ebc676e3bb1e1edb03f194e8ded96c3dc661d48a9037b15cc5fb4fb3480a0d67",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/proportion_ratio_review_pack.json",
-      "sha256": "2d7c5de75a7c356aece6c5a0f953b833cdf8b67a6e0600501647fc3249d238da",
+      "sha256": "64cb8764b1e5fd076d65bcb1fcbf85fc7e45acf49d013dd602a4a4ce8a3dd55f",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/proportion_ratio_review_pack.md",
-      "sha256": "a14b7e291b87f4252829423c57de2e40b8c3cefa0d409562a068342031631e3e",
+      "sha256": "3c8820b0269d21b9ee55b45580addc25816c26e3efbc997f35d7fac82b520ded",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/proportion_ratio_visual_audit.html",
-      "sha256": "b0368c94bdde21e7f38d7fa03bcab8fbe66c8d37472223b8d35f6306e98f3d2d",
+      "sha256": "4fe0d9334a5a07e6a3b807ba8d3b46d287e4001d80fd7aacadc7e8557d5af246",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/proportion_ratio_browser_verification.json",
-      "sha256": "9c093f3a810802794a1d6dc872ad94ac1ba562a845a1f8c53d5c6bdd8fc9f870",
+      "sha256": "919b43294662cade79ab8360618daafa4efcb7ddd240e54ae6958944134c8877",
       "present": true
     },
     "realBrowserStyles": {
       "path": "docs/review/ratio_real_browser_styles.json",
-      "sha256": "39bfe034fa674963d2b0700aa3c7540b95a1540ec5774b8d849ef26ebf68bec1",
+      "sha256": "093641a40f85692fb93be827f9aee125bd5e7c2ae4270416d43d2b8be07bcfb3",
       "present": true
     }
   }

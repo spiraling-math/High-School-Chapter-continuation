@@ -418,13 +418,13 @@ test("DEFECT 8: the two omitted reverse objectiveRelationships are present", () 
 // --------------------------------------------------------------------------- //
 const COUNT_NOUNS = new Set(["books", "apples", "pencils", "eggs"]);
 
-test("version bump: generator + validator are 1.0.1; item schemaVersion stays 1.0.0", () => {
-  assert.equal(GENERATOR_VERSION, "1.0.1");
-  assert.equal(VALIDATOR_VERSION, "1.0.1");
+test("version bump: generator + validator are 1.0.2; item schemaVersion stays 1.0.0", () => {
+  assert.equal(GENERATOR_VERSION, "1.0.2");
+  assert.equal(VALIDATOR_VERSION, "1.0.2");
   const item = generate(1, { task: "simplify" });
   assert.equal(item.schemaVersion, "1.0.0");
-  assert.equal(item.generatorVersion, "1.0.1");
-  assert.equal(validate(item).validatorVersion, "1.0.1");
+  assert.equal(item.generatorVersion, "1.0.2");
+  assert.equal(validate(item).validatorVersion, "1.0.2");
 });
 
 test("CORRECTION #3: no fractional count noun in direct_proportion / unit_rate; context checks pass", () => {
@@ -569,4 +569,41 @@ test("serialize is stable and round-trips through JSON", () => {
   assert.equal(serialize(item), s);
   const parsed = JSON.parse(s);
   assert.equal(parsed.itemId, "ITEM-RATIO-share_two_part-42");
+});
+
+// --------------------------------------------------------------------------- //
+// simple_scale subject-verb grammar + false-pass fix (owner REVISE v1.0.2)
+// --------------------------------------------------------------------------- //
+const _scaleNamed = ["scale-singular-represents", "scale-plural-represent", "scale-prompt-grammar-valid",
+  "scale-a11y-grammar-valid", "scale-svg-desc-grammar-valid", "scale-unit-wording-grammatical-inspects-rendered-text",
+  "singular-plural-units-correct-inspects-rendered-text", "scale-unit-wording-grammatical", "singular-plural-units-correct"];
+const _names = (it: any) => Object.fromEntries(validate(it).checks.map((c: any) => [c.name, c.ok]));
+
+test("simple_scale: subject-verb agreement + named checks pass for real items (singular + plural)", () => {
+  let sing = false, plur = false;
+  for (let s = 1; s <= 800; s++) {
+    const it: any = generate(s, { task: "simple_scale" });
+    const n = _names(it);
+    for (const c of _scaleNamed) assert.ok(n[c], `seed ${s}: ${c}`);
+    const instr = it.prompt.instruction as string;
+    if (it.params.factorDen === 1) { sing = true; assert.ok(instr.includes(" unit represents ")); }
+    else { plur = true; assert.ok(instr.includes(" units represent ")); }
+  }
+  assert.ok(sing && plur, "exercised both singular and plural subjects");
+});
+
+test("simple_scale: the validator FAILS the owner's exact bad wording (false-pass fix)", () => {
+  // find a factorDen==1 item and tamper its rendered prompt to 'represent' -> must fail.
+  let it: any = null;
+  for (let s = 1; s <= 800; s++) { const g: any = generate(s, { task: "simple_scale" }); if (g.params.factorDen === 1) { it = g; break; } }
+  assert.ok(it, "found a singular-subject scale item");
+  it.prompt.instruction = (it.prompt.instruction as string).replace("represents", "represent");
+  const n = _names(it);
+  assert.equal(n["scale-prompt-grammar-valid"], false);
+  assert.equal(n["scale-unit-wording-grammatical"], false);
+  assert.equal(n["scale-singular-represents"], false);
+});
+
+test("simple_scale seed 4 regression is valid", () => {
+  assert.ok(validate(generate(4, { task: "simple_scale" })).valid);
 });

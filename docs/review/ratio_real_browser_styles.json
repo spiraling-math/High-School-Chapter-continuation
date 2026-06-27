@@ -1,10 +1,10 @@
 {
   "generatorId": "gen.proportion.ratio",
-  "version": "1.0.1",
-  "commit": "bf396adfed52a188a3856c3f1e18aa8e0dff13dc",
+  "version": "1.0.2",
+  "commit": "ee194887e2ec731ce0b31d0a4d3edfbcec4c8e5f",
   "capturedFrom": "real-chromium-getComputedStyle",
   "capturedVia": "Claude Preview tool window.__ratio.computed() over the served visual audit (review-static :8772)",
-  "note": "Live getComputedStyle of the rendered rt-* SVG elements per mode/channel. Values are the browser's resolved CSS (rgb()/hex). They match the baked ratio-theme; print is monochrome (the unknown is distinguished by dash + shape, not colour).",
+  "note": "Live getComputedStyle of the rendered rt-* SVG elements per mode/channel. Re-captured for v1.0.2: the colour values are unchanged from v1.0.1 (the simple_scale REVISE changed prompt/a11y TEXT only, not the ratio-theme), and were re-confirmed live against the v1.0.2 audit at commit ee19488. They match the baked ratio-theme; print is monochrome (the unknown is distinguished by dash + shape, not colour).",
   "computed": {
     "premium": {
       "share_two_part:student": {"bg": "#ffffff", "barUnknown": "rgb(255, 255, 255)", "barUnknownDash": "6px, 4px", "barFrame": "rgb(30, 41, 59)", "lbl": "rgb(17, 24, 39)", "unknownLbl": "rgb(124, 58, 237)"},

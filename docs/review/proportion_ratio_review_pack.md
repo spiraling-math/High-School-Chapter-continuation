@@ -1,6 +1,6 @@
-# gen.proportion.ratio v1.0.1 — Curriculum Review Pack
+# gen.proportion.ratio v1.0.2 — Curriculum Review Pack
 
-> **PENDING REVIEW.** Generator **gen.proportion.ratio v1.0.1**, validator v1.0.1. Objectives are approved-for-implementation. Required coverage cells are derived from the 10,000-seed distribution report; every exemplar below carries the full per-item record and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
+> **PENDING REVIEW.** Generator **gen.proportion.ratio v1.0.2**, validator v1.0.2. Objectives are approved-for-implementation. Required coverage cells are derived from the 10,000-seed distribution report; every exemplar below carries the full per-item record and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.
 
 ## Summary
 
@@ -495,18 +495,18 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | objective | SPI.MIDDLE.RATIO.SIMPLE_SCALE.01 |
 | interaction / answer | free-response / integer |
 | difficulty band | 2 (axes: {"numericalComplexity": 0.3, "exactVsApproximate": 0, "reasoningSteps": 0.5, "abstraction": 0.5}) |
-| prompt | On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value. |
+| prompt | On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value. |
 | params | `{"task": "simple_scale", "scaleKind": "plan", "srcUnit": "plan unit", "dstUnit": "actual unit", "value": 6, "factorNum": 2, "factorDen": 1, "direction": "multiply"}` |
 | canonical answer | `{"num": 12, "den": 1}` |
 | answer display | 12 |
 | accepted form / checker | Exact-rational checker: the answer is the exact reduced Fraction (num/den); no float, no tolerance; integer-when-whole carries den 1. |
 | worked solution | 1. Find the scale factor -> 2/1; 2. Multiply the value by the scale factor -> 6 × 2/1 = 12 |
-| student alt text | A double number line aligning the two proportional quantities. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value. |
+| student alt text | A double number line aligning the two proportional quantities. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value. |
 | answer-key alt text | Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown. |
 | student data table | `{"columns": ["plan unit", "actual unit"], "rows": [["1", "2"], ["6", "?"]]}` |
 | answer-key data table | `{"columns": ["plan unit", "actual unit"], "rows": [["1", "2"], ["6", "12"]]}` |
 | diagnostics exercised | MISC.RATIO.SCALE_WRONG_DIRECTION, MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE |
-| validation checks | 24/24 pass |
+| validation checks | 31/31 pass |
 | covers cells | 3 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(4, {'task': 'simple_scale'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -514,8 +514,8 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 <details><summary>student figure (SVG)</summary>
 
 ```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="A double number line aligning the two proportional quantities. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.">
-<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="A double number line aligning the two proportional quantities. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.">
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. Unknown quantities are marked with a question mark. On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>
 <style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
 <g class="rt-base">
 <text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
@@ -544,7 +544,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="Answer key. A double number line aligning the two proportional quantities. The solved quantities are shown.">
-<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 1 plan unit represent 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>
+<title>Double number line</title><desc>A double number line aligning the two proportional quantities. The solution overlay reveals the answer to: On a plan, 1 plan unit represents 2 actual units. A part measures 6 plan units. How many actual units long is it in reality? Give an exact value.</desc>
 <style>.rt-bar-given{fill:#dddddd;stroke:#111;stroke-width:2}.rt-bar-unknown{fill:#ffffff;stroke:#111;stroke-width:2;stroke-dasharray:6 4}.rt-bar-frame{fill:none;stroke:#111;stroke-width:2.5}.rt-divider{stroke:#111;stroke-width:1.5}.rt-axis{stroke:#111;stroke-width:2.5;fill:none}.rt-tick{stroke:#111;stroke-width:2}.rt-given-pt{fill:#111;stroke:#111;stroke-width:2}.rt-unknown-pt{fill:#ffffff;stroke:#111;stroke-width:2.5;stroke-dasharray:4 3}.rt-rung{stroke:#111;stroke-width:1.5;stroke-dasharray:3 4}.rt-table-line{stroke:#111;stroke-width:2;fill:none}.rt-table-given{fill:#dddddd;stroke:#111;stroke-width:1.5}text{font-family:sans-serif;font-size:26px;fill:#111}.rt-ticklbl{font-size:20px;fill:#333}.rt-lbl{font-size:26px;fill:#111}.rt-unknown-lbl{font-size:28px;font-weight:bold;fill:#111}</style>
 <g class="rt-base">
 <text class="rt-lbl" x="500" y="52" text-anchor="middle">Double number line</text>
@@ -1395,7 +1395,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | student data table | `{"columns": ["map unit", "ground unit"], "rows": [["2", "3"], ["17", "?"]]}` |
 | answer-key data table | `{"columns": ["map unit", "ground unit"], "rows": [["2", "3"], ["17", "51/2"]]}` |
 | diagnostics exercised | MISC.RATIO.SCALE_WRONG_DIRECTION, MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE |
-| validation checks | 24/24 pass |
+| validation checks | 31/31 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(36, {'task': 'simple_scale'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
@@ -1666,7 +1666,7 @@ Codes reached: correct, equivalent-not-simplified, malformed-response, unparsed-
 | student data table | `{"columns": ["map unit", "ground unit"], "rows": [["2", "6"], ["8", "?"]]}` |
 | answer-key data table | `{"columns": ["map unit", "ground unit"], "rows": [["2", "6"], ["8", "24"]]}` |
 | diagnostics exercised | MISC.RATIO.SCALE_WRONG_DIRECTION, MISC.RATIO.ADDITIVE_NOT_MULTIPLICATIVE |
-| validation checks | 24/24 pass |
+| validation checks | 31/31 pass |
 | covers cells | 1 |
 | reproduction | `python -c "import sys; sys.path.insert(0,'oracle'); from spi_oracle import ratio as R; print(R.serialize(R.generate(109, {'task': 'simple_scale'})))"` |
 | curriculum-review decision | ☐ APPROVE ☐ REVISE ☐ REJECT |
