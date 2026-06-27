@@ -2,11 +2,16 @@
 
 Last updated: 2026-06-27.
 
-## Objective Registry & Standards — Phase 1 IMPLEMENTED (2026-06-27; output-neutral; pending owner review)
+## Objective Registry & Standards — Phase 1 CURRICULUM-APPROVED (2026-06-27; output-neutral)
 
-**Phase 1 of `docs/architecture/SPI_MATH_OBJECTIVE_REGISTRY_AND_STANDARDS_PROPOSAL.md` is implemented as a
-pure READ LAYER over the existing eleven `curriculum/objectives/*.json` files (DECISION_LOG #62). Nothing is
-approved here — this is an implementation for owner review.** New artifacts only: `core/curriculum/objective-registry.ts`
+**Owner final APPROVE (DECISION_LOG #63): Phase 1 of `docs/architecture/SPI_MATH_OBJECTIVE_REGISTRY_AND_
+STANDARDS_PROPOSAL.md` is curriculum-approved — a pure READ LAYER over the existing eleven
+`curriculum/objectives/*.json` files; manifest `approvalStatus: approved`, tag
+`approved-objective-registry-phase1-v1.0.0` (implementation tag `objective-registry-phase1-v1.0.0`); the
+Phase-1 artifacts are frozen immutable (manifest sha256 + integrity test). The known-baseline 5-ID list is a
+non-blocking backlog for a future, separately-gated foundational-objective-authoring phase; the pilot
+alignment records stay `proposed`/design-proof (this approves the architecture + mechanism, NOT a full
+external standards mapping).** New artifacts only: `core/curriculum/objective-registry.ts`
 (read-only unified index keyed by `objectiveId`; `loadRegistry/all/byId/byStage/byDomain/byStrand/count` + the
 variable-depth ID-grammar parser), `core/curriculum/registry-graph.ts` (the GLOBAL graph check over all 70
 objectives — the eight buckets + the §11 G1–G13 predicates; `ok = errors empty AND newReferencedUndefined empty`),

@@ -33,7 +33,8 @@ Git tags identify the approved reference implementations:
 `approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`),
 `approved-coordinate-lines-v1.0.2` (= `coordinate-lines-v1.0.2`),
 `approved-stats-data-handling-v1.0.2`, `approved-mensuration-v1.0.1`,
-`approved-transformations-v1.0.2`, `approved-ratio-v1.0.2`.
+`approved-transformations-v1.0.2`, `approved-ratio-v1.0.2`,
+`approved-objective-registry-phase1-v1.0.0` (architecture; = `objective-registry-phase1-v1.0.0`).
 
 ### Pending-review (implemented; NOT yet approved — not in this registry's approved scope)
 
@@ -51,6 +52,30 @@ collision regeneration, and the v1.0.1 edge-case policy/exclusions.
 `SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01` is recorded **integer-only** in v1.0.1
 (`answerTypes: ["integer", "multiple-choice"]`) unless rational constants are
 explicitly supported in a later version.
+
+## Approved architecture components
+
+| Component | Approved version | Status | Reference | Approved |
+| --- | --- | --- | --- | --- |
+| Objective Registry & Standards — **Phase 1** | **1.0.0** | curriculum-approved | tag `approved-objective-registry-phase1-v1.0.0` (impl. tag `objective-registry-phase1-v1.0.0`); `DECISION_LOG.md` #63 | 2026-06-27 |
+
+**Approved scope (Phase 1, owner DECISION_LOG #63):** the read-only unified objective registry/index
+(`core/curriculum/objective-registry.ts` + the variable-depth SPI objective-ID parser); the global cross-family
+prerequisite DAG check (`core/curriculum/registry-graph.ts`); the **known-baseline referenced-undefined policy**
+(existing 5 IDs = non-blocking warnings, any new one = blocking error); the generator-capability + coverage join
+(`core/curriculum/generator-capability.ts`); the coverage/gap report; the **separate, additive**
+`schemas/standard-alignment.schema.json` (direction **alignment → SPI**; does NOT widen
+`curriculum-objective.schema.json`); the alignment store + pilot `curriculum/alignments/pilot.json` (records held
+at `status: "proposed"`/design-proof); the manifest-integrity model
+(`docs/review/objective_registry_manifest.json`, sha256 + 0-drift test); the governance/CI integrity checks; and
+the output-neutral migration strategy. **Frozen immutable Phase-1 artifacts:** registry index
+(`docs/review/objective_registry_index.json`), gap report, known-baseline report
+(`curriculum/registry/known-baseline-referenced-undefined.json`), coverage report, capability map, alignment
+schema, pilot, registry manifest, README (`docs/architecture/OBJECTIVE_REGISTRY_PHASE1.md`), registry tests.
+**NOT approved by this (separately gated):** authoring the 5 known-baseline foundational objectives; any full
+external standards mapping (IGCSE/IB/Singapore/Lebanese/Common Core); new objectives; lessons; dashboards;
+university architecture; new generator families. 70 objectives indexed; `graphOk=true`; the 11
+`curriculum/objectives/*.json` files remain the source of record (byte-for-byte unchanged).
 
 ## Approved curriculum objectives
 

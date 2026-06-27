@@ -1,10 +1,13 @@
-# Objective Registry & Standards — Phase 1 (implemented; pending owner review)
+# Objective Registry & Standards — Phase 1 (CURRICULUM-APPROVED)
 
 Phase 1 of `SPI_MATH_OBJECTIVE_REGISTRY_AND_STANDARDS_PROPOSAL.md` (§15), built as a **pure read layer** over
 the existing eleven `curriculum/objectives/*.json` files. It is **output-neutral**: no objective file, golden
 fixture, `curriculum-objective.schema.json`, inline `externalAlignments`, or approved-family artifact changes.
-Recorded at `DECISION_LOG.md` #62. **Not an approval** — there is no `approved-*` tag; the next decision is the
-owner's APPROVE / REVISE / REJECT of this Phase 1 package.
+Curriculum-APPROVED by the owner (`DECISION_LOG.md` #63): manifest `approvalStatus: approved`, tag
+`approved-objective-registry-phase1-v1.0.0` (implementation tag `objective-registry-phase1-v1.0.0`); the
+Phase-1 artifacts below are frozen immutable (manifest sha256 + integrity test). This approval covers the
+architecture + mechanism only — the pilot alignment records stay `proposed`/design-proof and the known-baseline
+5-ID list is a non-blocking backlog for a separately-gated future authoring phase.
 
 ## What was built
 
