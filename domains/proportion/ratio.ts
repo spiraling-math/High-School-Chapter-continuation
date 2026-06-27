@@ -17,8 +17,8 @@ import * as RM from "./ratio-misconceptions.ts";
 type Json = any;
 
 export const GENERATOR_ID = "gen.proportion.ratio";
-export const GENERATOR_VERSION = "1.0.1";
-export const VALIDATOR_VERSION = "1.0.1";
+export const GENERATOR_VERSION = "1.0.2";
+export const VALIDATOR_VERSION = "1.0.2";
 const CALCULATOR_POLICY = "calculator-not-required";
 
 // --------------------------------------------------------------------------- //
@@ -338,6 +338,27 @@ function _grammarViolations(text: string): string[] {
     if (_PLURAL_FORMS.has(w)) {
       out.push(`per ${w}`);
     }
+  }
+  out.push(..._scaleVerbViolations(text));
+  return out;
+}
+
+// Subject-verb agreement for the scale relation "<n> … unit[s] represent[s] …" (owner REVISE #1):
+// count 1 -> singular noun + 'represents'; any other count -> plural noun + 'represent'. Mirror of
+// ratio.py _scale_verb_violations.
+const _SCALE_VERB_RE = /\b(\d+) ([A-Za-z]+ )?unit(s?) (represent|represents)\b/g;
+
+function _scaleVerbViolations(text: string): string[] {
+  const out: string[] = [];
+  let m: RegExpExecArray | null;
+  _SCALE_VERB_RE.lastIndex = 0;
+  while ((m = _SCALE_VERB_RE.exec(text)) !== null) {
+    const n = parseInt(m[1] as string, 10);
+    const nounPlural = m[3] === "s";
+    const verb = m[4] as string;
+    const sing = n === 1;
+    if (sing && (nounPlural || verb !== "represents")) out.push(m[0]);
+    if (!sing && (!nounPlural || verb !== "represent")) out.push(m[0]);
   }
   return out;
 }
@@ -1438,8 +1459,10 @@ function _instruction(task: string, params: Json): string {
   if (task === "simple_scale") {
     // Correction #5 (POLICY A, dimensionless): grammatical "... unit/units"; a BARE-NUMBER answer of
     // dst units; NO cross-unit conversion.
+    // Subject-verb agreement (owner REVISE #1): verb agrees with the subject count (factorDen).
+    const rep = (params.factorDen as number) === 1 ? "represents" : "represent";
     return (
-      `On a ${params.scaleKind}, ${_units(params.factorDen, params.srcUnit as string)} represent ` +
+      `On a ${params.scaleKind}, ${_units(params.factorDen, params.srcUnit as string)} ${rep} ` +
       `${_units(params.factorNum, params.dstUnit as string)}. A part measures ` +
       `${_units(params.value, params.srcUnit as string)}. How many ${params.dstUnit}s long is it ` +
       `in reality? Give an exact value.`
@@ -1922,23 +1945,38 @@ export function validate(item: Json): Json {
     }
     // --- correction #5 (simple-scale wording + answer contract) ---
     if (task === "simple_scale") {
+      // owner REVISE #1/#2: inspect the ACTUAL RENDERED strings (prompt, alt text, long description, SVG
+      // <desc>) for count + subject-verb agreement, so "1 plan unit represent" FAILS. Mirror of ratio.py.
       const instr = item.prompt.instruction as string;
-      const grammatical =
-        instr.indexOf(_units(p.factorDen, p.srcUnit as string)) !== -1 &&
-        instr.indexOf(_units(p.factorNum, p.dstUnit as string)) !== -1 &&
-        instr.indexOf(_units(p.value, p.srcUnit as string)) !== -1;
-      add("scale-unit-wording-grammatical", grammatical, "displayed counts use grammatical singular/plural units");
-      let spOk = true;
+      const acc = (item.accessibility ?? {}) as Json;
+      const a11yText = ["altText", "longDescription", "spokenMath"].map((k) => String(acc[k] ?? "")).join(" ");
+      const svg = item.media && item.media[0] ? (item.media[0].svg as string) : "";
+      const md = /<desc>([\s\S]*?)<\/desc>/.exec(svg);
+      const svgDesc = md ? (md[1] as string) : "";
+      const scaleOk = (s: string): boolean => _grammarViolations(s).length === 0;
+      const den = p.factorDen as number;
+      let spOk = _scaleVerbViolations(instr).length === 0;
       for (const [cnt, word] of [
         [p.factorDen, p.srcUnit],
         [p.factorNum, p.dstUnit],
         [p.value, p.srcUnit],
       ] as [number, string][]) {
         const phrase = _units(cnt, word);
-        if (cnt === 1 && phrase.endsWith("s")) spOk = false;
-        if (cnt !== 1 && !phrase.endsWith("s")) spOk = false;
+        if (instr.indexOf(phrase) === -1) spOk = false;
+        if ((cnt === 1) === phrase.endsWith("s")) spOk = false;
       }
-      add("singular-plural-units-correct", spOk, "1 <word> vs n <word>s");
+      add("singular-plural-units-correct", spOk, "rendered prompt: 1 <word> vs n <word>s + verb agreement");
+      add("singular-plural-units-correct-inspects-rendered-text", spOk && instr.indexOf(String(den)) !== -1,
+        "the check parses the actual rendered prompt string, not just substring presence");
+      add("scale-unit-wording-grammatical", scaleOk(instr), "rendered prompt has no count/subject-verb disagreement");
+      add("scale-unit-wording-grammatical-inspects-rendered-text", scaleOk(instr), "grammar check inspects the rendered prompt text");
+      add("scale-singular-represents", den !== 1 || instr.indexOf(`${_units(1, p.srcUnit as string)} represents `) !== -1,
+        "a singular subject (count 1) takes 'represents'");
+      add("scale-plural-represent", den === 1 || instr.indexOf(`${_units(den, p.srcUnit as string)} represent `) !== -1,
+        "a plural subject (count > 1) takes 'represent'");
+      add("scale-prompt-grammar-valid", scaleOk(instr), "rendered prompt grammar valid");
+      add("scale-a11y-grammar-valid", scaleOk(a11yText), "alt text + long description grammar valid");
+      add("scale-svg-desc-grammar-valid", scaleOk(svgDesc), "SVG <desc> grammar valid");
       add(
         "scale-answer-contract-matches-prompt",
         instr.indexOf(`How many ${p.dstUnit}s long`) !== -1 &&

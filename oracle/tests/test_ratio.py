@@ -228,14 +228,14 @@ class TestRevisionCorrections(unittest.TestCase):
     _COUNT_NOUNS = {"books", "apples", "pencils", "eggs"}
 
     def test_version_bump(self):
-        # decision #8: generator + validator bump to 1.0.1; the ITEM SCHEMA version (schemaVersion)
-        # stays 1.0.0. The generated item carries the bumped generatorVersion.
-        self.assertEqual(R.GENERATOR_VERSION, "1.0.1")
-        self.assertEqual(R.VALIDATOR_VERSION, "1.0.1")
+        # decision #8: generator + validator at 1.0.2 (REVISE simple_scale grammar changed canonical
+        # bytes; v1.0.1 preserved at tag ratio-v1.0.1). The ITEM SCHEMA version (schemaVersion) stays 1.0.0.
+        self.assertEqual(R.GENERATOR_VERSION, "1.0.2")
+        self.assertEqual(R.VALIDATOR_VERSION, "1.0.2")
         it = R.generate(1, {"task": "simplify"})
         self.assertEqual(it["schemaVersion"], "1.0.0")        # item schema unchanged
-        self.assertEqual(it["generatorVersion"], "1.0.1")     # generator version bumped
-        self.assertEqual(R.validate(it)["validatorVersion"], "1.0.1")
+        self.assertEqual(it["generatorVersion"], "1.0.2")     # generator version bumped
+        self.assertEqual(R.validate(it)["validatorVersion"], "1.0.2")
 
     def test_no_fractional_count_noun_in_rate_tasks(self):
         # CORRECTION #3: a direct_proportion / unit_rate item NEVER shows a count noun with a
@@ -529,6 +529,59 @@ class TestArtifactIdentity(unittest.TestCase):
                     "dark-mode-readable", "print-mode-authoritative-captured"):
             self.assertTrue(names.get(req), f"browser check failed/missing: {req}")
         self.assertTrue(self.brv.get("allPassed"))
+
+
+class TestScaleGrammar(unittest.TestCase):
+    """Owner REVISE (v1.0.2): simple_scale subject-verb agreement + the false-pass fix. The verb must agree
+    with the subject count ("1 plan unit represents" / "2 plan units represent") on every rendered surface,
+    and the validator must INSPECT the rendered text (the v1.0.1 check passed "1 plan unit represent")."""
+
+    NAMED = ("scale-singular-represents", "scale-plural-represent", "scale-prompt-grammar-valid",
+             "scale-a11y-grammar-valid", "scale-svg-desc-grammar-valid",
+             "scale-unit-wording-grammatical-inspects-rendered-text",
+             "singular-plural-units-correct-inspects-rendered-text",
+             "scale-unit-wording-grammatical", "singular-plural-units-correct")
+
+    def test_grammar_predicate_catches_the_exact_bad_wording(self):
+        # the owner's exact example must be flagged; the corrected forms must be clean.
+        self.assertEqual(RC_scale("On a plan, 1 plan unit represent 2 actual units."), False)
+        self.assertEqual(RC_scale("On a plan, 1 plan unit represents 2 actual units."), True)
+        self.assertEqual(RC_scale("On a map, 2 map units represent 3 ground units."), True)
+        self.assertEqual(RC_scale("On a map, 2 map units represents 3 ground units."), False)
+
+    def test_validator_fails_the_bad_wording(self):
+        # tamper a valid item's rendered prompt to the bad wording -> scale-prompt-grammar-valid must FAIL.
+        it = R.generate(13, {"task": "simple_scale"})  # factorDen == 1
+        it["prompt"]["instruction"] = it["prompt"]["instruction"].replace("represents", "represent", 1)
+        names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+        self.assertFalse(names["scale-prompt-grammar-valid"])
+        self.assertFalse(names["scale-unit-wording-grammatical"])
+        self.assertFalse(names["scale-singular-represents"])
+
+    def test_all_named_checks_pass_for_real_items(self):
+        seen_sing = seen_plur = False
+        for s in list(range(1, 1201)) + [4]:
+            it = R.generate(s, {"task": "simple_scale"})
+            names = {c["name"]: c["ok"] for c in R.validate(it)["checks"]}
+            for n in self.NAMED:
+                self.assertTrue(names.get(n), f"seed {s}: {n} failed")
+            instr = it["prompt"]["instruction"]
+            if it["params"]["factorDen"] == 1:
+                seen_sing = True
+                self.assertIn(" unit represents ", instr)
+            else:
+                seen_plur = True
+                self.assertIn(" units represent ", instr)
+        self.assertTrue(seen_sing and seen_plur, "did not exercise both singular and plural subjects")
+
+    def test_seed_4_regression(self):
+        it = R.generate(4, {"task": "simple_scale"})
+        self.assertTrue(R.validate(it)["valid"])
+
+
+def RC_scale(text):
+    """True iff `text` has no scale count/verb-agreement violation (helper for the grammar test)."""
+    return R._grammar_violations(text) == []
 
 
 if __name__ == "__main__":

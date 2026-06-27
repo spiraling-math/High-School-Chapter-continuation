@@ -43,8 +43,8 @@ from spi_oracle import ratio_core as RC  # noqa: E402
 from spi_oracle import ratio_misconceptions as RM  # noqa: E402
 
 GENERATOR_ID = "gen.proportion.ratio"
-GENERATOR_VERSION = "1.0.1"
-VALIDATOR_VERSION = "1.0.1"
+GENERATOR_VERSION = "1.0.2"
+VALIDATOR_VERSION = "1.0.2"
 CALCULATOR_POLICY = "calculator-not-required"
 
 # --------------------------------------------------------------------------- #
@@ -314,6 +314,28 @@ def _grammar_violations(text: str) -> List[str]:
         w = m.group(1)
         if w in _PLURAL_FORMS:
             out.append(f"per {w}")
+    out.extend(_scale_verb_violations(text))
+    return out
+
+
+# Subject-verb agreement for the scale relation "<n> <…> unit[s] represent[s] …" (owner REVISE #1):
+# a count of 1 takes the SINGULAR noun + SINGULAR verb ("1 plan unit represents"); any other count
+# takes the PLURAL noun + PLURAL verb ("2 plan units represent"). Inspects the RENDERED text.
+_SCALE_VERB_RE = re.compile(r"\b(\d+) ([A-Za-z]+ )?unit(s?) (represent|represents)\b")
+
+
+def _scale_verb_violations(text: str) -> List[str]:
+    """Return subject-verb (and noun-number) disagreements in scale wording. Mirrored in ratio.ts."""
+    out: List[str] = []
+    for m in _SCALE_VERB_RE.finditer(text):
+        n = int(m.group(1))
+        noun_plural = m.group(3) == "s"
+        verb = m.group(4)
+        sing = (n == 1)
+        if sing and (noun_plural or verb != "represents"):
+            out.append(m.group(0))                       # e.g. "1 plan unit represent"
+        if not sing and ((not noun_plural) or verb != "represent"):
+            out.append(m.group(0))                       # e.g. "2 plan units represents"
     return out
 
 
@@ -1116,7 +1138,10 @@ def _instruction(task: str, params: Dict[str, Any]) -> str:
     if task == "simple_scale":
         # Correction #5 (POLICY A, dimensionless): grammatical "... unit/units"; a BARE-NUMBER answer
         # of dst units; NO cross-unit conversion.
-        return (f"On a {params['scaleKind']}, {_units(params['factorDen'], params['srcUnit'])} represent "
+        # Subject-verb agreement (owner REVISE #1): the verb agrees with the SUBJECT count (factorDen) —
+        # "1 plan unit REPRESENTS ..." / "2 plan units REPRESENT ...".
+        rep = "represents" if params["factorDen"] == 1 else "represent"
+        return (f"On a {params['scaleKind']}, {_units(params['factorDen'], params['srcUnit'])} {rep} "
                 f"{_units(params['factorNum'], params['dstUnit'])}. A part measures "
                 f"{_units(params['value'], params['srcUnit'])}. How many {params['dstUnit']}s long is it "
                 f"in reality? Give an exact value.")
@@ -1486,23 +1511,45 @@ def validate(item: Dict[str, Any]) -> Dict[str, Any]:
                     "a fractional unit rate uses a continuous / abstract / average context")
         # --- correction #5 (simple-scale wording + answer contract) ---
         if task == "simple_scale":
+            # owner REVISE #1/#2: inspect the ACTUAL RENDERED strings on every surface — prompt, alt text,
+            # long description, and the SVG <desc> — for count + subject-verb agreement, so wording such as
+            # "1 plan unit represent" FAILS (the prior checks only confirmed the noun substrings were present
+            # and never inspected the verb, hence the false pass).
             instr = item["prompt"]["instruction"]
-            # grammatical: never "1 <word>s"; correct singular/plural for every displayed count
-            grammatical = (_units(p["factorDen"], p["srcUnit"]) in instr
-                           and _units(p["factorNum"], p["dstUnit"]) in instr
-                           and _units(p["value"], p["srcUnit"]) in instr)
-            add("scale-unit-wording-grammatical", grammatical,
-                "displayed counts use grammatical singular/plural units")
-            # explicit singular/plural correctness: a count of 1 is singular, any other count is plural
-            sp_ok = True
-            for cnt, word in ((p["factorDen"], p["srcUnit"]), (p["factorNum"], p["dstUnit"]),
-                              (p["value"], p["srcUnit"])):
+            acc = item.get("accessibility", {}) or {}
+            a11y_text = " ".join(str(acc.get(k, "")) for k in ("altText", "longDescription", "spokenMath"))
+            svg = item["media"][0]["svg"] if item.get("media") else ""
+            _md = re.search(r"<desc>(.*?)</desc>", svg, re.S)
+            svg_desc = _md.group(1) if _md else ""
+
+            def _scale_ok(s: str) -> bool:                      # no count- OR verb-agreement violation
+                return not _grammar_violations(s)
+
+            den, num, val = p["factorDen"], p["factorNum"], p["value"]
+            # noun number agreement on the RENDERED prompt (each displayed count present + correct number).
+            sp_ok = not _scale_verb_violations(instr)
+            for cnt, word in ((den, p["srcUnit"]), (num, p["dstUnit"]), (val, p["srcUnit"])):
                 phrase = _units(cnt, word)
-                if cnt == 1 and phrase.endswith("s"):
+                if phrase not in instr:
                     sp_ok = False
-                if cnt != 1 and not phrase.endswith("s"):
+                if (cnt == 1) == phrase.endswith("s"):          # 1->no 's'; n->'s'
                     sp_ok = False
-            add("singular-plural-units-correct", sp_ok, "1 <word> vs n <word>s")
+            add("singular-plural-units-correct", sp_ok, "rendered prompt: 1 <word> vs n <word>s + verb agreement")
+            add("singular-plural-units-correct-inspects-rendered-text", sp_ok and str(den) in instr,
+                "the check parses the actual rendered prompt string, not just substring presence")
+            add("scale-unit-wording-grammatical", _scale_ok(instr),
+                "rendered prompt has no count/subject-verb disagreement")
+            add("scale-unit-wording-grammatical-inspects-rendered-text", _scale_ok(instr),
+                "grammar check inspects the rendered prompt text")
+            # explicit subject-verb agreement: singular subject -> 'represents'; plural -> 'represent'.
+            add("scale-singular-represents", (den != 1) or (f"{_units(1, p['srcUnit'])} represents " in instr),
+                "a singular subject (count 1) takes 'represents'")
+            add("scale-plural-represent", (den == 1) or (f"{_units(den, p['srcUnit'])} represent " in instr),
+                "a plural subject (count > 1) takes 'represent'")
+            # per-surface grammar validity (prompt / a11y / svg desc).
+            add("scale-prompt-grammar-valid", _scale_ok(instr), "rendered prompt grammar valid")
+            add("scale-a11y-grammar-valid", _scale_ok(a11y_text), "alt text + long description grammar valid")
+            add("scale-svg-desc-grammar-valid", _scale_ok(svg_desc), "SVG <desc> grammar valid")
             # the prompt asks for a number of dst abstract units and the answer is that bare number
             add("scale-answer-contract-matches-prompt",
                 f"How many {p['dstUnit']}s long" in instr and f == Fraction(p["value"]) * Fraction(p["factorNum"], p["factorDen"]),

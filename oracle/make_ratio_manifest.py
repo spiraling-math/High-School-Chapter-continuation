@@ -91,8 +91,8 @@ def main() -> int:
         "hiddenFromNormalStudioAndProduction": True,
         # Version tags (established terminology). The approvedTag is null until the owner approves.
         "versionTags": {
-            "previousVersionTag": None,
-            "currentImplementationTag": "ratio-v1.0.0",
+            "previousVersionTag": "ratio-v1.0.1",
+            "currentImplementationTag": "ratio-v1.0.2",
             "approvedTag": None,
         },
         "schemaExtension": {
