@@ -1,0 +1,105 @@
+{
+  "generatorId": "objective-registry-reporter",
+  "generatorVersion": "1.0.0",
+  "approvalStatus": "phase-1-implemented",
+  "gitCommit": "ceb5d7ae7d0589fc7d6b272b0fcdcfe5d78a7750",
+  "versionTags": {
+    "currentImplementationTag": "objective-registry-phase1-v1.0.0"
+  },
+  "objectiveCount": 70,
+  "graphOk": true,
+  "ratioGeneratorVersion": "1.0.2",
+  "artifacts": {
+    "objectiveRegistryTs": {
+      "path": "core/curriculum/objective-registry.ts",
+      "sha256": "980334442e90827ea2ade1c70ad1fac4a98fd9b2c800dc98ce97039bee0cc1d4",
+      "present": true
+    },
+    "registryGraphTs": {
+      "path": "core/curriculum/registry-graph.ts",
+      "sha256": "d42fb2576f7ff188c6b4cc5c981f16740c40656886c947fa66d81f1199b0c5c5",
+      "present": true
+    },
+    "generatorCapabilityTs": {
+      "path": "core/curriculum/generator-capability.ts",
+      "sha256": "25578524dc1abba44dad367e975443119b78ad90372aca970baed55c25857f06",
+      "present": true
+    },
+    "knownBaseline": {
+      "path": "curriculum/registry/known-baseline-referenced-undefined.json",
+      "sha256": "3f8fa1528bf32cea66071891fc6aebb4a022df861a492ffb21e61d473457978a",
+      "present": true
+    },
+    "gapReport": {
+      "path": "docs/review/objective_registry_gap_report.json",
+      "sha256": "66e0342a5540748195362d56f133c982034d6f7d7323dff18eaa74f3859caa8e",
+      "present": true
+    },
+    "coverageReport": {
+      "path": "docs/review/objective_coverage_report.json",
+      "sha256": "3385db83dbeed3fa0adfbb53b26409cfa9dcfdcded4f2e5694d1134aeee32c7d",
+      "present": true
+    },
+    "alignmentSchema": {
+      "path": "schemas/standard-alignment.schema.json",
+      "sha256": "6c23f1935732c351601a150e279f64fcd9b0f711ff51845cd4ecd671ab2c7d75",
+      "present": true
+    },
+    "alignmentPilot": {
+      "path": "curriculum/alignments/pilot.json",
+      "sha256": "f352273d2605a70094144d6a1918d5be5733e1d7d981c7a4dbae3ad4a6e6d001",
+      "present": true
+    },
+    "reportBuilder": {
+      "path": "scripts/build-registry-reports.mjs",
+      "sha256": "28d1687c03d14a8e48f63bb458700c111dd5967e6eda38980db9530569de9a5f",
+      "present": true
+    }
+  },
+  "frozenObjectiveFiles": {
+    "SPI.IBDPAASL.SEQSER.ARITH.json": {
+      "path": "curriculum/objectives/SPI.IBDPAASL.SEQSER.ARITH.json",
+      "sha256": "9fd36acc20d3f454cc632b4d69aa6306505533c78e7e67977f6b941c36403046"
+    },
+    "SPI.IBDPAASL.SEQSER.GEO.json": {
+      "path": "curriculum/objectives/SPI.IBDPAASL.SEQSER.GEO.json",
+      "sha256": "35cb6f4e617f5ec870780ffc14460fe4276d278018d7ec6f5ecb13d782bd2904"
+    },
+    "SPI.MIDDLE.ALG.FOUNDATIONS.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.ALG.FOUNDATIONS.json",
+      "sha256": "9610a65a26bcba933c981adeff86ec63b144815285c9507dd85f51dfd11ff2d1"
+    },
+    "SPI.MIDDLE.ALG.LINEQ.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.ALG.LINEQ.json",
+      "sha256": "975ef8b791637cb73acd92d57c8b116bbd2d7c3e84a9b70d3854a7abcf3a5123"
+    },
+    "SPI.MIDDLE.GEO.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.GEO.json",
+      "sha256": "951658d1c5a552c690daa078b25b06d2a19855e47cb629b649499cd7402f2fb3"
+    },
+    "SPI.MIDDLE.GEO.COORD.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.GEO.COORD.json",
+      "sha256": "db97fbacb287a76a583b557dc98cfc76772fd2db626af19813959eafacd05584"
+    },
+    "SPI.MIDDLE.GEO.TRANS.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.GEO.TRANS.json",
+      "sha256": "aa8a0fef9daac33f8f21c36b23ee868a29bbe8c738f7fba3ffd947be10bfcf86"
+    },
+    "SPI.MIDDLE.MEAS.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.MEAS.json",
+      "sha256": "caadda80804dede11edd92b5ea02c57527d15a642c50bd9322cd1c530d6c5a54"
+    },
+    "SPI.MIDDLE.NUM.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.NUM.json",
+      "sha256": "3062c2e37b99dbc2e8329f69ca71173c91b2dbe83360f32f8ab7ac92e7c446c3"
+    },
+    "SPI.MIDDLE.RATIO.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.RATIO.json",
+      "sha256": "d351394f6fc36423fd7aff0362451a0974a76c01faa1fba0667dcb513b178843"
+    },
+    "SPI.MIDDLE.STAT.json": {
+      "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
+      "sha256": "433da37d6c47d74211d9c5df59321dea43194cb1dc02b168c79aea854a56529f"
+    }
+  }
+}

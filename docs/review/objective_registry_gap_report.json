@@ -1,0 +1,82 @@
+{
+  "generatorId": "objective-registry-reporter",
+  "generatorVersion": "1.0.0",
+  "gitCommit": "ceb5d7ae7d0589fc7d6b272b0fcdcfe5d78a7750",
+  "objectiveCount": 70,
+  "ok": true,
+  "knownBaseline": {
+    "file": "curriculum/registry/known-baseline-referenced-undefined.json",
+    "frozenAsOfCommit": "ceb5d7ae7d0589fc7d6b272b0fcdcfe5d78a7750",
+    "count": 5,
+    "ids": [
+      "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01",
+      "SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01",
+      "SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01",
+      "SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01"
+    ]
+  },
+  "buckets": {
+    "errors": [],
+    "warnings": [
+      "G5 known-baseline referenced-undefined prerequisite (recorded, non-blocking): SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01",
+      "G5 known-baseline referenced-undefined prerequisite (recorded, non-blocking): SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "G5 known-baseline referenced-undefined prerequisite (recorded, non-blocking): SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01",
+      "G5 known-baseline referenced-undefined prerequisite (recorded, non-blocking): SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01",
+      "G5 known-baseline referenced-undefined prerequisite (recorded, non-blocking): SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01",
+      "dangling related link: SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01 -> SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01",
+      "dangling related link: SPI.MIDDLE.ALG.EXPAND_BRACKETS.01 -> SPI.MIDDLE.ALG.FACTORISE_COMMON_FACTOR.01",
+      "dangling related link: SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01 -> SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "dangling related link: SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01 -> SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "dangling related link: SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01 -> SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "dangling related link: SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01 -> SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "dangling related link: SPI.MIDDLE.ALG.LINEQ.BRACKETS.01 -> SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "dangling related link: SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01 -> SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01"
+    ],
+    "knownBaselineReferencedUndefined": [
+      "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01",
+      "SPI.MIDDLE.ALG.SUBSTITUTION.01",
+      "SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01",
+      "SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01",
+      "SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01"
+    ],
+    "newReferencedUndefined": [],
+    "retiredDependence": [],
+    "placeholderDependence": [],
+    "invalidCrossDomain": [],
+    "danglingRelated": [
+      {
+        "from": "SPI.MIDDLE.ALG.INVERSE_OPERATIONS.01",
+        "to": "SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.EXPAND_BRACKETS.01",
+        "to": "SPI.MIDDLE.ALG.FACTORISE_COMMON_FACTOR.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.LINEQ.ONESTEP_ADD.01",
+        "to": "SPI.MIDDLE.ALG.SUBSTITUTION.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.LINEQ.ONESTEP_MUL.01",
+        "to": "SPI.MIDDLE.ALG.SUBSTITUTION.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.LINEQ.TWOSTEP.01",
+        "to": "SPI.MIDDLE.ALG.SUBSTITUTION.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.LINEQ.BOTHSIDES.01",
+        "to": "SPI.MIDDLE.ALG.SUBSTITUTION.01"
+      },
+      {
+        "from": "SPI.MIDDLE.ALG.LINEQ.BRACKETS.01",
+        "to": "SPI.MIDDLE.ALG.SUBSTITUTION.01"
+      },
+      {
+        "from": "SPI.MIDDLE.NUM.SIGNED_OPERATIONS.01",
+        "to": "SPI.MIDDLE.NUM.ORDER_OF_OPERATIONS.01"
+      }
+    ]
+  }
+}

@@ -1,0 +1,150 @@
+/**
+ * Build the Phase-1 Objective Registry reports + manifest (offline, deterministic).
+ *
+ * Produces:
+ *   - docs/review/objective_registry_gap_report.json   (the 8 global-graph buckets + baseline)
+ *   - docs/review/objective_coverage_report.json        (the coverage/capability join)
+ *   - docs/review/objective_registry_manifest.json      (sha256 of every Phase-1 artifact
+ *                                                        + a frozen record of the 11 objective files)
+ *
+ * Read-only over the source data: it never writes an objective file, a golden fixture, or a
+ * manifest other than the three registry reports above. Idempotent: re-running on unchanged
+ * inputs yields byte-identical reports (stable key order, sorted arrays).
+ *
+ * Run:  node scripts/build-registry-reports.mjs
+ */
+
+import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+import { loadRegistry } from "../core/curriculum/objective-registry.ts";
+import { checkGlobalGraph, loadKnownBaseline } from "../core/curriculum/registry-graph.ts";
+import { buildCoverageReport } from "../core/curriculum/generator-capability.ts";
+import { GENERATOR_VERSION as RATIO_GEN_VERSION } from "../domains/proportion/ratio.ts";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const rel = (p) => join(ROOT, p);
+
+function sha256(path) {
+  return createHash("sha256").update(readFileSync(rel(path))).digest("hex");
+}
+
+function gitCommit() {
+  if (process.env.SPI_BUILD_COMMIT) return process.env.SPI_BUILD_COMMIT;
+  try {
+    return execSync("git rev-parse HEAD", { cwd: ROOT }).toString().trim();
+  } catch {
+    return "unknown";
+  }
+}
+
+/** Stable JSON: 2-space indent, trailing newline (matches the repo convention). */
+function writeJson(path, value) {
+  writeFileSync(rel(path), JSON.stringify(value, null, 2) + "\n");
+}
+
+const GENERATOR_ID = "objective-registry-reporter";
+const GENERATOR_VERSION = "1.0.0";
+
+const commit = gitCommit();
+const registry = loadRegistry();
+const baseline = loadKnownBaseline();
+const baselineMeta = JSON.parse(readFileSync(rel("curriculum/registry/known-baseline-referenced-undefined.json"), "utf8"));
+
+// ---- 1. Global graph / gap report -----------------------------------------
+const graph = checkGlobalGraph(registry.all(), baseline);
+const gapReport = {
+  generatorId: GENERATOR_ID,
+  generatorVersion: GENERATOR_VERSION,
+  gitCommit: commit,
+  objectiveCount: graph.objectiveCount,
+  ok: graph.ok,
+  knownBaseline: {
+    file: "curriculum/registry/known-baseline-referenced-undefined.json",
+    frozenAsOfCommit: baselineMeta.frozenAsOfCommit,
+    count: baselineMeta.count,
+    ids: baselineMeta.ids,
+  },
+  buckets: {
+    errors: graph.errors,
+    warnings: graph.warnings,
+    knownBaselineReferencedUndefined: graph.knownBaselineReferencedUndefined,
+    newReferencedUndefined: graph.newReferencedUndefined,
+    retiredDependence: graph.retiredDependence,
+    placeholderDependence: graph.placeholderDependence,
+    invalidCrossDomain: graph.invalidCrossDomain,
+    danglingRelated: graph.danglingRelated,
+  },
+};
+writeJson("docs/review/objective_registry_gap_report.json", gapReport);
+
+// ---- 2. Coverage report ----------------------------------------------------
+const coverage = buildCoverageReport(registry);
+const coverageReport = {
+  generatorId: GENERATOR_ID,
+  generatorVersion: GENERATOR_VERSION,
+  gitCommit: commit,
+  ...coverage,
+};
+writeJson("docs/review/objective_coverage_report.json", coverageReport);
+
+// ---- 3. Registry manifest --------------------------------------------------
+const OBJECTIVE_FILES = [
+  "SPI.IBDPAASL.SEQSER.ARITH.json", "SPI.IBDPAASL.SEQSER.GEO.json",
+  "SPI.MIDDLE.ALG.FOUNDATIONS.json", "SPI.MIDDLE.ALG.LINEQ.json",
+  "SPI.MIDDLE.GEO.json", "SPI.MIDDLE.GEO.COORD.json", "SPI.MIDDLE.GEO.TRANS.json",
+  "SPI.MIDDLE.MEAS.json", "SPI.MIDDLE.NUM.json", "SPI.MIDDLE.RATIO.json",
+  "SPI.MIDDLE.STAT.json",
+];
+
+const registryArtifacts = {
+  objectiveRegistryTs: "core/curriculum/objective-registry.ts",
+  registryGraphTs: "core/curriculum/registry-graph.ts",
+  generatorCapabilityTs: "core/curriculum/generator-capability.ts",
+  knownBaseline: "curriculum/registry/known-baseline-referenced-undefined.json",
+  gapReport: "docs/review/objective_registry_gap_report.json",
+  coverageReport: "docs/review/objective_coverage_report.json",
+  alignmentSchema: "schemas/standard-alignment.schema.json",
+  alignmentPilot: "curriculum/alignments/pilot.json",
+  reportBuilder: "scripts/build-registry-reports.mjs",
+};
+
+const artifacts = {};
+for (const [key, path] of Object.entries(registryArtifacts)) {
+  artifacts[key] = { path, sha256: sha256(path), present: true };
+}
+
+// Frozen record of the 11 objective files (to detect future approved-objective drift).
+const frozenObjectiveFiles = {};
+for (const name of OBJECTIVE_FILES) {
+  const path = `curriculum/objectives/${name}`;
+  frozenObjectiveFiles[name] = { path, sha256: sha256(path) };
+}
+
+const manifest = {
+  generatorId: GENERATOR_ID,
+  generatorVersion: GENERATOR_VERSION,
+  approvalStatus: "phase-1-implemented",
+  gitCommit: commit,
+  versionTags: {
+    currentImplementationTag: "objective-registry-phase1-v1.0.0",
+  },
+  objectiveCount: registry.count,
+  graphOk: graph.ok,
+  ratioGeneratorVersion: RATIO_GEN_VERSION,
+  artifacts,
+  frozenObjectiveFiles,
+};
+writeJson("docs/review/objective_registry_manifest.json", manifest);
+
+// ---- summary --------------------------------------------------------------
+console.log(`objective-registry reports built @ ${commit}`);
+console.log(`  objectives: ${registry.count}`);
+console.log(`  graph.ok: ${graph.ok}  newReferencedUndefined: ${graph.newReferencedUndefined.length}`);
+console.log(`  knownBaselineReferencedUndefined: ${graph.knownBaselineReferencedUndefined.length} ${JSON.stringify(graph.knownBaselineReferencedUndefined)}`);
+console.log(`  coverage  G2:${coverage.byGeneratorTier.G2_approved} G1:${coverage.byGeneratorTier.G1_pendingOnly} G0:${coverage.byGeneratorTier.G0_noGenerator}`);
+console.log(`  definedUncovered: ${JSON.stringify(coverage.definedUncovered)}`);
+console.log(`  orphanedTasks: ${coverage.orphanedTasks.length}`);

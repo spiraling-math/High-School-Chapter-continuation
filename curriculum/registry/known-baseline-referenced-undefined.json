@@ -1,0 +1,13 @@
+{
+  "purpose": "Frozen known-baseline of prerequisite IDs that the current approved objective data references but does NOT yet define as objectives. Per the Objective Registry & Standards proposal (SS7.5, owner correction A), these pre-existing referenced-but-undefined IDs are RECORDED, not gated: they do not block the global graph gate. Only a NEW referenced-undefined ID introduced after this baseline was frozen is a blocking error (newReferencedUndefined). Authoring these foundational objectives is out of scope for Phase 1 and reserved for a separate, owner-gated phase (SS16.5); the baseline shrinks by exactly one ID only when the corresponding objective is later authored and its reference resolves.",
+  "frozenAsOfCommit": "ceb5d7ae7d0589fc7d6b272b0fcdcfe5d78a7750",
+  "frozenAsOfDate": "2026-06-27",
+  "count": 5,
+  "ids": [
+    "SPI.MIDDLE.ALG.NOTATION_SUBSTITUTION.01",
+    "SPI.MIDDLE.ALG.SUBSTITUTION.01",
+    "SPI.MIDDLE.GEO.ANGLE_MEASURE_NOTATION.01",
+    "SPI.MIDDLE.GEO.TRIANGLE_CLASSIFY.01",
+    "SPI.MIDDLE.NUM.INTEGERS_NUMBER_LINE.01"
+  ]
+}

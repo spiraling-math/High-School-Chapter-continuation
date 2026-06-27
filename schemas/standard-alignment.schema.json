@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spi-math.academy/schemas/standard-alignment.schema.json",
+  "title": "SPI-Math Standard Alignment Record",
+  "description": "A single external-standard alignment record in the SEPARATE, SPI-keyed alignment store (curriculum/alignments/*). The relation is ALWAYS alignment -> SPI: the record carries the SPI objective IDs it links TO via linkedSpiObjectiveIds; the SPI objectiveId is the stable single source of truth. This schema is ADDITIVE and does NOT touch curriculum-objective.schema.json or its 30 frozen inline externalAlignments records. See SPI_MATH_OBJECTIVE_REGISTRY_AND_STANDARDS_PROPOSAL.md S9.",
+  "type": "object",
+  "version": "1.0.0",
+  "additionalProperties": false,
+  "required": ["standardSet", "standardVersion", "standardId", "linkedSpiObjectiveIds", "alignmentType", "status"],
+  "properties": {
+    "standardSet": {
+      "type": "string",
+      "description": "The external framework/syllabus family token (open controlled vocabulary, e.g. 'IGCSE-0580', 'SG-LOWER-SEC', 'IB-DP-AA-SL')."
+    },
+    "standardVersion": {
+      "type": "string",
+      "description": "Edition/year of the framework (a code is meaningless without its edition, e.g. '2025')."
+    },
+    "standardId": {
+      "type": "string",
+      "description": "The external code as printed by the framework (opaque; never parsed for meaning, e.g. '0580/C1.11')."
+    },
+    "statement": {
+      "type": "string",
+      "description": "Verbatim external statement wording. Reference only; never implies reuse rights."
+    },
+    "label": {
+      "type": "string",
+      "description": "Short human-readable label for UI."
+    },
+    "framework": {
+      "type": "string",
+      "description": "RETAINED legacy key mirroring standardSet, for future inline-read-cache compatibility (S9.4). Optional."
+    },
+    "code": {
+      "type": "string",
+      "description": "RETAINED legacy key mirroring standardId, for future inline-read-cache compatibility (S9.4). Optional."
+    },
+    "linkedSpiObjectiveIds": {
+      "type": "array",
+      "description": "THE ANCHOR. The SPI objective IDs this external standard links TO. One external standard may map to several SPI objectives. Every entry must resolve to a real, non-retired SPI objective (validated by G11).",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^SPI\\.[A-Z0-9]+(\\.[A-Z0-9_]+)+\\.[0-9]{2}$"
+      }
+    },
+    "alignmentType": {
+      "type": "string",
+      "description": "How the external standard relates to the linked SPI objective(s).",
+      "enum": ["exact", "partial", "prerequisite", "extension", "enrichment"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Single confidence/status axis for this alignment record, independent of the objective's own reviewStatus.",
+      "enum": ["proposed", "reviewed", "approved"]
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free text for reasoning and scope caveats."
+    },
+    "source": {
+      "type": "object",
+      "description": "Provenance: who/what asserted the mapping and how.",
+      "additionalProperties": false,
+      "properties": {
+        "by": { "type": "string" },
+        "ref": { "type": "string" },
+        "method": { "type": "string", "enum": ["manual", "imported", "suggested"] }
+      },
+      "required": ["by", "ref", "method"]
+    },
+    "date": {
+      "type": "string",
+      "description": "Record date (YYYY-MM-DD).",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of THIS alignment record."
+    }
+  }
+}

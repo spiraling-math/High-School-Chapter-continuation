@@ -1,0 +1,37 @@
+[
+  {
+    "standardSet": "IGCSE-0580",
+    "standardVersion": "2025",
+    "standardId": "0580/C1.11",
+    "framework": "IGCSE-0580",
+    "code": "0580/C1.11",
+    "label": "Ratio & proportion",
+    "statement": "Use ratios and proportion in given situations (reference only).",
+    "linkedSpiObjectiveIds": ["SPI.MIDDLE.RATIO.SIMPLIFY.01"],
+    "alignmentType": "partial",
+    "status": "proposed",
+    "notes": "PILOT (design-proof, not a mapping deliverable). The 0580 statement is broader than the SIMPLIFY micro-skill, so the mapping is partial. SPI.MIDDLE.RATIO.json has zero inline alignments, so this is net-new and touches none of the 30 frozen inline records.",
+    "source": { "by": "phase1-pilot", "ref": "IGCSE 0580 syllabus 2025, C1.11", "method": "manual" },
+    "date": "2026-06-27",
+    "version": "0.1.0"
+  },
+  {
+    "standardSet": "IGCSE-0580",
+    "standardVersion": "2025",
+    "standardId": "0580/C1.13",
+    "framework": "IGCSE-0580",
+    "code": "0580/C1.13",
+    "label": "Direct & inverse proportion",
+    "statement": "Direct and inverse proportion (reference only).",
+    "linkedSpiObjectiveIds": [
+      "SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01",
+      "SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01"
+    ],
+    "alignmentType": "exact",
+    "status": "proposed",
+    "notes": "PILOT (design-proof, not a mapping deliverable). Two SPI objectives jointly cover the one external statement (one-to-many case). Direction is alignment -> SPI; the SPI objective IDs are authoritative.",
+    "source": { "by": "phase1-pilot", "ref": "IGCSE 0580 syllabus 2025, C1.13", "method": "manual" },
+    "date": "2026-06-27",
+    "version": "0.1.0"
+  }
+]
