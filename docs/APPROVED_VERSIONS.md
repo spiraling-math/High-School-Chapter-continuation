@@ -17,8 +17,10 @@ committed golden/parity fixtures.
 | `gen.stats.data-handling` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_statistics_data_handling_PROPOSAL.md` | `17540e8` | 2026-06-25 |
 | `gen.measurement.mensuration` | **1.0.1** | curriculum-approved | `GENERATOR_SPEC_mensuration_PROPOSAL.md` | tag `approved-mensuration-v1.0.1` | 2026-06-25 |
 | `gen.geometry.transformations` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_transformations_PROPOSAL.md` | tag `approved-transformations-v1.0.2` | 2026-06-26 |
+| `gen.proportion.ratio` | **1.0.2** | curriculum-approved | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | tag `approved-ratio-v1.0.2` | 2026-06-26 |
 | `gen.measurement.mensuration` | 1.0.0 | preserved (superseded by 1.0.1; never approved) | — | tag `mensuration-v1.0.0` | — |
 | `gen.geometry.transformations` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `transformations-v1.0.{0,1}` | — |
+| `gen.proportion.ratio` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `ratio-v1.0.{0,1}` | — |
 | `gen.stats.data-handling` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `stats-data-handling-v1.0.{0,1}` | — |
 | `gen.sequences.geometric` | 1.0.0 | preserved (superseded by 1.1.0) | — | `af92375` | — |
 | `gen.sequences.arithmetic` | 1.0.0, 1.0.1 | preserved (superseded by 1.1.0) | — | `5a962a7`, `4cbb6a1` | — |
@@ -29,28 +31,15 @@ committed golden/parity fixtures.
 Git tags identify the approved reference implementations:
 `approved-arith-v1.1.0`, `approved-geo-v1.0.0`, `approved-geo-v1.1.0`,
 `approved-linear-v1.0.1`, `approved-geometry-v1.2.3` (= `geometry-v1.2.3`),
-`approved-coordinate-lines-v1.0.2` (= `coordinate-lines-v1.0.2`).
+`approved-coordinate-lines-v1.0.2` (= `coordinate-lines-v1.0.2`),
+`approved-stats-data-handling-v1.0.2`, `approved-mensuration-v1.0.1`,
+`approved-transformations-v1.0.2`, `approved-ratio-v1.0.2`.
 
 ### Pending-review (implemented; NOT yet approved — not in this registry's approved scope)
 
-| Generator | Version | Status | Spec | Decision | Submitted |
-| --- | --- | --- | --- | --- | --- |
-| `gen.proportion.ratio` | **1.0.2** | **pending-review** (corrected per REVISE; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #60 | 2026-06-26 |
-| `gen.proportion.ratio` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `ratio-v1.0.{0,1}` | — |
-
-`gen.proportion.ratio` v1.0.1 is implemented and registered `approvalStatus: pending-review` (review-mode
-only; excluded from production exports/samples), awaiting the owner's APPROVE / REJECT. Its twelve
-`SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation` (not yet curriculum-approved). The additive
-`answer.type "ratio"` schema extension is approved. History: implemented v1.0.0 (DECISION_LOG #58; hardened by
-a 10-dimension adversarial review — 8 defects found + fixed, headlined by a critical unicode-digit grading-
-path parity break — + a re-audit); owner **REVISE → v1.0.1** (DECISION_LOG #59) applied nine corrections
-(artifact identity, real live-Chromium computed styles, context-value compatibility, best-buy cost-per-item
-semantics, dimensionless simple-scale, collided-diagnostic dedup, family-wide noun grammar). v1.0.0 preserved
-unchanged at tag `ratio-v1.0.0`; only v1.0.1 is registered. It is **not** recorded among the approved
-generators/objectives/exemplars above and creates no frozen approval artifacts until the owner approves it.
-Review package: `docs/review/proportion_ratio_review_pack.{md,json}`, `proportion_ratio_visual_audit.html`,
-`proportion_ratio_browser_verification.json` (real captured styles), `ratio_real_browser_styles.json`,
-`proportion_ratio_manifest.json`.
+_None._ `gen.proportion.ratio` v1.0.2 — the most recent pending-review family — was curriculum-approved on
+2026-06-26 (`DECISION_LOG.md` #61) and now appears in the approved-generators table above (see the dedicated
+ratio section below). All nine implemented generator families are curriculum-approved.
 
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).
@@ -114,6 +103,18 @@ objectives); they are not themselves bound to a generated task in this version.
 | `SPI.MIDDLE.STAT.AVG.RANGE_LIST.01` | stats range_from_list | 1.0.2 | approved |
 | `SPI.MIDDLE.STAT.AVG.MEAN_FREQ_TABLE.01` | stats mean_from_freq_table | 1.0.2 | approved |
 | `SPI.MIDDLE.STAT.PROB.SINGLE_EVENT.01` | stats single_event_probability | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.SIMPLIFY.01` | ratio simplify | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.WRITE_FROM_QUANTITIES.01` | ratio write_from_quantities | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.RATIO_TO_FRACTION.01` | ratio ratio_to_fraction | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.FRACTION_TO_RATIO.01` | ratio fraction_to_ratio | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.SHARE_TWO_PART.01` | ratio share_two_part | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.SHARE_THREE_PART.01` | ratio share_three_part | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.MISSING_PART.01` | ratio missing_part | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.DIRECT_PROPORTION.01` | ratio direct_proportion | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.INVERSE_PROPORTION.01` | ratio inverse_proportion | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.UNIT_RATE.01` | ratio unit_rate | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.BEST_BUY.01` | ratio best_buy (multiple-choice only) | 1.0.2 | approved |
+| `SPI.MIDDLE.RATIO.SIMPLE_SCALE.01` | ratio simple_scale | 1.0.2 | approved |
 
 The five `SPI.MIDDLE.GEO.*.01` angle objective **definitions** were curriculum-approved on
 2026-06-22 (`DECISION_LOG.md` #34); their **generator** `gen.geometry.angles-figures`
@@ -223,6 +224,8 @@ approved-exemplar status is recorded here.
 | `gen.geometry.angles-figures` 1.2.3 | `oracle/golden/geometry_angles.golden.json` | golden seeds + the review-pack items |
 | `gen.geometry.coordinate-lines` 1.0.2 | `oracle/golden/coordinate_lines.golden.json` | golden seeds + the 29 review-pack items (25 figures + 4 text-only) |
 | `gen.stats.data-handling` 1.0.2 | `oracle/golden/data_handling.golden.json` | golden seeds + the 28 review-pack items (the reachability-derived coverage matrix) |
+| `gen.geometry.transformations` 1.0.2 | `oracle/golden/transformations.golden.json` | golden seeds + the 23 review-pack items |
+| `gen.proportion.ratio` 1.0.2 | `oracle/golden/ratio.golden.json` | golden seeds + the 28 review-pack items (reachability-derived coverage, all twelve tasks) |
 | Review-pack exemplars | `docs/review/arithmetic_sequences_review_pack.md`, `docs/review/geometric_sequences_review_pack.md`, `docs/review/linear_equations_review_pack.md`, `docs/review/geometry_angles_review_pack.md`, `docs/review/coordinate_lines_review_pack.md` | all listed items |
 
 ## Statistics & data-handling generator — curriculum-approved at v1.0.2 (2026-06-25, `DECISION_LOG.md` #49)
@@ -306,6 +309,50 @@ never approved) at tags `transformations-v1.0.{0,1}`.
 concentration; some shape-object types intentionally rare in the 10,000-seed distribution; describe-task
 difficulty bands reached through a single deterministic structural lever.
 
+## Ratio & proportion generator — curriculum-approved at v1.0.2 (2026-06-26, `DECISION_LOG.md` #61)
+
+`gen.proportion.ratio` v1.0.2 + validator v1.0.2 are curriculum-approved (tag `approved-ratio-v1.0.2`).
+Approved: the twelve `SPI.MIDDLE.RATIO.*` objectives; the twelve tasks (simplify; write_from_quantities;
+ratio_to_fraction; fraction_to_ratio; share_two_part; share_three_part; missing_part; direct_proportion;
+inverse_proportion; unit_rate; best_buy; simple_scale) with the owner interaction matrix (best_buy
+MULTIPLE-CHOICE only; the six FR-only tasks free-response; simplify / ratio_to_fraction / fraction_to_ratio /
+direct_proportion / inverse_proportion support FR + MC); the exact proportional-reasoning engine (gcd /
+total-parts / unitary method / inverse product invariant / scale — integers + exact rationals, no floats); the
+canonical-first `answer.type "ratio"` contract; the ASCII-anchored ratio parser/formatter/canonicalizer/
+equivalence checker + the 9-code ratio-checker vocabulary; the non-Cartesian bar-model / double-number-line /
+proportional-table renderer (additive `core/visual-style/ratio-theme`, four modes premium/premium-dark/
+accessible/print, per-root style isolation, self-contained 6000×4200 export, real live-Chromium computed-style
+verification); the student-vs-answer-key channel separation; the independent validator; the `MISC.RATIO.*`
+misconception/diagnostic registry (16 rules); the difficulty model + declared ranges; the accessibility model;
+and the artifact-identity + scale-grammar checks. The twelve `SPI.MIDDLE.RATIO.*` objective definitions are
+`reviewStatus: approved`. History: implemented #58 (v1.0.0, adversarially hardened — 8 defects fixed,
+headlined by a critical unicode-digit grading-path parity break) → REVISE #59 (nine corrections → v1.0.1) →
+REVISE #60 (simple_scale grammar + manifest-tag cleanup → v1.0.2) → APPROVE #61.
+
+**Shared ratio-answer infrastructure APPROVED** (the platform's fourth structured canonical-first answer):
+`answer.type "ratio"`; `answer.canonical.parts` an ordered simplest-form positive-integer tuple (2–3 parts);
+the derived `answer.display` (e.g. `"2:3"`, never stored twice); order-sensitive equivalence (`2:3 = 4:6` but
+`2:3 ≠ 3:2`); the ratio parser / formatter / canonicalizer / equivalence checker; and the 9-code
+ratio-checker vocabulary. This approval does **NOT** authorize: zero or negative parts; decimal, irrational, or
+approximate ratio terms; the percentages family; currency conversion; recipe-scaling-with-units; similar-
+triangle scale; gradient-as-ratio; gear/lever ratios; probability odds; trigonometric ratios; or algebraic
+ratio proofs (later objectives + contract extensions).
+
+The **28 reviewed representative items** (`docs/review/proportion_ratio_review_pack.{md,json}`) are approved
+golden exemplars — covering all twelve tasks (simplify ×3, write_from_quantities ×3, ratio_to_fraction ×2,
+fraction_to_ratio ×2, share_two_part ×2, share_three_part ×2, missing_part ×2, direct_proportion ×3,
+inverse_proportion ×2, unit_rate ×2, best_buy ×2, simple_scale ×3), with required coverage cells derived from
+the 10,000-seed distribution report. Frozen immutable (manifest SHA-256 + artifact-identity/integrity tests):
+golden + 360-entry parity + parser/checker + schema-conformance fixtures; review pack md/json + coverage
+matrix; visual audit; distribution report; browser-verification report (with the genuine real-Chromium
+captured styles, `docs/review/ratio_real_browser_styles.json`); generation manifest
+(`docs/review/proportion_ratio_manifest.json`); and the four render modes' 6000×4200 export contract. v1.0.0 /
+v1.0.1 are preserved (historical, never approved) at tags `ratio-v1.0.{0,1}`.
+
+**Non-blocking future calibration debt** (do not alter approved v1.0.2 output): `simplify` concentrates
+heavily in band 3; `fraction_to_ratio` concentrates heavily in band 2; some low-frequency bands intentionally
+rare; best_buy remains multiple-choice-only in v1.0.2.
+
 ## Lifecycle policy (unchanged)
 
 - **Newly generated items always begin at `machine-validated`.** Approval of a
@@ -319,12 +366,15 @@ difficulty bands reached through a single deterministic structural lever.
 The following are preserved unchanged and are protected by the test gate:
 
 - arithmetic v1.0.0 / v1.0.1 / v1.1.0, geometric v1.0.0 / v1.1.0,
-  **linear-equations v1.0.0 / v1.0.1**, **geometry v1.2.3**, and
-  **coordinate-lines v1.0.2** output;
+  **linear-equations v1.0.0 / v1.0.1**, **geometry v1.2.3**,
+  **coordinate-lines v1.0.2**, **stats-data-handling v1.0.2**, **mensuration v1.0.1**,
+  **transformations v1.0.2**, and **ratio v1.0.2** output;
 - all golden and parity fixtures, including the frozen-immutable
   `oracle/golden/linear_equations.{golden,parity}.json` (v1.0.1),
-  `oracle/golden/geometry_angles.{golden,parity}.json` (v1.2.3, manifest-attested), and
-  `oracle/golden/coordinate_lines.{golden,parity}.json` (v1.0.2, manifest-attested);
+  `oracle/golden/geometry_angles.{golden,parity}.json` (v1.2.3, manifest-attested),
+  `oracle/golden/coordinate_lines.{golden,parity}.json` (v1.0.2, manifest-attested),
+  `oracle/golden/transformations.{golden,parity}.json` (v1.0.2, manifest-attested), and
+  `oracle/golden/ratio.{golden,parity}.json` (v1.0.2, manifest-attested);
 - the Python oracle and the TypeScript implementation (kept byte-for-byte in
   parity);
 - exact-rational normalization (`{num, den}`, den ≥ 1);

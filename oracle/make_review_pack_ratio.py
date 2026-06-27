@@ -378,10 +378,11 @@ def _write_md(pack):
     L = [
         f"# gen.proportion.ratio v{pack['generatorVersion']} — Curriculum Review Pack",
         "",
-        f"> **PENDING REVIEW.** Generator **{pack['generatorId']} v{pack['generatorVersion']}**, validator "
-        f"v{pack['validatorVersion']}. Objectives are approved-for-implementation. Required coverage cells "
-        f"are derived from the 10,000-seed distribution report; every exemplar below carries the full per-item "
-        f"record and a `curriculumReviewDecision` field for your APPROVE / REVISE / REJECT per item.",
+        f"> **CURRICULUM-APPROVED** (owner final decision, DECISION_LOG.md #61). Generator "
+        f"**{pack['generatorId']} v{pack['generatorVersion']}**, validator v{pack['validatorVersion']}. "
+        f"Objectives are approved. Required coverage cells are derived from the 10,000-seed distribution "
+        f"report; every exemplar below carries the full per-item record and a `curriculumReviewDecision` field. "
+        f"The reviewed representative items are recorded as approved golden exemplars.",
         "",
         "## Summary",
         "",

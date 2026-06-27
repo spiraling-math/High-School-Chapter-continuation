@@ -2,18 +2,31 @@
 
 Last updated: 2026-06-26.
 
-## `gen.proportion.ratio` v1.0.2 — CORRECTED, PENDING-REVIEW (2026-06-26)
+## `gen.proportion.ratio` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
 
-**Owner REVISE (DECISION_LOG #60, narrow): simple_scale subject-verb grammar + false-pass validator +
-manifest-tag cleanup → v1.0.2 (v1.0.1 preserved at tag `ratio-v1.0.1`); awaiting the owner's APPROVE /
-REJECT.** The scale prompts now read "1 plan unit **represents** 2 actual units" (singular) / "2 plan units
-**represent** …" (plural); the grammar validator now inspects the RENDERED prompt + alt/long-description +
-SVG `<desc>` (it previously false-passed "1 plan unit represent"); the manifest versionTags are corrected
-(previous `ratio-v1.0.1` / current `ratio-v1.0.2` / approved null). Canonical prompt/a11y bytes changed →
-v1.0.2; the canonical mathematical answer contract is unchanged; v1.0.1 preserved at its tag. Verified: TS
-**323/323**; 13 Python suites (ratio 43 tests); golden 16 + 360 parity byte-for-byte; 10k RESULT OK; browser
-verification 23/23 (real re-captured styles); manifest 21/21 (0 drift). **Next decision: APPROVE or REJECT of
-the corrected v1.0.2 package.**
+**Owner final APPROVE (DECISION_LOG #61): generator + validator v1.0.2 curriculum-approved; the twelve
+`SPI.MIDDLE.RATIO.*` objectives approved; the shared ratio-answer infrastructure approved** (`answer.type
+"ratio"`; `answer.canonical.parts` an ordered simplest-form positive-integer tuple; derived `answer.display`;
+order-sensitive equivalence `2:3 = 4:6` but `2:3 ≠ 3:2`; the ratio parser/formatter/canonicalizer/checker;
+the 9-code ratio-checker vocabulary — this does **NOT** authorize zero/negative parts, decimal/irrational/
+approximate terms, percentages-family, currency conversion, recipe-scaling-with-units, similar-triangle
+scale, gradient-as-ratio, gear/lever ratios, probability odds, trig ratios, or algebraic ratio proofs). The
+generator is registered `approvalStatus: approved` (selectable in normal Studio + included in production
+samples; only v1.0.2 registered; v1.0.0/v1.0.1 preserved as historical/unapproved at tags
+`ratio-v1.0.{0,1}`); `scripts/build-samples.mjs` emits all twelve ratio tasks (bank.json carries 12 ratio
+records, 68 total); the 28 reviewed exemplars are approved golden exemplars; the v1.0.2 review package
+(golden/parity/canonical-SVG/parser-checker/schema-conformance fixtures, review pack md/json, coverage
+matrix, visual audit, distribution, browser verification with the genuine real-Chromium captured styles,
+manifest, four-mode 6000×4200 export contract) is **frozen immutable** (manifest SHA-256 + artifact-identity
+tests); tag **`approved-ratio-v1.0.2`**. The browser was NOT re-captured (approval is metadata-only; the
+renderer/theme are untouched; colours unchanged); browser verification still embeds the real v1.0.2 capture +
+passes 23/23. Newly generated items begin at machine-validated; no auto-approval/publication. Verified: TS
+**323/323** (incl. the nine-approved harness lifecycle); 13 Python suites (ratio 43 tests); typecheck exit 0;
+conformance ALL PASS; golden 16 + 360 parity byte-for-byte; `SPI_SWEEP=10000` RESULT OK (did NOT change the
+committed golden/parity); manifest 21/21 (0 drift); **all eight earlier approved families' golden/parity AND
+ratio.golden/ratio.parity byte-for-byte UNCHANGED**. **Non-blocking future calibration debt** (do NOT alter
+approved v1.0.2 output): `simplify` concentrates heavily in band 3; `fraction_to_ratio` concentrates heavily
+in band 2; some low-frequency bands intentionally rare; best_buy remains multiple-choice-only in v1.0.2.
 
 ### (Prior v1.0.1 corrections — DECISION_LOG #59, accepted in principle)
 
@@ -29,8 +42,9 @@ a family-wide noun-grammar fix ("1 boy"/"per shelf"). v1.0.0 is preserved unchan
 MATHEMATICAL answer contract is unchanged. **Verification:** TS 320/320; 13 Python suites (ratio 39 tests
 incl. artifact-identity + real-browser + manifest integrity); conformance ALL PASS; golden 16 + 360 parity
 byte-for-byte; 10k RESULT OK; browser verification 23/23; manifest 21/21 (0 drift); all eight approved
-families byte-for-byte UNCHANGED; ratio still excluded from production samples. **Next decision: APPROVE or
-REJECT of the corrected v1.0.1 package.**
+families byte-for-byte UNCHANGED; ratio was (at v1.0.1) still excluded from production samples. (This v1.0.1
+record is retained for context; v1.0.2 is now CURRICULUM-APPROVED — see the dated header above, DECISION_LOG
+#61 — and ratio is now included in production samples.)
 
 The platform's **ninth** generator family
 and **fourth** structured canonical-first answer type. Twelve tasks under `SPI.MIDDLE.RATIO.*` (simplify;
@@ -42,8 +56,9 @@ multi-part `table-completion` sharing; a new **non-Cartesian** bar-model / doubl
 table renderer (additive `core/visual-style/ratio-theme`, four modes, 6000×4200, byte parity); exact
 proportional reasoning (gcd, cross-multiplication, total-parts, unitary method, inverse product invariant,
 scale — no floats); `MISC.RATIO.*` (16 misconceptions); the ASCII-anchored ratio parser + the 9-code +
-3-code result vocabulary. The generator is registered `approvalStatus: pending-review` — visible only in the
-Studio's review mode, **excluded from normal Studio + production exports/samples** — until the owner decides.
+3-code result vocabulary. (At v1.0.0/v1.0.1 the generator was registered `approvalStatus: pending-review` —
+review-mode only, excluded from normal Studio + production — until the owner's decision; it is now `approved`,
+DECISION_LOG #61.)
 
 **Adversarially hardened (ultracode).** A 10-dimension adversarial review + independent verification found
 **8 defects, all fixed in v1.0.0 before submission**, the headline being a **CRITICAL grading-path parity
@@ -59,9 +74,10 @@ declared bands reachable / MC policy correct / all 9 codes / 16/16 diagnostics; 
 reachability-derived cells; visual audit (4 modes) + browser verification 15/15; manifest 20/20 SHA-256 (0
 drift); typecheck exit 0; **all eight approved families byte-for-byte UNCHANGED** (only the shared schema/
 validator hashes in the mensuration + transformations manifests were re-frozen for the additive extension).
-The twelve `SPI.MIDDLE.RATIO.*` objectives are `approved-for-implementation`. (The v1.0.0 implementation +
-adversarial-review history above is retained for context; the owner's REVISE corrections were applied in
-v1.0.1 — see the dated header.) **Next owner decision: APPROVE or REJECT of the corrected v1.0.1 package.**
+At v1.0.0 the twelve `SPI.MIDDLE.RATIO.*` objectives were `approved-for-implementation` (now `approved`,
+DECISION_LOG #61). (The v1.0.0 implementation + adversarial-review history above is retained for context; the
+owner's REVISE corrections were applied in v1.0.1 — see the dated header.) This v1.0.0/v1.0.1 history is retained for context; v1.0.2 is now
+CURRICULUM-APPROVED (see the dated header above, DECISION_LOG #61).
 
 ## `gen.geometry.transformations` v1.0.2 — CURRICULUM-APPROVED (2026-06-26)
 
