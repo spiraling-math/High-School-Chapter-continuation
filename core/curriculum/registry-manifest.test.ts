@@ -27,6 +27,7 @@ interface Manifest {
   approvalStatus: string;
   objectiveCount: number;
   gitCommit: string;
+  versionTags: { currentImplementationTag: string; approvedTag?: string };
   artifacts: Record<string, ArtifactEntry>;
   frozenObjectiveFiles: Record<string, ArtifactEntry>;
 }
@@ -34,9 +35,11 @@ interface Manifest {
 const have = existsSync(rel(MANIFEST));
 const manifest: Manifest | null = have ? (JSON.parse(readFileSync(rel(MANIFEST), "utf8")) as Manifest) : null;
 
-test("manifest exists and is phase-1-implemented", { skip: !have }, () => {
+test("manifest exists and is curriculum-approved (DECISION_LOG #63)", { skip: !have }, () => {
   assert.ok(manifest);
-  assert.equal(manifest.approvalStatus, "phase-1-implemented");
+  assert.equal(manifest.approvalStatus, "approved");
+  assert.equal(manifest.versionTags.approvedTag, "approved-objective-registry-phase1-v1.0.0");
+  assert.equal(manifest.versionTags.currentImplementationTag, "objective-registry-phase1-v1.0.0");
   assert.equal(manifest.objectiveCount, 70);
   assert.match(manifest.gitCommit, /^[0-9a-f]{7,40}$|^unknown$/);
 });

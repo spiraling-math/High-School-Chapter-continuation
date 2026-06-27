@@ -165,10 +165,18 @@ for (const name of OBJECTIVE_FILES) {
 const manifest = {
   generatorId: GENERATOR_ID,
   generatorVersion: GENERATOR_VERSION,
-  approvalStatus: "phase-1-implemented",
+  approvalStatus: "approved",
   gitCommit: commit,
   versionTags: {
     currentImplementationTag: "objective-registry-phase1-v1.0.0",
+    approvedTag: "approved-objective-registry-phase1-v1.0.0",
+  },
+  approval: {
+    approvalStatus: "approved",
+    approvedTag: "approved-objective-registry-phase1-v1.0.0",
+    approvalDate: "2026-06-27",
+    decisionLogRef: "DECISION_LOG.md #63",
+    builtFromCommit: process.env.SPI_BUILD_COMMIT || commit,
   },
   objectiveCount: registry.count,
   graphOk: graph.ok,
