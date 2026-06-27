@@ -5,7 +5,7 @@
  * Also enforces the owner's decisions (A, C, D): the exact twelve objective IDs via OBJECTIVE_BY_TASK (no
  * alternative spellings, no _UNITARY suffix); domain proportion / strand ratio-and-proportion / RATIO
  * segment; the per-task answer types; MISC.RATIO.* misconception references; and the
- * approved-for-implementation review status.
+ * curriculum-approved review status (owner final APPROVE, DECISION_LOG.md #61).
  *
  * Run:  node --test core/curriculum/ratio-graph.test.ts
  */
@@ -77,7 +77,7 @@ test("ratio objective metadata follows the owner decisions (A, C, D)", () => {
     const o = byId.get(OBJECTIVE_BY_TASK[t])!;
     assert.equal(o.domain, "proportion", `${t} domain`);
     assert.equal(o.strand, "ratio-and-proportion", `${t} strand`);
-    assert.equal(o.reviewStatus, "approved-for-implementation", `${t} reviewStatus (owner M)`);
+    assert.equal(o.reviewStatus, "approved", `${t} reviewStatus (owner final APPROVE #61)`);
     assert.deepEqual(o.answerTypes, ANSWER_TYPES_BY_TASK[t], `${t} answerTypes must be ${JSON.stringify(ANSWER_TYPES_BY_TASK[t])}`);
     for (const m of o.commonMisconceptions ?? []) {
       assert.ok(String(m).startsWith("MISC.RATIO."), `${t} misconception ${m} must use the MISC.RATIO.* prefix`);
