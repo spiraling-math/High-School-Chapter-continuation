@@ -35,8 +35,8 @@ Git tags identify the approved reference implementations:
 
 | Generator | Version | Status | Spec | Decision | Submitted |
 | --- | --- | --- | --- | --- | --- |
-| `gen.proportion.ratio` | **1.0.1** | **pending-review** (corrected per REVISE; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #59 | 2026-06-26 |
-| `gen.proportion.ratio` | 1.0.0 | preserved (superseded by 1.0.1; never approved) | — | tag `ratio-v1.0.0` | — |
+| `gen.proportion.ratio` | **1.0.2** | **pending-review** (corrected per REVISE; gated from normal Studio + production) | `GENERATOR_SPEC_proportion_ratio_PROPOSAL.md` | `DECISION_LOG.md` #60 | 2026-06-26 |
+| `gen.proportion.ratio` | 1.0.0 / 1.0.1 | preserved (superseded by 1.0.2; never approved) | — | tags `ratio-v1.0.{0,1}` | — |
 
 `gen.proportion.ratio` v1.0.1 is implemented and registered `approvalStatus: pending-review` (review-mode
 only; excluded from production exports/samples), awaiting the owner's APPROVE / REJECT. Its twelve

@@ -2,10 +2,22 @@
 
 Last updated: 2026-06-26.
 
-## `gen.proportion.ratio` v1.0.1 — CORRECTED, PENDING-REVIEW (2026-06-26)
+## `gen.proportion.ratio` v1.0.2 — CORRECTED, PENDING-REVIEW (2026-06-26)
 
-**Owner REVISE (DECISION_LOG #59): nine corrections applied → v1.0.1 (v1.0.0 preserved at tag
-`ratio-v1.0.0`); awaiting the owner's APPROVE / REJECT.** Corrections: **#1** artifact identity (review pack
+**Owner REVISE (DECISION_LOG #60, narrow): simple_scale subject-verb grammar + false-pass validator +
+manifest-tag cleanup → v1.0.2 (v1.0.1 preserved at tag `ratio-v1.0.1`); awaiting the owner's APPROVE /
+REJECT.** The scale prompts now read "1 plan unit **represents** 2 actual units" (singular) / "2 plan units
+**represent** …" (plural); the grammar validator now inspects the RENDERED prompt + alt/long-description +
+SVG `<desc>` (it previously false-passed "1 plan unit represent"); the manifest versionTags are corrected
+(previous `ratio-v1.0.1` / current `ratio-v1.0.2` / approved null). Canonical prompt/a11y bytes changed →
+v1.0.2; the canonical mathematical answer contract is unchanged; v1.0.1 preserved at its tag. Verified: TS
+**323/323**; 13 Python suites (ratio 43 tests); golden 16 + 360 parity byte-for-byte; 10k RESULT OK; browser
+verification 23/23 (real re-captured styles); manifest 21/21 (0 drift). **Next decision: APPROVE or REJECT of
+the corrected v1.0.2 package.**
+
+### (Prior v1.0.1 corrections — DECISION_LOG #59, accepted in principle)
+
+**Nine REVISE corrections applied → v1.0.1 (v1.0.0 preserved at tag `ratio-v1.0.0`).** Corrections: **#1** artifact identity (review pack
 + audit + browser report + manifest regenerated from ONE build commit `bf396ad`, all on v1.0.1 + that
 commit; 7 blocking identity checks); **#2** REAL live-Chromium computed styles captured via the Preview tool
 across all four modes and asserted to match the theme (browser verification 23/23, `realBrowserComputedStyles`
