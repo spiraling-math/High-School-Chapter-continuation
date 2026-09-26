@@ -1,0 +1,1294 @@
+[
+  {
+    "misconceptionId": "MISC.FUNC.MANY_TO_ONE_REJECTED",
+    "domain": "functions",
+    "title": "Rejects a many-to-one relation",
+    "description": "Believes a relation with a repeated output cannot be a function.",
+    "observableError": "Chose a relation in which two inputs share an output.",
+    "distractorRule": {
+      "summary": "Rejects a many-to-one relation",
+      "expression": "repeated output -> 'not a function'"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Believes a relation with a repeated output cannot be a function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.CONSTANT_REJECTED",
+    "domain": "functions",
+    "title": "Rejects a constant relation",
+    "description": "Believes a relation whose outputs are all equal cannot be a function.",
+    "observableError": "Chose a relation whose outputs are all equal.",
+    "distractorRule": {
+      "summary": "Rejects a constant relation",
+      "expression": "all outputs equal -> 'not a function'"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Believes a relation whose outputs are all equal cannot be a function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.PATTERN_REQUIRED",
+    "domain": "functions",
+    "title": "Requires a pattern",
+    "description": "Believes a relation must follow a formula or an ordered pattern to be a function.",
+    "observableError": "Chose a relation with no visible pattern.",
+    "distractorRule": {
+      "summary": "Requires a pattern",
+      "expression": "no pattern -> 'not a function'"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Believes a relation must follow a formula or an ordered pattern to be a function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_FORGOT_MULTIPLY",
+    "domain": "functions",
+    "title": "Adds the coefficient instead of multiplying",
+    "description": "Reads ax as a + x when substituting.",
+    "observableError": "Added the coefficient to the input instead of multiplying.",
+    "distractorRule": {
+      "summary": "Adds the coefficient instead of multiplying",
+      "expression": "a + p + b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reads ax as a + x when substituting.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_DROP_CONSTANT",
+    "domain": "functions",
+    "title": "Drops the constant term",
+    "description": "Evaluates the variable part of the rule and forgets the constant term.",
+    "observableError": "Left out the constant term of the rule.",
+    "distractorRule": {
+      "summary": "Drops the constant term",
+      "expression": "rule without its constant"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Evaluates the variable part of the rule and forgets the constant term.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_SIGN_OF_INPUT",
+    "domain": "functions",
+    "title": "Drops the sign of a negative input",
+    "description": "Substitutes |x| instead of a negative input.",
+    "observableError": "Substituted the positive value instead of the negative input.",
+    "distractorRule": {
+      "summary": "Drops the sign of a negative input",
+      "expression": "f(|p|)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes |x| instead of a negative input.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_CONSTANT_SIGN_FLIPPED",
+    "domain": "functions",
+    "title": "Flips the sign of the constant",
+    "description": "Subtracts the constant that should be added (or vice versa).",
+    "observableError": "Used the opposite sign on the constant term.",
+    "distractorRule": {
+      "summary": "Flips the sign of the constant",
+      "expression": "a p - b  /  a p^2 + b p - c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Subtracts the constant that should be added (or vice versa).",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_SQUARE_NEGATIVE",
+    "domain": "functions",
+    "title": "Squares a negative input to a negative",
+    "description": "Computes (-p)^2 as -p^2.",
+    "observableError": "Treated the square of a negative input as negative.",
+    "distractorRule": {
+      "summary": "Squares a negative input to a negative",
+      "expression": "-a p^2 + b p + c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Computes (-p)^2 as -p^2.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_SQUARE_COEFFICIENT",
+    "domain": "functions",
+    "title": "Squares the coefficient as well",
+    "description": "Computes a x^2 as (a x)^2.",
+    "observableError": "Squared the coefficient together with the input.",
+    "distractorRule": {
+      "summary": "Squares the coefficient as well",
+      "expression": "(a p)^2 + b p + c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Computes a x^2 as (a x)^2.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_SQUARE_AS_DOUBLE",
+    "domain": "functions",
+    "title": "Treats x^2 as 2x",
+    "description": "Doubles the input instead of squaring it.",
+    "observableError": "Doubled the input instead of squaring it.",
+    "distractorRule": {
+      "summary": "Treats x^2 as 2x",
+      "expression": "2 a p + b p + c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Doubles the input instead of squaring it.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_DENOMINATOR_NOT_GROUPED",
+    "domain": "functions",
+    "title": "Ungroups the denominator",
+    "description": "Divides by x alone and treats the rest of the denominator as a separate term.",
+    "observableError": "Divided by x alone instead of by the whole denominator.",
+    "distractorRule": {
+      "summary": "Ungroups the denominator",
+      "expression": "k/p - h + v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides by x alone and treats the rest of the denominator as a separate term.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_RECIPROCAL_INVERTED",
+    "domain": "functions",
+    "title": "Inverts the fraction",
+    "description": "Divides the denominator by the numerator.",
+    "observableError": "Inverted the fraction when evaluating.",
+    "distractorRule": {
+      "summary": "Inverts the fraction",
+      "expression": "(p - h)/k + v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides the denominator by the numerator.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_ROOT_IGNORED",
+    "domain": "functions",
+    "title": "Ignores the square root",
+    "description": "Evaluates the radicand and forgets to take the root.",
+    "observableError": "Did not take the square root.",
+    "distractorRule": {
+      "summary": "Ignores the square root",
+      "expression": "a p + b + v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Evaluates the radicand and forgets to take the root.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_HALVE_INSTEAD_OF_ROOT",
+    "domain": "functions",
+    "title": "Halves instead of rooting",
+    "description": "Divides the radicand by 2 instead of taking its square root.",
+    "observableError": "Halved the radicand instead of taking its square root.",
+    "distractorRule": {
+      "summary": "Halves instead of rooting",
+      "expression": "(a p + b)/2 + v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides the radicand by 2 instead of taking its square root.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.EVAL_NEGATIVE_ROOT",
+    "domain": "functions",
+    "title": "Takes the negative root",
+    "description": "Uses the negative square root for the radical symbol.",
+    "observableError": "Used the negative square root.",
+    "distractorRule": {
+      "summary": "Takes the negative root",
+      "expression": "-sqrt(a p + b) + v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses the negative square root for the radical symbol.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_EVALUATES_INSTEAD",
+    "domain": "functions",
+    "title": "Evaluates instead of solving",
+    "description": "Substitutes the given output as if it were the input.",
+    "observableError": "Substituted the output value into the rule instead of solving for the input.",
+    "distractorRule": {
+      "summary": "Evaluates instead of solving",
+      "expression": "f(k)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes the given output as if it were the input.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_WRONG_INVERSE",
+    "domain": "functions",
+    "title": "Wrong inverse operation on the constant",
+    "description": "Adds the constant instead of subtracting it when isolating the variable term.",
+    "observableError": "Used the wrong inverse operation on the constant.",
+    "distractorRule": {
+      "summary": "Wrong inverse operation on the constant",
+      "expression": "(k + b)/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Adds the constant instead of subtracting it when isolating the variable term.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_STOPS_BEFORE_DIVIDING",
+    "domain": "functions",
+    "title": "Stops before dividing by the coefficient",
+    "description": "Reports the isolated variable term as the variable.",
+    "observableError": "Isolated the variable term but did not divide by its coefficient.",
+    "distractorRule": {
+      "summary": "Stops before dividing by the coefficient",
+      "expression": "k - b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the isolated variable term as the variable.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_DIVIDE_BY_CONSTANT",
+    "domain": "functions",
+    "title": "Divides by the constant",
+    "description": "Divides by the constant term instead of the coefficient of x.",
+    "observableError": "Divided by the constant term instead of by the coefficient of x.",
+    "distractorRule": {
+      "summary": "Divides by the constant",
+      "expression": "(k - b)/b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides by the constant term instead of the coefficient of x.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_RECIPROCAL_NOT_INVERTED",
+    "domain": "functions",
+    "title": "Does not invert the reciprocal",
+    "description": "Multiplies by the numerator instead of dividing the numerator by the isolated value.",
+    "observableError": "Treated the reciprocal like a linear coefficient.",
+    "distractorRule": {
+      "summary": "Does not invert the reciprocal",
+      "expression": "h + (k - v)/k0"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Multiplies by the numerator instead of dividing the numerator by the isolated value.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_POLE_SIGN",
+    "domain": "functions",
+    "title": "Sign error at the pole",
+    "description": "Subtracts the shift of the denominator instead of adding it back.",
+    "observableError": "Used the wrong sign when undoing the shift inside the denominator.",
+    "distractorRule": {
+      "summary": "Sign error at the pole",
+      "expression": "k0/(k - v) - h"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Subtracts the shift of the denominator instead of adding it back.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_IGNORES_SHIFT",
+    "domain": "functions",
+    "title": "Ignores the vertical shift",
+    "description": "Does not remove the added constant before inverting the fraction.",
+    "observableError": "Did not subtract the constant before undoing the fraction.",
+    "distractorRule": {
+      "summary": "Ignores the vertical shift",
+      "expression": "h + k0/k"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Does not remove the added constant before inverting the fraction.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_FORGOT_TO_SQUARE",
+    "domain": "functions",
+    "title": "Forgets to square",
+    "description": "Removes the root without squaring the other side.",
+    "observableError": "Did not square both sides to remove the root.",
+    "distractorRule": {
+      "summary": "Forgets to square",
+      "expression": "(k - v - b)/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Removes the root without squaring the other side.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.SOLVE_SQUARE_BEFORE_ISOLATING",
+    "domain": "functions",
+    "title": "Squares before isolating the root",
+    "description": "Squares the whole output before removing the added constant.",
+    "observableError": "Squared before isolating the square root.",
+    "distractorRule": {
+      "summary": "Squares before isolating the root",
+      "expression": "(k^2 - v - b)/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Squares the whole output before removing the added constant.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_ALL_REALS",
+    "domain": "functions",
+    "title": "Domain is always all reals",
+    "description": "Ignores the restriction imposed by a root or a denominator.",
+    "observableError": "Gave all real numbers although the rule has a restriction.",
+    "distractorRule": {
+      "summary": "Domain is always all reals",
+      "expression": "R"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Ignores the restriction imposed by a root or a denominator.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_DIRECTION_FLIPPED",
+    "domain": "functions",
+    "title": "Inequality direction flipped",
+    "description": "Reverses (or fails to reverse) the inequality when solving the radicand condition.",
+    "observableError": "Solved the radicand inequality in the wrong direction.",
+    "distractorRule": {
+      "summary": "Inequality direction flipped",
+      "expression": "opposite ray"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reverses (or fails to reverse) the inequality when solving the radicand condition.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT",
+    "domain": "functions",
+    "title": "Excludes the endpoint",
+    "description": "Uses a strict inequality, excluding the input where the radicand is 0.",
+    "observableError": "Excluded the endpoint where the radicand is zero.",
+    "distractorRule": {
+      "summary": "Excludes the endpoint",
+      "expression": "strict ray"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses a strict inequality, excluding the input where the radicand is 0.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_ENDPOINT_SIGN",
+    "domain": "functions",
+    "title": "Sign error in the endpoint",
+    "description": "Solves the radicand inequality with a sign slip in the constant.",
+    "observableError": "Made a sign error solving for the boundary input.",
+    "distractorRule": {
+      "summary": "Sign error in the endpoint",
+      "expression": "x >= b/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Solves the radicand inequality with a sign slip in the constant.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_AS_EXCLUDED_POINT",
+    "domain": "functions",
+    "title": "Treats the root like a denominator",
+    "description": "Excludes the single input where the radicand is 0 instead of requiring it to be non-negative.",
+    "observableError": "Excluded one point instead of solving the inequality.",
+    "distractorRule": {
+      "summary": "Treats the root like a denominator",
+      "expression": "x != -b/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Excludes the single input where the radicand is 0 instead of requiring it to be non-negative.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_POLE_SIGN",
+    "domain": "functions",
+    "title": "Sign error at the pole",
+    "description": "Excludes the negative of the pole.",
+    "observableError": "Excluded the input with the wrong sign.",
+    "distractorRule": {
+      "summary": "Sign error at the pole",
+      "expression": "x != -h"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Excludes the negative of the pole.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_EXCLUDES_ZERO",
+    "domain": "functions",
+    "title": "Excludes zero by habit",
+    "description": "Excludes x = 0 rather than the input that actually breaks the rule.",
+    "observableError": "Excluded zero instead of the actual restriction.",
+    "distractorRule": {
+      "summary": "Excludes zero by habit",
+      "expression": "x != 0"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Excludes x = 0 rather than the input that actually breaks the rule.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_POLE_AS_INEQUALITY",
+    "domain": "functions",
+    "title": "Turns the pole into an inequality",
+    "description": "Writes an inequality instead of excluding the single undefined input.",
+    "observableError": "Wrote an inequality instead of excluding one value.",
+    "distractorRule": {
+      "summary": "Turns the pole into an inequality",
+      "expression": "x > h"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Writes an inequality instead of excluding the single undefined input.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_NONNEGATIVE_ONLY",
+    "domain": "functions",
+    "title": "Non-negative inputs only",
+    "description": "Restricts a polynomial rule to x >= 0.",
+    "observableError": "Restricted the domain to non-negative inputs without reason.",
+    "distractorRule": {
+      "summary": "Non-negative inputs only",
+      "expression": "x >= 0"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Restricts a polynomial rule to x >= 0.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_EXCLUDES_CONSTANT",
+    "domain": "functions",
+    "title": "Excludes the constant term",
+    "description": "Excludes the constant of the rule as if it were a pole.",
+    "observableError": "Excluded the value of the constant term.",
+    "distractorRule": {
+      "summary": "Excludes the constant term",
+      "expression": "x != c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Excludes the constant of the rule as if it were a pole.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_ALL_REALS",
+    "domain": "functions",
+    "title": "Range is always all reals",
+    "description": "Ignores the bound imposed by the shape of the graph.",
+    "observableError": "Gave all real numbers although the outputs are bounded.",
+    "distractorRule": {
+      "summary": "Range is always all reals",
+      "expression": "R"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Ignores the bound imposed by the shape of the graph.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_DIRECTION_FLIPPED",
+    "domain": "functions",
+    "title": "Bound on the wrong side",
+    "description": "Uses the wrong direction of inequality for the bounded range.",
+    "observableError": "Gave the inequality in the wrong direction.",
+    "distractorRule": {
+      "summary": "Bound on the wrong side",
+      "expression": "opposite ray"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses the wrong direction of inequality for the bounded range.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_USES_VERTEX_X",
+    "domain": "functions",
+    "title": "Uses the vertex x-coordinate",
+    "description": "Reports the axis of symmetry as the bound of the range.",
+    "observableError": "Used the x-coordinate of the vertex as the bound.",
+    "distractorRule": {
+      "summary": "Uses the vertex x-coordinate",
+      "expression": "y >= -b/2a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the axis of symmetry as the bound of the range.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_STRICT_AT_BOUND",
+    "domain": "functions",
+    "title": "Excludes the attained bound",
+    "description": "Uses a strict inequality although the extreme value is attained.",
+    "observableError": "Excluded the attained extreme value.",
+    "distractorRule": {
+      "summary": "Excludes the attained bound",
+      "expression": "strict ray"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses a strict inequality although the extreme value is attained.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_USES_CONSTANT_TERM",
+    "domain": "functions",
+    "title": "Uses the constant term as the bound",
+    "description": "Takes the y-intercept as the minimum or maximum.",
+    "observableError": "Used the y-intercept as the extreme value.",
+    "distractorRule": {
+      "summary": "Uses the constant term as the bound",
+      "expression": "y >= c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Takes the y-intercept as the minimum or maximum.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_IGNORES_SHIFT",
+    "domain": "functions",
+    "title": "Ignores the vertical shift",
+    "description": "States the range of the unshifted base function.",
+    "observableError": "Ignored the vertical shift.",
+    "distractorRule": {
+      "summary": "Ignores the vertical shift",
+      "expression": "base range"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "States the range of the unshifted base function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.DOMAIN_RANGE_CONFUSED",
+    "domain": "functions",
+    "title": "Confuses domain and range",
+    "description": "Gives the domain (in y) instead of the range.",
+    "observableError": "Gave the domain instead of the range.",
+    "distractorRule": {
+      "summary": "Confuses domain and range",
+      "expression": "domain restated in y"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Gives the domain (in y) instead of the range.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_POLE_AS_INEQUALITY",
+    "domain": "functions",
+    "title": "Turns the missing value into an inequality",
+    "description": "Writes y > v instead of y != v.",
+    "observableError": "Wrote an inequality instead of excluding one value.",
+    "distractorRule": {
+      "summary": "Turns the missing value into an inequality",
+      "expression": "y > v"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Writes y > v instead of y != v.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_ONLY_LOWER_BOUND",
+    "domain": "functions",
+    "title": "States only one bound",
+    "description": "Reports only the lower bound of a bounded range.",
+    "observableError": "Gave only one of the two bounds.",
+    "distractorRule": {
+      "summary": "States only one bound",
+      "expression": "y >= min"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports only the lower bound of a bounded range.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RANGE_STRICT_ENDPOINTS",
+    "domain": "functions",
+    "title": "Open interval for a closed domain",
+    "description": "Uses strict inequalities although the endpoint images are attained.",
+    "observableError": "Excluded the attained endpoint images.",
+    "distractorRule": {
+      "summary": "Open interval for a closed domain",
+      "expression": "open interval"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses strict inequalities although the endpoint images are attained.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_ORDER_REVERSED",
+    "domain": "functions",
+    "title": "Reverses the order of composition",
+    "description": "Applies the outer function first.",
+    "observableError": "Composed the functions in the wrong order.",
+    "distractorRule": {
+      "summary": "Reverses the order of composition",
+      "expression": "inner(outer(.))"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Applies the outer function first.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_AS_PRODUCT",
+    "domain": "functions",
+    "title": "Composition as a product",
+    "description": "Multiplies the two functions.",
+    "observableError": "Multiplied the functions instead of composing them.",
+    "distractorRule": {
+      "summary": "Composition as a product",
+      "expression": "f * g"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Multiplies the two functions.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_AS_SUM",
+    "domain": "functions",
+    "title": "Composition as a sum",
+    "description": "Adds the two functions.",
+    "observableError": "Added the functions instead of composing them.",
+    "distractorRule": {
+      "summary": "Composition as a sum",
+      "expression": "f + g"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Adds the two functions.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_INNER_ONLY",
+    "domain": "functions",
+    "title": "Stops after the inner function",
+    "description": "Reports the inner value without applying the outer function.",
+    "observableError": "Applied only the inner function.",
+    "distractorRule": {
+      "summary": "Stops after the inner function",
+      "expression": "inner(p)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the inner value without applying the outer function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_OUTER_AT_INPUT",
+    "domain": "functions",
+    "title": "Applies only the outer function",
+    "description": "Evaluates the outer function directly at the input.",
+    "observableError": "Applied only the outer function at the input.",
+    "distractorRule": {
+      "summary": "Applies only the outer function",
+      "expression": "outer(p)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Evaluates the outer function directly at the input.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM",
+    "domain": "functions",
+    "title": "Squares a binomial without the cross term",
+    "description": "Expands (mx + n)^2 as m^2 x^2 + n^2.",
+    "observableError": "Dropped the cross term when squaring the inner expression.",
+    "distractorRule": {
+      "summary": "Squares a binomial without the cross term",
+      "expression": "a(m^2 x^2 + n^2) + b(mx + n) + c"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Expands (mx + n)^2 as m^2 x^2 + n^2.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.FFC_IGNORES_INNER",
+    "domain": "functions",
+    "title": "Takes the composite as f",
+    "description": "Reports the composite itself as the outer function.",
+    "observableError": "Gave the composite instead of the outer function.",
+    "distractorRule": {
+      "summary": "Takes the composite as f",
+      "expression": "p x + q"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the composite itself as the outer function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.FFC_SHIFT_NOT_INVERTED",
+    "domain": "functions",
+    "title": "Does not invert the inner shift",
+    "description": "Substitutes x + c instead of x - c when changing variable.",
+    "observableError": "Undid the inner shift with the wrong sign.",
+    "distractorRule": {
+      "summary": "Does not invert the inner shift",
+      "expression": "p(x + c)/m + q"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes x + c instead of x - c when changing variable.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.FFC_SCALE_NOT_INVERTED",
+    "domain": "functions",
+    "title": "Does not invert the inner scale",
+    "description": "Multiplies by the inner coefficient instead of dividing.",
+    "observableError": "Undid the inner scale by multiplying instead of dividing.",
+    "distractorRule": {
+      "summary": "Does not invert the inner scale",
+      "expression": "p m (x - c) + q"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Multiplies by the inner coefficient instead of dividing.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.FFC_COMPOSES_INSTEAD",
+    "domain": "functions",
+    "title": "Composes instead of decomposing",
+    "description": "Substitutes g into the composite.",
+    "observableError": "Composed with the inner function instead of undoing it.",
+    "distractorRule": {
+      "summary": "Composes instead of decomposing",
+      "expression": "p(mx + c) + q"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes g into the composite.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INV_AS_RECIPROCAL",
+    "domain": "functions",
+    "title": "Inverse as reciprocal",
+    "description": "Confuses the inverse function with the reciprocal of the function.",
+    "observableError": "Gave the reciprocal instead of the inverse function.",
+    "distractorRule": {
+      "summary": "Inverse as reciprocal",
+      "expression": "1/(ax + b)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Confuses the inverse function with the reciprocal of the function.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INV_UNDO_ORDER",
+    "domain": "functions",
+    "title": "Undoes the operations in the wrong order",
+    "description": "Divides before undoing the constant.",
+    "observableError": "Undid the operations in the wrong order.",
+    "distractorRule": {
+      "summary": "Undoes the operations in the wrong order",
+      "expression": "x/a - b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides before undoing the constant.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INV_SIGN_ERROR",
+    "domain": "functions",
+    "title": "Sign error undoing the constant",
+    "description": "Adds the constant that should be subtracted (or vice versa).",
+    "observableError": "Used the wrong sign when undoing the constant.",
+    "distractorRule": {
+      "summary": "Sign error undoing the constant",
+      "expression": "(x + b)/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Adds the constant that should be subtracted (or vice versa).",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INV_NEGATES_ONLY",
+    "domain": "functions",
+    "title": "Negates the constant only",
+    "description": "Keeps the multiplication and only flips the sign of the constant.",
+    "observableError": "Only changed the sign of the constant.",
+    "distractorRule": {
+      "summary": "Negates the constant only",
+      "expression": "ax - b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Keeps the multiplication and only flips the sign of the constant.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INV_SWAPS_ROLES",
+    "domain": "functions",
+    "title": "Swaps the coefficient and the constant",
+    "description": "Divides by the constant and subtracts the coefficient.",
+    "observableError": "Swapped the roles of the coefficient and the constant.",
+    "distractorRule": {
+      "summary": "Swaps the coefficient and the constant",
+      "expression": "(x - a)/b"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Divides by the constant and subtracts the coefficient.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INVVAL_FORWARD",
+    "domain": "functions",
+    "title": "Evaluates f instead of f^-1",
+    "description": "Substitutes the value into f rather than solving f(x) = value.",
+    "observableError": "Evaluated the function instead of its inverse.",
+    "distractorRule": {
+      "summary": "Evaluates f instead of f^-1",
+      "expression": "f(k)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes the value into f rather than solving f(x) = value.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INVVAL_RECIPROCAL",
+    "domain": "functions",
+    "title": "Inverse value as a reciprocal",
+    "description": "Computes 1/f(value).",
+    "observableError": "Took the reciprocal of the function value.",
+    "distractorRule": {
+      "summary": "Inverse value as a reciprocal",
+      "expression": "1/f(.)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Computes 1/f(value).",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INVVAL_APPLIES_INVERSE_AGAIN",
+    "domain": "functions",
+    "title": "Applies the inverse a second time",
+    "description": "Applies f^-1 to the given input instead of f.",
+    "observableError": "Applied the inverse to the given value instead of the function.",
+    "distractorRule": {
+      "summary": "Applies the inverse a second time",
+      "expression": "(x0 - b)/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Applies f^-1 to the given input instead of f.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.INVVAL_IDENTITY",
+    "domain": "functions",
+    "title": "Reads the equation as the identity",
+    "description": "Reports the given input as the unknown.",
+    "observableError": "Reported the given value as the answer.",
+    "distractorRule": {
+      "summary": "Reads the equation as the identity",
+      "expression": "x0"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the given input as the unknown.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.VERTEX_X_MISSING_HALF",
+    "domain": "functions",
+    "title": "Axis of symmetry without the half",
+    "description": "Uses -b/a for the axis of symmetry.",
+    "observableError": "Omitted the factor 2 in the axis of symmetry.",
+    "distractorRule": {
+      "summary": "Axis of symmetry without the half",
+      "expression": "-b/a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses -b/a for the axis of symmetry.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.VERTEX_X_SIGN",
+    "domain": "functions",
+    "title": "Axis of symmetry with the wrong sign",
+    "description": "Uses b/(2a) for the axis of symmetry.",
+    "observableError": "Used the wrong sign in the axis of symmetry.",
+    "distractorRule": {
+      "summary": "Axis of symmetry with the wrong sign",
+      "expression": "b/2a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Uses b/(2a) for the axis of symmetry.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.VERTEX_Y_FOR_X",
+    "domain": "functions",
+    "title": "Uses the vertex value",
+    "description": "Reports the minimum/maximum value instead of where it occurs.",
+    "observableError": "Gave the vertex value instead of its x-coordinate.",
+    "distractorRule": {
+      "summary": "Uses the vertex value",
+      "expression": "f(-b/2a)"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Reports the minimum/maximum value instead of where it occurs.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.RESTRICTION_ZERO",
+    "domain": "functions",
+    "title": "Assumes the restriction is x = 0",
+    "description": "Restricts at 0 regardless of the axis of symmetry.",
+    "observableError": "Assumed the axis of symmetry is x = 0.",
+    "distractorRule": {
+      "summary": "Assumes the restriction is x = 0",
+      "expression": "0"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Restricts at 0 regardless of the axis of symmetry.",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  },
+  {
+    "misconceptionId": "MISC.FUNC.VERTEX_X_USES_C",
+    "domain": "functions",
+    "title": "Uses the constant term in the axis",
+    "description": "Substitutes the constant term for the x coefficient in -b/(2a).",
+    "observableError": "Used the constant term in place of the x coefficient.",
+    "distractorRule": {
+      "summary": "Uses the constant term in the axis",
+      "expression": "-c/2a"
+    },
+    "validRange": {
+      "levels": [
+        "ibdp-aasl"
+      ]
+    },
+    "feedback": "Substitutes the constant term for the x coefficient in -b/(2a).",
+    "reviewStatus": "proposed",
+    "version": "1.0.0"
+  }
+]

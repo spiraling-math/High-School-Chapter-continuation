@@ -1,8 +1,8 @@
 /**
  * Unified objective registry / index (Phase 1, read-only).
  *
- * A derived READ LAYER over the eleven `curriculum/objectives/*.json` source-of-truth
- * files. It loads every objective into one in-memory index keyed by `objectiveId` and
+ * A derived READ LAYER over the `curriculum/objectives/*.json` source-of-truth files
+ * (the eleven frozen approved files plus any proposed pending-review family files). It loads every objective into one in-memory index keyed by `objectiveId` and
  * exposes a small, stable, read-only query surface (§5 of the Objective Registry &
  * Standards proposal). It NEVER writes any objective file: the per-family JSON files
  * remain the single source of truth for definitions; this registry only indexes them.
@@ -21,10 +21,15 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 /**
- * The ONLY hand-maintained list of objective files. Identity is the `objectiveId`,
+ * The ONLY hand-maintained lists of objective files. Identity is the `objectiveId`,
  * never the filename (§2.1), but the loader still needs to know which files to read.
+ *
+ * APPROVED_OBJECTIVE_FILES is the frozen Phase-1 set (eleven files, 70 curriculum-approved
+ * objectives). PROPOSED_OBJECTIVE_FILES holds families whose objectives are `reviewStatus:
+ * proposed` (indexed so the graph, coverage and integrity gates see them, but NOT part of
+ * the approved baseline; promotion to the approved list is an owner governance action).
  */
-export const OBJECTIVE_FILES = [
+export const APPROVED_OBJECTIVE_FILES = [
   "SPI.IBDPAASL.SEQSER.ARITH.json",
   "SPI.IBDPAASL.SEQSER.GEO.json",
   "SPI.MIDDLE.ALG.FOUNDATIONS.json",
@@ -37,6 +42,14 @@ export const OBJECTIVE_FILES = [
   "SPI.MIDDLE.RATIO.json",
   "SPI.MIDDLE.STAT.json",
 ] as const;
+
+/** Proposed (pending-review) objective files — gen.functions.foundations (DECISION_LOG.md #65). */
+export const PROPOSED_OBJECTIVE_FILES = [
+  "SPI.IBDPAASL.FUNC.json",
+] as const;
+
+/** Every indexed objective file: the approved baseline followed by the proposed families. */
+export const OBJECTIVE_FILES: readonly string[] = [...APPROVED_OBJECTIVE_FILES, ...PROPOSED_OBJECTIVE_FILES];
 
 /** The objective lifecycle states (the schema `reviewStatus` enum, §6). */
 export type ReviewStatus =
@@ -177,7 +190,7 @@ export function buildRegistry(records: ObjectiveRecord[]): ObjectiveRegistry {
 }
 
 /**
- * Load the registry from disk (the eleven source files). Pure read: no file is written
+ * Load the registry from disk (every indexed source file). Pure read: no file is written
  * and no record is reformatted. Returns an immutable, queryable registry.
  */
 export function loadRegistry(objectivesDir?: string): ObjectiveRegistry {

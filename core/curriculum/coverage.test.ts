@@ -2,7 +2,8 @@
  * Coverage report tests (§8, §10).
  *
  * Asserts the report's buckets are internally consistent: coveredApproved +
- * coveredPending + definedUncovered partition the 70 existing objectives; orphanedTasks
+ * coveredPending + definedUncovered partition the 81 existing objectives (70 approved + 11
+ * proposed functions objectives reached only by the pending-review functions family); orphanedTasks
  * is empty (every approved family's task resolves to a real objective); and the committed
  * docs/review/objective_coverage_report.json matches a freshly-computed report.
  *
@@ -22,24 +23,26 @@ const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const registry = loadRegistry();
 const report = buildCoverageReport(registry);
 
-test("covered + definedUncovered partition the 70 existing objectives", () => {
+test("covered + definedUncovered partition the 81 existing objectives", () => {
   const covered = new Set([...report.coveredApproved, ...report.coveredPending]);
   const uncovered = new Set(report.definedUncovered);
   // no overlap
   for (const id of covered) assert.ok(!uncovered.has(id), `${id} cannot be both covered and uncovered`);
-  // partition is total over the 70
-  assert.equal(covered.size + uncovered.size, 70);
-  assert.equal(report.objectiveTotal, 70);
+  // partition is total over the 81
+  assert.equal(covered.size + uncovered.size, 81);
+  assert.equal(report.objectiveTotal, 81);
   assert.equal(
     report.byGeneratorTier.G2_approved + report.byGeneratorTier.G1_pendingOnly + report.byGeneratorTier.G0_noGenerator,
-    70,
+    81,
   );
 });
 
-test("all nine approved families are fully covered today (G2=66, G1=0)", () => {
+test("nine approved families fully covered (G2=66); the eleven proposed functions objectives are G1 (pending only)", () => {
   assert.equal(report.byGeneratorTier.G2_approved, 66);
-  assert.equal(report.byGeneratorTier.G1_pendingOnly, 0);
+  assert.equal(report.byGeneratorTier.G1_pendingOnly, 11);
   assert.equal(report.byGeneratorTier.G0_noGenerator, 4);
+  assert.ok(report.coveredPending.every((id) => id.startsWith("SPI.IBDPAASL.FUNC.")), "only the functions objectives are pending-only");
+  assert.ok(report.coveredApproved.every((id) => !id.startsWith("SPI.IBDPAASL.FUNC.")), "a pending-review family never counts as approved coverage");
 });
 
 test("definedUncovered are exactly the foundational/non-task-mapped objectives", () => {
@@ -60,7 +63,7 @@ test("referenced-undefined: zero NEW, baseline-five recorded (consistent with §
   assert.deepEqual(report.knownBaselineReferencedUndefined, [...loadKnownBaseline()].sort());
 });
 
-test("byGenerator covers all nine generators with the expected task counts", () => {
+test("byGenerator covers all ten generators with the expected task counts", () => {
   const expected: Record<string, number> = {
     "gen.sequences.arithmetic": 4,
     "gen.sequences.geometric": 5,
@@ -71,6 +74,7 @@ test("byGenerator covers all nine generators with the expected task counts", () 
     "gen.measurement.mensuration": 8,
     "gen.geometry.transformations": 9,
     "gen.proportion.ratio": 12,
+    "gen.functions.foundations": 11,
   };
   for (const [gid, n] of Object.entries(expected)) {
     assert.equal(report.byGenerator[gid]?.length, n, `${gid} should cover ${n} objectives`);

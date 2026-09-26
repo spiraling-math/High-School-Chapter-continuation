@@ -139,12 +139,12 @@
     },
     "schema": {
       "path": "schemas/question-item.schema.json",
-      "sha256": "988ffca9f10ddb2417bb9960cc52c7c438a82dea7bf3d66f62173bdd64e02f34",
+      "sha256": "43b05e8e6cf0368305db6766abd89261aaad07bf592317cfe7e5cda2d7659ff3",
       "present": true
     },
     "compiledValidator": {
       "path": "core/schema/compiled/question-item.validator.mjs",
-      "sha256": "6eb43b7a3222ea5ad3fe3f3af395e0cd1055ba840c0eedc9b91b5cffee29cc8e",
+      "sha256": "7462dbf8de2f819671afec3efa3cf0ce2c32060cb85c27b2e46006bd5f5bafd0",
       "present": true
     },
     "themeJson": {

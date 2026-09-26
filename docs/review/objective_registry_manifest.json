@@ -1,10 +1,10 @@
 {
   "generatorId": "objective-registry-reporter",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.1.0",
   "approvalStatus": "approved",
-  "gitCommit": "c7dc8c18d204a2643e2a0f7965ad25407dd4df45",
+  "gitCommit": "939a83812528ee6a52391e86ccf85d8856c86d49",
   "versionTags": {
-    "currentImplementationTag": "objective-registry-phase1-v1.0.0",
+    "currentImplementationTag": "objective-registry-phase1-v1.1.0",
     "approvedTag": "approved-objective-registry-phase1-v1.0.0"
   },
   "approval": {
@@ -12,25 +12,38 @@
     "approvedTag": "approved-objective-registry-phase1-v1.0.0",
     "approvalDate": "2026-06-27",
     "decisionLogRef": "DECISION_LOG.md #63",
-    "builtFromCommit": "c7dc8c18d204a2643e2a0f7965ad25407dd4df45"
+    "builtFromCommit": "939a83812528ee6a52391e86ccf85d8856c86d49"
   },
-  "objectiveCount": 70,
+  "objectiveCount": 81,
+  "approvedObjectiveCount": 70,
+  "proposedObjectiveCount": 11,
+  "proposed": {
+    "approvalStatus": "pending-review",
+    "decisionLogRef": "DECISION_LOG.md #65",
+    "objectiveCount": 11,
+    "files": {
+      "SPI.IBDPAASL.FUNC.json": {
+        "path": "curriculum/objectives/SPI.IBDPAASL.FUNC.json",
+        "sha256": "5bdb5df2ee9616e74b844ad64fe8b8384c448508b715ff239f515042f2304f3d"
+      }
+    }
+  },
   "graphOk": true,
   "ratioGeneratorVersion": "1.0.2",
   "artifacts": {
     "objectiveRegistryTs": {
       "path": "core/curriculum/objective-registry.ts",
-      "sha256": "980334442e90827ea2ade1c70ad1fac4a98fd9b2c800dc98ce97039bee0cc1d4",
+      "sha256": "99599ece083cac06acadc52dd6e2439643da718678166f28a305b17849fb8476",
       "present": true
     },
     "registryGraphTs": {
       "path": "core/curriculum/registry-graph.ts",
-      "sha256": "d42fb2576f7ff188c6b4cc5c981f16740c40656886c947fa66d81f1199b0c5c5",
+      "sha256": "092fe6e1dd249ea3a545b29950b7f85f0aaa5a9479f72b688cbee29849eb9754",
       "present": true
     },
     "generatorCapabilityTs": {
       "path": "core/curriculum/generator-capability.ts",
-      "sha256": "25578524dc1abba44dad367e975443119b78ad90372aca970baed55c25857f06",
+      "sha256": "06cbb07592726bdd7010748b10f608e45ae0991ae472940c150086121fe96789",
       "present": true
     },
     "knownBaseline": {
@@ -40,17 +53,17 @@
     },
     "registryIndex": {
       "path": "docs/review/objective_registry_index.json",
-      "sha256": "36b060a45f7298fe387bb2fcc7ee3df1d43865832ca91d2876d9b1b18056cb98",
+      "sha256": "aa8bd1e24fbf1917a977ab88d0753a9f2ff6f2094133d6a9c34b0848cf183771",
       "present": true
     },
     "gapReport": {
       "path": "docs/review/objective_registry_gap_report.json",
-      "sha256": "ff2774f2d6493081479e44fa62aa991e1933dfe4fb9dcabea69d35254a1d6a55",
+      "sha256": "6eafa8c8430a1bfa43ab42f2f37b9e6d0761418df3c9b5817f03b32efec8d477",
       "present": true
     },
     "coverageReport": {
       "path": "docs/review/objective_coverage_report.json",
-      "sha256": "ee2bc8f40e702360354da416e12467007bb8693cb78e4ab6e9a100ed4bf18559",
+      "sha256": "c62bc9e1d46d64813d39b8fb8850e9c36f6b52d87f80f89c1ccc62150718d1cd",
       "present": true
     },
     "alignmentSchema": {
@@ -65,7 +78,7 @@
     },
     "reportBuilder": {
       "path": "scripts/build-registry-reports.mjs",
-      "sha256": "0041416630f8888658d2580f22674705c527b086cafe8e71a90983e44d7e1901",
+      "sha256": "5f2e1cd3f09ba96c31b33651ed7f076607c1d6c0ef2e04b28a1192bc081b4783",
       "present": true
     }
   },

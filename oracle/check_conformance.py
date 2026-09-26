@@ -31,6 +31,7 @@ from spi_oracle import coordinate_lines as coord  # noqa: E402
 from spi_oracle import data_handling as stats  # noqa: E402
 from spi_oracle import transformations as trans  # noqa: E402
 from spi_oracle import ratio as ratio  # noqa: E402
+from spi_oracle import functions as func  # noqa: E402
 
 _TYPE = {
     "object": dict, "array": list, "string": str, "boolean": bool,
@@ -237,12 +238,36 @@ def main() -> int:
     for seed in (1, 42, 123456789):
         ok &= validate(ratio.generate(seed), item_schema, registry, f"ratio item seed={seed}")
 
+    # 4i. Live functions items (integer / exact-rational / algebraic-expression / interval / multiple-choice
+    # answers; 11 tasks; identify_function is MC-only). The two canonical-first answer types are enforced by the
+    # additive if/then rules (a string canonical or a malformed descriptor must FAIL here as in Ajv).
+    for task in func.TASKS:
+        cfg = {"task": task}
+        ok &= validate(func.generate(7, cfg), item_schema, registry, f"functions item task={task}")
+        if task not in func.MC_ONLY_TASKS:
+            ok &= validate(func.generate(5, {"task": task, "interactionType": "multiple-choice"}), item_schema, registry, f"functions item task={task} (MC)")
+    for seed in (1, 42, 123456789):
+        ok &= validate(func.generate(seed), item_schema, registry, f"functions item seed={seed}")
+    bad = func.generate(7, {"task": "inverse_expression"})
+    bad["answer"] = {"type": "algebraic-expression", "canonical": bad["answer"]["display"], "display": bad["answer"]["display"]}
+    errs: list = []
+    check(bad, item_schema, registry, item_schema, "functions negative (string canonical)", errs)
+    ok &= bool(errs)
+    print(("PASS  " if errs else "FAIL  ") + "functions negative: a string canonical for algebraic-expression is rejected")
+    bad2 = func.generate(7, {"task": "domain_of_function"})
+    bad2["answer"] = {"type": "interval", "canonical": {"kind": "ray", "variable": "x", "endpoint": {"num": 2, "den": 1}}, "display": "x >= 2"}
+    errs2: list = []
+    check(bad2, item_schema, registry, item_schema, "functions negative (incomplete ray)", errs2)
+    ok &= bool(errs2)
+    print(("PASS  " if errs2 else "FAIL  ") + "functions negative: an incomplete interval descriptor is rejected")
+
     # 5. The generator descriptors.
     gen_schema = registry[SID("generator-module")]
     ok &= validate(seq.describe(), gen_schema, registry, "gen.sequences.arithmetic describe()")
     ok &= validate(geo.describe(), gen_schema, registry, "gen.sequences.geometric describe()")
     ok &= validate(lin.describe(), gen_schema, registry, "gen.algebra.linear-equations describe()")
     ok &= validate(geoang.describe(), gen_schema, registry, "gen.geometry.angles-figures describe()")
+    ok &= validate(func.describe(), gen_schema, registry, "gen.functions.foundations describe()")
 
     print("\n" + ("ALL CONFORMANCE CHECKS PASSED" if ok else "CONFORMANCE FAILURES PRESENT"))
     return 0 if ok else 1

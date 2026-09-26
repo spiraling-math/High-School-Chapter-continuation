@@ -1,0 +1,240 @@
+{
+  "generatorId": "gen.functions.foundations",
+  "generatorVersion": "1.0.0",
+  "validatorVersion": "1.0.0",
+  "approvalStatus": "pending-review",
+  "objectiveReviewStatus": "proposed",
+  "gitCommit": "939a83812528ee6a52391e86ccf85d8856c86d49",
+  "hiddenFromNormalStudioAndProduction": true,
+  "versionTags": {
+    "previousVersionTag": null,
+    "currentImplementationTag": "functions-v1.0.0",
+    "approvedTag": null
+  },
+  "review": {
+    "decision": "pending-review",
+    "decisionLogRef": "DECISION_LOG.md #65",
+    "specification": "docs/GENERATOR_SPEC_functions_PROPOSAL.md",
+    "reviewPack": "docs/review/functions_review_pack.md",
+    "ownerAsked": [
+      "approve the eleven proposed SPI.IBDPAASL.FUNC.* objectives and their task mapping",
+      "approve the canonical-first answer contracts answer.type 'algebraic-expression' and 'interval' (+ the ASCII-anchored checkers pinned by oracle/golden/functions_checker_corpus.json)",
+      "approve the item mathematics, phrasing, bands, solutions, misconception rules + feedback and the MC policy",
+      "ratify the controlled-vocabulary extension FUNC -> functions + strand introducing-functions (registry §4.6)"
+    ],
+    "sharedInfrastructure": "answer.type 'algebraic-expression' (canonical polynomial coefficient vector, ascending degree, variable x; derived answer.display) and answer.type 'interval' (real-subset descriptor: reals | ray | bounded | reals-except with exact rational endpoints; derived answer.display) + the two ASCII-anchored parser/canonicalizer/checkers and their 7 + 8 result codes — PROPOSED. Does NOT authorize rational functions, radicals or transcendental expressions as answers, unions of intervals, open rays for domains, or graphs."
+  },
+  "schemaExtension": {
+    "note": "answer.type 'algebraic-expression' + 'interval' (canonical-first) — PROPOSED, additive (six if/then rules)",
+    "detail": "The coefficient vector / real-subset descriptor IS answer.canonical; answer.display is derived plain ASCII text. A formatted string is never the canonical value. Existing approved families' items and manifests are unaffected except the schema/compiledValidator digests, re-frozen."
+  },
+  "objectiveIds": [
+    "SPI.IBDPAASL.FUNC.IDENTIFY_FUNCTION.01",
+    "SPI.IBDPAASL.FUNC.EVALUATE.01",
+    "SPI.IBDPAASL.FUNC.SOLVE_FOR_INPUT.01",
+    "SPI.IBDPAASL.FUNC.DOMAIN.01",
+    "SPI.IBDPAASL.FUNC.RANGE.01",
+    "SPI.IBDPAASL.FUNC.COMPOSITE_VALUE.01",
+    "SPI.IBDPAASL.FUNC.COMPOSITE_EXPRESSION.01",
+    "SPI.IBDPAASL.FUNC.FUNCTION_FROM_COMPOSITE.01",
+    "SPI.IBDPAASL.FUNC.INVERSE_VALUE.01",
+    "SPI.IBDPAASL.FUNC.INVERSE_EXPRESSION.01",
+    "SPI.IBDPAASL.FUNC.ONE_TO_ONE_RESTRICTION.01"
+  ],
+  "tasks": [
+    "identify_function",
+    "evaluate_function",
+    "solve_for_input",
+    "domain_of_function",
+    "range_of_function",
+    "composite_value",
+    "composite_expression",
+    "function_from_composite",
+    "inverse_value",
+    "inverse_expression",
+    "one_to_one_restriction"
+  ],
+  "interactionTypes": [
+    "free-response",
+    "multiple-choice"
+  ],
+  "answerTypes": [
+    "integer",
+    "exact-rational",
+    "algebraic-expression",
+    "interval",
+    "multiple-choice"
+  ],
+  "mcPolicy": {
+    "mcOnlyTasks": [
+      "identify_function"
+    ],
+    "mcEligibleTasks": [
+      "identify_function",
+      "evaluate_function",
+      "solve_for_input",
+      "domain_of_function",
+      "range_of_function",
+      "composite_value",
+      "composite_expression",
+      "function_from_composite",
+      "inverse_value",
+      "inverse_expression",
+      "one_to_one_restriction"
+    ],
+    "note": "identify_function is multiple-choice only (an explicit free-response request raises); every other task serves free-response and multiple-choice with three formula-backed misconception distractors. The legacy answerType selector is not consulted (ratio v1.0.2 precedent)."
+  },
+  "misconceptionCount": 68,
+  "artifacts": {
+    "oracleCore": {
+      "path": "oracle/spi_oracle/functions_core.py",
+      "sha256": "5fa74f9db9b5c45b761302eb873d65b9207b2b116543e3023d66d4a577e14d88",
+      "present": true
+    },
+    "oracleMisconceptions": {
+      "path": "oracle/spi_oracle/functions_misconceptions.py",
+      "sha256": "9fa310b5685eaa6a66db7d415027caef814539081f25be3058f0b3dab08dd8d3",
+      "present": true
+    },
+    "oracleGenerator": {
+      "path": "oracle/spi_oracle/functions.py",
+      "sha256": "034bad31ad69ec775cb8b1487d5f002e4d4fa1d6969920688d5b9992f6dc1d48",
+      "present": true
+    },
+    "oraclePolynomial": {
+      "path": "oracle/spi_oracle/polynomial.py",
+      "sha256": "96183dbdf4afb2d75261394223d7fd9b33a5a30280467ed7c35fa71ee9cf743a",
+      "present": true
+    },
+    "oracleExpressionChecker": {
+      "path": "oracle/spi_oracle/expression_checker.py",
+      "sha256": "d7c0c7e64f76da1154af8827660c5cba0719d9fb3a4e842d35ca2819cd25748f",
+      "present": true
+    },
+    "oracleIntervalChecker": {
+      "path": "oracle/spi_oracle/interval_checker.py",
+      "sha256": "ffc7b30c543f7d40fc80a5a5ed9a2997a457870efa56e8e64fa3cab0245b4a3f",
+      "present": true
+    },
+    "oracleRunner": {
+      "path": "oracle/run_functions.py",
+      "sha256": "3ef5374ac213e664ccadd6a889b6bd0f185a08377b18ed5b850ee54e4351663e",
+      "present": true
+    },
+    "oracleTests": {
+      "path": "oracle/tests/test_functions.py",
+      "sha256": "56ceb32a6f1beb86f8bf4e0c2dc0ab8e565a8de2519e7f9e2bac6454fb56825b",
+      "present": true
+    },
+    "oracleCheckerTests": {
+      "path": "oracle/tests/test_functions_checkers.py",
+      "sha256": "566d224d4647202b42a134037607de416ef273e680dd62992a4b34d15eeb3dc0",
+      "present": true
+    },
+    "golden": {
+      "path": "oracle/golden/functions.golden.json",
+      "sha256": "5294962cab6d1615eb19da6b9b9e5192a32b04a2dae02cfdc9268d3d9efa9b84",
+      "present": true
+    },
+    "parity": {
+      "path": "oracle/golden/functions.parity.json",
+      "sha256": "9d47c4a23a70c6cc21e913d16f86aa213d3031a436f3c1938ba554908faae97b",
+      "present": true
+    },
+    "checkerCorpus": {
+      "path": "oracle/golden/functions_checker_corpus.json",
+      "sha256": "5e707db0e3f0b2c1b355d110c07087e9a6af9fb3e57534b9cd030fdc3411cdb9",
+      "present": true
+    },
+    "tsCore": {
+      "path": "domains/functions/functions-core.ts",
+      "sha256": "e3fa8b52d0b7250a619be1766e1de47618425e1042e7c891f19c2125c448f3bd",
+      "present": true
+    },
+    "tsMisconceptions": {
+      "path": "domains/functions/functions-misconceptions.ts",
+      "sha256": "1929a64a48907504c4b04080e53163adabcfeb06f124b6e246a87822d2277f18",
+      "present": true
+    },
+    "tsGenerator": {
+      "path": "domains/functions/functions.ts",
+      "sha256": "0c829b95bff4c8a8c82f8f68b7ba06478649a46bb1d6ddd025b65db304b1ae28",
+      "present": true
+    },
+    "tsParityTest": {
+      "path": "domains/functions/functions.parity.test.ts",
+      "sha256": "17f8ff8e5a1ea7ab9c3a2f674ab7bda7149f195a02304d4528d03e558dfcc704",
+      "present": true
+    },
+    "tsUnitTest": {
+      "path": "domains/functions/functions.test.ts",
+      "sha256": "4b88c293595f89de45e6452202ccba1d56c684deeddf3b37277bb61f464747f6",
+      "present": true
+    },
+    "tsPolynomial": {
+      "path": "core/exact-math/polynomial.ts",
+      "sha256": "34251d31eee6cc97c1c7cf3c17bbbe897c657bdcad41918e0e41529adf70cb65",
+      "present": true
+    },
+    "tsExpressionChecker": {
+      "path": "core/answer-checking/expression-checker.ts",
+      "sha256": "7b944ccbf5cf1d9fd4e4a8c30766e5f3b1c31c6b7534c524cfabfea2dc58d0b4",
+      "present": true
+    },
+    "tsIntervalChecker": {
+      "path": "core/answer-checking/interval-checker.ts",
+      "sha256": "d662c79d4a9eef6a00593f0989b8b8cc046385fe282ff759f1cfa1750b2a61af",
+      "present": true
+    },
+    "tsCheckerCorpusTest": {
+      "path": "core/answer-checking/functions-checker-corpus.test.ts",
+      "sha256": "299a2d350180d4b7d599b5123faa1783a0dcba713572dad353628b9ed055ca01",
+      "present": true
+    },
+    "objectives": {
+      "path": "curriculum/objectives/SPI.IBDPAASL.FUNC.json",
+      "sha256": "5bdb5df2ee9616e74b844ad64fe8b8384c448508b715ff239f515042f2304f3d",
+      "present": true
+    },
+    "objectiveIds": {
+      "path": "core/curriculum/functions-objective-ids.ts",
+      "sha256": "36f02b78050436e51ad0ee56d724dda07039a07ca22e4dc13f6eeca39b53c525",
+      "present": true
+    },
+    "schema": {
+      "path": "schemas/question-item.schema.json",
+      "sha256": "43b05e8e6cf0368305db6766abd89261aaad07bf592317cfe7e5cda2d7659ff3",
+      "present": true
+    },
+    "compiledValidator": {
+      "path": "core/schema/compiled/question-item.validator.mjs",
+      "sha256": "7462dbf8de2f819671afec3efa3cf0ce2c32060cb85c27b2e46006bd5f5bafd0",
+      "present": true
+    },
+    "misconceptionsJson": {
+      "path": "core/misconceptions/functions.json",
+      "sha256": "a26ab4e7e90c0169d20e83c6a1e3a2b1762c7267606ac2614363c83cd4a6f018",
+      "present": true
+    },
+    "specificationProposal": {
+      "path": "docs/GENERATOR_SPEC_functions_PROPOSAL.md",
+      "sha256": "344fbe983f13f04e288b8f053db2617ce4e9cebd37e8184174d813ca004cae8d",
+      "present": true
+    },
+    "distribution": {
+      "path": "docs/review/functions_distribution.json",
+      "sha256": "e54803f633b1c738ff285a6bbc98a3d3ffeb80dd953400eb6e17ad3dc6aa832b",
+      "present": true
+    },
+    "reviewPackJson": {
+      "path": "docs/review/functions_review_pack.json",
+      "sha256": "594b8d91d60e03109383f8b439bb8f1d80144178c55f76c0c9fbb40c909d554f",
+      "present": true
+    },
+    "reviewPackMd": {
+      "path": "docs/review/functions_review_pack.md",
+      "sha256": "6239657f6a814039e508f26fa4c702c598fdf25fb86d13011d1641e92047e297",
+      "present": true
+    }
+  }
+}

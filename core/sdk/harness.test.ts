@@ -39,13 +39,15 @@ test("the registered generators are the expected set", () => {
     "gen.measurement.mensuration@1.0.1",
     "gen.geometry.transformations@1.0.2",
     "gen.proportion.ratio@1.0.2",
+    "gen.functions.foundations@1.0.0",
   ]);
 });
 
-test("approval lifecycle: nine families approved (incl. ratio v1.0.2); none pending-review", () => {
-  // gen.proportion.ratio v1.0.2 is now curriculum-APPROVED (DECISION_LOG.md #61), joining the eight earlier
+test("approval lifecycle: nine families approved (incl. ratio v1.0.2); functions v1.0.0 pending-review", () => {
+  // gen.proportion.ratio v1.0.2 is curriculum-APPROVED (DECISION_LOG.md #61), joining the eight earlier
   // families. All nine are selectable in normal Studio + production; ratio appears in both
-  // generatorsForMode("normal") and approvedGenerators(). No registered generator remains pending-review.
+  // generatorsForMode("normal") and approvedGenerators(). gen.functions.foundations v1.0.0 is registered
+  // PENDING-REVIEW (DECISION_LOG.md #65): review mode only, never in approvedGenerators()/production.
   for (const id of ["gen.sequences.arithmetic", "gen.sequences.geometric", "gen.algebra.linear-equations",
     "gen.geometry.angles-figures", "gen.geometry.coordinate-lines", "gen.stats.data-handling",
     "gen.measurement.mensuration", "gen.geometry.transformations", "gen.proportion.ratio"]) {
@@ -58,6 +60,11 @@ test("approval lifecycle: nine families approved (incl. ratio v1.0.2); none pend
   assert.deepEqual(approvedGenerators().map((g) => g.id), normal, "approved set == normal-mode set");
   assert.ok(approvedGenerators().some((g) => g.id === "gen.proportion.ratio"), "ratio INCLUDED in production exports/samples");
   assert.equal(normal.length, 9);
-  assert.equal(review.length, 9);
+  assert.equal(review.length, 10);
   assert.ok(normal.every((id) => approvalStatusOf(GENERATORS.find((g) => g.id === id)!) === "approved"));
+  const functions = GENERATORS.find((g) => g.id === "gen.functions.foundations")!;
+  assert.equal(approvalStatusOf(functions), "pending-review");
+  assert.ok(!normal.includes("gen.functions.foundations"), "functions is HIDDEN from normal Studio + production");
+  assert.ok(review.includes("gen.functions.foundations"), "functions is visible in review mode");
+  assert.ok(!approvedGenerators().some((g) => g.id === "gen.functions.foundations"), "functions EXCLUDED from exports/samples");
 });

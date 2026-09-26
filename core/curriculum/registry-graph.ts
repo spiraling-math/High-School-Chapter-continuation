@@ -84,6 +84,9 @@ export const CONTROLLED_VOCABULARY: ControlledVocabulary = {
     NUM: "number",
     RATIO: "proportion",
     STAT: "statistics",
+    // Governance action (§4.6, DECISION_LOG.md #65): the IB AA SL functions family (pending-review) adds the
+    // `FUNC` domain segment + `introducing-functions` strand for its eleven PROPOSED objectives.
+    FUNC: "functions",
   },
   subsegments: new Set([
     "ARITH", "GEO", "LINEQ", "COORD", "TRANS", "PERIM", "AREA", "READ", "FREQ", "AVG", "PROB",
@@ -102,6 +105,7 @@ export const CONTROLLED_VOCABULARY: ControlledVocabulary = {
     "signed-numbers",
     "ratio-and-proportion",
     "data-handling-and-probability",
+    "introducing-functions",
   ]),
 };
 

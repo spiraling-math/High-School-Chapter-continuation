@@ -1,0 +1,3637 @@
+{
+ "note": "Cross-engine grading corpus: codes assigned by the Python oracle; the TypeScript checkers must agree exactly.",
+ "expression": [
+  {
+   "input": "4x^2-12x+10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(2x-3)^2+1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "10 - 12x + 4x²",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4x**2 - 12*x + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(2x-3)(2x-3)+1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(f o g)(x) = (2x-3)^2 + 1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(f∘g)(x)=(2x-3)^2+1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y = 4x^2 - 12x + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "2(2x^2 - 6x + 5)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(8x^2 - 24x + 20)/2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4·x^2 − 12·x + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4X^2 - 12X + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "6x-3=0",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x^7",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "(2x-3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "2t+1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "(x+5)/(x-1)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "not-polynomial"
+   }
+  },
+  {
+   "input": "x^-1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "not-polynomial"
+   }
+  },
+  {
+   "input": "4x-2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-degree"
+   }
+  },
+  {
+   "input": "4x^2-12x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "4x^2 - 12x + 10 + 0x",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4x^2-12x+10.0",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "４x^2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "٤x^2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "4x^2 % 3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "1111111111111x",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "4x^{2} - 12x + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4x^(2)-12x+10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "-(-4x^2+12x-10)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4x^2-12x+10 ",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": " 4 x ^ 2 - 12 x + 10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4xx-12x+10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4x*x-12x+10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "sqrt(x)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "4x^2-12x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM",
+     "coefficients": [
+      {
+       "num": 9,
+       "den": 1
+      },
+      {
+       "num": -12,
+       "den": 1
+      },
+      {
+       "num": 4,
+       "den": 1
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "code": "misconception",
+    "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM"
+   }
+  },
+  {
+   "input": "4x^2+9-12x",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM",
+     "coefficients": [
+      {
+       "num": 9,
+       "den": 1
+      },
+      {
+       "num": -12,
+       "den": 1
+      },
+      {
+       "num": 4,
+       "den": 1
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "code": "misconception",
+    "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM"
+   }
+  },
+  {
+   "input": "(2x)^2 - 12x + 9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM",
+     "coefficients": [
+      {
+       "num": 9,
+       "den": 1
+      },
+      {
+       "num": -12,
+       "den": 1
+      },
+      {
+       "num": 4,
+       "den": 1
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "code": "misconception",
+    "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM"
+   }
+  },
+  {
+   "input": "4x^2-12x+10",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 10,
+      "den": 1
+     },
+     {
+      "num": -12,
+      "den": 1
+     },
+     {
+      "num": 4,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM",
+     "coefficients": [
+      {
+       "num": 9,
+       "den": 1
+      },
+      {
+       "num": -12,
+       "den": 1
+      },
+      {
+       "num": 4,
+       "den": 1
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "1/2x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(x+18)/2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x/2 + 9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "0.5x + 9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "9 + x/2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "0,5x + 9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x/2+9/1",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(1/2)x + 9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "1/2*x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "2x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "x+9",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": 9,
+      "den": 1
+     },
+     {
+      "num": 1,
+      "den": 2
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "6x-3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "6x - 3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "-3+6x",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "3(2x-1)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "3(2x - 1)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "6x-3=",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "= 6x - 3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "6x-3-0",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "6x+-3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "6*x-3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "6x - (3)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -3,
+      "den": 1
+     },
+     {
+      "num": 6,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(x-2)/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x/3 - 2/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "1/3x - 2/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(1/3)x - (2/3)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f^-1(x) = (x-2)/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f^{-1}(x)=(x-2)/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f⁻¹(x) = (x-2)/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "(x+2)/3",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "x/3 - 2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "3x - 2",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  },
+  {
+   "input": "1/(3x+2)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "not-polynomial"
+   }
+  },
+  {
+   "input": "(x-2)/(3)",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "0.333x - 0.667",
+   "canonical": {
+    "variable": "x",
+    "coefficients": [
+     {
+      "num": -2,
+      "den": 3
+     },
+     {
+      "num": 1,
+      "den": 3
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-coefficients"
+   }
+  }
+ ],
+ "interval": [
+  {
+   "input": "x >= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x>=2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "2 <= x",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x≥2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x ⩾ 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[2, inf)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[2,∞)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[2, infinity)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[2, oo)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x | x >= 2}",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x : x ≥ 2}",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x ∈ ℝ | x ≥ 2}",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x=>2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x <= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-direction"
+   }
+  },
+  {
+   "input": "x >= 3",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "x > 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "(2, inf)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "x != 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "all real numbers",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x = 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "[5, 2]",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x >= 2 or x <= 1",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x >= 2 and x >= 3",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "[2, inf]",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "(-inf, 2)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-direction"
+   }
+  },
+  {
+   "input": "x >= two",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x ≥ 2 ≥ 1",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "y >= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "f(x) >= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "x >= 2.0",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x >= 4/2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x >= ٢",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "X >= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x>=+2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "2=<x",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x ≥ 2, x ∈ ℝ",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x > 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT",
+     "canonical": {
+      "kind": "ray",
+      "variable": "x",
+      "endpoint": {
+       "num": 2,
+       "den": 1
+      },
+      "inclusive": false,
+      "direction": "ge"
+     }
+    }
+   ],
+   "expected": {
+    "code": "misconception",
+    "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT"
+   }
+  },
+  {
+   "input": "(2, inf)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT",
+     "canonical": {
+      "kind": "ray",
+      "variable": "x",
+      "endpoint": {
+       "num": 2,
+       "den": 1
+      },
+      "inclusive": false,
+      "direction": "ge"
+     }
+    }
+   ],
+   "expected": {
+    "code": "misconception",
+    "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT"
+   }
+  },
+  {
+   "input": "x >= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 2,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [
+    {
+     "misconceptionId": "MISC.FUNC.DOMAIN_STRICT_ENDPOINT",
+     "canonical": {
+      "kind": "ray",
+      "variable": "x",
+      "endpoint": {
+       "num": 2,
+       "den": 1
+      },
+      "inclusive": false,
+      "direction": "ge"
+     }
+    }
+   ],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x <= 2.5",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x <= 5/2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(-inf, 5/2]",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(-inf, 2.5]",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x < 2.5",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "x <= 2",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "x >= 2.5",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-direction"
+   }
+  },
+  {
+   "input": "5/2 >= x",
+   "canonical": {
+    "kind": "ray",
+    "variable": "x",
+    "endpoint": {
+     "num": 5,
+     "den": 2
+    },
+    "inclusive": true,
+    "direction": "le"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y >= -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f(x) ≥ -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "g(x)>=-4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[-4, inf)",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "-4 <= y",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x >= -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "y > -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "y >= 4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "y <= -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-direction"
+   }
+  },
+  {
+   "input": "h(x) >= -4",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f(x)>=-4.0",
+   "canonical": {
+    "kind": "ray",
+    "variable": "y",
+    "endpoint": {
+     "num": -4,
+     "den": 1
+    },
+    "inclusive": true,
+    "direction": "ge"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x != 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x =/= 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x ≠ 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x ∈ ℝ, x ≠ 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "all real numbers except 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "R \\ {3}",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "ℝ∖{3}",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x | x != 3}",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x != -3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "x != 3, 5",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "x != 0",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "x > 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "all real numbers",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "y != 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "x in R, x != 3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x!=3andx!=3",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x ∈ R : x ≠ 3}",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "x",
+    "points": [
+     {
+      "num": 3,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y != 1",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "f(x) ≠ 1",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y ≠ 1",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x != 1",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "y != 0",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "R \\ {1}",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "all real numbers except 1",
+   "canonical": {
+    "kind": "reals-except",
+    "variable": "y",
+    "points": [
+     {
+      "num": 1,
+      "den": 1
+     }
+    ]
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "-1 <= y <= 4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "4 >= y >= -1",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "[-1, 4]",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y >= -1 and y <= 4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y <= 4 and y >= -1",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{y | -1 <= y <= 4}",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "-1 < y <= 4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "(-1, 4)",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "-1 <= y <= 5",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-endpoint"
+   }
+  },
+  {
+   "input": "y >= -1",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "-1 <= x <= 4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-variable"
+   }
+  },
+  {
+   "input": "[-1,4)",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-inclusivity"
+   }
+  },
+  {
+   "input": "-1<=f(x)<=4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y >= -1, y <= 4",
+   "canonical": {
+    "kind": "bounded",
+    "variable": "y",
+    "lo": {
+     "num": -1,
+     "den": 1
+    },
+    "hi": {
+     "num": 4,
+     "den": 1
+    },
+    "loInclusive": true,
+    "hiInclusive": true
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "all real numbers",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "all reals",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "R",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "ℝ",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x ∈ ℝ",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(-inf, inf)",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "(-∞, ∞)",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "y in R",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "the set of all real numbers",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "x >= 2",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "x != 3",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "wrong-kind"
+   }
+  },
+  {
+   "input": "real numbers",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "reals",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x | x in R}",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "correct"
+   }
+  },
+  {
+   "input": "{x ∈ R}",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "x",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  },
+  {
+   "input": "any",
+   "canonical": {
+    "kind": "reals"
+   },
+   "diagnostics": [],
+   "expected": {
+    "code": "unparseable"
+   }
+  }
+ ]
+}

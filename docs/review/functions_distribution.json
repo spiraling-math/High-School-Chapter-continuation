@@ -1,0 +1,373 @@
+{
+  "generatorId": "gen.functions.foundations",
+  "generatorVersion": "1.0.0",
+  "sweepSeeds": 10000,
+  "interactionPools": [
+    "free-response",
+    "multiple-choice"
+  ],
+  "declaredBands": {
+    "identify_function": [
+      1,
+      2
+    ],
+    "evaluate_function": [
+      1,
+      3
+    ],
+    "solve_for_input": [
+      2,
+      3
+    ],
+    "domain_of_function": [
+      2,
+      4
+    ],
+    "range_of_function": [
+      3,
+      5
+    ],
+    "composite_value": [
+      2,
+      3
+    ],
+    "composite_expression": [
+      3,
+      5
+    ],
+    "function_from_composite": [
+      4,
+      5
+    ],
+    "inverse_value": [
+      2,
+      4
+    ],
+    "inverse_expression": [
+      3,
+      4
+    ],
+    "one_to_one_restriction": [
+      4,
+      5
+    ]
+  },
+  "unreachableDeclaredBands": {},
+  "invalidItems": 0,
+  "byTask": {
+    "identify_function": {
+      "count": 896,
+      "bands": {
+        "2": 620,
+        "1": 276
+      },
+      "kinds": {
+        "-": 896
+      },
+      "interactions": {
+        "multiple-choice": 896
+      },
+      "answerTypes": {
+        "multiple-choice": 896
+      },
+      "misconceptions": {
+        "MISC.FUNC.MANY_TO_ONE_REJECTED": 896,
+        "MISC.FUNC.CONSTANT_REJECTED": 896,
+        "MISC.FUNC.PATTERN_REQUIRED": 896
+      }
+    },
+    "evaluate_function": {
+      "count": 1911,
+      "bands": {
+        "1": 257,
+        "3": 1178,
+        "2": 476
+      },
+      "kinds": {
+        "linear": 479,
+        "reciprocal": 433,
+        "quadratic": 520,
+        "sqrt": 479
+      },
+      "interactions": {
+        "free-response": 986,
+        "multiple-choice": 925
+      },
+      "answerTypes": {
+        "integer": 1613,
+        "exact-rational": 298
+      },
+      "misconceptions": {
+        "MISC.FUNC.EVAL_DENOMINATOR_NOT_GROUPED": 171,
+        "MISC.FUNC.EVAL_RECIPROCAL_INVERTED": 156,
+        "MISC.FUNC.EVAL_DROP_CONSTANT": 735,
+        "MISC.FUNC.EVAL_FORGOT_MULTIPLY": 246,
+        "MISC.FUNC.EVAL_SIGN_OF_INPUT": 288,
+        "MISC.FUNC.EVAL_SQUARE_COEFFICIENT": 105,
+        "MISC.FUNC.EVAL_SQUARE_AS_DOUBLE": 103,
+        "MISC.FUNC.EVAL_CONSTANT_SIGN_FLIPPED": 356,
+        "MISC.FUNC.EVAL_ROOT_IGNORED": 183,
+        "MISC.FUNC.EVAL_HALVE_INSTEAD_OF_ROOT": 183,
+        "MISC.FUNC.EVAL_NEGATIVE_ROOT": 203,
+        "MISC.FUNC.EVAL_SQUARE_NEGATIVE": 46
+      }
+    },
+    "solve_for_input": {
+      "count": 1914,
+      "bands": {
+        "3": 1198,
+        "2": 716
+      },
+      "kinds": {
+        "reciprocal": 513,
+        "sqrt": 381,
+        "linear": 1020
+      },
+      "interactions": {
+        "free-response": 1014,
+        "multiple-choice": 900
+      },
+      "answerTypes": {
+        "integer": 1610,
+        "exact-rational": 304
+      },
+      "misconceptions": {
+        "MISC.FUNC.SOLVE_SQUARE_BEFORE_ISOLATING": 151,
+        "MISC.FUNC.SOLVE_WRONG_INVERSE": 595,
+        "MISC.FUNC.SOLVE_FORGOT_TO_SQUARE": 151,
+        "MISC.FUNC.SOLVE_STOPS_BEFORE_DIVIDING": 447,
+        "MISC.FUNC.SOLVE_DIVIDE_BY_CONSTANT": 165,
+        "MISC.FUNC.SOLVE_EVALUATES_INSTEAD": 615,
+        "MISC.FUNC.SOLVE_IGNORES_SHIFT": 186,
+        "MISC.FUNC.SOLVE_POLE_SIGN": 235,
+        "MISC.FUNC.SOLVE_RECIPROCAL_NOT_INVERTED": 155
+      }
+    },
+    "domain_of_function": {
+      "count": 1963,
+      "bands": {
+        "3": 768,
+        "2": 664,
+        "4": 531
+      },
+      "kinds": {
+        "sqrt": 709,
+        "reciprocal": 609,
+        "quadratic": 295,
+        "linear": 350
+      },
+      "interactions": {
+        "free-response": 1028,
+        "multiple-choice": 935
+      },
+      "answerTypes": {
+        "interval": 1963
+      },
+      "misconceptions": {
+        "MISC.FUNC.DOMAIN_ALL_REALS": 433,
+        "MISC.FUNC.DOMAIN_DIRECTION_FLIPPED": 283,
+        "MISC.FUNC.DOMAIN_STRICT_ENDPOINT": 272,
+        "MISC.FUNC.DOMAIN_EXCLUDES_ZERO": 568,
+        "MISC.FUNC.DOMAIN_NONNEGATIVE_ONLY": 302,
+        "MISC.FUNC.DOMAIN_EXCLUDES_CONSTANT": 302,
+        "MISC.FUNC.DOMAIN_POLE_SIGN": 261,
+        "MISC.FUNC.DOMAIN_POLE_AS_INEQUALITY": 198,
+        "MISC.FUNC.DOMAIN_AS_EXCLUDED_POINT": 101,
+        "MISC.FUNC.DOMAIN_ENDPOINT_SIGN": 85
+      }
+    },
+    "range_of_function": {
+      "count": 1866,
+      "bands": {
+        "4": 886,
+        "3": 401,
+        "5": 579
+      },
+      "kinds": {
+        "sqrt": 364,
+        "reciprocal": 381,
+        "linear_restricted": 375,
+        "quadratic": 746
+      },
+      "interactions": {
+        "multiple-choice": 894,
+        "free-response": 972
+      },
+      "answerTypes": {
+        "interval": 1866
+      },
+      "misconceptions": {
+        "MISC.FUNC.RANGE_ALL_REALS": 566,
+        "MISC.FUNC.RANGE_DIRECTION_FLIPPED": 391,
+        "MISC.FUNC.RANGE_STRICT_AT_BOUND": 252,
+        "MISC.FUNC.DOMAIN_RANGE_CONFUSED": 377,
+        "MISC.FUNC.RANGE_POLE_AS_INEQUALITY": 150,
+        "MISC.FUNC.RANGE_USES_CONSTANT_TERM": 101,
+        "MISC.FUNC.RANGE_IGNORES_SHIFT": 240,
+        "MISC.FUNC.RANGE_ONLY_LOWER_BOUND": 168,
+        "MISC.FUNC.RANGE_STRICT_ENDPOINTS": 165,
+        "MISC.FUNC.RANGE_USES_VERTEX_X": 272
+      }
+    },
+    "composite_value": {
+      "count": 1977,
+      "bands": {
+        "3": 1731,
+        "2": 246
+      },
+      "kinds": {
+        "linear/quadratic:gf": 280,
+        "quadratic/quadratic:gf": 257,
+        "linear/quadratic:fg": 238,
+        "linear/linear:fg": 242,
+        "quadratic/quadratic:fg": 246,
+        "quadratic/linear:gf": 249,
+        "linear/linear:gf": 234,
+        "quadratic/linear:fg": 231
+      },
+      "interactions": {
+        "multiple-choice": 965,
+        "free-response": 1012
+      },
+      "answerTypes": {
+        "integer": 1977
+      },
+      "misconceptions": {
+        "MISC.FUNC.COMP_OUTER_AT_INPUT": 552,
+        "MISC.FUNC.COMP_ORDER_REVERSED": 624,
+        "MISC.FUNC.COMP_AS_PRODUCT": 579,
+        "MISC.FUNC.COMP_AS_SUM": 585,
+        "MISC.FUNC.COMP_INNER_ONLY": 555
+      }
+    },
+    "composite_expression": {
+      "count": 1854,
+      "bands": {
+        "3": 589,
+        "4": 667,
+        "5": 598
+      },
+      "kinds": {
+        "linear/linear:gf": 292,
+        "quadratic/linear:gf": 301,
+        "linear/quadratic:gf": 292,
+        "quadratic/linear:fg": 344,
+        "linear/linear:fg": 297,
+        "linear/quadratic:fg": 328
+      },
+      "interactions": {
+        "multiple-choice": 850,
+        "free-response": 1004
+      },
+      "answerTypes": {
+        "algebraic-expression": 1854
+      },
+      "misconceptions": {
+        "MISC.FUNC.COMP_AS_PRODUCT": 785,
+        "MISC.FUNC.COMP_AS_SUM": 793,
+        "MISC.FUNC.COMP_ORDER_REVERSED": 772,
+        "MISC.FUNC.COMP_SQUARE_NO_CROSS_TERM": 200
+      }
+    },
+    "function_from_composite": {
+      "count": 1862,
+      "bands": {
+        "5": 1369,
+        "4": 493
+      },
+      "kinds": {
+        "-": 1862
+      },
+      "interactions": {
+        "free-response": 974,
+        "multiple-choice": 888
+      },
+      "answerTypes": {
+        "algebraic-expression": 1862
+      },
+      "misconceptions": {
+        "MISC.FUNC.FFC_SCALE_NOT_INVERTED": 671,
+        "MISC.FUNC.FFC_COMPOSES_INSTEAD": 655,
+        "MISC.FUNC.FFC_IGNORES_INNER": 690,
+        "MISC.FUNC.FFC_SHIFT_NOT_INVERTED": 648
+      }
+    },
+    "inverse_value": {
+      "count": 1918,
+      "bands": {
+        "2": 747,
+        "4": 772,
+        "3": 399
+      },
+      "kinds": {
+        "inverse_at": 922,
+        "solve_inverse_equation": 996
+      },
+      "interactions": {
+        "free-response": 995,
+        "multiple-choice": 923
+      },
+      "answerTypes": {
+        "integer": 1743,
+        "exact-rational": 175
+      },
+      "misconceptions": {
+        "MISC.FUNC.INV_SIGN_ERROR": 691,
+        "MISC.FUNC.INVVAL_RECIPROCAL": 625,
+        "MISC.FUNC.INVVAL_IDENTITY": 379,
+        "MISC.FUNC.INVVAL_FORWARD": 334,
+        "MISC.FUNC.INV_UNDO_ORDER": 350,
+        "MISC.FUNC.INVVAL_APPLIES_INVERSE_AGAIN": 390
+      }
+    },
+    "inverse_expression": {
+      "count": 1923,
+      "bands": {
+        "4": 1661,
+        "3": 262
+      },
+      "kinds": {
+        "-": 1923
+      },
+      "interactions": {
+        "free-response": 1014,
+        "multiple-choice": 909
+      },
+      "answerTypes": {
+        "algebraic-expression": 1923
+      },
+      "misconceptions": {
+        "MISC.FUNC.INV_SIGN_ERROR": 562,
+        "MISC.FUNC.INV_NEGATES_ONLY": 498,
+        "MISC.FUNC.INV_AS_RECIPROCAL": 593,
+        "MISC.FUNC.INV_SWAPS_ROLES": 542,
+        "MISC.FUNC.INV_UNDO_ORDER": 532
+      }
+    },
+    "one_to_one_restriction": {
+      "count": 1916,
+      "bands": {
+        "4": 298,
+        "5": 1618
+      },
+      "kinds": {
+        "quadratic": 1916
+      },
+      "interactions": {
+        "free-response": 1001,
+        "multiple-choice": 915
+      },
+      "answerTypes": {
+        "integer": 617,
+        "exact-rational": 1299
+      },
+      "misconceptions": {
+        "MISC.FUNC.VERTEX_X_MISSING_HALF": 600,
+        "MISC.FUNC.VERTEX_X_SIGN": 570,
+        "MISC.FUNC.VERTEX_Y_FOR_X": 537,
+        "MISC.FUNC.RESTRICTION_ZERO": 557,
+        "MISC.FUNC.VERTEX_X_USES_C": 481
+      }
+    }
+  }
+}

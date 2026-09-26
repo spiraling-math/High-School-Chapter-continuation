@@ -211,7 +211,7 @@
       "required": ["type", "canonical"],
       "properties": {
         "type": { "$ref": "#/$defs/answerType" },
-        "canonical": { "description": "The canonical answer value. Encoding depends on type. For 'integer' and 'exact-rational' it is a normalized rational object {num, den} with den >= 1 (den = 1 for integers); for 'algebraic-expression' a string; etc." },
+        "canonical": { "description": "The canonical answer value. Encoding depends on type. For 'integer' and 'exact-rational' it is a normalized rational object {num, den} with den >= 1 (den = 1 for integers); for 'algebraic-expression' the polynomial object {variable, coefficients}; for 'interval' the real-subset descriptor {kind, ...}; etc." },
         "display": { "type": "string", "description": "Canonical display form (KaTeX-ready)." },
         "accepts": {
           "type": "object",
@@ -369,6 +369,376 @@
           "$comment": "Guard: a canonical carrying 'parts' IS a ratio answer — reject a ratio-shaped canonical used with any other answer type.",
           "if": { "required": ["canonical"], "properties": { "canonical": { "type": "object", "required": ["parts"] } } },
           "then": { "properties": { "type": { "const": "ratio" } } }
+        },
+        {
+          "$comment": "An 'algebraic-expression' answer is canonical-first (gen.functions.foundations): answer.canonical IS the polynomial {variable, coefficients[]} (ascending degree, reduced rationals, trailing zeros stripped); answer.display is derived plain text. A formatted string is never the canonical value.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "algebraic-expression"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "variable",
+                  "coefficients"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "variable": {
+                    "type": "string",
+                    "const": "x"
+                  },
+                  "coefficients": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "num",
+                        "den"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "num": {
+                          "type": "integer"
+                        },
+                        "den": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "$comment": "An 'interval' answer (a real subset: a domain or a range) is canonical-first (gen.functions.foundations): answer.canonical is the descriptor {kind: reals | ray | bounded | reals-except, ...}; answer.display is derived plain text. The per-kind if/then rules below fix each kind's exact fields.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "interval"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "reals",
+                      "ray",
+                      "bounded",
+                      "reals-except"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "$comment": "interval canonical of kind 'reals': exactly these fields.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "interval"
+              },
+              "canonical": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "reals"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "canonical"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "reals"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "$comment": "interval canonical of kind 'ray': exactly these fields.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "interval"
+              },
+              "canonical": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "ray"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "canonical"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "variable",
+                  "endpoint",
+                  "inclusive",
+                  "direction"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "ray"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "enum": [
+                      "x",
+                      "y"
+                    ]
+                  },
+                  "endpoint": {
+                    "type": "object",
+                    "required": [
+                      "num",
+                      "den"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "num": {
+                        "type": "integer"
+                      },
+                      "den": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    }
+                  },
+                  "inclusive": {
+                    "type": "boolean"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "ge",
+                      "le"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "$comment": "interval canonical of kind 'bounded': exactly these fields.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "interval"
+              },
+              "canonical": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "bounded"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "canonical"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "variable",
+                  "lo",
+                  "hi",
+                  "loInclusive",
+                  "hiInclusive"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "bounded"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "enum": [
+                      "x",
+                      "y"
+                    ]
+                  },
+                  "lo": {
+                    "type": "object",
+                    "required": [
+                      "num",
+                      "den"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "num": {
+                        "type": "integer"
+                      },
+                      "den": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    }
+                  },
+                  "hi": {
+                    "type": "object",
+                    "required": [
+                      "num",
+                      "den"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "num": {
+                        "type": "integer"
+                      },
+                      "den": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    }
+                  },
+                  "loInclusive": {
+                    "type": "boolean"
+                  },
+                  "hiInclusive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "$comment": "interval canonical of kind 'reals-except': exactly these fields.",
+          "if": {
+            "properties": {
+              "type": {
+                "const": "interval"
+              },
+              "canonical": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "reals-except"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "canonical"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "variable",
+                  "points"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "reals-except"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "enum": [
+                      "x",
+                      "y"
+                    ]
+                  },
+                  "points": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "num",
+                        "den"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "num": {
+                          "type": "integer"
+                        },
+                        "den": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     },

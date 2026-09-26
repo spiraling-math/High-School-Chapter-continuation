@@ -49,8 +49,8 @@ test("the global report has the eight buckets", () => {
   }
 });
 
-test("ok===true on current data; 70 objectives; newReferencedUndefined empty", () => {
-  assert.equal(report.objectiveCount, 70);
+test("ok===true on current data; 81 objectives (70 approved + 11 proposed); newReferencedUndefined empty", () => {
+  assert.equal(report.objectiveCount, 81);
   assert.deepEqual(report.errors, [], `errors: ${report.errors.join("; ")}`);
   assert.deepEqual(report.newReferencedUndefined, []);
   assert.equal(report.ok, true);

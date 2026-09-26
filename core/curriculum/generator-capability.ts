@@ -7,8 +7,8 @@
  * partitions the 70 objectives against the generator fleet.
  *
  * Source of the task -> objective resolution:
- *   - the four EXPORTED `core/curriculum/*-objective-ids.ts` OBJECTIVE_BY_TASK maps
- *     (ratio, mensuration, stats, transformations); plus
+ *   - the five EXPORTED `core/curriculum/*-objective-ids.ts` OBJECTIVE_BY_TASK maps
+ *     (ratio, mensuration, stats, transformations, functions — the last pending-review); plus
  *   - five thin join maps below for the families whose OBJECTIVE_BY_TASK is internal
  *     to the domain module (arithmetic, geometric, linear, angles, coordinate-lines).
  * Every value is cross-checked at load against the registry; none is a new source of
@@ -27,6 +27,7 @@ import { OBJECTIVE_BY_TASK as RATIO_BY_TASK } from "./ratio-objective-ids.ts";
 import { OBJECTIVE_BY_TASK as MENS_BY_TASK } from "./mensuration-objective-ids.ts";
 import { OBJECTIVE_BY_TASK as STAT_BY_TASK } from "./stats-objective-ids.ts";
 import { OBJECTIVE_BY_TASK as TRANS_BY_TASK } from "./transformations-objective-ids.ts";
+import { OBJECTIVE_BY_TASK as FUNC_BY_TASK } from "./functions-objective-ids.ts";
 
 /** Generator coverage tier per existing objective (the single coverage vocabulary, §5.3). */
 export type CoverageTier = "G2_approved" | "G1_pendingOnly" | "G0_noGenerator";
@@ -89,6 +90,7 @@ const OBJECTIVE_BY_TASK_BY_GENERATOR: Record<string, Record<string, string>> = {
   "gen.measurement.mensuration": MENS_BY_TASK,
   "gen.geometry.transformations": TRANS_BY_TASK,
   "gen.proportion.ratio": RATIO_BY_TASK,
+  "gen.functions.foundations": FUNC_BY_TASK,
 };
 
 /** A generator task whose mapped objective is missing or retired (a parity failure). */

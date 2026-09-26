@@ -2,9 +2,10 @@
  * Registry manifest integrity + output-neutrality tests (§11 G8/G12).
  *
  * Asserts: every Phase-1 registry artifact's sha256 in objective_registry_manifest.json
- * matches the file on disk (0 drift); AND the manifest's frozen record of the 11 objective
+ * matches the file on disk (0 drift); AND the manifest's frozen record of the 11 APPROVED objective
  * files equals the on-disk sha256 of those files (the output-neutrality guard — proves the
- * approved objective definitions are byte-for-byte unchanged).
+ * approved objective definitions are byte-for-byte unchanged). The PROPOSED pending-review file
+ * (SPI.IBDPAASL.FUNC.json, DECISION_LOG #65) is manifested separately and never counted as approved.
  *
  * Run:  node --test core/curriculum/registry-manifest.test.ts
  */
@@ -31,6 +32,9 @@ interface Manifest {
   versionTags: { currentImplementationTag: string; approvedTag?: string };
   artifacts: Record<string, ArtifactEntry>;
   frozenObjectiveFiles: Record<string, ArtifactEntry>;
+  approvedObjectiveCount: number;
+  proposedObjectiveCount: number;
+  proposed: { approvalStatus: string; decisionLogRef: string; objectiveCount: number; files: Record<string, ArtifactEntry> };
 }
 
 const have = existsSync(rel(MANIFEST));
@@ -40,8 +44,12 @@ test("manifest exists and is curriculum-approved (DECISION_LOG #63)", { skip: !h
   assert.ok(manifest);
   assert.equal(manifest.approvalStatus, "approved");
   assert.equal(manifest.versionTags.approvedTag, "approved-objective-registry-phase1-v1.0.0");
-  assert.equal(manifest.versionTags.currentImplementationTag, "objective-registry-phase1-v1.0.0");
-  assert.equal(manifest.objectiveCount, 70);
+  assert.equal(manifest.versionTags.currentImplementationTag, "objective-registry-phase1-v1.1.0");
+  assert.equal(manifest.objectiveCount, 81);
+  assert.equal(manifest.approvedObjectiveCount, 70, "the approved baseline is still exactly 70");
+  assert.equal(manifest.proposedObjectiveCount, 11);
+  assert.equal(manifest.proposed.approvalStatus, "pending-review");
+  assert.equal(manifest.proposed.objectiveCount, 11);
   assert.match(manifest.gitCommit, /^[0-9a-f]{7,40}$|^unknown$/);
 });
 
@@ -52,13 +60,24 @@ test("every registry artifact sha256 matches disk (0 drift)", { skip: !have }, (
   }
 });
 
-test("OUTPUT-NEUTRALITY: the 11 objective files' sha256 equal the manifest's frozen record", { skip: !have }, () => {
+test("OUTPUT-NEUTRALITY: the 11 approved objective files' sha256 equal the manifest's frozen record", { skip: !have }, () => {
   const frozen = manifest!.frozenObjectiveFiles;
-  assert.equal(Object.keys(frozen).length, 11, "exactly 11 objective files must be frozen");
+  assert.equal(Object.keys(frozen).length, 11, "exactly 11 approved objective files must be frozen");
+  assert.ok(!("SPI.IBDPAASL.FUNC.json" in frozen), "the proposed functions file is never part of the approved frozen record");
   for (const [name, entry] of Object.entries(frozen)) {
     assert.equal(entry.path, `curriculum/objectives/${name}`);
     assert.equal(sha256(entry.path), entry.sha256, `objective file ${name} has DRIFTED from the frozen record`);
   }
+});
+
+test("the proposed (pending-review) objective file is manifested with a matching sha256", { skip: !have }, () => {
+  const files = manifest!.proposed.files;
+  assert.deepEqual(Object.keys(files), ["SPI.IBDPAASL.FUNC.json"]);
+  for (const [name, entry] of Object.entries(files)) {
+    assert.equal(entry.path, `curriculum/objectives/${name}`);
+    assert.equal(sha256(entry.path), entry.sha256, `proposed objective file ${name} hash drift`);
+  }
+  assert.equal(manifest!.proposed.decisionLogRef, "DECISION_LOG.md #65");
 });
 
 test("the alignment schema, pilot, baseline, and reports are all manifested", { skip: !have }, () => {

@@ -20,6 +20,7 @@ import * as dataHandling from "../../domains/statistics/data-handling.ts";
 import * as mensuration from "../../domains/measurement/mensuration.ts";
 import * as transformations from "../../domains/geometry/transformations.ts";
 import * as ratio from "../../domains/proportion/ratio.ts";
+import * as functions from "../../domains/functions/functions.ts";
 
 export const GENERATORS: GeneratorModule[] = [
   {
@@ -225,6 +226,34 @@ export const GENERATORS: GeneratorModule[] = [
     generate: (s, c) => ratio.generate(s, c as Parameters<typeof ratio.generate>[1]),
     validate: ratio.validate,
     serialize: ratio.serialize,
+  },
+  {
+    id: functions.GENERATOR_ID,
+    version: functions.GENERATOR_VERSION,
+    label: "Introducing functions (IB AA SL) — notation, domain/range, composition, inverses",
+    // PENDING-REVIEW (DECISION_LOG.md #65): machine-validated (oracle 10,000-seed sweep, byte parity gated by
+    // oracle/golden/functions.*) but NOT curriculum-approved. Visible only in the Studio's review/developer
+    // mode; excluded from approvedGenerators(), production exports and samples until the owner approves the
+    // family, its eleven SPI.IBDPAASL.FUNC.* objectives (reviewStatus: proposed) and the two canonical-first
+    // answer contracts it introduces (answer.type "algebraic-expression" + "interval"). identify_function is
+    // MULTIPLE-CHOICE only; every other task supports free-response and multiple-choice.
+    approvalStatus: "pending-review",
+    tasks: [
+      { value: "identify_function", label: "Identify the non-function (multiple choice)", mc: true },
+      { value: "evaluate_function", label: "Evaluate f(a)", mc: true },
+      { value: "solve_for_input", label: "Solve f(x) = k", mc: true },
+      { value: "domain_of_function", label: "Largest possible domain", mc: true },
+      { value: "range_of_function", label: "Range", mc: true },
+      { value: "composite_value", label: "Composite value (f o g)(a)", mc: true },
+      { value: "composite_expression", label: "Composite expression (f o g)(x)", mc: true },
+      { value: "function_from_composite", label: "Outer function from a composite", mc: true },
+      { value: "inverse_value", label: "Inverse value f^-1(k)", mc: true },
+      { value: "inverse_expression", label: "Inverse expression f^-1(x)", mc: true },
+      { value: "one_to_one_restriction", label: "One-to-one domain restriction", mc: true },
+    ],
+    generate: (s, c) => functions.generate(s, c as Parameters<typeof functions.generate>[1]),
+    validate: functions.validate,
+    serialize: functions.serialize,
   },
 ];
 

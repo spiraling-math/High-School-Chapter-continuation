@@ -1,8 +1,8 @@
 {
   "generatorId": "objective-registry-reporter",
-  "generatorVersion": "1.0.0",
-  "gitCommit": "c7dc8c18d204a2643e2a0f7965ad25407dd4df45",
-  "objectiveCount": 70,
+  "generatorVersion": "1.1.0",
+  "gitCommit": "939a83812528ee6a52391e86ccf85d8856c86d49",
+  "objectiveCount": 81,
   "ok": true,
   "knownBaseline": {
     "file": "curriculum/registry/known-baseline-referenced-undefined.json",

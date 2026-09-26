@@ -57,3 +57,30 @@ test("assertValidItem throws SchemaValidationError carrying the errors", () => {
     return true;
   });
 });
+
+test("canonical-first 'algebraic-expression' and 'interval' answers: shape enforced additively (gen.functions.foundations)", () => {
+  const base = genArith(3, { answerType: "integer" }) as Record<string, Json>;
+  const withAnswer = (answer: Json): Record<string, Json> => ({ ...base, answer });
+  // algebraic-expression: the polynomial object IS the canonical value
+  assert.deepEqual(validateItem(withAnswer({ type: "algebraic-expression", display: "4x^2 - 12x + 10",
+    canonical: { variable: "x", coefficients: [{ num: 10, den: 1 }, { num: -12, den: 1 }, { num: 4, den: 1 }] } })), []);
+  assert.ok(validateItem(withAnswer({ type: "algebraic-expression", canonical: "4x^2 - 12x + 10" })).length > 0, "a string canonical is rejected");
+  assert.ok(validateItem(withAnswer({ type: "algebraic-expression", canonical: { variable: "t", coefficients: [{ num: 1, den: 1 }] } })).length > 0, "variable must be x");
+  assert.ok(validateItem(withAnswer({ type: "algebraic-expression", canonical: { variable: "x", coefficients: [] } })).length > 0, "at least one coefficient");
+  assert.ok(validateItem(withAnswer({ type: "algebraic-expression", canonical: { variable: "x", coefficients: [{ num: 1, den: 0 }] } })).length > 0, "den >= 1");
+  // interval: the real-subset descriptor, one exact field set per kind
+  const good: Json[] = [
+    { kind: "reals" },
+    { kind: "ray", variable: "x", endpoint: { num: 2, den: 1 }, inclusive: true, direction: "ge" },
+    { kind: "bounded", variable: "y", lo: { num: -1, den: 1 }, hi: { num: 4, den: 1 }, loInclusive: true, hiInclusive: true },
+    { kind: "reals-except", variable: "x", points: [{ num: 3, den: 1 }] },
+  ];
+  for (const c of good) assert.deepEqual(validateItem(withAnswer({ type: "interval", canonical: c, display: "d" })), [], JSON.stringify(c));
+  assert.ok(validateItem(withAnswer({ type: "interval", canonical: { kind: "ray", variable: "x", endpoint: { num: 2, den: 1 } } })).length > 0, "ray needs inclusive + direction");
+  assert.ok(validateItem(withAnswer({ type: "interval", canonical: { kind: "reals", variable: "x" } })).length > 0, "reals carries no other field");
+  assert.ok(validateItem(withAnswer({ type: "interval", canonical: { kind: "segment" } })).length > 0, "unknown kind");
+  assert.ok(validateItem(withAnswer({ type: "interval", canonical: { kind: "ray", variable: "z", endpoint: { num: 2, den: 1 }, inclusive: true, direction: "ge" } })).length > 0, "variable x|y only");
+  assert.ok(validateItem(withAnswer({ type: "interval", canonical: { kind: "reals-except", variable: "x", points: [] } })).length > 0, "at least one excluded point");
+  // an integer answer is untouched by the new rules
+  assert.deepEqual(validateItem(base), []);
+});
