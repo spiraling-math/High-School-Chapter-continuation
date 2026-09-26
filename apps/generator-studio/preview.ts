@@ -29,6 +29,12 @@ function formatParam(v: unknown): string {
     const r = v as { num: number; den: number };
     return r.den === 1 ? String(r.num) : `${r.num}/${r.den}`;
   }
+  // Structured params (e.g. a function rule {kind, a, b} or a list of ordered pairs) are shown recursively,
+  // never as "[object Object]".
+  if (Array.isArray(v)) return `[${v.map(formatParam).join(", ")}]`;
+  if (v && typeof v === "object") {
+    return `{${Object.entries(v as Record<string, unknown>).map(([k, x]) => `${k}: ${formatParam(x)}`).join(", ")}}`;
+  }
   return String(v);
 }
 

@@ -65,7 +65,7 @@ export interface BankRecord {
   /** Exact config passed to generate(seed, config), so the item reproduces
    *  identically. Distinguishes auto-task (no `task`) from explicit-task runs.
    *  This is the preserved original (legacy) configuration used for reproduction. */
-  genConfig: { answerType: Mode; task?: string };
+  genConfig: { answerType: Mode; interactionType?: InteractionType; task?: string };
   /** Internal schema revision of the record shape (set by migrations). */
   schemaRev?: number;
 }

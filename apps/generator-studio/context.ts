@@ -17,7 +17,7 @@ export interface Studio {
   /** Currently selected generator module id. */
   generatorId: string;
   /** Exact config last passed to generate(), for faithful reproduction. */
-  genConfig: { answerType: Mode; task?: string };
+  genConfig: { answerType: Mode; interactionType?: "free-response" | "multiple-choice"; task?: string };
   /** Current bank list filter. */
   filter: BankQuery;
   /** Re-render all dynamic regions. Set by main(). */

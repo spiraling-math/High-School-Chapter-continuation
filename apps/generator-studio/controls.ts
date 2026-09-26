@@ -21,7 +21,7 @@ function readControls(): { generatorId: string; seed: number; task: string | und
   return { generatorId, seed, task: taskSel === "auto" ? undefined : taskSel, mode, band: bandSel === "any" ? "any" : Number(bandSel) };
 }
 
-function findSeedForBand(genId: string, base: number, cfg: { task?: string; answerType: string }, band: number): number | null {
+function findSeedForBand(genId: string, base: number, cfg: { task?: string; answerType: string; interactionType: string }, band: number): number | null {
   const gen = getGenerator(genId);
   for (let i = 0; i < 8000; i++) {
     const s = (base + i) >>> 0;
@@ -37,9 +37,12 @@ export function doGenerate(studio: Studio): void {
   studio.generatorId = generatorId;
   // Reverse tasks have no multiple-choice variant: fall back to free-response.
   const effectiveMode: Mode = mode === "multiple-choice" && !taskIsMc(gen, task) ? "integer" : mode;
-  const cfg = task ? { task, answerType: effectiveMode } : { answerType: effectiveMode };
+  // Pass BOTH the legacy selector (answerType) and the forward key (interactionType, TD-1): the older families
+  // read answerType, the newer ones (ratio, functions) read interactionType only. The two always agree here.
+  const interactionType = effectiveMode === "multiple-choice" ? "multiple-choice" : "free-response";
+  const cfg = task ? { task, answerType: effectiveMode, interactionType } : { answerType: effectiveMode, interactionType };
   studio.mode = effectiveMode;
-  studio.genConfig = task ? { answerType: effectiveMode, task } : { answerType: effectiveMode };
+  studio.genConfig = task ? { answerType: effectiveMode, interactionType, task } : { answerType: effectiveMode, interactionType };
 
   let seedUsed = seed;
   if (band !== "any") {
