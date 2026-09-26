@@ -1,6 +1,24 @@
 # Current State
 
-Last updated: 2026-06-27.
+Last updated: 2026-09-26.
+
+## Integrity infrastructure — canonical (LF) artifact hashing (2026-09-26; output-neutral; NOT a curriculum decision)
+
+**DECISION_LOG #64.** On any checkout other than the owner's Windows working tree, nine blocking integrity tests
+(3 TS + 6 Python suites) failed: **48 frozen manifest digests across all seven generation manifests had been
+computed over CRLF bytes** (Windows editors / Python text-mode writers) while `.gitattributes`
+(`* text=auto eol=lf`) stores those files as LF — so no fresh clone could reproduce them, and the guard passed
+on the owner's disk only because the CRLF copies were still there. **Zero real drift** (every mismatch verified
+CRLF-only; the other 61 entries matched as LF). Fix: ONE canonical-hash helper per language —
+`core/integrity/canonical-hash.ts` (`sha256CanonicalFile`) and `oracle/build_meta.py` (`sha256_canonical`):
+CRLF→LF for text, binary untouched, lone CR preserved, each pinned by a contract test — now used by every
+integrity test and every manifest builder; the 48 CRLF-attested digests (+ `reportBuilder`, whose only change
+is the hashing primitive) re-frozen to the canonical bytes by **textual replacement**, so approval commits,
+tags, timestamps and key order in the manifests are byte-identical. **Output-neutral:** no generator, golden/
+parity fixture, objective file, review pack, audit, or production sample changed. Verified: TS **375/375**
+(369 + 6 new), **14** Python suites (13 + `test_build_meta.py`), typecheck exit 0, 108/108 manifest entries
+match the canonical digests. **Cross-platform proof:** on a scratch copy with all 435 tracked text files converted to CRLF (a worst-case Windows working tree) the same suites pass (TS 375/375, 14 Python suites) and all seven manifest builders reproduce every frozen input digest (107/107) from the CRLF files. Root cause (CRLF writers on Windows) is `TECH_DEBT.md` TD-3; the rule is
+`TESTING_STRATEGY.md` §6 ("never hash raw bytes for a manifest or an integrity test").
 
 ## Objective Registry & Standards — Phase 1 CURRICULUM-APPROVED (2026-06-27; output-neutral)
 

@@ -89,3 +89,21 @@ the currently-**planned** prerequisites referenced by the LINEQ objectives:
 `SPI.MIDDLE.ALG.EXPAND_BRACKETS.01`. Until then these remain explicitly marked
 `planned`; the curriculum-graph check warns on the unresolved prerequisites, which
 is expected and acceptable.
+
+## TD-3 — Windows working trees diverge from the repository bytes (CRLF writers)
+
+**Status: recorded (2026-09-26).** `.gitattributes` normalises every text file to LF in the
+repository, but on a Windows checkout the build scripts (Python text-mode `open(..., "w")`,
+`json.dump`) and editors write CRLF, so the working tree silently diverges from the committed
+bytes while `git status` stays clean — which is how 48 frozen manifest digests came to attest
+CRLF bytes that no fresh clone can reproduce. `DECISION_LOG.md` #64 removed the **consequence**
+(frozen digests and integrity tests now hash canonical CRLF→LF bytes, so they agree on every
+platform), not the **cause**. Hardening for a future output-neutral pass: (1) open every
+generated text artifact with `newline="\n"` in the Python writers (`oracle/run_*.py`,
+`oracle/make_*.py`, `spi-math-ibdp-aasl/tools/`; Node's `writeFileSync` already emits LF);
+(2) a repo check that fails when a tracked text file in the working tree contains CRLF
+(`git ls-files --eol` reporting `w/crlf` or `w/mixed`); (3) on the owner's machine, a one-time
+working-tree renormalisation (`git rm -r --cached . && git reset --hard` with a clean tree, or a
+fresh clone) so the disk matches the repository bytes. Until then, any byte-for-byte comparison
+of a generated file against a committed one must go through the canonical helper, never raw
+bytes.

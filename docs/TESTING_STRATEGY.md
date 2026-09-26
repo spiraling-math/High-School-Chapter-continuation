@@ -186,6 +186,10 @@ Before any item can **enter the bank**, CI validates it twice:
 
 CI fails closed: an item that fails either gate is rejected and never published. The seed sweep (§3) and oracle cross-check (§5) run as required CI stages on every change touching a generator.
 
+### Frozen-artifact integrity: canonical hashing
+
+Every approved family freezes its review package behind a generation manifest of SHA-256 digests (`docs/review/*_manifest.json`), and blocking integrity tests (TS + Python) re-hash the artifacts on every run. Those digests are computed over the **canonical bytes** of each artifact — CRLF normalised to LF for text, binary left untouched (git's NUL-probe heuristic) — by the ONE shared helper in each language: `core/integrity/canonical-hash.ts` (`sha256CanonicalFile`) and `oracle/build_meta.py` (`sha256_canonical`), each pinned by its own contract test. Rationale: the repository stores text as LF (`.gitattributes`: `* text=auto eol=lf`) while a Windows working tree may hold CRLF copies that git silently normalises on commit; line endings are a checkout artefact, not artefact content, so a frozen digest must be identical on both. **Never hash raw bytes** for a manifest or an integrity test (`DECISION_LOG.md` #64).
+
 ---
 
 ## 7. Test Data Management, Determinism Rules, and Flakiness Policy
