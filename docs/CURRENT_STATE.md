@@ -2,6 +2,55 @@
 
 Last updated: 2026-09-26.
 
+## `gen.functions.foundations` v1.0.0 — PENDING-REVIEW (2026-09-26; machine-validated; NOT curriculum-approved)
+
+**DECISION_LOG #65.** A tenth generator family — IB Mathematics AA SL, *Introducing Functions* (Oxford chapter 2) —
+built oracle-first on the same governance path as every approved family and registered **pending-review**:
+visible only in the Studio's review mode, excluded from `approvedGenerators()`, production exports and samples.
+Eleven exact tasks (`identify_function` multiple-choice only; `evaluate_function`, `solve_for_input`,
+`domain_of_function`, `range_of_function`, `composite_value`, `composite_expression`, `function_from_composite`,
+`inverse_value`, `inverse_expression`, `one_to_one_restriction`) over linear / quadratic / reciprocal / square-root
+rules with exact arithmetic only. Specification: `docs/GENERATOR_SPEC_functions_PROPOSAL.md`.
+
+- **Objectives:** `curriculum/objectives/SPI.IBDPAASL.FUNC.json` — 11 records, `reviewStatus: proposed`, stage
+  `ibdp-aasl`, domain `functions`, strand `introducing-functions` (controlled-vocabulary extension `FUNC → functions`
+  recorded as a §4.6 governance action awaiting ratification). `core/curriculum/objective-registry.ts` now splits
+  `APPROVED_OBJECTIVE_FILES` (the frozen eleven files, 70 objectives — digests unchanged) from
+  `PROPOSED_OBJECTIVE_FILES`; global graph `ok` at **81** objectives; coverage **G2 66 / G1 11 / G0 4**; orphanedTasks 0;
+  registry reporter v1.1.0 (`objective-registry-phase1-v1.1.0`; approved Phase-1 tag/approval block unchanged; the
+  proposed file manifested apart in `objective_registry_manifest.json:proposed`).
+- **Shared infrastructure (proposed, additive):** `answer.type: algebraic-expression` (canonical ascending coefficient
+  vector in x) and `answer.type: interval` (real-subset descriptor reals | ray | bounded | reals-except) — six
+  additive schema rules, plain-ASCII derived displays, ASCII-anchored parser/canonicalizer/checkers in Python
+  (`oracle/spi_oracle/{polynomial,expression_checker,interval_checker}.py`) and TypeScript
+  (`core/exact-math/polynomial.ts`, `core/answer-checking/{expression,interval}-checker.ts`) pinned by the cross-engine
+  corpus `oracle/golden/functions_checker_corpus.json`. Schema + compiled-validator digests re-frozen in the
+  mensuration / proportion_ratio / transformations manifests (every other digest verified unchanged).
+- **Oracle (normative):** `oracle/spi_oracle/functions.py` + `functions_core.py` + `functions_misconceptions.py`
+  (68 `MISC.FUNC.*` formula-backed rules, placeholder-free feedback, eligibility rotated by one seeded draw);
+  independent validator with per-task mathematical probes; `oracle/run_functions.py`: 10,000-seed sweep × 2 pools
+  **0 invalid**, every declared band reachable; golden (25) + task-pinned parity (420) fixtures written.
+- **TypeScript mirror:** `domains/functions/functions.ts` (+ `functions-core.ts`, `functions-misconceptions.ts`,
+  `core/curriculum/functions-objective-ids.ts`) — **byte-identical** on all 25 golden + 420 parity entries, validates
+  all of them; `functions.test.ts` (9 behaviour tests) + `functions.parity.test.ts` + `functions-integrity.test.ts`.
+  SDK registry entry `approvalStatus: "pending-review"`; capability join added; harness stability gate passes
+  (2,000 seeds × 2 modes). Interaction policy: forward `interactionType` only — the legacy `answerType` selector is
+  ignored (ratio v1.0.2 precedent).
+- **Review package:** `docs/review/functions_review_pack.{md,json}` (41 full exemplars covering every
+  task/band/rule-kind/interaction/answer-type cell derived from the distribution; 68/68 misconceptions exercised;
+  expression + interval answer-contract matrices reaching all 7 + 8 codes; MC-policy proof; per-exemplar
+  `curriculumReviewDecision`), `docs/review/functions_distribution.json`, `docs/review/functions_manifest.json`
+  (`approvalStatus: pending-review`, `hiddenFromNormalStudioAndProduction: true`, 30 canonical digests, no approved
+  tag; implementation tag `functions-v1.0.0`).
+- **Verified:** TS **414/414** (402 + 12 new), **16** Python suites (14 + `test_functions.py`,
+  `test_functions_checkers.py`), typecheck exit 0, conformance PASS (incl. the functions block 4i), all nine approved
+  families' golden/parity fixtures byte-unchanged, every approved manifest digest unchanged except the two
+  schema/validator entries re-frozen above.
+- **Owner decision awaited (nothing auto-approved):** approve the eleven objectives; approve the two answer
+  contracts + checkers; approve the items via the review pack; ratify the vocabulary extension. On APPROVE: SDK entry →
+  `approved`, objectives → `approved`, tag `approved-functions-v1.0.0`, manifest approval block. On REVISE/REJECT the
+  family stays hidden; no approved artifact needs to change.
+
 ## Integrity infrastructure — canonical (LF) artifact hashing (2026-09-26; output-neutral; NOT a curriculum decision)
 
 **DECISION_LOG #64.** On any checkout other than the owner's Windows working tree, nine blocking integrity tests

@@ -38,9 +38,19 @@ Git tags identify the approved reference implementations:
 
 ### Pending-review (implemented; NOT yet approved — not in this registry's approved scope)
 
-_None._ `gen.proportion.ratio` v1.0.2 — the most recent pending-review family — was curriculum-approved on
-2026-06-26 (`DECISION_LOG.md` #61) and now appears in the approved-generators table above (see the dedicated
-ratio section below). All nine implemented generator families are curriculum-approved.
+**`gen.functions.foundations` v1.0.0 — PENDING-REVIEW (2026-09-26, `DECISION_LOG.md` #65).** IB Mathematics AA SL —
+Introducing Functions (Oxford chapter 2): eleven tasks (`identify_function` MC-only; evaluate, solve f(x)=k, domain,
+range, composite value/expression, outer function from a composite, inverse value/expression, one-to-one
+restriction) over exact linear / quadratic / reciprocal / square-root rules. Machine-validated only: Python oracle
+normative, 10,000-seed sweep × 2 pools 0 invalid, TS mirror byte-identical on 25 golden + 420 parity entries;
+review pack `docs/review/functions_review_pack.md` (41 exemplars), manifest `docs/review/functions_manifest.json`
+(`approvalStatus: pending-review`, `hiddenFromNormalStudioAndProduction: true`), implementation tag
+`functions-v1.0.0`, **no approved tag**. Objectives `SPI.IBDPAASL.FUNC.*` (11) are `reviewStatus: proposed` and are
+NOT in the approved-objectives table below; the proposed answer contracts `algebraic-expression` + `interval` and the
+`FUNC → functions` / `introducing-functions` vocabulary extension are NOT approved architecture components. The
+family is visible only in the Studio's review mode and excluded from production exports/samples until the owner
+decides. (`gen.proportion.ratio` v1.0.2 — the previous pending-review family — was curriculum-approved on
+2026-06-26, `DECISION_LOG.md` #61; the nine implemented families above remain curriculum-approved.)
 
 `gen.algebra.linear-equations` v1.0.1 was curriculum-approved on 2026-06-21 after the
 owner reviewed `docs/review/linear_equations_review_pack.md` (`DECISION_LOG.md` #30).

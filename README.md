@@ -3,6 +3,8 @@
 A production-quality, deterministic platform for generating, validating, storing, editing, organizing, and exporting **original** mathematics questions — from preschool through first-year university.
 
 > Status: **Phase 1 — Foundation and First Vertical Slice.** The design foundation (schemas + architecture standards) is in place, and the first generator (arithmetic sequences) is proven end-to-end by a runnable Python verification oracle. The production TypeScript/browser layer is pending a Node.js install. See `docs/CURRENT_STATE.md`.
+>
+> **Generator families (2026-09-26):** nine curriculum-approved (see `docs/APPROVED_VERSIONS.md`); `gen.functions.foundations` v1.0.0 (IB AA SL — Introducing Functions) is implemented oracle-first with a byte-parity TypeScript mirror and registered **pending-review** — hidden from normal Studio and production until the owner decides (`docs/DECISION_LOG.md` #65, review pack `docs/review/functions_review_pack.md`).
 
 ## Principles (non-negotiable)
 
