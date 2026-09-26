@@ -15,6 +15,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "oracle"))
 
+from build_meta import sha256_canonical  # noqa: E402
+
 import check_conformance as cc  # noqa: E402
 from spi_oracle import transformations as T  # noqa: E402
 from spi_oracle import transformations_core as TC  # noqa: E402
@@ -398,15 +400,11 @@ class TestArtifactIdentity(unittest.TestCase):
 
     def test_manifest_hashes_match_files(self):
         self._present()
-        import hashlib
         for name, a in self.manifest["artifacts"].items():
             if not a["present"]:
                 continue
-            h = hashlib.sha256()
-            with open(os.path.join(ROOT, a["path"]), "rb") as fh:
-                for chunk in iter(lambda: fh.read(65536), b""):
-                    h.update(chunk)
-            self.assertEqual(a["sha256"], h.hexdigest(), f"{name} drift: {a['path']}")
+            # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+            self.assertEqual(a["sha256"], sha256_canonical(os.path.join(ROOT, a["path"])), f"{name} drift: {a['path']}")
 
     def test_no_duplicate_svg_ids_in_audit(self):
         self._present()

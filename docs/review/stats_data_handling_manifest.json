@@ -40,47 +40,47 @@
   "artifacts": {
     "golden": {
       "path": "oracle/golden/data_handling.golden.json",
-      "sha256": "ccb9a67e5cd47ab66ba8a1891ebd4f1ea4a8a371af5108e262aa5dad65f92829",
+      "sha256": "c9f7b65815e64d67a5b36f955b55a2e28b34ade46e00be7139ae316702fb01d7",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/data_handling.parity.json",
-      "sha256": "4ce2e60553b5fe0da77a4d5f3183206b7dfa280fdb422fae723b0da463f38b67",
+      "sha256": "45605fc209fcd60412fe7d79d9be68ca4faf8ad0bdfb384580301b14b7ede243",
       "present": true
     },
     "distribution": {
       "path": "docs/review/stats_data_handling_distribution.json",
-      "sha256": "aba7aa521e3fe2da3d075fd28ad388ab809ff8a514fd5b0c2b53b910e5537fac",
+      "sha256": "54bf5c76af638e55992827b2f9183c0cc2acce88443883b512abb95a535af1a9",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/stats_data_handling_review_pack.json",
-      "sha256": "e52b3bd8a78fb38f8bb6f0b95b6598ded5007b40d383ce44979010971711f793",
+      "sha256": "5a27e73317d36ef5f684977f511e1868d5cbddad954da8ae8643323a6b51dc45",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/stats_data_handling_review_pack.md",
-      "sha256": "b4b22fe56d8dd78f2a7f0b1afd6097a40292a138b156d51d9c235adf2d7a5c30",
+      "sha256": "6c1916e9759b10f4da512e97d06cb06fbdd5bcf87f8de1093589e21565fc9d17",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/stats_data_handling_visual_audit.html",
-      "sha256": "7978e6f18abf48da015ee8ac3f62d286b63693e006c810e51e9b2cde388947c7",
+      "sha256": "8fc9c0669190eb24308d5a02cfef22ec71d548da2b5959f5598f5986e8c2c018",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/stats_data_handling_browser_verification.json",
-      "sha256": "29778a3f6604a7449865dde9cfd2e833f46a4dc5031a3338ce7d4deba6e820be",
+      "sha256": "9cea5cfcb5e9aa7ad53a20c7b34c79b34206cdfe4a4e1e781a69e0caf0a5eef4",
       "present": true
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
-      "sha256": "433da37d6c47d74211d9c5df59321dea43194cb1dc02b168c79aea854a56529f",
+      "sha256": "21e66f9bf4f0e9af09971fc0e6bda3cffdec94c74861f3a533e11685e7ec7f72",
       "present": true
     },
     "oracle": {
       "path": "oracle/spi_oracle/data_handling.py",
-      "sha256": "78c37f9ed41bf7f902f9b4732929f466200ba99c689ac4fbceeb2ef4e32bae6b",
+      "sha256": "44b0f9ab72a94b2c50236ed5c2bbfd697eaa9b1a0b1c1c8c29c8e494f7642010",
       "present": true
     },
     "misconceptions": {

@@ -65,7 +65,7 @@
     },
     "reportBuilder": {
       "path": "scripts/build-registry-reports.mjs",
-      "sha256": "f6e61c5bdc19bde4db46bb7e6c3272ccb1382194a5c374aa31b3587d036795ae",
+      "sha256": "0041416630f8888658d2580f22674705c527b086cafe8e71a90983e44d7e1901",
       "present": true
     }
   },
@@ -100,7 +100,7 @@
     },
     "SPI.MIDDLE.MEAS.json": {
       "path": "curriculum/objectives/SPI.MIDDLE.MEAS.json",
-      "sha256": "caadda80804dede11edd92b5ea02c57527d15a642c50bd9322cd1c530d6c5a54"
+      "sha256": "47753a8975b1bed338345ce0a776755ff1ec3c042f597e9318d8818d493eea38"
     },
     "SPI.MIDDLE.NUM.json": {
       "path": "curriculum/objectives/SPI.MIDDLE.NUM.json",
@@ -112,7 +112,7 @@
     },
     "SPI.MIDDLE.STAT.json": {
       "path": "curriculum/objectives/SPI.MIDDLE.STAT.json",
-      "sha256": "433da37d6c47d74211d9c5df59321dea43194cb1dc02b168c79aea854a56529f"
+      "sha256": "21e66f9bf4f0e9af09971fc0e6bda3cffdec94c74861f3a533e11685e7ec7f72"
     }
   }
 }

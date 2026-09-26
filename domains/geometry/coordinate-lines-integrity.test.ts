@@ -8,9 +8,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { GENERATOR_VERSION } from "./coordinate-lines.ts";
+import { sha256CanonicalFile } from "../../core/integrity/canonical-hash.ts";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const rel = (p: string): string => ROOT + p;
@@ -51,6 +51,7 @@ test("manifest SHA-256 hashes match the serialized files", { skip: !have }, () =
     parityFixture: "oracle/golden/coordinate_lines.parity.json",
   };
   for (const [key, p] of Object.entries(files)) {
-    assert.equal(createHash("sha256").update(readFileSync(rel(p))).digest("hex"), man.sha256[key], `hash for ${p}`);
+    // canonical (CRLF→LF) hash: identical on a Windows working tree and on the LF bytes git stores
+    assert.equal(sha256CanonicalFile(rel(p)), man.sha256[key], `hash for ${p}`);
   }
 });

@@ -16,6 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "oracle"))
 
+from build_meta import sha256_canonical  # noqa: E402
+
 import check_conformance as cc  # noqa: E402
 from spi_oracle import ratio as R  # noqa: E402
 from spi_oracle import ratio_core as RC  # noqa: E402
@@ -450,7 +452,6 @@ class TestManifestIntegrity(unittest.TestCase):
         # able to re-hash disk and find NO drift. (Caught the re-audit case where the manifest was committed
         # with hashes from an intermediate pre-regeneration state.) make_ratio_manifest.py must be the LAST
         # build step so its recorded hashes + gitCommit match the artifacts the same commit produced.
-        import hashlib
         path = os.path.join(ROOT, "docs", "review", "proportion_ratio_manifest.json")
         if not os.path.exists(path):
             self.skipTest("manifest not generated")
@@ -465,7 +466,7 @@ class TestManifestIntegrity(unittest.TestCase):
             if not os.path.exists(fp):
                 self.assertFalse(meta.get("present", True), f"{name}: recorded present but missing on disk")
                 continue
-            got = hashlib.sha256(open(fp, "rb").read()).hexdigest()
+            got = sha256_canonical(fp)  # canonical (CRLF->LF): same on Windows working trees + LF git bytes
             self.assertEqual(got, want, f"{name} hash drift: {p}")
         self.assertEqual(man.get("approvalStatus"), "approved")
         self.assertIs(man.get("hiddenFromNormalStudioAndProduction"), False)

@@ -8,7 +8,6 @@ commit and match the manifest hashes.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -19,6 +18,8 @@ from fractions import Fraction
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.dirname(HERE))
+
+from build_meta import sha256_canonical  # noqa: E402
 
 from spi_oracle import coordinate_lines as cl  # noqa: E402
 from spi_oracle.coordinate_misconceptions import MISCONCEPTIONS  # noqa: E402
@@ -219,8 +220,8 @@ class TestArtifactIntegrity(unittest.TestCase):
         for key, rel in {"reviewPackMd": self.PACK_MD, "reviewPackJson": self.PACK_JSON, "visualAudit": self.AUDIT,
                          "goldenFixture": "oracle/golden/coordinate_lines.golden.json",
                          "parityFixture": "oracle/golden/coordinate_lines.parity.json"}.items():
-            with open(os.path.join(ROOT, rel.replace("/", os.sep)), "rb") as fh:
-                digest = hashlib.sha256(fh.read()).hexdigest()
+            # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+            digest = sha256_canonical(os.path.join(ROOT, rel.replace("/", os.sep)))
             self.assertEqual(digest, man["sha256"][key], f"manifest hash stale for {rel}")
 
 

@@ -19,16 +19,16 @@
     "python oracle/make_coordinate_lines_manifest.py        # this manifest"
   ],
   "sha256": {
-    "reviewPackMd": "504c6f32541bf2e4f3196b2de65147c8dae89737b9c71411326a28f3c6f61a13",
-    "reviewPackJson": "c6f6fb344cdcee5bdba393b072769c3052f1e08f676ea36ab452b8efbc85ba9c",
-    "visualAudit": "a3c6df5071eff27415f2f3b545a6c3d3267819892202161988ea2e35efe6105d",
-    "goldenFixture": "c6e00616b6207e8646da322222478c31cc6d5cb8b7bdac963f38fc6bd118fb74",
-    "parityFixture": "8063cddddb7a7c919943cd47a036459e1c3a2da1b1588624cfa1c44fd70c019a",
-    "distributionReport": "ddce5212585406d3b2000705ad408d254ba6fdda43e8c734e6673b467c926a93",
-    "hiresSample": "392db6fd83b3b355fc1ec796fe80e333a1291237abbdd31900e484108799c003",
+    "reviewPackMd": "945c147f10f439d6cbdf625c92dab0f93083ab8f92b2c83499a52ccc1d6241f7",
+    "reviewPackJson": "82c6dff745cc6e0cb0acf4ef65937588b9e459d34f748e72979525bffb755b6f",
+    "visualAudit": "c8282b174b872ef9f6759df423b9c819468f1fb6acd856580745550f35449230",
+    "goldenFixture": "e6c8df27749fa51b1c3358577f11384db7a6a0e1aa49337f6a032cbb41926f86",
+    "parityFixture": "3505e2fe8e043c5398c214185bd967b29ce691be0d23f7f8b73accb4aea21a9a",
+    "distributionReport": "38f5bbb08046a66cd19002e7a4f452a9a8b3a07328c042ff73ef34d8f1c2cef9",
+    "hiresSample": "2a8f5721bd1efa4ac892ed088490aeecd8b9857c56bfbbadd88611461c97d986",
     "browserVerification": "9bb6b30a5c9b8fa9b0195ecdf5d0667fd17b37cfce3eb084bc929555ef93a68f"
   },
-  "sha256SvgDir": "6bec5be76c2a65ec670ed3950b5e0150c37a4a920d5e06e69e54f936328e613c",
+  "sha256SvgDir": "8dc57c73dfbc69d3404cf1dd10b4061e92690e6bd8edfb299313d314a25c9fcb",
   "svgCount": 25,
   "rasterExports": {
     "premium": {

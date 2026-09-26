@@ -106,12 +106,12 @@
     },
     "golden": {
       "path": "oracle/golden/transformations.golden.json",
-      "sha256": "008ef175443d7aae5b9a82091e83ac61764ece773d2fe53a4205a2dabb015871",
+      "sha256": "7ce8225dc7bb4a02459721f537b83c4f4fba610d608b2728e97a9f948d3b5852",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/transformations.parity.json",
-      "sha256": "19580a2400bfaa356f03b1d67c108d8c7d33979014e1cf5fb40b04d59f470f92",
+      "sha256": "a4508431be07170354811b233d43f20bee1aa4723152459e37c40d4a54015f6c",
       "present": true
     },
     "objectives": {
@@ -146,27 +146,27 @@
     },
     "distribution": {
       "path": "docs/review/transformations_distribution.json",
-      "sha256": "e71f1ec3d3d9247a515858975573010de33f25751e227f370bf84c76dfbd865e",
+      "sha256": "d9af63c40820ddf27567f7ccddd01e78114d522466a98463df2e3c0ac1052e00",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/transformations_review_pack.json",
-      "sha256": "267696cf141349be2c1e209375025b374d4336261b166a00ff95215467b04b4d",
+      "sha256": "8f2a24c91524abb048c488e559fc9db65112f9b60980c3c4678e2ad1c0dfd5cf",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/transformations_review_pack.md",
-      "sha256": "569afd27c6dd909f381df218be3f7de76dfd33299c9f973c2e381a05081203bb",
+      "sha256": "0101eb27ebd77135e59fe734abe3c1721ccd5df016be12d7b032424b053ad130",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/transformations_visual_audit.html",
-      "sha256": "0db5bff21a2d72dd8dddd335a43f4f402c9b6f1e30012eb58004b8bdeb541fc2",
+      "sha256": "841097df5e0fa3a3f65538fb991c6de821f3f8d7280adcfd13e5e529919899be",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/transformations_browser_verification.json",
-      "sha256": "c1e24d2c7b50129fb4dbad5af35cc8286b31f1f0a99fba78ce0d7c71c935bdf8",
+      "sha256": "c34bd2ac51252196181192895f37399f9a1abf54402ccb4dab7dfad696707c8e",
       "present": true
     }
   }

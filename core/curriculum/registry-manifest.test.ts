@@ -12,13 +12,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
+import { sha256CanonicalFile } from "../integrity/canonical-hash.ts";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const rel = (p: string): string => join(ROOT, p);
-const sha256 = (p: string): string => createHash("sha256").update(readFileSync(rel(p))).digest("hex");
+// Canonical (CRLF→LF) hashing: identical on a Windows working tree and on the LF bytes git stores.
+const sha256 = (p: string): string => sha256CanonicalFile(rel(p));
 
 const MANIFEST = "docs/review/objective_registry_manifest.json";
 

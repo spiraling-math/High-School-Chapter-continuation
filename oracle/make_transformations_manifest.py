@@ -13,7 +13,6 @@ Writes docs/review/transformations_manifest.json (sha256 of every frozen artifac
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import subprocess
@@ -24,6 +23,8 @@ ROOT = os.path.dirname(HERE)
 REVIEW_DIR = os.path.join(ROOT, "docs", "review")
 sys.path.insert(0, os.path.join(HERE, "spi_oracle"))
 sys.path.insert(0, HERE)
+
+from build_meta import sha256_canonical  # noqa: E402
 
 from spi_oracle import transformations as T  # noqa: E402
 
@@ -56,14 +57,9 @@ ARTIFACTS = {
 
 
 def _sha256(path: str):
-    full = os.path.join(ROOT, path)
-    if not os.path.exists(full):
-        return None
-    h = hashlib.sha256()
-    with open(full, "rb") as fh:
-        for chunk in iter(lambda: fh.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    # canonical (CRLF->LF) hash — see build_meta.sha256_canonical: the frozen digest is the same on a
+    # Windows working tree (CRLF copies) and on the LF bytes git stores under .gitattributes eol=lf.
+    return sha256_canonical(os.path.join(ROOT, path))
 
 
 def _git_commit():

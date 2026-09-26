@@ -67,7 +67,7 @@
     },
     "tsGenerator": {
       "path": "domains/measurement/mensuration.ts",
-      "sha256": "99476fed6199d45cc9f46dc88391abfb89afd42c32f9ca7a96fb7db6165df0a1",
+      "sha256": "f74315240b327c96241e1a461ce3de608ac0d74db91c341c606ed988ac7de35d",
       "present": true
     },
     "tsMisconceptions": {
@@ -77,17 +77,17 @@
     },
     "golden": {
       "path": "oracle/golden/mensuration.golden.json",
-      "sha256": "bc37919ec838317e2933549527bb44cdba0bd2da516aef7200c3e1dba05b61b2",
+      "sha256": "a8383542c85e975f799e688efd1b808313e20eea128901374d1666c5b10bc6d6",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/mensuration.parity.json",
-      "sha256": "1722c599067baac2666b5a8f57ece28b938a0e5ec5eb970102df68dc404fadb5",
+      "sha256": "d543fcdf3c2bea734d0d6fb638c735bb77355f76898fe1820a67c135a158113d",
       "present": true
     },
     "objectives": {
       "path": "curriculum/objectives/SPI.MIDDLE.MEAS.json",
-      "sha256": "caadda80804dede11edd92b5ea02c57527d15a642c50bd9322cd1c530d6c5a54",
+      "sha256": "47753a8975b1bed338345ce0a776755ff1ec3c042f597e9318d8818d493eea38",
       "present": true
     },
     "objectiveIds": {
@@ -112,27 +112,27 @@
     },
     "distribution": {
       "path": "docs/review/mensuration_distribution.json",
-      "sha256": "ec62206dfe4ca521755ee71d9f2f1e6df78d863bc5ad98d17dc26ff5b09badc5",
+      "sha256": "1c4847a51c001dc86fb7e75868b05dafaff328c3f7042aba897f552888190f21",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/mensuration_review_pack.json",
-      "sha256": "eaeebd9e6e5c15e5d7401435aa98bb0cdf6d993368f7295dcccf9acd1755c4db",
+      "sha256": "4e9c205c17dba8d15f05dea1b70a9ef9ceecc9f546f2c602ea23875beab018e9",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/mensuration_review_pack.md",
-      "sha256": "d545e7d44a9902b6120e887791311693db572fb21da8e170cc12edc32fa3bc97",
+      "sha256": "3afd2dd7e7a95a3eb2178b503c078e1f42f2a393e556519104505b2c7afa3e6e",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/mensuration_visual_audit.html",
-      "sha256": "932300ef3ea72814e94371ff57f39a528ec795c44e54da0a033aa4280909415c",
+      "sha256": "434e3f8a62a596e1ac5b9411e5248a280bd8931fe087266f28482198b170a5ce",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/mensuration_browser_verification.json",
-      "sha256": "24b994568fc4d6117c545d6ecbf40f4d8cbd46cbea20abe4b07fd61608f807a3",
+      "sha256": "def12ca2c05c55472514a20e75069865dbdda01225e2b71b5bd6b3f72e9a7ee2",
       "present": true
     }
   }

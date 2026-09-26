@@ -9,7 +9,6 @@ no-leakage / no-theorem-reveal invariants.
 Run:  python oracle/tests/test_geometry.py
 """
 
-import hashlib
 import json
 import math
 import os
@@ -19,6 +18,8 @@ import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
+
+from build_meta import sha256_canonical  # noqa: E402
 
 from spi_oracle import geometry as geo                      # noqa: E402
 from spi_oracle.geometry_misconceptions import MISCONCEPTIONS  # noqa: E402
@@ -541,8 +542,8 @@ class TestArtifactIntegrity(unittest.TestCase):
                      "visualAudit": self.AUDIT, "goldenFixture": "oracle/golden/geometry_angles.golden.json",
                      "parityFixture": "oracle/golden/geometry_angles.parity.json"}
         for key, rel in artifacts.items():
-            with open(os.path.join(self.REPO, rel.replace("/", os.sep)), "rb") as fh:
-                digest = hashlib.sha256(fh.read()).hexdigest()
+            # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+            digest = sha256_canonical(os.path.join(self.REPO, rel.replace("/", os.sep)))
             self.assertEqual(digest, man["sha256"][key], f"manifest hash stale for {rel}")
 
 

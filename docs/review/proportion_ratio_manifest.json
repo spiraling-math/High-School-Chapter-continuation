@@ -94,12 +94,12 @@
     },
     "golden": {
       "path": "oracle/golden/ratio.golden.json",
-      "sha256": "6167eb59c92c9b00d3a1b8eda14bf2eb630aa452cd072606642fe6b88af73fc2",
+      "sha256": "3d2590c3a06799f1b819f49a24a044ba3de958661d1ca466793a9322e8e724a9",
       "present": true
     },
     "parity": {
       "path": "oracle/golden/ratio.parity.json",
-      "sha256": "11d84c1ebb50b35b348ab9b7442024894d562016bff347d410acdab2339cdca8",
+      "sha256": "d5845ef782c2abfd6da391b8e918d8ac52acfb2cb9d45fd61eb521811b2ecb4c",
       "present": true
     },
     "tsCore": {
@@ -154,27 +154,27 @@
     },
     "distribution": {
       "path": "docs/review/ratio_distribution.json",
-      "sha256": "ebc676e3bb1e1edb03f194e8ded96c3dc661d48a9037b15cc5fb4fb3480a0d67",
+      "sha256": "911a0c1de798d21c587366cf8c6244162e7a0ff2b7da03a477a2a269a591506d",
       "present": true
     },
     "reviewPackJson": {
       "path": "docs/review/proportion_ratio_review_pack.json",
-      "sha256": "f2feda6a0390e4220210732c37b7a49d045483fc45540958b75309d46d52cc2c",
+      "sha256": "8fa2013dc6c43ef298f397667c54eabb0cfab5b3cc7e5555bd59bc36fba5f35d",
       "present": true
     },
     "reviewPackMd": {
       "path": "docs/review/proportion_ratio_review_pack.md",
-      "sha256": "5fd707260588f413957c1e930698fe419789b430634a27d94394c8fb2ee740d5",
+      "sha256": "48652c8d0e7f915ce75c2e1c7bc24745ba336b8195fdbc87859a04f9ce3fbe37",
       "present": true
     },
     "visualAudit": {
       "path": "docs/review/proportion_ratio_visual_audit.html",
-      "sha256": "48314407663db2a826905f47531756ec0b3cff511ac578ad39d46f7fead3756e",
+      "sha256": "d9898074d1a2890bda76a134a529fba92ac54cdec84955ca35485ac772c4b199",
       "present": true
     },
     "browserVerification": {
       "path": "docs/review/proportion_ratio_browser_verification.json",
-      "sha256": "696c4a32c756b8c1a3f876a3c540410817f20c68cfe4d0e73ba721b03f3ab04e",
+      "sha256": "ff747b429e32bda4db341d78d0a709593d7d717ad217c74481a4d0577f8a2689",
       "present": true
     },
     "realBrowserStyles": {

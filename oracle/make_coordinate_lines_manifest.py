@@ -23,7 +23,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 from spi_oracle import coordinate_lines as cl  # noqa: E402
-from build_meta import build_commit, build_timestamp  # noqa: E402
+from build_meta import build_commit, build_timestamp, canonical_text_bytes, sha256_canonical  # noqa: E402
 
 OUT = os.path.join(ROOT, "docs", "review", "coordinate_lines_manifest.json")
 SVG_DIR = os.path.join(ROOT, "docs", "review", "coordinate_lines_svgs")
@@ -51,14 +51,9 @@ COMMANDS = [
 
 
 def _sha256_file(rel: str):
-    path = os.path.join(ROOT, rel.replace("/", os.sep))
-    if not os.path.exists(path):
-        return None
-    h = hashlib.sha256()
-    with open(path, "rb") as fh:
-        for chunk in iter(lambda: fh.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    # canonical (CRLF->LF) hash — see build_meta.sha256_canonical: the frozen digest is the same on a
+    # Windows working tree (CRLF copies) and on the LF bytes git stores under .gitattributes eol=lf.
+    return sha256_canonical(os.path.join(ROOT, rel.replace("/", os.sep)))
 
 
 def _sha256_svgs() -> str:
@@ -67,7 +62,7 @@ def _sha256_svgs() -> str:
         if name.endswith(".svg"):
             with open(os.path.join(SVG_DIR, name), "rb") as fh:
                 h.update(name.encode())
-                h.update(fh.read())
+                h.update(canonical_text_bytes(fh.read()))  # canonical bytes (CRLF->LF), as for every artifact
     return h.hexdigest()
 
 

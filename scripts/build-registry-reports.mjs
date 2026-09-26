@@ -15,7 +15,6 @@
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -24,12 +23,15 @@ import { loadRegistry } from "../core/curriculum/objective-registry.ts";
 import { checkGlobalGraph, loadKnownBaseline } from "../core/curriculum/registry-graph.ts";
 import { buildCoverageReport } from "../core/curriculum/generator-capability.ts";
 import { GENERATOR_VERSION as RATIO_GEN_VERSION } from "../domains/proportion/ratio.ts";
+import { sha256CanonicalFile } from "../core/integrity/canonical-hash.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const rel = (p) => join(ROOT, p);
 
+// Canonical (CRLF→LF) artifact hashing — the same digest on a Windows working tree and on the LF
+// bytes git stores (see core/integrity/canonical-hash.ts). Never the raw bytes.
 function sha256(path) {
-  return createHash("sha256").update(readFileSync(rel(path))).digest("hex");
+  return sha256CanonicalFile(rel(path));
 }
 
 function gitCommit() {

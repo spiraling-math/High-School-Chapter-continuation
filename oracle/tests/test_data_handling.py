@@ -10,7 +10,6 @@ manifest SHA-256 hashes match the on-disk artifacts).
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import sys
@@ -22,6 +21,8 @@ ORACLE = os.path.dirname(HERE)
 ROOT = os.path.dirname(ORACLE)
 sys.path.insert(0, os.path.join(ORACLE, "spi_oracle"))
 sys.path.insert(0, ORACLE)
+
+from build_meta import sha256_canonical  # noqa: E402
 
 import data_handling as dh  # noqa: E402
 import data_handling_misconceptions as mis  # noqa: E402
@@ -207,11 +208,8 @@ class TestArtifactIntegrity(unittest.TestCase):
                 continue
             full = os.path.join(ROOT, a["path"])
             self.assertTrue(os.path.exists(full), f"{name} missing: {a['path']}")
-            h = hashlib.sha256()
-            with open(full, "rb") as fh:
-                for chunk in iter(lambda: fh.read(65536), b""):
-                    h.update(chunk)
-            self.assertEqual(h.hexdigest(), a["sha256"], f"{name} hash drift ({a['path']})")
+            # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+            self.assertEqual(sha256_canonical(full), a["sha256"], f"{name} hash drift ({a['path']})")
 
     def test_manifest_metadata(self):
         manifest = json.load(open(os.path.join(REVIEW, "stats_data_handling_manifest.json"), encoding="utf-8"))

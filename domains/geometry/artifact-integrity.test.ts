@@ -11,9 +11,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { GENERATOR_VERSION } from "./angles.ts";
+import { sha256CanonicalFile } from "../../core/integrity/canonical-hash.ts";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const rel = (p: string): string => ROOT + p;
@@ -56,7 +56,7 @@ test("manifest SHA-256 hashes match the serialized files", { skip: !haveManifest
     parityFixture: "oracle/golden/geometry_angles.parity.json",
   };
   for (const [key, p] of Object.entries(files)) {
-    const digest = createHash("sha256").update(readFileSync(rel(p))).digest("hex");
+    const digest = sha256CanonicalFile(rel(p)); // canonical (CRLF→LF): same on Windows working trees + LF git bytes
     assert.equal(digest, man.sha256[key], `manifest hash stale for ${p}`);
   }
 });

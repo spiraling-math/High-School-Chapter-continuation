@@ -26,6 +26,7 @@ import mensuration as M  # noqa: E402
 import mensuration_units as U  # noqa: E402
 import mensuration_misconceptions as MM  # noqa: E402
 import check_conformance as cc  # noqa: E402
+from build_meta import sha256_canonical  # noqa: E402
 
 SWEEP = int(os.environ.get("SPI_SWEEP", "2000"))
 _REG = cc.load_registry()
@@ -285,15 +286,11 @@ class TestArtifactIdentity(unittest.TestCase):
         self.assertNotEqual(self.manifest["approval"].get("approvedTag"), "mensuration-v1.0.0")
 
     def test_manifest_hashes_match_files(self):
-        import hashlib
         root = os.path.join(HERE, "..", "..")
         for name, a in self.manifest["artifacts"].items():
             self.assertTrue(a["present"], name)
-            h = hashlib.sha256()
-            with open(os.path.join(root, a["path"]), "rb") as fh:
-                for chunk in iter(lambda: fh.read(65536), b""):
-                    h.update(chunk)
-            self.assertEqual(a["sha256"], h.hexdigest(), f"{name} drift: {a['path']}")
+            # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+            self.assertEqual(a["sha256"], sha256_canonical(os.path.join(root, a["path"])), f"{name} drift: {a['path']}")
 
 
 class TestArtifactIntegrity(unittest.TestCase):
@@ -305,12 +302,8 @@ class TestArtifactIntegrity(unittest.TestCase):
         cls.manifest = json.load(open(os.path.join(cls.root, "docs", "review", "mensuration_manifest.json"), encoding="utf-8"))
 
     def _sha256(self, rel):
-        import hashlib
-        h = hashlib.sha256()
-        with open(os.path.join(self.root, rel), "rb") as fh:
-            for chunk in iter(lambda: fh.read(65536), b""):
-                h.update(chunk)
-        return h.hexdigest()
+        # canonical (CRLF->LF) hash: identical on a Windows working tree and on the LF bytes git stores
+        return sha256_canonical(os.path.join(self.root, rel))
 
     def test_manifest_hashes_match_disk(self):
         for name, a in self.manifest["artifacts"].items():
