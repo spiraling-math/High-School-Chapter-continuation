@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spi-Math guide</title>
+<!--
+  Spi-Math chat widget for a Wix "Embed HTML" element (an iframe).
+  Self-contained: no external scripts, fonts or images.
+  Talks to the page ONLY with postMessage (see masterPage.js). It never calls
+  the server, never navigates itself, and shows all text with textContent.
+  It only obeys messages from the page that hosts it (window.parent) on
+  www.spi-math.com.
+-->
+<style>
+  :root {
+    --accent: #1d5fbf;
+    --accent-dark: #174c99;
+    --accent-soft: #eaf1fc;
+    --text: #1f2937;
+    --muted: #5b6472;
+    --border: #d8dfe9;
+    --panel: #ffffff;
+    --bot-bg: #f1f4f8;
+    --error-bg: #fdeeee;
+    --error-text: #9b1c1c;
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(17, 38, 77, 0.18), 0 2px 6px rgba(17, 38, 77, 0.10);
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: transparent; /* only the launcher / panel are visible */
+    font-family: var(--font); font-size: 15px; line-height: 1.45; color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  button, textarea { font: inherit; color: inherit; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- launcher (bottom-right corner of the Embed element) ---------- */
+  .launcher {
+    position: fixed; right: 12px; bottom: 12px; width: 60px; height: 60px;
+    border: 0; border-radius: 50%; background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: var(--shadow); transition: background-color .15s, transform .15s;
+  }
+  .launcher:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .launcher:focus-visible { outline: 3px solid #fff; box-shadow: 0 0 0 6px var(--accent), var(--shadow); }
+  .launcher svg { width: 28px; height: 28px; }
+  .launcher .icon-close { display: none; }
+  .launcher[aria-expanded="true"] .icon-chat { display: none; }
+  .launcher[aria-expanded="true"] .icon-close { display: block; }
+
+  /* ---------- panel ---------- */
+  .panel {
+    position: fixed; top: 12px; right: 12px; bottom: 84px; left: 12px;
+    max-width: 380px; margin-left: auto;
+    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden;
+  }
+  .panel[hidden] { display: none; }
+  body.external .launcher { display: none; }
+  body.external .panel { top: 0; right: 0; bottom: 0; left: 0; max-width: none; box-shadow: none; }
+
+  .head {
+    display: flex; align-items: center; gap: 10px; padding: 12px 10px 12px 14px;
+    border-bottom: 1px solid var(--border); background: var(--panel);
+  }
+  .avatar {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .titles { flex: 1; min-width: 0; }
+  .titles h1 { margin: 0; font-size: 15px; font-weight: 650; }
+  .titles p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .icon-btn {
+    flex: none; width: 36px; height: 36px; border: 0; border-radius: 10px;
+    background: transparent; color: var(--muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-btn:hover { background: var(--bot-bg); color: var(--text); }
+  .icon-btn[aria-disabled="true"] { opacity: .4; cursor: default; }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  .log {
+    position: relative; /* message offsetTop is measured from here */
+    flex: 1; overflow-y: auto; padding: 14px 12px 6px; display: flex; flex-direction: column; gap: 10px;
+    overscroll-behavior: contain; scroll-behavior: smooth;
+  }
+  .msg { display: flex; flex-direction: column; max-width: 88%; }
+  .msg.user { align-self: flex-end; align-items: flex-end; }
+  .msg.bot { align-self: flex-start; align-items: flex-start; }
+  .bubble {
+    margin: 0; padding: 9px 12px; border-radius: 14px; white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .user .bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .bot .bubble { background: var(--bot-bg); border-bottom-left-radius: 4px; }
+  .bot.error .bubble { background: var(--error-bg); color: var(--error-text); }
+
+  .links { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; width: 100%; }
+  .link-chip {
+    display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+    padding: 8px 12px; border: 1px solid var(--accent); border-radius: 10px;
+    background: #fff; color: var(--accent); font-weight: 600; font-size: 14px; cursor: pointer;
+    transition: background-color .15s;
+  }
+  .link-chip:hover { background: var(--accent-soft); }
+  .link-chip span { flex: 1; min-width: 0; }
+  .link-chip svg { flex: none; width: 16px; height: 16px; }
+
+  .suggestions { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 0 4px; }
+  .suggestion {
+    padding: 7px 12px; border: 1px solid var(--border); border-radius: 999px; background: #fff;
+    color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .suggestion:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+  .typing .bubble { display: flex; gap: 4px; align-items: center; padding: 12px 14px; }
+  .typing .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite ease-in-out; }
+  .typing .dot:nth-child(2) { animation-delay: .2s; }
+  .typing .dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+  .composer { border-top: 1px solid var(--border); padding: 8px 10px 6px; background: var(--panel); }
+  .row { display: flex; align-items: flex-end; gap: 8px; }
+  textarea {
+    flex: 1; min-width: 0; resize: none; max-height: 120px; min-height: 40px;
+    padding: 9px 12px; border: 1px solid var(--border); border-radius: 12px; background: #fff;
+    font-size: 16px; /* 16px stops iOS zooming in */ line-height: 1.35;
+  }
+  textarea::placeholder { color: var(--muted); opacity: 1; } /* browser defaults are too faint */
+  textarea:focus { border-color: var(--accent); outline: 2px solid var(--accent-soft); outline-offset: 0; }
+  .send {
+    flex: none; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .send:hover { background: var(--accent-dark); }
+  .send[aria-disabled="true"] { background: #9db3d6; cursor: default; }
+  .send svg { width: 18px; height: 18px; }
+  .meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 2px 0; font-size: 11.5px; color: var(--muted); }
+  .meta #hint { flex: 1; min-width: 0; }
+  .count.near { color: var(--error-text); font-weight: 600; }
+  .text-btn {
+    display: none; flex: none; padding: 5px 8px; border: 0; border-radius: 8px; background: transparent;
+    color: var(--accent); font-size: 12.5px; font-weight: 600; text-decoration: underline; cursor: pointer;
+  }
+  .text-btn:hover { background: var(--accent-soft); }
+  body.external .text-btn { display: inline-block; } /* the page's own button is hidden while the chat is open */
+
+  @media (max-width: 340px), (max-height: 420px) {
+    .panel { top: 6px; right: 6px; left: 6px; bottom: 74px; }
+    .launcher { right: 6px; bottom: 6px; width: 56px; height: 56px; }
+    .head { padding: 8px 6px 8px 10px; }
+    .avatar { display: none; }
+    .log { padding: 10px 8px 4px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+  <button class="launcher" id="launcher" type="button" aria-expanded="false" aria-controls="panel" aria-label="Open the Spi-Math guide chat">
+    <svg class="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+
+  <section class="panel" id="panel" role="dialog" aria-labelledby="title" aria-describedby="subtitle" hidden>
+    <header class="head">
+      <div class="avatar" aria-hidden="true">S</div>
+      <div class="titles">
+        <h1 id="title">Spi-Math guide</h1>
+        <p id="subtitle">Find courses and pages on this site</p>
+      </div>
+      <button class="icon-btn" id="reset" type="button" aria-label="Start a new chat" title="New chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      </button>
+      <button class="icon-btn" id="close" type="button" aria-label="Close chat" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="log" id="log" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation" tabindex="0"></div>
+    <div class="sr-only" id="status" role="status" aria-live="polite"></div>
+
+    <form class="composer" id="form" novalidate>
+      <div class="row">
+        <label class="sr-only" for="input">Your question</label>
+        <textarea id="input" rows="1" maxlength="500" placeholder="Ask about courses, enrolment&hellip;" autocomplete="off" aria-describedby="hint"></textarea>
+        <button class="send" id="send" type="submit" aria-label="Send question" aria-disabled="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="meta">
+        <span id="hint">AI answers can be wrong.<span class="sr-only"> Press Enter to send, Shift+Enter for a new line.</span></span>
+        <span class="count" id="count" aria-hidden="true"></span>
+        <span class="sr-only" id="countStatus" aria-live="polite"></span>
+        <button class="text-btn" id="closeBottom" type="button">Close chat</button>
+      </div>
+    </form>
+  </section>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- settings ----
+  var FROM_WIDGET = 'spi-navbot';
+  var FROM_HOST = 'spi-navbot-host';
+  var SITE_ORIGIN = 'https://www.spi-math.com';
+  // The only pages allowed to drive this chat: spi-math.com and its subdomains
+  // (for example a language version on fr.spi-math.com).
+  var SITE_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+\.)?spi-math\.com$/i;
+  var SITE_HOST_RE = /^(?:[a-z0-9-]+\.)?spi-math\.com$/i;
+  // Testing only (README "Step 6"): true also lets the Wix editor's Preview
+  // (pages on *.wix.com) talk to the chat. The live site never needs it.
+  var ALLOW_WIX_EDITOR_PREVIEW = false;
+  var WIX_EDITOR_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+\.)*wix\.com$/i;
+  var REPLY_TIMEOUT_MS = 30000; // page code got the question but never answered
+  var CONNECT_WAIT_MS = 8000; // question typed before the page code said hello
+  var GREETING = "Hi! I'm the Spi-Math guide. Ask me where to find a course, how to enrol, or what's free, and I'll point you to the right page.";
+  var SUGGESTIONS = ['Find my course', 'How do I enrol?', 'Free content'];
+  var TIMEOUT_TEXT = 'Sorry, I could not connect just now. Please try again in a moment.';
+  var NOT_CONNECTED_TEXT = 'Sorry, the chat is not connected to this page. Please reload the page and try again.';
+  var TYPING_TEXT = 'The guide is typing\u2026';
+  var COUNT_THRESHOLDS = [100, 50, 20, 0]; // characters left at which screen readers hear the count
+
+  // ---- elements ----
+  var launcher = document.getElementById('launcher');
+  var panel = document.getElementById('panel');
+  var log = document.getElementById('log');
+  var statusEl = document.getElementById('status');
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+  var sendBtn = document.getElementById('send');
+  var resetBtn = document.getElementById('reset');
+  var closeBtn = document.getElementById('close');
+  var closeBottom = document.getElementById('closeBottom');
+  var count = document.getElementById('count');
+  var countStatus = document.getElementById('countStatus');
+
+  // ---- state ----
+  var external = false; // true when a Wix Button on the page opens the chat
+  var pinned = true; // false when the page puts this element in the page flow (mobile)
+  var initDone = false;
+  var parentOrigin = null; // set once, from the first valid message of the hosting page
+  var maxChars = 500;
+  var pending = null; // { id, text, posted } while a question waits for its answer
+  var pendingTimer = null;
+  var lastSent = '';
+  var typingEl = null;
+  var suggestionsEl = null;
+  var hostViewportH = 0; // visible height of the hosting page, sent by the page
+  var countBucket = -1;
+  var warnedOrigins = Object.create(null);
+
+  function originAllowed(o) {
+    return SITE_ORIGIN_RE.test(o) || (ALLOW_WIX_EDITOR_PREVIEW && WIX_EDITOR_ORIGIN_RE.test(o));
+  }
+
+  function warnOrigin(o) {
+    if (warnedOrigins[o]) return;
+    warnedOrigins[o] = true;
+    try { console.warn('Spi-Math guide: ignored messages from ' + o + ' (not an allowed page origin).'); } catch (e) { /* ignore */ }
+  }
+
+  // 'ready' carries no data, so it may go to any parent ('*'): that is how the
+  // chat finds its page. Everything else - the visitor's questions included -
+  // goes only to the origin of the page that answered, and nowhere before that.
+  function post(msg) {
+    msg.source = FROM_WIDGET;
+    var target = msg.type === 'ready' ? '*' : parentOrigin;
+    if (!target) return;
+    try { window.parent.postMessage(msg, target); } catch (e) { /* ignore */ }
+  }
+
+  // ---- rendering: textContent / DOM nodes only, never HTML strings ----
+  var ARROW = sendBtn.querySelector('svg'); // reused (cloned) arrow icon on link buttons
+
+  function scrollToEnd() { log.scrollTop = log.scrollHeight; }
+
+  // A reply taller than the visible conversation is shown from its first line;
+  // everything else scrolls to the newest line.
+  function reveal(wrap, from) {
+    var room = log.clientHeight;
+    if (from === 'bot' && room > 0 && wrap.offsetHeight > room - 16) {
+      log.scrollTop = Math.max(0, wrap.offsetTop - 8);
+    } else {
+      scrollToEnd();
+    }
+  }
+
+  function isSafeUrl(url) {
+    if (typeof url !== 'string' || url.length > 600 || /[\\\s]/.test(url)) return false;
+    try {
+      var u = new URL(url, SITE_ORIGIN);
+      return u.protocol === 'https:' && SITE_HOST_RE.test(u.hostname) && !u.username && !u.password &&
+        u.pathname.slice(0, 2) !== '//';
+    } catch (e) { return false; }
+  }
+
+  function addMessage(from, text, links, isError) {
+    var wrap = document.createElement('div');
+    wrap.className = 'msg ' + from + (isError ? ' error' : '');
+    var who = document.createElement('span');
+    who.className = 'sr-only';
+    who.textContent = from === 'user' ? 'You said: ' : 'Guide: ';
+    var bubble = document.createElement('p');
+    bubble.className = 'bubble';
+    bubble.appendChild(who);
+    bubble.appendChild(document.createTextNode(String(text)));
+    wrap.appendChild(bubble);
+
+    var safe = (Array.isArray(links) ? links : []).filter(function (l) {
+      return l && typeof l.title === 'string' && isSafeUrl(l.url);
+    }).slice(0, 3);
+    if (safe.length) {
+      var box = document.createElement('div');
+      box.className = 'links';
+      safe.forEach(function (l) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'link-chip';
+        var label = document.createElement('span');
+        label.textContent = l.title;
+        b.appendChild(label);
+        b.appendChild(ARROW.cloneNode(true));
+        b.setAttribute('aria-label', 'Go to page: ' + l.title);
+        b.addEventListener('click', function () { navigate(l.url); });
+        box.appendChild(b);
+      });
+      wrap.appendChild(box);
+    }
+    if (typingEl && typingEl.parentNode === log) log.insertBefore(wrap, typingEl);
+    else log.appendChild(wrap);
+    reveal(wrap, from);
+    return wrap;
+  }
+
+  function showSuggestions() {
+    removeSuggestions();
+    suggestionsEl = document.createElement('div');
+    suggestionsEl.className = 'suggestions';
+    suggestionsEl.setAttribute('role', 'group');
+    suggestionsEl.setAttribute('aria-label', 'Suggested questions');
+    SUGGESTIONS.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'suggestion';
+      b.textContent = s;
+      b.addEventListener('click', function () { send(s); });
+      suggestionsEl.appendChild(b);
+    });
+    log.appendChild(suggestionsEl);
+  }
+
+  function removeSuggestions() {
+    if (suggestionsEl && suggestionsEl.parentNode) suggestionsEl.parentNode.removeChild(suggestionsEl);
+    suggestionsEl = null;
+  }
+
+  function renderFresh(transcript, opts) {
+    log.textContent = '';
+    typingEl = null;
+    suggestionsEl = null;
+    addMessage('bot', GREETING, []);
+    var items = Array.isArray(transcript) ? transcript : [];
+    var shown = 0;
+    items.slice(-30).forEach(function (t) {
+      if (!t || (t.from !== 'user' && t.from !== 'bot') || typeof t.text !== 'string') return;
+      addMessage(t.from, t.text, t.from === 'bot' ? t.links : []);
+      shown++;
+    });
+    if (!shown && !(opts && opts.noSuggestions)) showSuggestions();
+  }
+
+  // Visual dots only; screen readers hear the separate status line instead
+  // (an aria-busy conversation would hold that announcement back).
+  function setTyping(on) {
+    if (on && !typingEl) {
+      typingEl = document.createElement('div');
+      typingEl.className = 'msg bot typing';
+      typingEl.setAttribute('aria-hidden', 'true');
+      var b = document.createElement('div');
+      b.className = 'bubble';
+      for (var i = 0; i < 3; i++) {
+        var d = document.createElement('span');
+        d.className = 'dot';
+        b.appendChild(d);
+      }
+      typingEl.appendChild(b);
+      log.appendChild(typingEl);
+      scrollToEnd();
+    } else if (!on && typingEl) {
+      if (typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+      typingEl = null;
+    }
+  }
+
+  // The text box stays enabled (and keeps focus) while waiting: only sending
+  // is blocked, so keyboard and screen-reader users never lose their place.
+  function setWaiting(on) {
+    sendBtn.setAttribute('aria-disabled', on ? 'true' : 'false');
+    resetBtn.setAttribute('aria-disabled', on ? 'true' : 'false');
+    setTyping(on);
+    statusEl.textContent = on ? TYPING_TEXT : '';
+  }
+
+  // Never take focus away from the page: only when focus is still inside this
+  // frame but on nothing (for example a button that was removed).
+  function restoreFocusIfLost() {
+    if (panel.hidden || !document.hasFocus()) return;
+    var a = document.activeElement;
+    if (!a || a === document.body || a === document.documentElement) input.focus();
+  }
+
+  function blurInside() {
+    var a = document.activeElement;
+    if (a && a !== document.body && typeof a.blur === 'function') a.blur();
+  }
+
+  // When the page pins this element to the bottom of the screen and the screen
+  // is shorter than the element (small window, zoom), keep the panel - with its
+  // Close and New chat buttons - inside the visible part.
+  function fitPanel() {
+    var top = '';
+    if (pinned && hostViewportH > 0) {
+      var above = window.innerHeight - hostViewportH; // part of this element above the screen
+      if (above > 0) top = Math.round(above + (external ? 0 : 12)) + 'px';
+    }
+    panel.style.top = top;
+  }
+
+  // ---- open / close ----
+  function setOpen(open, opts) {
+    var o = opts || {};
+    panel.hidden = !open;
+    launcher.setAttribute('aria-expanded', open ? 'true' : 'false');
+    launcher.setAttribute('aria-label', open ? 'Close the Spi-Math guide chat' : 'Open the Spi-Math guide chat');
+    if (open) {
+      fitPanel();
+      autoGrow();
+      scrollToEnd();
+      if (o.focus) setTimeout(function () { input.focus(); }, 0);
+    } else if (o.focusLauncher) {
+      launcher.focus();
+    }
+    if (!o.silent) post({ type: 'state', open: open });
+  }
+
+  function close() {
+    if (external) {
+      blurInside(); // the page hides this element and puts focus on its own button
+      post({ type: 'close' });
+    } else {
+      setOpen(false, { focusLauncher: true });
+    }
+  }
+
+  function navigate(url) {
+    if (!isSafeUrl(url)) return;
+    if (external) blurInside();
+    else setOpen(false);
+    post({ type: 'navigate', url: url });
+  }
+
+  // ---- sending ----
+  function newId() {
+    return 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+
+  function send(text) {
+    if (pending) return;
+    var t = String(text || '').trim();
+    if (!t) return;
+    if (t.length > maxChars) {
+      addMessage('bot', 'Please keep your question under ' + maxChars + ' characters.', [], true);
+      return;
+    }
+    removeSuggestions();
+    addMessage('user', t, []);
+    lastSent = t;
+    input.value = '';
+    autoGrow();
+    updateCount();
+    // The visitor is using the chat right now (button, chip or Enter): keep typing here.
+    if (document.hasFocus() && document.activeElement !== input) input.focus();
+    pending = { id: newId(), text: t, posted: false };
+    setWaiting(true);
+    if (initDone) {
+      postPending();
+    } else {
+      post({ type: 'ready' }); // the page code may be listening by now
+      pendingTimer = setTimeout(function () { finish(NOT_CONNECTED_TEXT, [], true); }, CONNECT_WAIT_MS);
+    }
+  }
+
+  function postPending() {
+    if (!pending || pending.posted) return;
+    pending.posted = true;
+    clearTimeout(pendingTimer);
+    pendingTimer = setTimeout(function () { finish(TIMEOUT_TEXT, [], true); }, REPLY_TIMEOUT_MS);
+    post({ type: 'ask', id: pending.id, text: pending.text });
+  }
+
+  function finish(answer, links, isError) {
+    clearTimeout(pendingTimer);
+    pendingTimer = null;
+    pending = null;
+    setWaiting(false);
+    addMessage('bot', answer, isError ? [] : links, isError);
+    if (isError && lastSent && !input.value) {
+      input.value = lastSent; // give the question back so it can be sent again
+      autoGrow();
+      updateCount();
+    }
+    restoreFocusIfLost();
+  }
+
+  function resetChat() {
+    clearTimeout(pendingTimer);
+    pendingTimer = null;
+    pending = null;
+    setWaiting(false);
+    renderFresh([]);
+    restoreFocusIfLost();
+  }
+
+  // ---- messages from the page ----
+  window.addEventListener('message', function (e) {
+    if (e.source !== window.parent) return; // only the page that hosts this frame
+    var d = e.data;
+    if (!d || typeof d !== 'object' || d.source !== FROM_HOST || typeof d.type !== 'string') return;
+    if (parentOrigin ? e.origin !== parentOrigin : !originAllowed(e.origin)) {
+      warnOrigin(e.origin);
+      return;
+    }
+    parentOrigin = e.origin;
+
+    if (d.type === 'init') {
+      if (initDone) return;
+      initDone = true;
+      external = d.externalLauncher === true;
+      pinned = d.pinned !== false;
+      document.body.classList.toggle('external', external);
+      if (typeof d.maxChars === 'number' && d.maxChars > 0 && d.maxChars <= 2000) {
+        maxChars = d.maxChars;
+        input.maxLength = maxChars;
+      }
+      renderFresh(d.transcript, { noSuggestions: !!pending });
+      if (pending) {
+        addMessage('user', pending.text, []); // a question typed before the page answered
+        setTyping(true);
+      }
+      if (external || d.open === true) setOpen(true, { silent: true }); // never moves focus
+      postPending();
+    } else if (d.type === 'reply') {
+      if (!pending || !pending.posted || d.id !== pending.id) return; // stale or unknown
+      var answer = typeof d.answer === 'string' && d.answer ? d.answer : 'Sorry, something went wrong.';
+      finish(answer, Array.isArray(d.links) ? d.links : [], d.error === true);
+    } else if (d.type === 'reset') {
+      resetChat();
+    } else if (d.type === 'focus') {
+      // Sent right after the visitor clicked the page's chat button.
+      if (!panel.hidden) input.focus();
+    } else if (d.type === 'viewport') {
+      if (typeof d.height === 'number' && d.height > 0 && d.height < 100000) {
+        hostViewportH = d.height;
+        if (!panel.hidden) fitPanel();
+      }
+    }
+  });
+
+  // ---- UI events ----
+  launcher.addEventListener('click', function () {
+    var opening = panel.hidden;
+    setOpen(opening, opening ? { focus: true } : { focusLauncher: true });
+  });
+  closeBtn.addEventListener('click', close);
+  closeBottom.addEventListener('click', close);
+  resetBtn.addEventListener('click', function () {
+    if (pending) return;
+    resetChat();
+    post({ type: 'reset' });
+  });
+  form.addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      send(input.value);
+    }
+  });
+  input.addEventListener('input', function () { autoGrow(); updateCount(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.hidden) close();
+  });
+  window.addEventListener('resize', function () { if (!panel.hidden) fitPanel(); });
+
+  function autoGrow() {
+    input.style.height = 'auto';
+    var h = input.scrollHeight; // includes the placeholder in most browsers; 0 while hidden
+    input.style.height = h ? Math.min(h + 2, 120) + 'px' : '';
+  }
+
+  function updateCount() {
+    var n = input.value.length;
+    var left = maxChars - n;
+    if (left <= 100) {
+      count.textContent = n + ' / ' + maxChars;
+      count.classList.toggle('near', left <= 20);
+    } else {
+      count.textContent = '';
+      count.classList.remove('near');
+    }
+    // Screen readers hear the count only when it crosses 100, 50, 20 and 0 characters left.
+    var bucket = -1;
+    for (var i = 0; i < COUNT_THRESHOLDS.length; i++) {
+      if (left <= COUNT_THRESHOLDS[i]) bucket = i;
+    }
+    if (bucket > countBucket) {
+      countStatus.textContent = left <= 0 ? 'Character limit reached.' : left + ' characters left.';
+    } else if (bucket === -1 && countBucket !== -1) {
+      countStatus.textContent = '';
+    }
+    countBucket = bucket;
+  }
+
+  // ---- start: greet, then tell the page we are ready (repeat until it answers) ----
+  renderFresh([]);
+  var tries = 0;
+  (function hello() {
+    if (initDone || tries >= 8) return;
+    tries++;
+    post({ type: 'ready' });
+    setTimeout(hello, 750 * tries);
+  })();
+})();
+</script>
+</body>
+</html>
