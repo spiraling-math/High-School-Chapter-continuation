@@ -262,6 +262,12 @@ test("normaliseInput truncates long history items and validates lang", () => {
   assert.match(r.messages[2].content, /^\(Website language: fr\)\nok$/);
   assert.equal(normaliseInput({ message: "ok", lang: "en" }).messages[0].content, "ok");
   assert.equal(normaliseInput({ message: "ok", lang: "<script>" }).lang, null);
+  // visitorId: only a plain id of 8-64 safe characters is kept (it is a rate-limit key, nothing else)
+  assert.equal(normaliseInput({ message: "ok" }).visitorId, null);
+  assert.equal(normaliseInput({ message: "ok", visitorId: "vabc123xyz" }).visitorId, "vabc123xyz");
+  for (const bad of ["short", "x".repeat(65), "has space", "a:b:c", 42, { id: "x" }]) {
+    assert.equal(normaliseInput({ message: "ok", visitorId: bad }).visitorId, null, String(bad));
+  }
 });
 
 test("input cleaning is linear: long whitespace runs cannot stall the backend", () => {
@@ -541,7 +547,7 @@ const DELIVERABLES = [
   "./backend/siteMap.js",
   "./backend/navBot.web.js",
   "./backend/claudeClient.js",
-  "./alternatives/claudeClient.fetch.js",
+  "./alternatives/claudeClient.sdk.js",
   "./masterPage.js",
   "./widget.html",
   "./navBotCore.test.ts",

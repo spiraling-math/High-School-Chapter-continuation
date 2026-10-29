@@ -53,6 +53,8 @@ export const RULE_KEYS = Object.freeze({
 const ROLES = { user: true, assistant: true };
 const KEY_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const LANG_RE = /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?$/;
+// Random id masterPage.js keeps in the browser; used only as a rate-limit key.
+const VISITOR_ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 // https://www.spi-math.com or https://spi-math.com, optionally followed by a path
 // that does NOT start with "//" (protocol-relative) and has no backslash, space
 // or control character (browsers read "\" as "/").
@@ -255,10 +257,11 @@ function reject(answer, code) {
 }
 
 /**
- * Validate the browser payload {message, history?, lang?}.
- * Returns {ok:true, messages, lang} where messages alternate user/assistant,
- * start and end with 'user', and hold at most MAX_HISTORY_MESSAGES earlier
- * turns. Otherwise {ok:false, code, reply} - reply is safe to return as-is.
+ * Validate the browser payload {message, history?, lang?, visitorId?}.
+ * Returns {ok:true, messages, lang, visitorId} where messages alternate
+ * user/assistant, start and end with 'user', and hold at most
+ * MAX_HISTORY_MESSAGES earlier turns; visitorId is the browser's rate-limit id
+ * or null. Otherwise {ok:false, code, reply} - reply is safe to return as-is.
  * Every step is linear in the input size: this runs for anonymous callers
  * before any rate limit.
  */
@@ -312,9 +315,12 @@ export function normaliseInput(payload) {
     lang = payload.lang.toLowerCase();
   }
 
+  const visitorId =
+    typeof payload.visitorId === 'string' && VISITOR_ID_RE.test(payload.visitorId) ? payload.visitorId : null;
+
   const finalText = lang && lang.slice(0, 2) !== 'en' ? '(Website language: ' + lang + ')\n' + message : message;
   const messages = kept.concat([{ role: 'user', content: finalText }]);
-  return { ok: true, messages, lang };
+  return { ok: true, messages, lang, visitorId };
 }
 
 // ---------------------------------------------------------------------------

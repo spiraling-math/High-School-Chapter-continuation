@@ -43,6 +43,7 @@ async function loadMasterPage(opts = {}) {
   const navigations = [];
   const errors = [];
   const store = Object.assign({}, opts.session || {});
+  const localStore = Object.assign({}, opts.local || {});
   let ready = null;
   const $w = (sel) => elements[sel] || {};
   $w.onReady = (fn) => { ready = fn; };
@@ -56,6 +57,7 @@ async function loadMasterPage(opts = {}) {
       getBoundingRect: () => Promise.resolve({ window: { height: 600, width: 1280 } }),
     },
     session: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = v; } },
+    local: { getItem: (k) => (k in localStore ? localStore[k] : null), setItem: (k, v) => { localStore[k] = v; } },
     console: { error: (...a) => errors.push(a), warn() {}, log() {} },
   };
   globalThis.__navbotStubs = stubs;
@@ -63,7 +65,7 @@ async function loadMasterPage(opts = {}) {
     [/^import \{ askNavBot \} from 'backend\/navBot\.web';$/m, "const { askNavBot } = globalThis.__navbotStubs;"],
     [/^import wixLocationFrontend from 'wix-location-frontend';$/m, "const { wixLocationFrontend } = globalThis.__navbotStubs;"],
     [/^import wixWindowFrontend from 'wix-window-frontend';$/m, "const { wixWindowFrontend } = globalThis.__navbotStubs;"],
-    [/^import \{ session \} from 'wix-storage-frontend';$/m, "const { session } = globalThis.__navbotStubs;"],
+    [/^import \{ local, session \} from 'wix-storage-frontend';$/m, "const { local, session } = globalThis.__navbotStubs;"],
   ];
   let src = MASTER_SRC;
   for (const [re, repl] of imports) {
@@ -75,7 +77,7 @@ async function loadMasterPage(opts = {}) {
     src +
     "\nexport { toSitePath, parseWidgetMessage, cleanLinks };\nexport const __state = () => state;\n// load " + ++loads;
   const mod = await import("data:text/javascript;base64," + Buffer.from(src).toString("base64"));
-  return { mod, stubs, navigations, errors, store, ready: () => ready && ready() };
+  return { mod, stubs, navigations, errors, store, localStore, ready: () => ready && ready() };
 }
 
 const flush = async () => { for (let i = 0; i < 5; i++) await new Promise((r) => setTimeout(r, 0)); };
@@ -207,6 +209,10 @@ test("masterPage: replies marked noHistory are shown but never sent back as hist
       { role: "assistant", content: "IGCSE is here." },
     ]);
     assert.deepEqual(calls[3].history, calls[1].history, "the declined question and the error are not in the history");
+    // One random visitor id per browser, kept in local storage and sent with every question.
+    assert.match(calls[0].visitorId, /^[A-Za-z0-9_-]{8,64}$/);
+    assert.ok(calls.every((c) => c.visitorId === calls[0].visitorId), "the id is stable");
+    assert.equal(page.localStore["spiNavBot.visitor"], calls[0].visitorId);
     const st = page.mod.__state();
     assert.deepEqual(st.transcript.map((t) => t.text), [
       "Where is IGCSE?", "IGCSE is here.",

@@ -1,4 +1,4 @@
-// masterPage.js  (Wix editor: Code sidebar > Page Code > Global (masterPage.js))
+// masterPage.js  (site repository: src/pages/masterPage.js; editor: Page Code > Global)
 // -----------------------------------------------------------------------------
 // Connects the chat widget (an Embed HTML element) to the backend, on every page.
 //
@@ -13,7 +13,8 @@
 //  Embed element. With one, the Embed element is shown only while chatting.
 //
 // The conversation is kept here (in the visitor's browser session), not in the
-// iframe and not on the server.
+// iframe and not on the server. A random visitor id is kept in the browser's
+// local storage and sent with each question, as the backend's rate-limit key.
 //
 // If this file already has code, paste the import lines at the top with the
 // other imports and put the body of $w.onReady inside your existing onReady.
@@ -21,7 +22,7 @@
 import { askNavBot } from 'backend/navBot.web';
 import wixLocationFrontend from 'wix-location-frontend';
 import wixWindowFrontend from 'wix-window-frontend';
-import { session } from 'wix-storage-frontend';
+import { local, session } from 'wix-storage-frontend';
 
 // pinned: true  = pinned to the screen; shown/hidden with show()/hide().
 // pinned: false = in the page flow; expand()/collapse() so a closed chat takes no space.
@@ -32,6 +33,8 @@ const PAIRS = [
 const FROM_WIDGET = 'spi-navbot';
 const TO_WIDGET = 'spi-navbot-host';
 const STORE_KEY = 'spiNavBot.v1';
+const VISITOR_KEY = 'spiNavBot.visitor';
+const VISITOR_ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 const MAX_MESSAGE_CHARS = 500;
 const MAX_HISTORY = 6; // messages sent back to the server as context
 const MAX_TRANSCRIPT = 30; // bubbles restored after moving to another page
@@ -69,6 +72,20 @@ function saveState() {
     session.setItem(STORE_KEY, JSON.stringify(state));
   } catch (e) {
     /* storage full or blocked: the chat still works for this page */
+  }
+}
+
+/** A random id for this browser (not personal data); the backend rate-limits per id. */
+function visitorId() {
+  try {
+    let id = local.getItem(VISITOR_KEY);
+    if (typeof id !== 'string' || !VISITOR_ID_RE.test(id)) {
+      id = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+      local.setItem(VISITOR_KEY, id);
+    }
+    return id;
+  } catch (e) {
+    return undefined; // storage blocked: the backend applies its global limits only
   }
 }
 
@@ -254,7 +271,12 @@ async function ask(pair, id, text) {
 
   let res;
   try {
-    res = await askNavBot({ message: text, history: state.history.slice(-MAX_HISTORY), lang: currentLanguage() });
+    res = await askNavBot({
+      message: text,
+      history: state.history.slice(-MAX_HISTORY),
+      lang: currentLanguage(),
+      visitorId: visitorId(),
+    });
   } catch (err) {
     // The backend call failed: network problem, Wix timeout (504) / throttling (429),
     // or the backend code could not load (see Wix Logs).

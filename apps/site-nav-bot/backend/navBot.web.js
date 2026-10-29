@@ -10,7 +10,6 @@
 import { Permissions, webMethod } from 'wix-web-module';
 import { secrets } from 'wix-secrets-backend.v2';
 import { elevate } from 'wix-auth';
-import { auth } from '@wix/essentials';
 import {
   buildSystemPrompt,
   buildOutputSchema,
@@ -31,15 +30,17 @@ import { SITE_MAP, SITE_FACTS, FALLBACK_LINK_KEYS } from 'backend/siteMap';
 import { createMessage } from 'backend/claudeClient';
 
 // ----- Settings you may change ------------------------------------------------
-// Model. 'claude-haiku-5-5' is ~40x cheaper ($0.10/$0.50 vs $4/$20 per million
-// tokens) and is a good fit for pure navigation. Switching needs no other edit:
-// the refusal-fallback option is switched off automatically for Haiku.
-const MODEL = 'claude-opus-5-5';
-// Thinking cannot be turned off on Opus 5.5; 'low' effort = fast and cheap.
+// Model. 'claude-haiku-5-5' ($0.10 / $0.50 per million tokens) is fast, cheap
+// and a good fit for pure navigation. 'claude-opus-5-5' ($4 / $20) is ~40x
+// dearer and more capable. Switching needs no other edit: the refusal-fallback
+// option is sent to Opus only and dropped automatically for Haiku.
+const MODEL = 'claude-haiku-5-5';
+// Thinking is adaptive (on by default) on both models; 'low' effort = fast and cheap.
 const EFFORT = 'low';
 // Cap on output per attempt (thinking + JSON answer).
-// Worst case on Opus 5.5: 2048 x $20 / 1M = ~$0.04 of output per attempt
-// (a refusal fallback adds a second attempt - see README "Model choice and cost").
+// Worst case: 2048 x $0.50 / 1M = ~$0.001 of output per question on Haiku 5.5
+// (~$0.04 on Opus 5.5, where a refusal fallback can add a second attempt - see
+// README "Model choice and cost").
 const MAX_TOKENS = 2048;
 // Wix stops a web method after ~14 s, so everything must finish sooner.
 // The overall budget is counted from the start of the call.
@@ -47,6 +48,8 @@ const OVERALL_DEADLINE_MS = 12500;
 const CLAUDE_TIMEOUT_MS = 11000; // longest single Claude call
 const MIN_CLAUDE_BUDGET_MS = 5000; // less time than this left: don't start a (billed) call
 // Light abuse limits (per backend container, reset on restart - see README).
+// The per-visitor part is keyed on an id the browser chooses, so it stops
+// casual over-use only; the Console spend limit is the hard cap.
 const LIMITS = {
   perVisitorPerMinute: 6,
   perVisitorPerHour: 30,
@@ -97,17 +100,13 @@ function forgetApiKey() {
   keyCache = { value: null, at: 0 };
 }
 
-/** Per-visitor id from Wix (visitor or member). null if unavailable. */
-async function getVisitorKey() {
-  try {
-    const info = await auth.getTokenInfo();
-    if (info && typeof info.subjectId === 'string' && info.subjectId) {
-      return String(info.subjectType || 'UNKNOWN') + ':' + info.subjectId;
-    }
-  } catch (err) {
-    console.warn('navBot: getTokenInfo failed', String((err && err.message) || err));
-  }
-  return null;
+/**
+ * Per-visitor key for the rate limit: a random id that masterPage.js keeps in
+ * the visitor's browser and sends with every question (already validated by
+ * normaliseInput). null when absent: the global limits still apply.
+ */
+function visitorKeyOf(input) {
+  return input.visitorId ? 'v:' + input.visitorId : null;
 }
 
 function withDeadline(promise, ms) {
@@ -161,8 +160,7 @@ export const askNavBot = webMethod(Permissions.Anyone, async (payload) => {
     stage = 'run';
 
     // 3. Light rate limit.
-    const visitorKey = await getVisitorKey();
-    const verdict = limiter.check(visitorKey);
+    const verdict = limiter.check(visitorKeyOf(input));
     if (!verdict.allowed) {
       console.warn('navBot: rate limited', verdict.reason);
       return errorReply(verdict.reason === 'global' ? TEXT.busy : TEXT.rateLimited);

@@ -1,77 +1,79 @@
 // backend/claudeClient.js
 // -----------------------------------------------------------------------------
-// Calls the Claude Messages API with the official Anthropic SDK
-// (@anthropic-ai/sdk, installed with the Wix editor's Package Manager).
+// Calls the Claude Messages API over HTTPS with Wix's built-in wix-fetch.
+// No npm package is needed, which matters on this site: it is connected to
+// GitHub, and with Git integration packages can only be added with the Wix CLI.
 //
 // Exposes ONE function, createMessage(apiKey, params, {timeoutMs}), which
 // resolves to the API response or throws a plain {kind, status, type, message}
 // object (never the API key).
 //
-// PLAN B: if the SDK will not install or load in Wix, replace the WHOLE content
-// of this file with ../alternatives/claudeClient.fetch.js (same function, uses
-// Wix's built-in wix-fetch instead). Nothing else needs to change.
+// alternatives/claudeClient.sdk.js is the same function written with the
+// official Anthropic SDK, for a developer who installs it with `wix install`.
 // -----------------------------------------------------------------------------
-import Anthropic from '@anthropic-ai/sdk';
-import { fetch as wixFetch } from 'wix-fetch';
+import { fetch } from 'wix-fetch';
 import { isSpendLimitError } from 'backend/navBotCore';
 
-// Wix documents no global fetch in backend code, so we hand the SDK Wix's own
-// fetch. If the SDK misbehaves with it (see README troubleshooting), try false.
-const USE_WIX_FETCH = true;
+const API_URL = 'https://api.anthropic.com/v1/messages';
+const API_VERSION = '2026-10-21';
 const DEFAULT_TIMEOUT_MS = 11000; // used only when the caller passes no timeout
 
-let cached = null; // { apiKey, client } - one client per backend container
-
-function getClient(apiKey) {
-  if (!cached || cached.apiKey !== apiKey) {
-    const options = {
-      apiKey, // from the Wix Secrets Manager, never from frontend code
-      timeout: DEFAULT_TIMEOUT_MS, // ms per attempt (SDK default is 10 minutes)
-      maxRetries: 0, // SDK default is 2; Wix cuts the web method off at ~14 s, so no time to retry
-    };
-    if (USE_WIX_FETCH) options.fetch = wixFetch;
-    cached = { apiKey, client: new Anthropic(options) };
-  }
-  return cached.client;
-}
-
-/** The `error` object of the API's error body: {type, message, details?}. */
-function apiErrorOf(err) {
-  const body = err && err.error;
-  return body && typeof body === 'object' && body.error && typeof body.error === 'object' ? body.error : {};
-}
-
-/** Map SDK errors to a small plain object. Subclasses are checked before parents. */
-function normaliseError(err) {
-  const apiError = apiErrorOf(err);
-  const status = err && err.status;
-  const base = { status, type: (err && err.type) || apiError.type };
-  const apiMessage = typeof apiError.message === 'string' ? apiError.message : String((err && err.message) || err);
-  if (err instanceof Anthropic.APIConnectionTimeoutError) return Object.assign(base, { kind: 'timeout', message: 'Claude API timed out' });
-  if (err instanceof Anthropic.APIConnectionError) return Object.assign(base, { kind: 'network', message: String(err.message) });
+function kindForStatus(status, apiError) {
   // A spend limit arrives as a 400 (a limit you set) or a 429 (the tier's monthly cap).
-  if (isSpendLimitError(status, apiError)) return Object.assign(base, { kind: 'spend_limit', message: apiMessage });
-  if (err instanceof Anthropic.RateLimitError) return Object.assign(base, { kind: 'rate_limited', message: apiMessage });
-  if (err instanceof Anthropic.AuthenticationError) return Object.assign(base, { kind: 'auth', message: 'ANTHROPIC_API_KEY secret is invalid or revoked (401)' });
-  if (err instanceof Anthropic.PermissionDeniedError) return Object.assign(base, { kind: 'permission', message: apiMessage });
-  if (err instanceof Anthropic.NotFoundError) return Object.assign(base, { kind: 'not_found', message: 'Model not found (404) - check MODEL in navBot.web.js' });
-  if (err instanceof Anthropic.BadRequestError) return Object.assign(base, { kind: 'bad_request', message: apiMessage });
-  if (err instanceof Anthropic.InternalServerError) return Object.assign(base, { kind: 'server', message: 'Anthropic server error / overloaded' });
-  if (err instanceof Anthropic.APIError) {
-    // 402 billing_error = billing or payment problem; 413 = request too large
-    const kind = status === 402 ? 'billing' : 'api';
-    return Object.assign(base, { kind, message: apiMessage });
-  }
-  return { kind: 'unexpected', message: String((err && err.message) || err) };
+  if (isSpendLimitError(status, apiError)) return 'spend_limit';
+  if (status === 401) return 'auth';
+  if (status === 402) return 'billing'; // billing or payment problem
+  if (status === 403) return 'permission';
+  if (status === 404) return 'not_found';
+  if (status === 400) return 'bad_request';
+  if (status === 429) return 'rate_limited';
+  if (status >= 500) return 'server'; // 500 / 529 overloaded
+  return 'api';
 }
 
 export async function createMessage(apiKey, params, opts) {
   const timeoutMs = (opts && opts.timeoutMs) || DEFAULT_TIMEOUT_MS;
-  const client = getClient(apiKey);
+  // The SDK's `betas` field is really the anthropic-beta header.
+  const body = Object.assign({}, params);
+  const betas = body.betas;
+  delete body.betas;
+
+  const headers = {
+    'content-type': 'application/json',
+    'x-api-key': apiKey,
+    'anthropic-version': API_VERSION,
+  };
+  if (Array.isArray(betas) && betas.length) headers['anthropic-beta'] = betas.join(',');
+
+  let timer;
+  const timeout = new Promise((_, rejectFn) => {
+    timer = setTimeout(() => rejectFn({ kind: 'timeout', message: 'Claude API timed out' }), timeoutMs);
+  });
+
+  let res;
   try {
-    // `betas` in params becomes the anthropic-beta header (server-side refusal fallback)
-    return await client.beta.messages.create(params, { timeout: timeoutMs });
+    res = await Promise.race([fetch(API_URL, { method: 'post', headers, body: JSON.stringify(body) }), timeout]);
   } catch (err) {
-    throw normaliseError(err);
+    if (err && err.kind) throw err;
+    throw { kind: 'network', message: String((err && err.message) || err) };
+  } finally {
+    clearTimeout(timer);
   }
+
+  let data = null;
+  try {
+    data = await res.json();
+  } catch (e) {
+    data = null;
+  }
+  if (!res.ok) {
+    const apiError = (data && data.error) || {};
+    throw {
+      kind: kindForStatus(res.status, apiError),
+      status: res.status,
+      type: apiError.type,
+      message: String(apiError.message || res.statusText || 'HTTP ' + res.status),
+    };
+  }
+  return data;
 }
